@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Compendio Técnico de Inteligencia Artificial Generativa. Fundamentos Matemáticos, Arquitecturas de Optimización, Inferencia, Recuperación de Información y Flujos Agenciales con Ejemplos Ilustrativos y Prácticos.">
+  <meta name="keywords" content="Matemáticas, Transformers, Optimización, Inferencia, RAG, Agentes">
+  <title>Cuaderno 03 — Compendio Técnico de IA Generativa | Curso IA Commercial</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <!-- KaTeX for LaTeX math rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ],
+      throwOnError: false
+    });"></script>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <nav class="top-nav">
+    <button class="menu-toggle" aria-label="Abrir menú">☰</button>
+    <a href="../index.html" class="nav-brand">
+      <div class="nav-brand-icon">IA</div>
+      <div class="nav-brand-text"><span>Curso IA</span> Commercial</div>
+    </a>
+    <div class="nav-links">
+      <a href="../index.html" class="nav-link">Cuadernos</a>
+      <a href="../muro.html" class="nav-link">Lienzo</a>
+      <a href="../recursos.html" class="nav-link">Recursos</a>
+      <a href="#" class="nav-link">Acerca de</a>
+    </div>
+  </nav>
+
+  <!-- Reading Progress -->
+  <div class="progress-bar">
+    <div class="progress-bar-fill"></div>
+  </div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Contenido del compendio</div>
+      <a href="#intro" class="sidebar-link active">
+        <span class="sidebar-link-number">00</span>
+        Introducción y objetivos
+      </a>
+      <a href="#modulo-1" class="sidebar-link">
+        <span class="sidebar-link-number">01</span>
+        Paradigmas y computación
+      </a>
+      <a href="#modulo-2" class="sidebar-link">
+        <span class="sidebar-link-number">02</span>
+        Optimización paramétrica del error
+      </a>
+      <a href="#modulo-3" class="sidebar-link">
+        <span class="sidebar-link-number">03</span>
+        Algoritmos de optimización de gradiente
+      </a>
+      <a href="#modulo-4" class="sidebar-link">
+        <span class="sidebar-link-number">04</span>
+        Arquitecturas y espacios de representación
+      </a>
+      <a href="#modulo-5" class="sidebar-link">
+        <span class="sidebar-link-number">05</span>
+        La revolución Transformer
+      </a>
+      <a href="#modulo-6" class="sidebar-link">
+        <span class="sidebar-link-number">06</span>
+        Funcionamiento LLM y paradigma GPT
+      </a>
+      <a href="#modulo-7" class="sidebar-link">
+        <span class="sidebar-link-number">07</span>
+        Grounding y Harness
+      </a>
+      <a href="#modulo-8" class="sidebar-link">
+        <span class="sidebar-link-number">08</span>
+        Inferencia eficiente en LLMs
+      </a>
+      <a href="#modulo-9" class="sidebar-link">
+        <span class="sidebar-link-number">09</span>
+        RAG y GraphRAG
+      </a>
+      <a href="#modulo-10" class="sidebar-link">
+        <span class="sidebar-link-number">10</span>
+        Sistemas y flujos agenciales
+      </a>
+      <a href="#conclusion" class="sidebar-link">
+        <span class="sidebar-link-number">11</span>
+        Conclusión y perspectivas
+      </a>
+    </div>
+  </aside>
+
+  <!-- Sidebar Overlay (mobile) -->
+  <div class="sidebar-overlay"></div>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="content-wrapper">
+
+      <!-- Page Header -->
+      <header class="page-header">
+        <div class="breadcrumb">
+          <a href="../index.html">Curso IA</a>
+          <span class="separator">›</span>
+          <span>Cuaderno 03</span>
+        </div>
+
+        <div class="page-meta">
+          <span class="meta-badge">Cuaderno 03</span>
+          <span class="meta-badge blue">Compendio Técnico</span>
+          <span class="meta-badge cyan">10 Módulos</span>
+        </div>
+
+        <h1 class="page-title">Compendio Técnico de Inteligencia Artificial Generativa</h1>
+
+        <p class="page-subtitle">
+          Fundamentos Matemáticos, Arquitecturas de Optimización, Inferencia, Recuperación de Información y Flujos Agenciales con Ejemplos Ilustrativos y Prácticos
+        </p>
+      </header>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 00: INTRODUCCIÓN -->
+      <!-- ============================== -->
+      <section id="intro" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">00</span>
+          <h2 class="section-title">Introducción y Objetivos</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <p>Este compendio técnico ampliado proporciona un análisis sistemático, formal y de alta densidad de información de los sistemas que componen la Inteligencia Artificial Generativa moderna. Diseñado para ingenieros de software, científicos de datos e investigadores, este documento unifica el rigor matemático con las consideraciones prácticas de ingeniería para servir como referencia integral en el diseño, optimización, evaluación y despliegue de sistemas de IA.</p>
+
+          <p>Cada módulo ha sido expandido de manera exhaustiva para detallar el funcionamiento teórico-matemático junto con ejemplos prácticos y analogías claras del mundo real que facilitan la comprensión intuitiva de conceptos complejos. Adicionalmente, se incorporan nuevos módulos clave que cubren la revolución de la arquitectura Transformer, el paradigma de los modelos preentrenados autorregresivos (GPT), el funcionamiento interno de los LLMs, y los pilares operativos de implementación y evaluación: Grounding y Harness.</p>
+
+          <div class="concept-card highlight">
+            <div class="concept-card-label">📖 Índice de Contenidos</div>
+            <p style="font-style: normal;"><strong>Módulo 1:</strong> Paradigmas y Computación — El continuo algorítmico y modelos asociativos (Apriori, DIC).</p>
+            <p style="font-style: normal;"><strong>Módulo 2:</strong> Optimización Paramétrica del Error — Retropropagación, BPTT, RTRL, optimización de orden cero.</p>
+            <p style="font-style: normal;"><strong>Módulo 3:</strong> Algoritmos de Optimización de Gradiente — SGD, Momentum, AdaGrad, RMSProp, Adam, AdamW.</p>
+            <p style="font-style: normal;"><strong>Módulo 4:</strong> Arquitecturas de Modelos y Espacios de Representación — Embeddings, autoatención escalada, condicionamiento.</p>
+            <p style="font-style: normal;"><strong>Módulo 5:</strong> La Revolución Transformer — "Attention Is All You Need" (2017).</p>
+            <p style="font-style: normal;"><strong>Módulo 6:</strong> El Funcionamiento de un LLM y el Paradigma GPT.</p>
+            <p style="font-style: normal;"><strong>Módulo 7:</strong> Pilares Operativos — Grounding y Harness.</p>
+            <p style="font-style: normal;"><strong>Módulo 8:</strong> Inferencia Eficiente en LLMs — KV Cache, Decodificación Especulativa.</p>
+            <p style="font-style: normal;"><strong>Módulo 9:</strong> Recuperación de Información Avanzada — RAG y GraphRAG.</p>
+            <p style="font-style: normal;"><strong>Módulo 10:</strong> Sistemas y Flujos Agenciales — ReAct, Self-Refine, Reflexion, MCP.</p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- MÓDULO 1: PARADIGMAS Y COMPUTACIÓN -->
+      <!-- ============================== -->
+      <section id="modulo-1" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">01</span>
+          <h2 class="section-title">Paradigmas y Computación</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <h3 class="subsection-title">El Continuo de la Algoritmia Tradicional al Aprendizaje Automático</h3>
+
+          <p>La computación moderna experimenta una transición fundamental desde los paradigmas puramente deterministas hacia los sistemas probabilísticos y estocásticos. En la algoritmia tradicional, un algoritmo se define como un conjunto finito, ordenado y secuencial de instrucciones lógicas precisas y no ambiguas que toman una entrada, ejecutan un proceso determinista y producen una salida consistente. En este paradigma, el programador humano diseña explícitamente tanto el proceso como las reglas de transformación utilizando estructuras secuenciales y lógicas del tipo <code>if-then-else</code>.</p>
+
+          <p>Por el contrario, la algoritmia de inteligencia artificial (o "algotimia") no requiere que las reglas de transformación lógicas estén predefinidas. En su lugar, los algoritmos de Machine Learning actúan como <strong>aproximadores universales de funciones matemáticas</strong>, analizando datos históricos de entrada y salida para deducir de forma autónoma la función de transformación matemática que mapea de manera óptima las entradas a las salidas deseadas.</p>
+
+          <p>Este proceso se modela lógicamente mediante redes neuronales artificiales, las cuales trasladan los componentes de un sistema conexionista a estructuras matriciales matemáticas compuestas por <strong>pesos ($W$) y sesgos ($b$)</strong>. El proceso de aprendizaje consiste en ajustar iterativamente estos parámetros para aproximar una función matemática continua $f(x)$ que correlacione estadísticamente las entradas con sus correspondientes salidas, minimizando el error en datos no vistos (<em>generalización</em>).</p>
+
+          <div class="example-block">
+            <div class="example-block-header">💡 Ejemplo Ilustrativo del Continuo Algorítmico: El Filtro de Spam</div>
+            <div class="example-block-body">
+              <p><strong>Aproximación Tradicional (Basada en Reglas):</strong> Un programador escribe manualmente cientos de líneas de código lógico: <code>if "ganaste un premio" in email_body and "haga clic aquí" in email_body: marcar_como_spam()</code>. Si los spammers cambian ligeramente las palabras (ej. "g4naste un pr3mio"), el sistema falla inmediatamente, requiriendo que el programador humano escriba una nueva regla. El humano es el que computa y codifica las reglas.</p>
+              <p><strong>Aproximación con Machine Learning (Probabilística):</strong> Alimentamos a una red neuronal con un dataset de 100,000 correos electrónicos previamente etiquetados por humanos como "Spam" o "No Spam". El algoritmo analiza de forma matemática la co-ocurrencia de términos, las cabeceras y las propiedades del correo, y ajusta de manera autónoma sus parámetros ($W$ y $b$) para definir un límite de decisión probabilístico. Si entra un correo nuevo con variaciones ortográficas, el modelo detecta la similitud en el espacio latente y estima una probabilidad (ej. "94% de probabilidad de ser Spam"), adaptándose de manera flexible y sin intervención de código manual.</p>
+            </div>
+          </div>
+
+          <h3 class="subsection-title">Correlaciones Estadísticas y Modelos Asociativos</h3>
+
+          <p>En la base del machine learning clásico, la detección de patrones de co-ocurrencia sin supervisión explícita se ha estructurado mediante <strong>algoritmos asociativos</strong>. El algoritmo <strong>Apriori</strong> es un pilar de la minería de reglas de asociación. Este método opera bajo el <em>principio monótono de Apriori</em>: si un conjunto de elementos es frecuente, todos sus subconjuntos también deben ser frecuentes; recíprocamente, si un conjunto es infrecuente, todos sus superconjuntos serán infrecuentes. El algoritmo calcula de manera exhaustiva el <strong>soporte</strong> (frecuencia relativa de aparición) de candidatos de tamaño $k$ basándose en la frecuencia de los de tamaño $k-1$.</p>
+
+          <p>Sin embargo, el algoritmo Apriori clásico presenta un cuello de botella de rendimiento severo al requerir $k$ pasadas completas sobre la base de datos para conjuntos de tamaño máximo $k$, lo que resulta computacionalmente prohibitivo para grandes volúmenes de datos. Para solventar esta restricción, se desarrolló el algoritmo de <strong>Recuento Dinámico de Conjuntos de Elementos (DIC, Dynamic Itemset Counting)</strong>.</p>
+
+          <p>A diferencia de Apriori, DIC divide la base de datos en múltiples <strong>bloques o intervalos de transacciones</strong> y permite estimar el soporte de conjuntos de elementos candidatos de forma asíncrona. Durante una sola pasada a través de la base de datos, DIC añade nuevos candidatos de tamaño $k$ en puntos de control intermedios (cada vez que termina de procesar un bloque) si sus subconjuntos de tamaño $k-1$ se determinan como frecuentes en ese instante, reduciendo drásticamente el número de lecturas a disco y acelerando la convergencia del descubrimiento de reglas asociativas de alta dimensionalidad.</p>
+
+          <div class="example-block">
+            <div class="example-block-header">💡 Ejemplo Ilustrativo de Modelos Asociativos: El Análisis de la Cesta de la Compra</div>
+            <div class="example-block-body">
+              <p><strong>El Algoritmo Apriori en el Supermercado:</strong> Imagina que un supermercado quiere saber qué productos se compran juntos. Si un análisis revela que el conjunto de elementos {Pañales, Cerveza, Papas Fritas} es frecuente, el principio de Apriori garantiza que {Pañales, Cerveza}, {Pañales, Papas Fritas} y {Cerveza, Papas Fritas} también son frecuentes por defecto. Si el conjunto {Leche, Carbón} es infrecuente, el algoritmo descarta inmediatamente cualquier superconjunto como {Leche, Carbón, Carne} sin tener que buscarlo en los tickets, ahorrando cálculos. Sin embargo, el sistema tiene que leer la lista completa de millones de tickets de compra de todo el año, una y otra vez, para cada tamaño de grupo, lo cual es increíblemente lento.</p>
+              <p><strong>La Optimización con DIC (Dynamic Itemset Counting):</strong> En lugar de leer todos los tickets de compra de todo el año para ver si la combinación de tres elementos es frecuente, el algoritmo DIC divide los tickets en bloques (por ejemplo, bloques de 1,000 transacciones). Al leer el primer bloque de 1,000 transacciones, si nota que {Pañales} y {Cerveza} se compran mucho, introduce dinámicamente el candidato {Pañales, Cerveza} en el segundo bloque. No espera a terminar de leer el año entero; va sembrando candidatos de mayor tamaño "sobre la marcha", logrando encontrar todas las reglas asociativas en una única pasada por la base de datos.</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- MÓDULO 2: OPTIMIZACIÓN PARAMÉTRICA DEL ERROR -->
+      <!-- ============================== -->
+      <section id="modulo-2" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">02</span>
+          <h2 class="section-title">Optimización Paramétrica del Error</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <h3 class="subsection-title">Mecánica de la Retropropagación y Modos de Diferenciación Automática</h3>
+
+          <p>El entrenamiento de redes neuronales profundas se formula como la minimización de una función de pérdida escalar $\mathcal{L}(\theta)$ sobre un espacio de parámetros continuo $\theta \in \mathbb{R}^n$. El cálculo preciso de los gradientes de la pérdida respecto a todos los parámetros del modelo se efectúa mediante la <strong>retropropagación (backpropagation)</strong>, que constituye una aplicación de la Diferenciación Automática en Modo Inverso (Reverse-Mode AD).</p>
+
+          <p>El <strong>Grafo de Computación</strong> representa las operaciones matemáticas del modelo como nodos dirigidos. En el <em>paso hacia adelante (forward pass)</em>, se evalúa el grafo desde las entradas hasta la salida escalar $\mathcal{L}$, almacenando en memoria las activaciones intermedias. En el <em>paso hacia atrás (backward pass)</em>, se aplica de forma recursiva la regla de la cadena para propagar los gradientes desde la salida hacia los parámetros de las primeras capas.</p>
+
+          <p>La diferenciación automática se puede estructurar en dos modos fundamentales:</p>
+
+          <div class="concept-card">
+            <div class="concept-card-label">📐 Modo Directo (Forward-Mode AD)</div>
+            <p>Propaga las derivadas parciales respecto a una única variable de entrada de manera simultánea con la evaluación del valor de la función en el paso hacia adelante. Para una función $f: \mathbb{R}^n \to \mathbb{R}$, requiere $n$ evaluaciones completas del grafo para calcular el gradiente total, lo que la hace ineficiente cuando $n$ (número de parámetros) es extremadamente grande.</p>
+          </div>
+
+          <div class="concept-card highlight">
+            <div class="concept-card-label">⚡ Modo Inverso (Reverse-Mode AD)</div>
+            <p>Evalúa primero la función en sentido directo y luego propaga los gradientes en una sola pasada en sentido inverso. Es altamente eficiente cuando el número de entradas es masivo y la salida es un único escalar ($n \gg 1$), requiriendo una única pasada hacia atrás para obtener el vector de gradientes completo $\nabla L(\theta)$, con un coste computacional que es proporcional a aproximadamente dos veces el coste del paso hacia adelante.</p>
+          </div>
+
+          <div class="example-block">
+            <div class="example-block-header">💡 Ejemplo Ilustrativo del Modo Inverso: El Laberinto en 3D</div>
+            <div class="example-block-body">
+              <p><strong>Modo Directo (Inviable para Modelos Grandes):</strong> Supongamos que estamos en un laberinto en tres dimensiones con 1 millón de palancas de ajuste de dirección y queremos saber cómo mover cada una para llegar a la salida (optimizar la pérdida). Usar el modo directo equivale a mover una sola palanca un milímetro hacia adelante, correr todo el camino hasta el final del laberinto para ver si nos acercamos o no a la salida, regresar, devolver la palanca a su sitio, y repetir este proceso de uno en uno para el millón de palancas. Tardaríamos una eternidad.</p>
+              <p><strong>Modo Inverso (Retropropagación):</strong> Caminamos normalmente por el laberinto desde la entrada hasta el final anotando en una libreta de memoria dónde estuvimos (forward pass). Al llegar a la meta (la pérdida), emitimos una onda de sonido (el gradiente) que viaja hacia atrás por el camino exacto que recorrimos. A medida que el sonido rebota de regreso por cada intersección y pasillo en sentido inverso (backward pass), cada palanca calcula inmediatamente cuánto y hacia dónde debe moverse basándose en la vibración recibida. En un solo viaje de vuelta, todo el millón de palancas se ajusta simultáneamente de forma perfecta.</p>
+            </div>
+          </div>
+
+          <h3 class="subsection-title">Derivadas en Redes Recurrentes: BPTT vs. RTRL</h3>
+
+          <p>En arquitecturas secuenciales y recurrentes, el flujo de gradientes a través de pasos temporales se calcula bajo dos formalizaciones alternativas:</p>
+
+          <div class="concept-card">
+            <div class="concept-card-label">📐 BPTT — Retropropagación a Través del Tiempo</div>
+            <p>Despliega la red recurrente a lo largo de la secuencia temporal, tratándola como una red neuronal multicapa profunda donde cada paso temporal representa una capa virtual con parámetros compartidos. BPTT calcula los gradientes acumulando las derivadas a lo largo de toda la secuencia desplegada. El almacenamiento de todos los estados ocultos históricos para el paso inverso genera un coste de memoria $O(T)$ que limita la escalabilidad en secuencias muy largas, además de exponer al optimizador a problemas de desvanecimiento o explosión del gradiente.</p>
+          </div>
+
+          <div class="concept-card">
+            <div class="concept-card-label">📐 RTRL — Aprendizaje Recurrente en Tiempo Real</div>
+            <p>Computa de manera simultánea hacia adelante el jacobiano del estado oculto actual respecto a los parámetros de la red en cada paso de tiempo $t$. RTRL elimina la necesidad de almacenar la secuencia histórica en memoria, facilitando el aprendizaje continuo en tiempo real, pero incurre en una alta complejidad computacional y de memoria por paso temporal de $O(n^4)$ (donde $n$ es la dimensión del estado oculto), lo que lo vuelve impracticable para modelos de gran escala.</p>
+          </div>
+
+          <div class="example-block">
+            <div class="example-block-header">💡 Ejemplo Ilustrativo: Traducir y Corregir un Libro Entero</div>
+            <div class="example-block-body">
+              <p><strong>Retropropagación a través del tiempo (BPTT):</strong> Un traductor lee secuencialmente todo el capítulo de un libro (digamos, 50 páginas) palabra por palabra, escribiendo su traducción preliminar y guardando en su memoria de trabajo el contexto exacto de cada frase. Al llegar al final de la última página del capítulo, nota que cometió un error grave de concordancia al final de la historia debido a una palabra mal interpretada en la página 3. El traductor debe reabrir el libro y, de atrás hacia adelante (página 50 a página 1), ir ajustando mentalmente cómo corregir los verbos y adjetivos en cada página para adaptarlos de regreso. Requiere mantener todas las páginas y la traducción en su memoria simultáneamente, lo cual colapsa la mente si el libro es extremadamente largo.</p>
+              <p><strong>Aprendizaje Recurrente en Tiempo Real (RTRL):</strong> El traductor va traduciendo palabra por palabra. Pero en lugar de esperar al final del capítulo para corregir, lleva consigo una gigantesca libreta auxiliar donde, en cada palabra que escribe, recalcula de forma hiper-detallada cómo esa palabra exacta afecta a todas las combinaciones posibles de palabras futuras y pasadas del idioma. No necesita recordar la historia completa al final porque la corrección se realiza de forma instantánea a cada milisegundo, pero el esfuerzo matemático y mental de llevar esa libreta auxiliar con trillones de combinaciones en tiempo real por cada palabra escrita es tan monstruoso que su cerebro colapsa por fatiga de cómputo inmediata.</p>
+            </div>
+          </div>
+
+          <h3 class="subsection-title">Paradigmas de Optimización: Orden Cero, Primero y Segundo</h3>
+
+          <p>Los algoritmos de optimización se clasifican de acuerdo con el orden de las derivadas de la función de pérdida que utilizan para determinar el paso de actualización:</p>
+
+          <h4>1. Métodos de Primer Orden</h4>
+          <p>Utilizan únicamente información del vector de gradientes de primer orden $\nabla L(\theta)$ (por ejemplo, SGD, Adam). Ofrecen un coste computacional $O(n)$ extremadamente bajo por iteración, lo que permite su escalabilidad a miles de millones de parámetros, aunque carecen de información sobre la curvatura local.</p>
+
+          <h4>2. Métodos de Segundo y Alto Orden</h4>
+          <p>Incorporan información de la matriz Hessiana $H \in \mathbb{R}^{n \times n}$ de segundas derivadas parciales o aproximaciones de precondicionamiento (por ejemplo, el método de Newton). Permiten dar pasos extremadamente precisos y converger en pocas iteraciones en entornos no convexos y con alta anisotropía (donde la pérdida presenta valles estrechos y planos). Sin embargo, calcular y almacenar la matriz Hessiana exacta tiene un coste computacional de $O(n^3)$ y un coste espacial de $O(n^2)$, lo que limita su uso práctico en deep learning a gran escala.</p>
+
+          <h4>3. Métodos de Orden Cero (Zeroth-Order, ZO)</h4>
+          <p>Operan sin acceso directo a información de gradientes. Estiman la dirección del gradiente basándose únicamente en evaluaciones puntuales del valor de la función de pérdida $f(\theta)$ mediante perturbaciones aleatorias aplicadas sobre el vector de parámetros $\theta$.</p>
+
+          <div class="concept-card">
+            <div class="concept-card-label">📐 Nelder-Mead (Simplex)</div>
+            <p>Mantiene un polígono de $n+1$ vértices en un espacio de dimensión $n$ y actualiza secuencialmente el peor vértice mediante transformaciones geométricas (reflexión, expansión, contracción). No obstante, Nelder-Mead escala deficientemente a problemas de alta dimensionalidad.</p>
+          </div>
+
+          <div class="concept-card">
+            <div class="concept-card-label">📐 SPSA — Simultaneous Perturbation Stochastic Approximation</div>
+            <p>Estima la dirección del gradiente completo utilizando únicamente dos evaluaciones de la función de pérdida, sin importar la dimensión $n$ de los parámetros. SPSA perturba todos los elementos de $\theta$ simultáneamente utilizando un vector aleatorio $\xi$ distribuido típicamente bajo una distribución de Rademacher:</p>
+          </div>
+
+          <div class="math-block">
+            $$g_{\text{SPSA}}(\theta) = \frac{f(\theta + c\xi) - f(\theta - c\xi)}{2c} \xi^{-1}$$
+          </div>
+
+          <div class="concept-card">
+            <div class="concept-card-label">📐 Perturbación de Pesos (WP, Weight Perturbation)</div>
+            <p>Añade ruido Gaussiano $\epsilon \sim \mathcal{N}(\vec{0}, \mathbf{I})$ sobre los parámetros del modelo, evalúa el cambio resultante en la pérdida y calcula de forma estocástica el gradiente implícito, simulando procesos biológicos.</p>
+          </div>
+
+          <div class="example-block">
+            <div class="example-block-header">💡 Ejemplo de Orden Cero (WP/SPSA): Afinar una Guitarra en la Oscuridad Total</div>
+            <div class="example-block-body">
+              <p><strong>Aproximación por Gradiente de Primer Orden:</strong> Eres un luthier experto con la luz encendida. Puedes ver las clavijas, medir matemáticamente con herramientas de precisión la tensión de cada cuerda (calcular el gradiente exacto $\nabla L$) y girar cada clavija la fracción exacta de milímetro requerida en la dirección correcta para alcanzar la nota ideal.</p>
+              <p><strong>Aproximación por Orden Cero (SPSA / Weight Perturbation):</strong> Estás en una habitación completamente a oscuras, no tienes herramientas de medición y no puedes ver las cuerdas de la guitarra. Lo único que puedes hacer es tocar un acorde completo para escuchar qué tan afinada suena la guitarra en su totalidad (evaluar la función de coste escalar $f(\theta)$). WP/SPSA funciona de la siguiente manera: das un ligero toque aleatorio a todas las clavijas simultáneamente (perturbación aleatoria $\xi$). Escuchas el nuevo acorde global. Si suena ligeramente mejor, asumes que esa perturbación conjunta fue correcta y ajustas ligeramente los tensores en esa dirección general. Si suena peor, giras en dirección opuesta. En solo dos toques de acordes, logras deducir cómo ajustar las seis cuerdas a la vez sin haber calculado el gradiente individual de ninguna de ellas.</p>
+            </div>
+          </div>
+
+          <h3 class="subsection-title">Implicaciones Biológicas y Neuromórficas de la Optimización ZO</h3>
+
+          <p>La retropropagación clásica (BP) requiere una simetría perfecta de pesos en los pasos directo e inverso y un almacenamiento masivo de activaciones analógicas precisas, características que resultan <strong>biológicamente implausibles</strong> para el cerebro humano.</p>
+
+          <p>La optimización de orden cero, basada en la interacción de <em>prospecciones estocásticas locales (probing)</em> y <em>señales de refuerzo globales (reinforcing)</em> (como la liberación de dopamina en el cerebro), proporciona una explicación matemáticamente coherente de cómo los sistemas neurales biológicos aprenden y se adaptan aprovechando el ruido intrínseco de los canales sinápticos como un recurso computacional para la exploración del espacio de búsqueda.</p>
+
+          <div class="concept-card insight">
+            <div class="concept-card-label">🧠 Hardware Neuromórfico</div>
+            <p>Este paradigma ZO estocástico es óptimo para el desarrollo de hardware neuromórfico de consumo ultrabajo. Estos dispositivos son intrínsecamente descentralizados, altamente paralelos y ruidosos por limitaciones físicas del silicio. Forzarlos a ejecutar los flujos de la retropropagación de errores es ineficiente y costoso; en su lugar, un esquema de aprendizaje de orden cero que aprovecha el ruido eléctrico del silicio para realizar perturbaciones de pesos a nivel de hardware permite obtener sistemas de inferencia y aprendizaje in-situ extremadamente eficientes en consumo de energía.</p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- MÓDULO 3: ALGORITMOS DE OPTIMIZACIÓN DE GRADIENTE -->
+      <!-- ============================== -->
+      <section id="modulo-3" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">03</span>
+          <h2 class="section-title">Algoritmos de Optimización de Gradiente</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <p>Los optimizadores basados en gradientes adaptan iterativamente los pesos $\theta$ del modelo reduciendo la función de pérdida $L(\theta)$. A continuación, se detalla la formulación matemática de los algoritmos más implementados en la IA generativa, analizando sus propiedades de convergencia y dinámica paramétrica, enriquecidos con analogías del mundo real.</p>
+
+          <!-- SGD -->
+          <h3 class="subsection-title">1. Stochastic Gradient Descent (SGD)</h3>
+
+          <p>El descenso del gradiente estocástico sustituye el cálculo costoso del gradiente sobre el dataset completo por una estimación insesgada calculada sobre un subconjunto aleatorio (minilote) $\mathcal{B}$:</p>
+
+          <div class="math-block">
+            $$\theta_{t+1} = \theta_t - \eta \cdot g_t(\theta_t)$$
+          </div>
+
+          <p>Donde $\eta$ es la tasa de aprendizaje y $g_t(\theta_t) = \frac{1}{|\mathcal{B}|} \sum_{i \in \mathcal{B}} \nabla_{\theta} \mathcal{L}(x_i; \theta_t)$. La estocasticidad intrínseca de SGD introduce un ruido de gradiente que ayuda al modelo a escapar de mínimos locales poco óptimos y puntos de silla, forzándolo a converger hacia mínimos más planos que mejoran la capacidad de generalización del modelo.</p>
+
+          <div class="example-block">
+            <div class="example-block-header">💡 Ejemplo de SGD: Descender una Montaña Ruidosa</div>
+            <div class="example-block-body">
+              <p>Imagina que estás en la cima de una montaña neblinosa y quieres descender al punto más bajo (mínimo global de pérdida). En lugar de analizar detalladamente toda la cordillera (cómputo del dataset completo), miras únicamente el pequeño círculo de tierra que pisan tus pies en ese segundo (el minilote $\mathcal{B}$) y das un paso rápido en la dirección donde el suelo se inclina hacia abajo. Tus pasos serán ruidosos y en zigzag, pero avanzarás extremadamente rápido y este pequeño desorden te ayudará a evitar quedar atrapado en pequeñas depresiones o charcos superficiales del terreno (mínimos locales).</p>
+            </div>
+          </div>
+
+          <!-- Momentum -->
+          <h3 class="subsection-title">2. SGD con Momentum</h3>
+
+          <p>Para amortiguar las oscilaciones de SGD en topologías con alta anisotropía (donde la curvatura de la superficie de pérdida es desigual en distintas direcciones, generando movimientos en zigzag), se introduce un término de "momento" o inercia que acumula la velocidad histórica de los gradientes mediante un promedio móvil exponencial:</p>
+
+          <div class="math-block">
+            $$v_t = \beta v_{t-1} + (1 - \beta) g_t(\theta_t)$$
+            $$\theta_{t+1} = \theta_t - \eta v_t$$
+          </div>
+
+          <p>Donde $\beta \in [0, 1)$ actúa como el coeficiente de fricción o decaimiento. Esta formulación acumula la aceleración en las direcciones de descenso consistente y cancela las componentes oscilatorias transversales ruidosas, estabilizando y acelerando de forma significativa el proceso de convergencia.</p>
+
+          <div class="example-block">
+            <div class="example-block-header">💡 Ejemplo de Momentum: La Bola de Nieve en la Colina</div>
+            <div class="example-block-body">
+              <p>Imagina una pesada bola de nieve rodando colina abajo. Si el terreno tiene pequeñas ondulaciones, grietas u obstáculos ruidosos a los lados, la inercia acumulada por la masa de la bola de nieve le permite ignorar esas pequeñas imperfecciones y continuar rodando en línea recta hacia abajo con gran fuerza. Si la bola se topa con un pequeño montículo de subida (un mínimo local no óptimo), su propio momento le da la velocidad necesaria para trepar ese bache y continuar descendiendo hacia el verdadero valle profundo.</p>
+            </div>
+          </div>
+
+          <!-- AdaGrad -->
+          <h3 class="subsection-title">3. AdaGrad (Adaptive Gradient Algorithm)</h3>
+
+          <p>AdaGrad implementa una tasa de aprendizaje adaptativa individualizada para cada parámetro de la red. El tamaño del paso se escala de manera inversa a la raíz cuadrada de la suma acumulada de los cuadrados de todos sus gradientes históricos:</p>
+
+          <div class="math-block">
+            $$G_t = G_{t-1} + g_t^2$$
+            $$\theta_{t+1} = \theta_t - \frac{\eta}{\sqrt{G_t} + \epsilon} \odot g_t$$
+          </div>
+
+          <p>Donde $G_t \in \mathbb{R}^n$ es un vector diagonal que almacena la suma de los gradientes al cuadrado, $\odot$ denota el producto de Hadamard y $\epsilon$ es un término de regularización para evitar divisiones por cero. AdaGrad permite dar pasos grandes en parámetros con gradientes históricamente escasos (ideal para características dispersas) y pasos pequeños en parámetros actualizados constantemente. Su limitación fundamental radica en que $G_t$ crece monótonamente en cada iteración, provocando que la tasa de aprendizaje disminuya de forma acumulativa hasta volverse infinitesimalmente pequeña, deteniendo de manera prematura la capacidad de aprendizaje de la red antes de converger.</p>
+
+          <div class="example-block">
+            <div class="example-block-header">💡 Ejemplo de AdaGrad: El Profesor de Repaso Adaptativo</div>
+            <div class="example-block-body">
+              <p>Imagina a un profesor que prepara a un alumno para un examen global de 10 materias. Al inicio, dedica el mismo tiempo de estudio a todas las materias. Con el tiempo, si nota que el alumno domina perfectamente la materia "A" y saca notas altas constantemente (gradientes históricos acumulados $G_t$ enormes), el profesor reduce drásticamente el tiempo asignado a "A". Por el contrario, para la materia "B", que casi nunca aparece en las sesiones y donde el alumno comete errores escasos pero profundos, el profesor le dedica un tiempo de repaso masivo. La limitación es que, a medida que pasan las semanas, el profesor acumula tanto cansancio global que reduce el tiempo de estudio de absolutamente todas las materias a valores casi nulos, dejando de enseñar al alumno antes de que termine el curso.</p>
+            </div>
+          </div>
+
+          <!-- RMSProp -->
+          <h3 class="subsection-title">4. RMSProp (Root Mean Squared Propagation)</h3>
+
+          <p>RMSProp soluciona el problema de la disminución monótona de la tasa de aprendizaje de AdaGrad sustituyendo la suma acumulativa de gradientes al cuadrado por un <strong>promedio móvil exponencial amortiguado en el tiempo</strong>:</p>
+
+          <div class="math-block">
+            $$v_t = \beta v_{t-1} + (1 - \beta) g_t^2$$
+            $$\theta_{t+1} = \theta_t - \frac{\eta}{\sqrt{v_t} + \epsilon} \odot g_t$$
+          </div>
+
+          <p>Donde $\beta$ es el factor de decaimiento (típicamente $0.9$). Al restringir la acumulación de gradientes al cuadrado a una ventana temporal exponencialmente ponderada, RMSProp evita que la tasa de aprendizaje colapse, permitiendo al optimizador continuar adaptando sus parámetros en fases avanzadas del entrenamiento.</p>
+
+          <div class="example-block">
+            <div class="example-block-header">💡 Ejemplo de RMSProp: El Profesor con Memoria de Corto Plazo</div>
+            <div class="example-block-body">
+              <p>El mismo profesor de repaso nota que su cansancio colapsa su enseñanza (limitación de AdaGrad). Para corregirlo, decide aplicar una ventana de memoria móvil exponencial: solo recordará el rendimiento del alumno en las últimas dos semanas (factor de decaimiento $\beta = 0.9$). Si el alumno cometió muchos errores en la materia "A" hace tres meses pero ahora la domina, el profesor no lo penaliza. Solo se enfoca en la varianza reciente de las notas, permitiendo mantener una tasa de enseñanza dinámica y saludable que nunca se colapsa a cero, logrando que el alumno continúe aprendiendo de forma indefinida.</p>
+            </div>
+          </div>
+
+          <!-- Adam -->
+          <h3 class="subsection-title">5. Adam (Adaptive Moment Estimation)</h3>
+
+          <p>Adam combina los principios de Momentum y RMSProp, computando promedios móviles exponenciales tanto de los gradientes de primer orden (estimación del primer momento o media móvil de la velocidad) como de los gradientes de segundo orden con signo (estimación del segundo momento o varianza no centrada):</p>
+
+          <div class="math-block">
+            $$m_t = \beta_1 m_{t-1} + (1 - \beta_1) g_t$$
+            $$v_t = \beta_2 v_{t-1} + (1 - \beta_2) g_t^2$$
+          </div>
+
+          <p>Debido a que $m_t$ y $v_t$ se inicializan típicamente como vectores de ceros, sufren un sesgo hacia el origen, especialmente durante las primeras iteraciones o cuando los coeficientes de decaimiento $\beta_1$ y $\beta_2$ son muy cercanos a $1$. Para neutralizar matemáticamente este sesgo, se realiza una <strong>corrección temporal de los momentos</strong>:</p>
+
+          <div class="math-block">
+            $$\hat{m}_t = \frac{m_t}{1 - \beta_1^t}, \quad \hat{v}_t = \frac{v_t}{1 - \beta_2^t}$$
+          </div>
+
+          <p>La regla de actualización de parámetros final de Adam se define como:</p>
+
+          <div class="math-block">
+            $$\theta_{t+1} = \theta_t - \frac{\eta}{\sqrt{\hat{v}_t} + \epsilon} \odot \hat{m}_t$$
+          </div>
+
+          <p>Los valores estándar de los hiperparámetros sugeridos en el diseño original son $\beta_1 = 0.9$, $\beta_2 = 0.999$, $\epsilon = 10^{-8}$.</p>
+
+          <div class="example-block">
+            <div class="example-block-header">💡 Ejemplo de Adam: El Esquiador Profesional</div>
+            <div class="example-block-body">
+              <p>Imagina a un esquiador profesional que desciende por una ladera de montaña sumamente compleja y cambiante. El esquiador utiliza dos estrategias integradas en tiempo real: primero, aprovecha el impulso y la inercia de su propio cuerpo para deslizarse con fluidez a través de pequeñas lomas y baches de nieve blanda sin perder el rumbo (Momentum / primer momento $m_t$). Segundo, analiza la rugosidad e inclinación de la nieve en las curvas cerradas y adapta dinámicamente la altura y presión de sus bastones para dar pasos cortos y estables en zonas heladas y resbaladizas, o pasos largos en zonas seguras (RMSProp / segundo momento $v_t$). La combinación de inercia y adaptación de paso convierte a Adam en el optimizador definitivo de la IA.</p>
+            </div>
+          </div>
+
+          <!-- AdamW -->
+          <h3 class="subsection-title">6. AdamW (Decoupled Weight Decay)</h3>
+
+          <p>En el entrenamiento de grandes modelos de lenguaje, la regularización es un factor crítico para evitar el sobreajuste. Clásicamente, la regularización $L_2$ se implementa añadiendo un término de penalización cuadrático a la función de pérdida. En optimizadores no adaptativos como SGD, esto es matemáticamente equivalente al <strong>decaimiento de pesos (weight decay)</strong>, donde en cada paso se resta una fracción del peso.</p>
+
+          <p>Sin embargo, se ha demostrado que al utilizar optimizadores adaptativos como Adam, esta equivalencia matemática se rompe. Si se aplica la regularización $L_2$ directamente sobre la pérdida en Adam, el término del decaimiento se integra en el cálculo de los momentos de gradiente adaptativos $m_t$ y $v_t$. Como consecuencia, los pesos que tienen gradientes con magnitudes históricamente grandes sufren una reducción desproporcionadamente menor que aquellos pesos con gradientes pequeños, distorsionando el efecto regularizador y degradando la capacidad de generalización del modelo.</p>
+
+          <p>AdamW soluciona esta inconsistencia <strong>desacoplando matemáticamente</strong> el decaimiento de pesos de las estimaciones adaptativas de gradiente. La formulación de actualización de AdamW se define como:</p>
+
+          <div class="math-block">
+            $$\theta_{t+1} = \theta_t - \eta \lambda \theta_t - \frac{\eta}{\sqrt{\hat{v}_t} + \epsilon} \odot \hat{m}_t$$
+          </div>
+
+          <p>Donde $\lambda$ es el coeficiente de weight decay. Al aplicar la penalización directamente sobre los pesos de forma separada al gradiente amortiguado por el segundo momento, AdamW preserva la homogeneidad de la regularización en todos los parámetros, lo que se traduce en entrenamientos estables y una generalización superior del modelo.</p>
+
+          <div class="example-block">
+            <div class="example-block-header">💡 Ejemplo de AdamW: El Corredor y la Mochila con Lastre</div>
+            <div class="example-block-body">
+              <p>Imagina un atleta de carreras que corre cargando una mochila con lastre de arena (los pesos de la red $\theta$). El atleta quiere ir aligerando su peso a un ritmo constante tirando puñados de arena de su mochila en cada tramo (decaimiento de pesos $\lambda$).</p>
+              <p><strong>Enfoque Adam con L2 Regularization (Malo):</strong> El corredor decide evaluar la rugosidad de la pista y adaptar la velocidad de sus piernas en base a cuánto pesa la arena en cada segundo. Como consecuencia, si en un tramo plano corre muy rápido y se esfuerza mucho (altos momentos de gradiente), su cerebro se confunde y tira muy poca arena de la mochila, mientras que en tramos difíciles donde camina lento (bajos gradientes) vacía toda la mochila de golpe. La regularización se vuelve caótica y desigual.</p>
+              <p><strong>Enfoque AdamW (Bueno/Desacoplado):</strong> El corredor separa por completo ambas tareas. Su cerebro planifica y adapta la velocidad de sus zancadas y el movimiento de sus pies basándose estrictamente en la inercia y la inclinación de la pista (Adam). Paralelamente, de manera mecánica e independiente, su mano va tirando una cantidad fija y preestablecida de arena de su mochila en cada paso del camino, sin importar la velocidad a la que corra (desacoplamiento). El descarte de lastre es homogéneo y el rendimiento es impecable.</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- MÓDULO 4: ARQUITECTURAS DE MODELOS Y ESPACIOS DE REPRESENTACIÓN -->
+      <!-- ============================== -->
+      <section id="modulo-4" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">04</span>
+          <h2 class="section-title">Arquitecturas de Modelos y Espacios de Representación</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <h3 class="subsection-title">Espacios Vectoriales, Embeddings, Tokenización y Vocabulario</h3>
+
+          <p>Para procesar lenguaje natural o información estructurada de manera computacional, los datos textuales deben ser convertidos en una secuencia de vectores continuos en un espacio de representación de alta dimensionalidad. Este proceso de transformación comprende tres etapas secuenciales fundamentales:</p>
+
+          <div class="concept-card highlight">
+            <div class="concept-card-label">⚡ 1. Tokenización</div>
+            <p>El texto de entrada se segmenta en unidades discretas denominadas tokens utilizando algoritmos que operan a nivel de palabras, subpalabras o caracteres. El conjunto completo de todos los tokens únicos predefinidos constituye el vocabulario del modelo, cuyo tamaño se denota por $V$.</p>
+          </div>
+
+          <div class="concept-card highlight">
+            <div class="concept-card-label">⚡ 2. Vectorización e Indexación</div>
+            <p>Cada token único del vocabulario se asocia de forma determinista con un índice entero en el rango $[1, V]$.</p>
+          </div>
+
+          <div class="concept-card highlight">
+            <div class="concept-card-label">⚡ 3. Proyección a Espacio Continuo (Embeddings)</div>
+            <p>Utilizando una matriz de pesos entrenable denominada matriz de embedding $E \in \mathbb{R}^{V \times d_{\text{model}}}$, cada token es proyectado hacia un vector continuo denso de dimensión $d_{\text{model}}$.</p>
+          </div>
+
+          <p>La magnitud y escala de los vocabularios y espacios vectoriales de los modelos modernos representan una enorme capacidad de representación matemática. Por ejemplo:</p>
+
+          <ul>
+            <li><strong>Llama 3 70B</strong> implementa un vocabulario de $V \approx 128{,}000$ tokens con una dimensión de embedding de $d_{\text{model}} = 8{,}192$ dimensiones.</li>
+            <li><strong>Gemma 3 27B</strong> emplea un vocabulario extendido de $V \approx 262{,}000$ tokens proyectados en un espacio vectorial de $d_{\text{model}} = 5{,}376$ dimensiones.</li>
+          </ul>
+
+          <p>La distancia geométrica y la alineación angular en estos espacios de embedding (medidas por métricas de similitud) codifican directamente la relación semántica entre los conceptos.</p>
+
+          <div class="example-block">
+            <div class="example-block-header">💡 Ejemplo de Tokenización y Embeddings: El Mapa Semántico Tridimensional</div>
+            <div class="example-block-body">
+              <p><strong>La Tokenización:</strong> Tomemos la palabra compleja "anticonstitucionalmente". En lugar de forzar al vocabulario $V$ a memorizar esta larguísima palabra completa (lo que requeriría un diccionario de billones de palabras imposibles de almacenar en VRAM), un tokenizador moderno de subpalabras la fragmenta en bloques con significado raíz: <code>["anti", "constitucional", "mente"]</code>.</p>
+              <p><strong>El Espacio de Embeddings:</strong> Cada uno de estos bloques se convierte en un vector denso (ej. una lista de 4,096 números flotantes) que representa una coordenada en una habitación gigante de 4,096 dimensiones. En esta habitación hiperdimensional, las palabras con significados o roles similares se ubican muy cerca geométricamente. Es famoso el ejemplo de álgebra espacial: si tomamos el vector continuo de la palabra "Rey", le restamos el vector de "Hombre" y le sumamos el de "Mujer", la coordenada resultante se ubica inmediatamente al lado de la coordenada de la palabra "Reina". Las relaciones del lenguaje se convierten en distancias de geometría pura.</p>
+            </div>
+          </div>
+
+          <h3 class="subsection-title">El Mecanismo de Autoatención Escalada (Scaled Dot-Product Attention)</h3>
+
+          <p>El componente central que define la arquitectura Transformer es el mecanismo de autoatención escalada. El propósito de la atención es mapear un conjunto de vectores de consulta con un conjunto de vectores clave y de valor para producir una salida enriquecida contextualmente, donde cada vector de salida es un promedio ponderado de los vectores de valor.</p>
+
+          <p>Dada una matriz de tokens de entrada $X \in \mathbb{R}^{N \times d_{\text{model}}}$, se aplican proyecciones lineales utilizando tres matrices de pesos entrenables $W_Q, W_K \in \mathbb{R}^{d_{\text{model}} \times d_k}$ y $W_V \in \mathbb{R}^{d_{\text{model}} \times d_v}$ para obtener las matrices de Consulta ($Q$), Clave ($K$) y Valor ($V$):</p>
+
+          <div class="math-block">
+            $$Q = XW_Q \in \mathbb{R}^{N \times d_k}, \quad K = XW_K \in \mathbb{R}^{N \times d_k}, \quad V = XW_V \in \mathbb{R}^{N \times d_v}$$
+          </div>
+
+          <p>La formulación matemática de la autoatención escalada por producto escalar se define de la siguiente manera:</p>
+
+          <div class="math-block">
+            $$\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$$
+          </div>
+
+          <h4>Derivación Matemática e Importancia del Factor de Escala $1/\sqrt{d_k}$</h4>
+
+          <p>El factor de escala $\frac{1}{\sqrt{d_k}}$ no es un hiperparámetro heurístico arbitrario, sino un <strong>regulador de la varianza del producto escalar</strong> en espacios de alta dimensionalidad.</p>
+
+          <p>Consideremos dos vectores individuales: un vector de consulta $q \in Q$ y un vector de clave $k \in K$, ambos de dimensión $d_k$. Si asumimos que los componentes individuales de $q$ y $k$ (denotados por $q_i$ y $k_i$) son variables aleatorias independientes e idénticamente distribuidas (i.i.d.) con media cero y varianza unitaria:</p>
+
+          <div class="math-block">
+            $$\mathbb{E}[q_i] = \mathbb{E}[k_i] = 0, \quad \text{Var}(q_i) = \text{Var}(k_i) = 1$$
+          </div>
+
+          <p>El producto de dos componentes individuales de la misma dimensión, $q_i k_i$, conserva una media nula, pero su varianza es:</p>
+
+          <div class="math-block">
+            $$\mathbb{E}[q_i k_i] = \mathbb{E}[q_i]\mathbb{E}[k_i] = 0$$
+            $$\text{Var}(q_i k_i) = \mathbb{E}[(q_i k_i)^2] - (\mathbb{E}[q_i k_i])^2 = \mathbb{E}[q_i^2]\mathbb{E}[k_i^2] = 1 \cdot 1 = 1$$
+          </div>
+
+          <p>El producto escalar de ambos vectores, $q \cdot k = \sum_{i=1}^{d_k} q_i k_i$, es la suma de $d_k$ variables aleatorias i.i.d. con varianza unitaria. Por las propiedades aditivas de la varianza de variables independientes:</p>
+
+          <div class="math-block">
+            $$\mathbb{E}[q \cdot k] = \sum_{i=1}^{d_k} \mathbb{E}[q_i k_i] = 0$$
+            $$\text{Var}(q \cdot k) = \sum_{i=1}^{d_k} \text{Var}(q_i k_i) = d_k$$
+          </div>
+
+          <p>Este resultado demuestra que la varianza del producto escalar escala de forma proporcional con la dimensión de los vectores. En dimensiones de embedding prácticas ($d_k = 128$ o $d_k = 512$), los productos escalares sin escalar alcanzan magnitudes numéricas muy elevadas.</p>
+
+          <p>Al aplicar la función no lineal softmax sobre estos valores con varianza no controlada, la distribución de probabilidad se extremiza y se satura. La softmax asigna casi toda la masa de probabilidad a un único token, convirtiendo la matriz de pesos en una representación binaria casi discreta. En la retropropagación, esta saturación empuja a la función softmax hacia sus regiones asintóticas, donde la derivada se aproxima a cero, provocando un <strong>desvanecimiento severo del gradiente (vanishing gradient)</strong>.</p>
+
+          <p>Al dividir por $\sqrt{d_k}$, se reduce la varianza de la entrada de la softmax de nuevo a un valor controlado de $1$:</p>
+
+          <div class="math-block">
+            $$\text{Var}\left(\frac{q \cdot k}{\sqrt{d_k}}\right) = \left(\frac{1}{\sqrt{d_k}}\right)^2 \text{Var}(q \cdot k) = \frac{1}{d_k} \cdot d_k = 1$$
+          </div>
+
+          <p>Esta normalización asegura que las puntuaciones de atención permanezcan en una escala donde la softmax conserva gradientes saludables, facilitando la convergencia estable y el aprendizaje de la red profunda.</p>
+
+          <div class="example-block">
+            <div class="example-block-header">💡 Ejemplo de la Autoatención: El Sistema de Búsqueda de una Biblioteca</div>
+            <div class="example-block-body">
+              <p><strong>La Analogía de Roles:</strong> Imagina que vas a una gran biblioteca a buscar información para escribir una tesis.</p>
+              <ul>
+                <li><strong>Query (Q — Consulta):</strong> Es tu pregunta o tema de interés en un papel (ej. "¿Cómo influye la luna en las mareas?").</li>
+                <li><strong>Keys (K — Claves):</strong> Son las etiquetas impresas en el lomo de todos los libros de la biblioteca que describen de qué trata cada volumen (ej. "Guía de Pesca", "Astronomía Básica", "Geografía Marítima").</li>
+                <li><strong>Values (V — Valores):</strong> Es el contenido real de las páginas de cada libro que vas a extraer para escribir tu documento.</li>
+              </ul>
+              <p><strong>El Cálculo de Similitud (Dot-Product):</strong> Comparas tu papel de Consulta ($Q$) contra el lomo de cada libro ($K$). El producto escalar es una puntuación matemática de qué tan bien encaja tu pregunta con cada etiqueta.</p>
+              <p><strong>La Importancia de Dividir por $\sqrt{d_k}$:</strong> Si las etiquetas de los lomos y tu pregunta tienen muchísimos temas detallados (alta dimensión $d_k$), al calcular la similitud directa, los números de coincidencia se vuelven colosales. Si aplicamos la Softmax directamente a esos números inflados, el sistema te fuerza a elegir de forma ciega y absoluta un único libro (ej. "Astronomía Básica" al 100%), dándole 0% de atención al libro "Geografía Marítima", que también tenía información vital. Peor aún, si te equivocas de libro, ya no puedes aprender de tu error (gradiente desvanecido). Al dividir por $\sqrt{d_k}$, controlas las puntuaciones de coincidencia, permitiendo que tu mente tome un 60% de información de "Astronomía Básica" y un 40% de "Geografía Marítima". El resultado final es una síntesis enriquecida y perfecta de ambos contenidos.</p>
+            </div>
+          </div>
+
+          <h3 class="subsection-title">Condicionamiento de Matrices: Número de Condición y Tokens Embebidos Condicionados</h3>
+
+          <p>La optimización de la autoatención también está regida por el <strong>Número de Condición (Condition Number)</strong> de sus matrices internas. El número de condición $\kappa(A)$ de una matriz de rango completo se define como el ratio entre su mayor valor singular $\sigma_1$ y su menor valor singular $\sigma_k$:</p>
+
+          <div class="math-block">
+            $$\kappa(A) = \frac{\sigma_1}{\sigma_k}$$
+          </div>
+
+          <p>Un elevado número de condición ($\kappa \gg 1$) denota un sistema mal condicionado, donde pequeños cambios en la entrada se traducen en variaciones caóticas y desproporcionadas en la salida. En redes neuronales, el mal condicionamiento de las capas de atención amplifica la inestabilidad de las derivadas parciales, ralentizando la velocidad de convergencia.</p>
+
+          <p>La técnica de <strong>Tokens Embebidos Condicionados (Conditioned Embedded Tokens)</strong> introduce una matriz de corrección estructurada $C$ calculada analíticamente que se añade aditivamente a la matriz de embeddings original $X$ antes de pasar a la primera capa de atención:</p>
+
+          <div class="math-block">
+            $$X_{\text{condicionado}} = X + C$$
+          </div>
+
+          <p>Esta perturbación selectiva se calcula a partir de la descomposición en valores singulares (SVD) de $X$ para corregir y modificar la distribución de sus valores singulares, forzando una reducción significativa de su número de condición $\kappa(X+C) < \kappa(X)$. Este mejor condicionamiento se propaga sistemáticamente a lo largo de las capas, estabilizando el flujo del gradiente.</p>
+
+          <div class="example-block">
+            <div class="example-block-header">💡 Ejemplo del Condicionamiento: El Timón Flojo de un Barco</div>
+            <div class="example-block-body">
+              <p><strong>Sistema Mal Condicionado (Elevado $\kappa$):</strong> Imagina que el timón de un barco está mal diseñado geométricamente (mal condicionado). Si giras el timón apenas un milímetro hacia la izquierda, el barco no gira casi nada; pero si lo giras un milímetro y medio, el barco da un viraje violento de 90 grados y arroja a toda la tripulación por la borda. Ajustar el rumbo del barco en estas condiciones (entrenar el modelo con gradientes) es una pesadilla de inestabilidad y accidentes constantes.</p>
+              <p><strong>Aplicar tokens condicionados ($X + C$):</strong> Añadir la matriz de corrección $C$ es equivalente a instalar un sistema hidráulico de contrapesos y amortiguadores en el timón. Ahora, la relación de giro es perfectamente lineal, estable y controlada. Cada milímetro de giro del timón se traduce en un cambio suave, predecible y proporcional en el rumbo del barco, permitiendo al capitán (el optimizador) llevar el barco de forma rápida, segura y sin oscilaciones caóticas directo a su destino (el mínimo de pérdida).</p>
+            </div>
+          </div>
+
+          <h3 class="subsection-title">Capacidad Representacional de Transformers y Complejidad de Comunicación</h3>
+
+          <h4>1. La Tarea de Promedio Disperso ($q$-Sparse Averaging)</h4>
+
+          <p>La tarea $q$-SA se define formalmente como la operación de promediar las partes de datos $z_j \in \mathbb{R}^{d'}$ especificadas por un conjunto de indexación $y_i$ de tamaño $q$ dentro de una secuencia:</p>
+
+          <div class="math-block">
+            $$q\text{-SA}(X)_i = \frac{1}{q} \sum_{j \in y_i} z_j$$
+          </div>
+
+          <p>Esta tarea demuestra que un único bloque de autoatención con embedding de dimensión $m$ puede aproximar óptimamente la tarea $q$-SA si y solo si cumple la relación de cota inferior $m \gtrsim q$. Por el contrario, para realizar el promedio disperso sin atención (mediante una red MLP tradicional), el ancho de la primera capa oculta debe crecer a escalas exponenciales de $\Omega(N^d)$, lo que subraya la superioridad del sesgo inductivo de la autoatención.</p>
+
+          <div class="example-block">
+            <div class="example-block-header">💡 Ejemplo de $q$-SA: La Mesa de Debate del Consejo</div>
+            <div class="example-block-body">
+              <p>Supongamos que hay una mesa redonda de debate con 100 expertos ($N=100$). Cada experto tiene un folleto con información técnica ($z_j$). El presidente le pide a cada experto "A" que lea y consolide el promedio de lo que opinan específicamente el experto #5, el #12 y el #83 (el conjunto $y_A$ con tamaño $q=3$).</p>
+              <p><strong>Con un bloque de atención:</strong> Cada experto proyecta su mirada (autoatención) únicamente hacia los tres expertos asignados, escucha sus valores y promedia su contenido de forma directa. Es una operación limpia, directa y que escala eficientemente.</p>
+              <p><strong>Con una red MLP clásica (Totalmente Conectada):</strong> Como la red MLP no puede enfocar su atención, para resolver el problema tendríamos que entrenar una gigantesca red neuronal que analice de forma combinatoria absolutamente todas las combinaciones posibles de tríos de personas de la sala. La cantidad de neuronas necesarias explotaría exponencialmente, colapsando el sistema.</p>
+            </div>
+          </div>
+
+          <h4>2. Diferenciación entre Emparejamientos Match2 y Match3</h4>
+
+          <p>Se contrastan teóricamente dos tareas secuenciales sobre un vocabulario de tamaño $M$: similaridad de pares (Match2) y similaridad de ternas (Match3):</p>
+
+          <div class="math-block">
+            $$\text{Match2}(X)_i = \mathbf{1}_{ \exists j \text{ s.t. } x_i + x_j = 0 \pmod M }$$
+            $$\text{Match3}(X)_i = \mathbf{1}_{ \exists j_1, j_2 \text{ s.t. } x_i + x_{j_1} + x_{j_2} = 0 \pmod M }$$
+          </div>
+
+          <p>Esta formulación establece una clara frontera de complejidad en la representación de la atención de los Transformers:</p>
+
+          <ul>
+            <li><strong>Match2</strong> es computable por una única capa de autoatención estándar con una dimensión de embedding de tan solo $m=3$. Esto se logra proyectando de forma lineal los queries y keys a representaciones trigonométricas sinusoidales.</li>
+            <li><strong>Match3</strong> es un problema intrínsecamente triple y <strong>no es representable</strong> por una sola capa de autoatención ordinaria (que es una operación estrictamente bilateral o de segundo orden). Ninguna capa única puede calcular Match3 a menos que su número de cabezales $H$ o dimensión de embedding $m$ crezcan polinomialmente con la secuencia $N$.</li>
+          </ul>
+
+          <div class="example-block">
+            <div class="example-block-header">💡 Ejemplo de Match2 vs Match3: El Baile de Máscaras</div>
+            <div class="example-block-body">
+              <p><strong>Match2 (Emparejamiento de Pares — Sencillo):</strong> Imagina que estás en un baile de máscaras donde cada persona tiene un número escrito en la frente. Tu objetivo es encontrar si hay otra persona en el salón cuya suma con tu número dé exactamente 100. Con una sola mirada a tu alrededor (una sola pasada de autoatención), tus ojos pueden comparar tu número con el de cada persona de forma bilateral. Si ves a alguien con el número complementario, se enciende una chispa de coincidencia. Es un emparejamiento directo uno-a-uno.</p>
+              <p><strong>Match3 (Emparejamiento de Ternas — Imposible en un solo paso):</strong> Ahora debes encontrar si hay otras dos personas en la sala cuyos números, sumados al tuyo, den exactamente 100. Si miras a tu alrededor en un solo paso (una sola capa de atención), tus ojos solo pueden comparar parejas (tú contra B, o tú contra C). No puedes procesar de un solo vistazo la relación trilateral de tres personas a la vez. Para resolverlo, necesitas que las personas hablen entre sí primero y formen parejas previas que anuncien su suma conjunta (ej. "¡Nosotros sumamos 70!"), para que en tu segundo vistazo puedas emparejar tu 30 con esa pareja consolidada. Esto requiere al menos dos capas de atención profunda.</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- MÓDULO 5: LA REVOLUCIÓN TRANSFORMER -->
+      <!-- ============================== -->
+      <section id="modulo-5" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">05</span>
+          <h2 class="section-title">La Revolución de la Arquitectura Transformer</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <h3 class="subsection-title">El Contexto Histórico y las Limitaciones de RNNs y LSTMs</h3>
+
+          <p>Antes de la irrupción de la arquitectura Transformer en el año 2017, el procesamiento de lenguaje natural y el modelado secuencial dependían de forma casi exclusiva de arquitecturas basadas en <strong>redes neuronales recurrentes (RNNs)</strong> y sus variantes avanzadas, como las redes de Memoria a Corto y Largo Plazo (LSTMs) o unidades recurrentes de compuerta (GRUs).</p>
+
+          <p>Las RNNs procesan la información de manera secuencial, token por token, de izquierda a derecha. Para calcular el estado oculto actual $h_t$ en el paso temporal $t$, el modelo requiere obligatoriamente dos entradas: el token actual de entrada $x_t$ y el estado oculto del paso anterior $h_{t-1}$. Esta dependencia estrictamente temporal introduce limitaciones críticas:</p>
+
+          <div class="concept-card highlight">
+            <div class="concept-card-label">⚠️ Imposibilidad de Paralelización</div>
+            <p>Dado que el cálculo del estado actual requiere que el estado anterior esté completamente finalizado, es imposible paralelizar el entrenamiento dentro de una misma secuencia de texto en el hardware moderno (GPUs). La GPU, diseñada con miles de núcleos de cálculo para realizar operaciones matemáticas masivas de forma simultánea, se ve obligada a operar secuencialmente paso por paso, dejando la mayor parte de su potencia de cómputo inactiva.</p>
+          </div>
+
+          <div class="concept-card highlight">
+            <div class="concept-card-label">⚠️ Olvido de Contexto a Largo Plazo</div>
+            <p>A pesar de que las compuertas de las LSTMs mitigan el desvanecimiento de gradientes, la información semántica debe comprimirse a través de un único canal secuencial dinámico. A medida que la distancia entre dos tokens aumenta en una secuencia larga (por ejemplo, relacionar el sujeto del inicio de una página con el pronombre al final de la misma), el gradiente semántico se diluye, provocando que el modelo "olvide" relaciones de contexto lejano críticas para la cohesión del texto.</p>
+          </div>
+
+          <h3 class="subsection-title">El Nacimiento del Transformer: "Attention Is All You Need" (2017)</h3>
+
+          <p>En el histórico paper publicado en NeurIPS 2017 titulado <em>"Attention Is All You Need"</em>, un equipo de investigadores de Google Brain y Google Research propuso una arquitectura radicalmente innovadora que prescindía por completo de las capas recurrentes y de las convoluciones, confiando el modelado de las dependencias globales y del lenguaje de forma exclusiva a los mecanismos de autoatención.</p>
+
+          <p>Al eliminar la dependencia secuencial, el Transformer permitió que toda la secuencia de texto de entrada se procesara de forma simultánea en un único paso de cálculo, desbloqueando una paralelización de hardware sin precedentes y permitiendo entrenar modelos en datasets de escala planetaria a una fracción de los costes y tiempos anteriores.</p>
+
+          <h4>1. Codificación Posicional (Positional Encoding)</h4>
+
+          <p>Debido a que el Transformer procesa todos los tokens de la secuencia al mismo tiempo en paralelo, el mecanismo de atención puro pierde la noción del orden de las palabras. Para inyectar la información sobre la posición relativa o absoluta de los tokens sin reintroducir la recurrencia secuencial, se añaden aditivamente vectores de codificación posicional sinusoidal:</p>
+
+          <div class="math-block">
+            $$PE_{(pos, 2i)} = \sin\left(\frac{pos}{10000^{2i/d_{\text{model}}}}\right)$$
+            $$PE_{(pos, 2i+1)} = \cos\left(\frac{pos}{10000^{2i/d_{\text{model}}}}\right)$$
+          </div>
+
+          <p>Donde $pos$ es la posición física del token en la secuencia e $i$ es el índice de la dimensión de embedding. Esta formulación permite que el modelo aprenda a extrapolar de forma natural a longitudes de secuencia más largas que las vistas en el entrenamiento, ya que para cualquier desfase fijo $k$, el vector de posición $PE_{pos+k}$ puede expresarse como una función de transformación lineal de $PE_{pos}$.</p>
+
+          <h4>2. Multi-Head Attention (Atención Multi-Cabeza)</h4>
+
+          <p>En lugar de computar una única función de atención gigante de dimensión completa, el Transformer proyecta linealmente las consultas, claves y valores $h$ veces en paralelo utilizando subespacios proyectados de baja dimensionalidad ($d_k = d_v = d_{\text{model}}/h$). En cada subespacio se ejecuta una función de autoatención de forma independiente. Las salidas de cada cabeza se concatenan y se proyectan de regreso mediante una matriz lineal $W^O$:</p>
+
+          <div class="math-block">
+            $$\text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, \dots, \text{head}_h)W^O$$
+            $$\text{where } \text{head}_i = \text{Attention}(QW_i^Q, KW_i^K, VW_i^V)$$
+          </div>
+
+          <p>Este diseño permite que el modelo atienda simultáneamente a información de diferentes subespacios de representación en diferentes posiciones de la secuencia. Mientras una cabeza de atención se enfoca en resolver la relación gramatical sujeto-verbo, otra cabeza puede enfocarse en la resolución de pronombres.</p>
+
+          <h4>3. Estructura de Capas del Encoder y el Decoder</h4>
+
+          <div class="concept-card">
+            <div class="concept-card-label">📐 Encoder (Codificador)</div>
+            <p>Compuesto por una pila de $N = 6$ capas idénticas. Cada capa tiene dos subcapas: una de atención multi-cabeza y una red de alimentación hacia adelante (FFN) aplicada de forma idéntica e independiente a cada posición. Se emplean conexiones residuales (skip connections) alrededor de cada subcapa, seguidas de normalización de capas (Layer Normalization).</p>
+          </div>
+
+          <div class="concept-card">
+            <div class="concept-card-label">📐 Decoder (Decodificador)</div>
+            <p>Compuesto también por una pila de $N = 6$ capas idénticas. Introduce una tercera subcapa: una atención multi-cabeza que opera sobre la salida final del bloque codificador (cross-attention), permitiendo al decodificador extraer información semántica del texto original. Adicionalmente, modifica la subcapa de autoatención inicial aplicando un enmascaramiento (Masked Attention) que pone a $-\infty$ los valores correspondientes a posiciones futuras antes de la softmax. Esto impide el flujo de información hacia atrás, preservando la propiedad autorregresiva estricta.</p>
+          </div>
+
+          <div class="example-block">
+            <div class="example-block-header">💡 Ejemplo Ilustrativo: Leer un Libro Completo</div>
+            <div class="example-block-body">
+              <p><strong>Aproximación Recurrente (LSTMs):</strong> Es como si leyeras un libro a través de una pequeña ranura que solo te deja ver una palabra a la vez. Lees una palabra, la memorizas en tu cabeza, deslizas la ranura a la siguiente palabra y recalculas tu comprensión actual. Al llegar a la página 50, tu mente está exhausta de retener todo en la memoria de trabajo y no recuerdas con precisión los detalles de la página 1. Además, estás obligado a leerlo de forma lineal y lenta.</p>
+              <p><strong>Aproximación Transformer (Paralela):</strong> Arrancas todas las páginas del libro y las despliegas sobre una gran mesa. Puedes examinar todo el libro a la vez con tu mirada. Para coordinar el orden de las palabras, cada palabra tiene pegada una pequeña etiqueta que dice en qué página y línea de la historia pertenece (Codificación Posicional). Adicionalmente, tienes a 8 lectores virtuales especializados (Cabezas de Atención) examinando la mesa al mismo tiempo: el lector #1 busca únicamente quién realiza cada acción, el lector #2 busca qué adjetivos describen los lugares, y el lector #3 se encarga de rastrear a quién se refieren los pronombres "él" o "ella". Toda la información se recopila y procesa de forma masiva en un solo segundo.</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- MÓDULO 6: EL FUNCIONAMIENTO DE UN LLM Y EL PARADIGMA GPT -->
+      <!-- ============================== -->
+      <section id="modulo-6" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">06</span>
+          <h2 class="section-title">El Funcionamiento de un LLM y el Paradigma GPT</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <h3 class="subsection-title">¿Cómo Funciona un LLM por Dentro? El Flujo de Inferencia Paso a Paso</h3>
+
+          <p>Un Gran Modelo de Lenguaje (LLM) es, en esencia, un enorme predictor probabilístico de la siguiente unidad de información lógica (token). El flujo completo que experimenta un prompt de usuario desde el momento en que se envía hasta que el modelo emite la respuesta final comprende las siguientes fases:</p>
+
+          <div class="flow-container">
+            <div class="mermaid">
+graph TD
+A[Prompt de Usuario] --> B(Tokenizacion)
+B --> C[Lista de Tokens]
+C --> D(Vectorizacion Embeddings)
+D --> E[Vectores Densos]
+E --> F(Suma de Posicion)
+F --> G[Vectores Enriquecidos]
+G --> H{Capas de Atencion Profunda}
+H --> I[Calculo Query Key Value]
+I --> J[Relaciones Contextuales]
+J --> K[Red Feed Forward]
+K --> L[Vector de Salida]
+L --> M(Proyeccion lineal a Vocabulario)
+M --> N[Logits del Vocabulario]
+N --> O(Softmax y Temperatura)
+O --> P[Distribucion de Probabilidades]
+P --> Q(Decodificacion)
+Q --> R[Siguiente Token Elegido]
+            </div>
+          </div>
+
+          <ol>
+            <li><strong>Tokenización e Indexación:</strong> El prompt "El perro corre" se fragmenta en tokens utilizando el diccionario del modelo, convirtiendo el texto en una lista de índices enteros: <code>[342, 8567, 1024]</code>.</li>
+            <li><strong>Mapeo de Embeddings y Posición:</strong> Estos índices recuperan sus correspondientes vectores densos de la matriz de embedding del modelo, y se les suma el vector de posición sinusoidal. La entrada resultante se empaqueta como la matriz inicial $H_0 \in \mathbb{R}^{N \times d_{\text{model}}}$.</li>
+            <li><strong>Procesamiento en Capas de Atención (Pila Profunda):</strong> La matriz $H_0$ viaja secuencialmente a través de una pila de decenas de capas de atención (por ejemplo, 80 capas idénticas en Llama 3 70B). En cada capa:
+              <ul>
+                <li>Se calculan las proyecciones $Q, K, V$.</li>
+                <li>Se calcula la autoatención, permitiendo que cada palabra capte y absorba la información de las demás palabras.</li>
+                <li>La salida pasa por una red Feed-Forward (FFN) con activaciones no lineales.</li>
+                <li>El resultado se envía a la siguiente capa mediante conexiones residuales.</li>
+              </ul>
+            </li>
+            <li><strong>Cálculo de Logits:</strong> El vector de salida del último token en la última capa del Transformer se proyecta al espacio completo del vocabulario de tamaño $V$ obteniendo puntuaciones brutas denominadas <em>logits</em>.</li>
+            <li><strong>Softmax e Inyección de Temperatura:</strong> Se aplica la función softmax sobre los logits para convertirlos en una distribución de probabilidad. Se introduce el hiperparámetro de Temperatura ($T$):
+              <div class="math-block">
+                $$\sigma(z_i)_t = \frac{\exp(z_i/T)}{\sum_j \exp(z_j/T)}$$
+              </div>
+              <p>Una temperatura baja ($T \to 0$) comprime la distribución hacia las palabras más probables (respuestas deterministas), mientras que una temperatura alta ($T > 1$) aplana la distribución, haciendo que palabras raras tengan más probabilidad de ser seleccionadas (respuestas creativas).</p>
+            </li>
+            <li><strong>Muestreo (Sampling):</strong> El motor de inferencia selecciona el siguiente token utilizando estrategias de muestreo (como Top-P, Top-K o búsqueda por haz) basado en la distribución de probabilidad resultante. El token elegido se convierte en texto legible y se reinyecta al prompt como parte de la entrada para el siguiente ciclo autorregresivo secuencial.</li>
+          </ol>
+
+          <h4 class="subsection-title" style="margin-top:2rem; margin-bottom:1rem; font-size:1.1rem; color:var(--accent-violet);">Simulador Interactivo: El Efecto de la Temperatura</h4>
+          <p>Prueba a ejecutar este fragmento de Python. Puedes editar el valor de la variable <code>temperature</code> (prueba con <code>0.1</code>, <code>1.0</code> y <code>2.0</code>) para ver cómo afecta a la distribución de probabilidades final de las palabras:</p>
+          
+<pre class="python-playground">
+import math
+
+# Puntuaciones brutas (logits) de 3 posibles palabras siguientes
+palabras = ["gato", "perro", "coche"]
+logits = [2.0, 1.5, -1.0]
+
+# Prueba a cambiar la Temperatura aquí (ej: 0.1, 1.0, 5.0)
+temperature = 1.0
+
+print(f"Temperatura actual: {temperature}")
+print("-" * 30)
+
+# Aplicar formula Softmax con Temperatura
+exp_values = [math.exp(logit / temperature) for logit in logits]
+suma_exp = sum(exp_values)
+probabilidades = [(exp_val / suma_exp) * 100 for exp_val in exp_values]
+
+for i, palabra in enumerate(palabras):
+    print(f"Probabilidad de '{palabra}': {probabilidades[i]:.2f}%")
+</pre>
+
+          <h3 class="subsection-title" style="margin-top: 3rem;">El Paradigma GPT (Generative Pretrained Transformer)</h3>
+
+          <p>La arquitectura Transformer se consolidó a nivel industrial gracias al paradigma de los modelos <strong>GPT</strong> (desarrollado por OpenAI), que se basa en un esquema de dos etapas de entrenamiento a gran escala para construir inteligencias artificiales de propósito general:</p>
+
+          <div class="concept-card highlight">
+            <div class="concept-card-label">⚡ 1. Preentrenamiento Autorregresivo No Supervisado (Pretraining)</div>
+            <p>El modelo con arquitectura únicamente decodificadora (decoder-only) se inicializa con parámetros aleatorios y se entrena de forma masiva sobre billones de palabras provenientes de todo el internet en abierto (Common Crawl, libros, código, Wikipedia). La tarea de entrenamiento es exclusivamente la predicción del siguiente token. Al no requerir etiquetas creadas por humanos, el escalado no tiene barreras humanas de costo. A través de resolver esta simple tarea billones de veces, el modelo aprende de forma implícita la sintaxis, las reglas gramaticales, los hechos históricos, el código de programación y conceptos abstractos profundos del mundo real, comprimiendo todo este aprendizaje en sus espacios de embedding internos.</p>
+          </div>
+
+          <div class="concept-card highlight">
+            <div class="concept-card-label">⚡ 2. Postentrenamiento (Alignment &amp; Fine-Tuning)</div>
+            <p>Aunque el modelo preentrenado (Base Model) es extremadamente sabio, es de poca utilidad práctica directa porque no sabe entablar un diálogo; simplemente actúa como un autocompletador predictivo de texto. Para alinearlo con las expectativas humanas, se aplican dos subetapas:</p>
+          </div>
+
+          <ul>
+            <li><strong>Ajuste Fino Supervisado (SFT, Supervised Fine-Tuning):</strong> Se entrena al modelo utilizando un conjunto de datos curado de alta calidad que contiene miles de ejemplos de interacciones en formato de diálogo "Pregunta-Respuesta" escritas por expertos humanos. El modelo aprende a comportarse como un asistente conversacional respetuoso y estructurado.</li>
+            <li><strong>Aprendizaje por Refuerzo a partir del Feedback Humano (RLHF):</strong> Se entrena un modelo de recompensa auxiliar que califica qué tan útil, segura y ética es una respuesta para un humano. Posteriormente, se utiliza un algoritmo de optimización de políticas por refuerzo (como PPO) para ajustar los pesos del modelo de lenguaje original de modo que maximice la recompensa, penalizando alucinaciones, respuestas tóxicas o instrucciones peligrosas.</li>
+          </ul>
+
+          <div class="example-block">
+            <div class="example-block-header">💡 Ejemplo Ilustrativo del Flujo LLM y GPT: El Escritor de Autocompletar Predictivo</div>
+            <div class="example-block-body">
+              <p><strong>El Preentrenamiento (La Escuela de Lectura Masiva):</strong> Es como si un niño leyera en silencio absolutamente todos los libros de la biblioteca mundial durante 5 años. Al final, el niño comprende perfectamente cómo se estructuran las frases y qué ideas suelen seguir a otras (ej. sabe que después de la frase "El cielo está..." lo más probable estadísticamente es que siga la palabra "azul"). Pero si le hablas, el niño solo continuará tu frase en lugar de responderte.</p>
+              <p><strong>El Postentrenamiento (La Escuela de Modales y Rol de Asistente):</strong> Llevamos a este niño sabio ante un tutor que le enseña modales. Le muestra ejemplos: "Cuando alguien te pregunte '¿Cuál es la capital de Francia?', no debes decir 'es un lugar hermoso donde...', debes responder 'La capital de Francia es París'". Luego, si el niño da respuestas groseras, recibe una pequeña llamada de atención (refuerzo negativo), y si da respuestas útiles y seguras, recibe una felicitación (refuerzo de dopamina / RLHF). El niño se convierte en un asistente de IA conversacional brillante, seguro y alineado.</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- MÓDULO 7: GROUNDING Y HARNESS -->
+      <!-- ============================== -->
+      <section id="modulo-7" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">07</span>
+          <h2 class="section-title">Pilares Operativos: Grounding y Harness</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <h3 class="subsection-title">Concepto de Grounding (Anclaje de la Información)</h3>
+
+          <p>El <strong>Grounding (Anclaje)</strong> es la metodología técnica mediante la cual se conectan las respuestas generadas por un modelo de lenguaje de gran escala con fuentes de información externas, estructuradas y verificables del mundo real para mitigar drásticamente el riesgo de alucinaciones.</p>
+
+          <p>Dado que los parámetros internos (pesos y sesgos) de un LLM se encuentran estáticos y congelados tras finalizar su etapa de entrenamiento, el modelo carece de acceso a información en tiempo real, datos corporativos privados o actualizaciones recientes. Cuando se le interroga sobre estos temas, su naturaleza probabilística y autorregresiva le obliga a generar una respuesta sintáctica e intuitivamente correcta pero factualmente errónea o inventada (<em>alucinación</em>).</p>
+
+          <p>El Grounding resuelve esta limitación estructurando un pipeline donde, antes de que el LLM empiece a generar texto, un módulo de recuperación interroga a una base de datos externa (como un motor de búsqueda web, un almacén de documentos locales o un grafo de conocimiento) para extraer hechos probados sobre la consulta. Estos hechos se inyectan dinámicamente en el prompt de entrada del modelo como un contexto de soporte de verdad absoluta. De este modo, se restringe matemáticamente el espacio de búsqueda latente del modelo, obligándolo a fundamentar y "anclar" su redacción únicamente en los documentos provistos, citando de manera explícita sus fuentes.</p>
+
+          <div class="example-block">
+            <div class="example-block-header">💡 Ejemplo de Grounding: El Examen de Medicina a Libro Abierto</div>
+            <div class="example-block-body">
+              <p><strong>Sin Grounding (Examen de Memoria Estricta):</strong> Le pides a un estudiante de medicina (el LLM de memoria estática) que te recete un medicamento muy específico para una enfermedad rara basándose en el último paper científico publicado hace apenas dos días. Como el estudiante terminó la universidad el año pasado (conocimiento congelado), no conoce el paper. Sin embargo, bajo la presión de tener que responder algo creíble, recuerda vagamente términos similares y redacta con perfecta ortografía y seguridad una receta médica inventada que podría ser letal (alucinación).</p>
+              <p><strong>Con Grounding (Examen a Libro Abierto):</strong> En lugar de forzarlo a responder de memoria, un asistente busca activamente en internet o en la biblioteca médica del hospital, extrae el paper científico publicado hace dos días y se lo pone sobre la mesa al estudiante. El estudiante lee el documento real y redacta la receta médica basándose de forma estricta y exclusiva en las directrices de ese paper, citando el párrafo exacto y la página de donde extrajo la dosis segura. El diagnóstico es factual, seguro y verificable.</p>
+            </div>
+          </div>
+
+          <h3 class="subsection-title">Concepto de Harness (Arnés de Evaluación)</h3>
+
+          <p>El <strong>Harness (Arnés de Evaluación)</strong>, comúnmente implementado mediante librerías estandarizadas de código abierto como el LM-Evaluation-Harness de EleutherAI, constituye el marco de infraestructura de software diseñado para medir, calificar y comparar de manera científica y reproducible las capacidades cognitivas, lingüísticas y lógicas de diferentes modelos de lenguaje de gran escala.</p>
+
+          <p>A medida que los modelos de lenguaje se vuelven más complejos, evaluarlos de forma manual mediante lectura directa de respuestas individuales es ineficiente, subjetivo y carece de validez estadística. Un arnés de evaluación automatiza este proceso ejecutando de manera sistemática una gigantesca batería de exámenes prediseñados y estandarizados sobre el modelo que abarcan diferentes disciplinas:</p>
+
+          <ul>
+            <li><strong>MMLU</strong> (Massive Multitask Language Understanding): Preguntas de opción múltiple desde la escuela primaria hasta medicina y derecho profesional.</li>
+            <li><strong>GSM8K</strong> (Grade School Math): Problemas matemáticos escolares de múltiples pasos que exigen razonamiento lógico en cadena.</li>
+            <li><strong>HellaSwag:</strong> Tareas de razonamiento de sentido común para completar oraciones de forma intuitiva.</li>
+            <li><strong>ARC</strong> (AI2 Reasoning Challenge): Preguntas de ciencia escolar avanzadas que requieren razonamiento complejo.</li>
+          </ul>
+
+          <p>El arnés gestiona de forma automática los prompts de entrada para cada test, lee las salidas de probabilidad del modelo (los logits), calcula las métricas estadísticas finales de acierto (Accuracy, F1, Perplexidad) y presenta una hoja de resultados estructurada. Esto permite decidir qué modelo es óptimo para una tarea sin sesgos subjetivos.</p>
+
+          <div class="example-block">
+            <div class="example-block-header">💡 Ejemplo de Harness: El Examen de Admisión Universitaria (SAT) Estandarizado</div>
+            <div class="example-block-body">
+              <p><strong>Evaluación Subjetiva (Sin Harness):</strong> Dos creadores de modelos de lenguaje afirman que su modelo es el mejor. El creador "A" le hace 5 preguntas amigables sobre fútbol a su modelo y este responde de forma brillante, por lo que concluye que su IA es perfecta. El creador "B" le hace 5 preguntas de física cuántica complejas a su modelo y este falla en dos, concluyendo que su IA es deficiente. Es una comparación injusta y sin valor científico.</p>
+              <p><strong>Evaluación con Arnés (Harness):</strong> Sometemos a ambos modelos al examen SAT estandarizado nacional bajo condiciones idénticas (el arnés de evaluación). El arnés le presenta a ambos modelos exactamente las mismas 10,000 preguntas complejas de matemáticas, comprensión lectora, historia y lógica de manera simultánea. Al finalizar, el arnés recopila los resultados y emite una calificación objetiva: el Modelo A obtuvo un 88.5% de aciertos y el Modelo B un 82.3%. Ahora tenemos una métrica científica de comparación que garantiza la transparencia de rendimiento.</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- MÓDULO 8: INFERENCIA EFICIENTE EN LLMs -->
+      <!-- ============================== -->
+      <section id="modulo-8" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">08</span>
+          <h2 class="section-title">Inferencia Eficiente en LLMs</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <h3 class="subsection-title">Anatomía de la Latencia e Ineficiencias en Producción</h3>
+
+          <p>La inferencia de los grandes modelos de lenguaje en producción está regida por restricciones de latencia que se dividen en dos fases operativas diferenciadas:</p>
+
+          <div class="concept-card highlight">
+            <div class="concept-card-label">⚡ 1. Fase de Prefill (Lectura) — TTFT</div>
+            <p>El modelo procesa la secuencia de tokens de entrada (el prompt) en un único paso paralelizable en la GPU. Esta fase tiene un alto coste computacional y está limitada por la potencia de cálculo bruta de la GPU (FLOP-bound). La métrica de rendimiento es el <strong>Tiempo hasta el Primer Token (TTFT, Time-to-First-Token)</strong>, que mide el retraso antes de recibir la primera palabra de salida.</p>
+          </div>
+
+          <div class="example-block">
+            <div class="example-block-header">💡 Ejemplo de TTFT (Prefill)</div>
+            <div class="example-block-body">
+              <p>Imagina que le entregas una propuesta de contrato de 10 páginas a un abogado de lectura veloz y le pides que te diga de inmediato si el contrato es aceptable o no. El abogado debe sentarse a leer de un solo vistazo todo el documento a gran velocidad para procesar el contexto global. El tiempo que le toma al abogado leer el contrato por primera vez antes de abrir la boca para dar su veredicto inicial es el TTFT. Si el documento es muy largo, tardará más tiempo en preprocesarlo (prefill).</p>
+            </div>
+          </div>
+
+          <div class="concept-card highlight">
+            <div class="concept-card-label">⚡ 2. Fase de Decodificación (Escritura) — ITL</div>
+            <p>El modelo genera la respuesta de forma secuencial y autorregresiva, token por token. Para generar un solo token, la GPU debe cargar en memoria local todos los parámetros del modelo desde la VRAM. Como resultado, esta fase está limitada por el ancho de banda de la memoria del hardware (Memory-Bandwidth-bound). La métrica es la <strong>Latencia Inter-Token (ITL, Inter-Token Latency)</strong>.</p>
+          </div>
+
+          <div class="example-block">
+            <div class="example-block-header">💡 Ejemplo de ITL (Decode)</div>
+            <div class="example-block-body">
+              <p>Una vez que el abogado ha comprendido el contrato, empieza a redactar su respuesta dictándola en voz alta palabra por palabra. No puede dictar la palabra #10 sin haber dictado antes la #9. El tiempo transcurrido entre cada palabra dictada secuencialmente representa la ITL. En este paso, el cerebro del abogado procesa la información de forma lineal, estando limitado por la velocidad a la que puede escribir en papel (ancho de banda de memoria) en lugar de su inteligencia pura.</p>
+            </div>
+          </div>
+
+          <h3 class="subsection-title">Optimizaciones del KV Cache</h3>
+
+          <p>Para evitar recalcular redundantemente las proyecciones de Clave y Valor de los tokens procesados anteriormente en cada paso de la decodificación, se almacenan los estados de atención mediante la técnica de <strong>KV Caching</strong>. Sin embargo, el almacenamiento de este caché escala linealmente con la longitud de la secuencia, consumiendo masivamente la VRAM de la GPU.</p>
+
+          <h4>1. Caching de Prefijos (RadixAttention)</h4>
+
+          <p>Asigna memoria de forma dinámica utilizando una estructura de datos de árbol (Radix Tree) sobre el servidor de inferencia para almacenar y reutilizar los estados de atención de los prompts del sistema y plantillas estáticas repetidas entre múltiples usuarios.</p>
+
+          <div class="example-block">
+            <div class="example-block-header">💡 Ejemplo de RadixAttention: El Cajón de Arena Compartido</div>
+            <div class="example-block-body">
+              <p>Imagina que eres un profesor de dibujo infantil. En cada clase, todos los niños deben comenzar dibujando obligatoriamente el mismo fondo del paisaje: una montaña, un sol y un río, lo que les toma 15 minutos de esfuerzo inicial (el cálculo de prefill de la plantilla del prompt). Para optimizar el tiempo, el profesor dibuja previamente el paisaje de fondo en una plantilla de papel de calco y le da una copia a cada niño al ingresar al aula. Los niños colocan la plantilla bajo su hoja de dibujo y empiezan a dibujar de inmediato sus propios detalles sin perder los 15 minutos iniciales. El tiempo de inicio (TTFT) se desploma a cero.</p>
+            </div>
+          </div>
+
+          <h4>2. Técnicas de Poda del KV Cache (Eviction)</h4>
+
+          <p>Eliminan activamente del caché los tokens con menor impacto sobre la atención del modelo durante la decodificación, limitando el tamaño máximo de almacenamiento a una ventana fija. Las principales técnicas incluyen:</p>
+
+          <ul>
+            <li><strong>H2O (Heavy-Hitter Oracle):</strong> Demuestra que una pequeña fracción de tokens ("heavy hitters") acumulan la mayor parte de la masa de probabilidad de la atención global. H2O mantiene estos tokens clave de forma permanente y desborda dinámicamente los de menor puntuación.</li>
+            <li><strong>Keyformer:</strong> Selecciona y preserva los tokens de importancia estructural y gramatical basándose en métricas de proximidad.</li>
+            <li><strong>SnapKV y Ada-KV:</strong> Analizan en tiempo real los patrones de las cabezas de atención para definir de manera adaptativa el presupuesto de memoria de cada capa.</li>
+          </ul>
+
+          <div class="example-block">
+            <div class="example-block-header">💡 Ejemplo de Poda (Eviction): El Archivo de la Oficina</div>
+            <div class="example-block-body">
+              <p>Trabajas en una oficina donde tu escritorio está colmado de papeles de trabajo. Tu escritorio es pequeño (la VRAM disponible).</p>
+              <p><strong>Poda por ventana fija (FIFO):</strong> Mantienes sobre la mesa únicamente los últimos 5 folletos que te llegaron, tirando a la basura los anteriores sin importar su contenido. Si tiraste un contrato clave de hace tres semanas, tendrás un grave problema de olvido semántico.</p>
+              <p><strong>Aproximación H2O (Heavy-Hitters):</strong> Analizas tu trabajo y descubres que hay 3 documentos críticos que consultas constantemente (ej. las directrices de la empresa, el presupuesto anual y la lista de contactos principales). Estos documentos "Heavy Hitters" los dejas fijados de forma permanente en tu escritorio. De los papeles restantes, solo dejas los últimos 2 que te llegaron, tirando a la basura los de menor relevancia del centro. Tu mesa está impecable, no se desborda y nunca olvidas lo más importante.</p>
+            </div>
+          </div>
+
+          <h4>3. Cuantización Adaptativa del KV Cache</h4>
+
+          <p>Reduce los requisitos de bits para codificar los valores numéricos del caché. Técnicas avanzadas como <strong>"Don't Waste Bits!"</strong> implementan una cuantización adaptativa a nivel de token. Un micro-controlador de red neuronal de tres capas (MLP con dimensión oculta de $128$) predice dinámicamente la importancia relativa de cada token individual, asignando una clase de precisión variable del conjunto $\mathcal{B} = \{\text{2-bit, 4-bit, 8-bit, FP16}\}$. Así, los tokens con menor relevancia semántica se comprimen agresivamente a precisiones ultra-bajas de $2$ o $4$ bits, mientras que aquellos tokens críticos se resguardan en precisión de $8$ bits o FP16.</p>
+
+          <div class="example-block">
+            <div class="example-block-header">💡 Ejemplo de Don't Waste Bits!: El Grabador de Mensajes de Voz</div>
+            <div class="example-block-body">
+              <p><strong>Cuantización Estática (Mala):</strong> Grabas toda la nota de voz comprimiendo severamente el audio a una tasa de bits ultra-baja. Todo el mensaje se escucha ruidoso, distorsionado y metálico, y tu amigo no entiende los datos críticos de la dirección ni las cifras.</p>
+              <p><strong>Enfoque Don't Waste Bits! (Adaptativo):</strong> El móvil tiene un pequeño detector inteligente que analiza lo que hablas en tiempo real. Cuando estás en silencio, haces pausas o repites palabras comunes como "este...", "bueno...", reduce la calidad de grabación al mínimo de 2 bits para no desperdiciar memoria. Pero cuando empiezas a dictar la dirección exacta o cifras numéricas cruciales, el grabador activa de inmediato la máxima calidad de alta fidelidad (16 bits) para asegurar que no se pierda ningún detalle auditivo. El archivo resultante es sumamente ligero pero conserva un entendimiento perfecto de los datos esenciales.</p>
+            </div>
+          </div>
+
+          <h3 class="subsection-title">Decodificación Especulativa (Speculative Decoding)</h3>
+
+          <p>La decodificación especulativa es una técnica de optimización diseñada para mitigar el cuello de botella del ancho de banda de memoria de la fase de decodificación, acelerando la ITL sin alterar la distribución de probabilidad del modelo original.</p>
+
+          <p>El sistema se compone de dos modelos de lenguaje:</p>
+
+          <ul>
+            <li><strong>Modelo Borrador (Draft Model):</strong> Una red neuronal pequeña y optimizada (ej. Llama 3 8B), cuyo coste de inferencia es ínfimo.</li>
+            <li><strong>Modelo Objetivo (Target Model):</strong> El modelo principal de gran escala (ej. Llama 3 70B), cuyos recursos de VRAM son costosos.</li>
+          </ul>
+
+          <p>El flujo de trabajo opera así:</p>
+
+          <ol>
+            <li><strong>Generación Especulativa:</strong> El modelo borrador genera rápidamente una secuencia de $K$ tokens candidatos (típicamente $K \in [4, 6]$).</li>
+            <li><strong>Verificación Paralela:</strong> El modelo objetivo evalúa los $K$ tokens propuestos de manera simultánea en un único paso de cómputo (prefill).</li>
+            <li><strong>Filtro de Aceptación:</strong> Se comparan las distribuciones de probabilidad de ambos modelos para cada posición usando muestreo de rechazo. El sistema acepta los tokens hasta encontrar el primer token que viole el umbral de aceptación del modelo objetivo.</li>
+          </ol>
+
+          <div class="example-block">
+            <div class="example-block-header">💡 Ejemplo de Decodificación Especulativa: El Redactor Junior y el Editor Jefe</div>
+            <div class="example-block-body">
+              <p><strong>Aproximación Tradicional (Lenta):</strong> Tienes a un brillante Editor Jefe de un periódico (el Modelo Objetivo de 70B) que escribe de manera lenta y analítica cada palabra, sopesando minuciosamente cada término. Le toma 10 minutos formular cada frase de 5 palabras.</p>
+              <p><strong>Decodificación Especulativa:</strong> Contratas a un pasante junior de redacción rápido y entusiasta (el Modelo Borrador de 8B). El pasante redacta rápidamente una frase de 5 palabras tentativas (ej. "El proyecto de ley fue aprobado por la mayoría"). El Editor Jefe lee las 5 palabras completas de un solo vistazo (verificación paralela). Su cerebro analiza la frase: "El (correcto), proyecto (correcto), de (correcto), ley (correcto), fue (correcto), aprobado (espera, aquí prefiero 'rechazado')". El Editor tacha "aprobado", escribe "rechazado", desecha el resto y le pide al pasante que redacte la siguiente frase a partir de ahí. En un solo segundo, el Editor logró avanzar 5 palabras de las cuales aceptó 4 y corrigió una, multiplicando su velocidad por tres sin comprometer la calidad editorial final.</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- MÓDULO 9: RAG Y GRAPHRAG -->
+      <!-- ============================== -->
+      <section id="modulo-9" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">09</span>
+          <h2 class="section-title">Recuperación de Información Avanzada (RAG y GraphRAG)</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <h3 class="subsection-title">RAG Semántico Clásico vs. GraphRAG Jerárquico</h3>
+
+          <p>Los sistemas de <strong>Generación Aumentada por Recuperación (RAG)</strong> integran fuentes de datos externas no contenidas en el espacio paramétrico del modelo de lenguaje para mitigar las alucinaciones y proveer respuestas verificables.</p>
+
+          <h4>1. RAG Semántico Clásico</h4>
+
+          <p>Opera fragmentando los documentos de origen en segmentos de texto estáticos (chunks) de tamaño uniforme (ej. $500$ o $1000$ tokens con solapamiento del $10\%$). Cada chunk es proyectado a un vector denso mediante un modelo de embedding y almacenado en una base de datos vectorial. Cuando el usuario realiza una consulta, esta se vectoriza y se efectúa una búsqueda de vecinos más cercanos (K-NN) para recuperar los $K$ chunks con mayor similitud geométrica.</p>
+
+          <div class="concept-card">
+            <div class="concept-card-label">⚠️ Limitaciones del RAG Clásico</div>
+            <p>Sufre de una severa falta de contexto global. Al basarse exclusivamente en la similitud geométrica local, es incapaz de responder preguntas globales o transversales sobre el corpus completo, como "¿cuáles son los temas más repetidos en este conjunto de documentos?". La fragmentación arbitraria rompe la cohesión de las relaciones conceptuales complejas.</p>
+          </div>
+
+          <h4>2. GraphRAG Jerárquico</h4>
+
+          <p>Sustituye la fragmentación simplista por la construcción sistemática de un <strong>Grafo de Conocimiento</strong> estructurado a partir del corpus de texto. Mediante un LLM intermedio, se extraen las entidades clave (nodos) y las relaciones semánticas complejas (bordes), estructurando la información como tuplas lógicas de hechos.</p>
+
+          <p>Una vez construido el grafo global, se divide jerárquicamente en <strong>comunidades</strong> utilizando el <strong>algoritmo de Leiden</strong> para la detección de comunidades de modularidad maximizada. Para cada comunidad detectada, un LLM genera un <em>Resumen de Comunidad</em> sintético.</p>
+
+          <p>La ejecución de consultas se adapta al tipo de solicitud:</p>
+
+          <ul>
+            <li><strong>Búsqueda Local:</strong> Idónea para preguntas específicas sobre entidades bien definidas. El sistema busca las entidades en la consulta, recupera sus nodos y relaciones vecinos y alimenta el prompt del modelo.</li>
+            <li><strong>Búsqueda Global (QFS, Query-Focused Summarization):</strong> Óptima para preguntas exploratorias. El sistema busca en todos los resúmenes de comunidad pregenerados para consolidar las directrices temáticas del corpus, ofreciendo respuestas de alta cobertura consumiendo hasta un $97\%$ menos de tokens de prompt.</li>
+          </ul>
+
+          <div class="example-block">
+            <div class="example-block-header">💡 Ejemplo de RAG Clásico vs. GraphRAG: El Historial Clínico de un Paciente</div>
+            <div class="example-block-body">
+              <p><strong>Aproximación RAG Clásica (Hojas Sueltas):</strong> Tienes el historial clínico de un paciente fragmentado en 1,000 páginas de texto plano sueltas. Cada página se guarda en archivadores independientes basados en palabras clave (la base de datos vectorial).</p>
+              <ul>
+                <li><em>Pregunta de Datos Locales (Funciona bien):</em> Preguntas "¿Qué dosis de paracetamol recibió el paciente el 12 de marzo?". El RAG clásico busca "paracetamol" y "12 de marzo", extrae la página correcta y da la respuesta con gran velocidad.</li>
+                <li><em>Pregunta Global de Síntesis (Falla por completo):</em> Preguntas "¿Cuál es la tendencia general de evolución de la salud del paciente en los últimos 5 años?" El RAG clásico solo logra extraer 5 páginas sueltas de fechas aleatorias, perdiendo por completo el panorama completo y omitiendo datos vitales en las otras 995 páginas.</li>
+              </ul>
+              <p><strong>Aproximación GraphRAG Jerárquico:</strong> GraphRAG lee las 1,000 páginas y dibuja un mapa conceptual de relaciones (un Grafo de Conocimiento): conecta nodos como "Paciente" → [sufre_de] → "Hipertensión", "Medicamento X" → [trata_a] → "Hipertensión", etc. Luego agrupa el mapa en comunidades (ej. Comunidad de Cardiología, Comunidad de Alergias) y genera resúmenes consolidados de cada una.</p>
+              <p>Al hacer la misma pregunta compleja sobre los 5 años, el sistema consulta los resúmenes precalculados de las comunidades jerárquicas. Te responde de forma sintética, coherente e impecable que en cardiología el paciente mostró una mejoría constante gracias al Medicamento X, citando todos los hitos del grafo.</p>
+            </div>
+          </div>
+
+          <h3 class="subsection-title">Índices Vectoriales y Métricas de Distancia</h3>
+
+          <h4>Métricas de Distancia de Espacio Vectorial</h4>
+
+          <p>La similitud entre dos vectores $u, v \in \mathbb{R}^d$ se calcula bajo diferentes métricas geométricas:</p>
+
+          <div class="math-block">
+            $$d_{L_1}(u, v) = \sum_{i=1}^d |u_i - v_i| \quad \text{(Manhattan)}$$
+            $$d_{L_2}(u, v) = \sqrt{\sum_{i=1}^d (u_i - v_i)^2} \quad \text{(Euclídea)}$$
+            $$\langle u, v \rangle = \sum_{i=1}^d u_i v_i \quad \text{(Inner Product)}$$
+            $$S_{\text{Coseno}}(u, v) = \frac{u \cdot v}{\|u\| \|v\|} \quad \text{(Similitud de Coseno)}$$
+          </div>
+
+          <p>Cuando los vectores están normalizados a longitud unitaria, el producto interno es matemáticamente equivalente a la similitud de coseno.</p>
+
+          <h4>Tipos de Índices Vectoriales</h4>
+
+          <div class="concept-card">
+            <div class="concept-card-label">📐 1. Flat Index (Búsqueda Exhaustiva)</div>
+            <p>Almacena los vectores en memoria sin compresión. Realiza una búsqueda exhaustiva comparando el vector de consulta contra todos los elementos. Precisión de recuperación perfecta del 100%, pero coste temporal de $O(N)$.</p>
+          </div>
+
+          <div class="concept-card">
+            <div class="concept-card-label">📐 2. Inverted File Index (IVF)</div>
+            <p>Indexa los vectores usando clustering ($k$-means) para agrupar el espacio en $C$ clusters con centroides. La búsqueda se limita a los $P$ clusters más cercanos al vector de consulta. El parámetro <code>nprobe</code> controla este compromiso.</p>
+          </div>
+
+          <div class="concept-card highlight">
+            <div class="concept-card-label">⚡ 3. Hierarchical Navigable Small World (HNSW)</div>
+            <p>Estándar de la industria para búsquedas vectoriales rápidas. Estructura los vectores como nodos en un grafo multicapa navigable. La capa superior posee conexiones de largo alcance y pocos nodos. Las capas inferiores contienen más nodos y conexiones de corto alcance. Búsqueda en tiempo $O(\log N)$.</p>
+          </div>
+
+          <div class="concept-card">
+            <div class="concept-card-label">📐 4. Product Quantization (IVF-PQ)</div>
+            <p>Combina IVF con compresión de vectores. PQ divide cada vector de dimensión $d$ en $M$ subvectores de dimensión reducida $d/M$. Para cada subespacio, se ejecuta $k$-means para identificar centroides locales. El vector original se comprime como una secuencia de índices de centroides, reduciendo el consumo de memoria en más de un 90%.</p>
+          </div>
+
+          <div class="example-block">
+            <div class="example-block-header">💡 Ejemplo de Índices: Buscar una Ciudad en un Atlas del Mundo (HNSW)</div>
+            <div class="example-block-body">
+              <p><strong>Búsqueda Exhaustiva (Flat Index):</strong> Llegas a un atlas gigante que contiene una lista plana desordenada con las coordenadas de 10 millones de casas. Para encontrar una pastelería específica, revisas una por una las 10 millones de líneas de texto de forma lineal. Encontrarás la pastelería con exactitud perfecta del 100%, pero tardarás semanas.</p>
+              <p><strong>Búsqueda Jerárquica Multicapa (HNSW):</strong> El atlas está organizado de manera jerárquica por capas en un grafo:</p>
+              <ul>
+                <li><strong>Capa Superior (Nivel 3 — Planisferio Mundial):</strong> Solo contiene 5 puntos de control de gran alcance (ej. América del Norte, América del Sur, Europa, Asia, África). Tu consulta se ubica más cerca de "Europa". Saltas a ese nodo.</li>
+                <li><strong>Capa Intermedia (Nivel 2 — Mapa Político):</strong> Ahora el mapa muestra ciudades principales (ej. París, Madrid, Berlín). Tu consulta está más cerca de "Madrid". Saltas.</li>
+                <li><strong>Capa Inferior (Nivel 1 — Plano Callejero):</strong> Ahora tienes a la vista todas las esquinas y calles detalladas de Madrid. Haces un recorrido local rápido de apenas 3 pasos y encuentras la pastelería en milisegundos.</li>
+              </ul>
+              <p>El tiempo de búsqueda se reduce de semanas a fracciones de segundo de forma logarítmica.</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- MÓDULO 10: SISTEMAS Y FLUJOS AGENCIALES -->
+      <!-- ============================== -->
+      <section id="modulo-10" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">10</span>
+          <h2 class="section-title">Sistemas y Flujos Agenciales</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <h3 class="subsection-title">Patrones Arquitectónicos Agenciales</h3>
+
+          <p>Las arquitecturas de agentes mueven los límites de la IA desde la generación de texto estática hacia sistemas interactivos con voluntad propia que pueden orquestar herramientas para resolver tareas complejas de múltiples pasos.</p>
+
+          <h4>1. Direct LLM</h4>
+
+          <p>Consiste en realizar una llamada de inferencia clásica directa sobre el modelo de lenguaje. El modelo procesa el prompt del usuario y emite la respuesta en una única pasada de cálculo. Carece de capacidades de planeación interactiva, verificación de hechos externos u optimización iterativa.</p>
+
+          <h4>2. ReAct (Reasoning and Acting)</h4>
+
+          <p>Integra de forma cíclica e interactiva el razonamiento en lenguaje natural (chain of thought) con la toma de acciones o ejecuciones de herramientas externas. El agente estructura su razonamiento mediante el bucle elemental <strong>Thought-Action-Observation</strong>:</p>
+
+          <ul>
+            <li><strong>Thought (Pensamiento):</strong> El modelo verbaliza una reflexión paso a paso en lenguaje natural sobre su estado actual y la dirección óptima.</li>
+            <li><strong>Action (Acción):</strong> El modelo emite un formato estructurado de llamada a herramienta externa con sus argumentos.</li>
+            <li><strong>Observation (Observación):</strong> El entorno de ejecución intercepta la llamada, ejecuta la herramienta y reinyecta el resultado textual de vuelta al contexto del LLM.</li>
+          </ul>
+
+          <p>El modelo lee el nuevo contexto enriquecido y decide si repite el ciclo o emite la respuesta final. Este ciclo autocorrectivo previene la propagación de errores y reduce la alucinación.</p>
+
+          <div class="example-block">
+            <div class="example-block-header">💡 Ejemplo de ReAct: El Agente Organizador de Viajes</div>
+            <div class="example-block-body">
+              <p><em>Petición de Usuario:</em> "Reserva un vuelo de Madrid a París para mañana por la mañana que cueste menos de 100€".</p>
+              <p><strong>Thought:</strong> "El usuario quiere viajar a París mañana. Primero necesito buscar qué vuelos hay disponibles. Utilizaré la herramienta de búsqueda de vuelos."</p>
+              <p><strong>Action:</strong> <code>ejecutar_herramienta(búsqueda_vuelos, origen="Madrid", destino="París", fecha="2026-08-06")</code></p>
+              <p><strong>Observation:</strong> <code>[Vuelo RY104 a las 06:15 por 45€, Vuelo IB342 a las 08:30 por 180€]</code></p>
+              <p><strong>Thought:</strong> "La API ha devuelto dos vuelos. El vuelo de las 06:15 cuesta 45€, por debajo del presupuesto. El de las 08:30 se excede. Reservaré el vuelo de las 06:15."</p>
+              <p><strong>Action:</strong> <code>ejecutar_herramienta(reservar_asiento, id_vuelo="RY104", precio=45)</code></p>
+              <p><strong>Observation:</strong> <code>[Confirmado: Localizador de reserva XP43B2 para vuelo RY104]</code></p>
+              <p><strong>Thought:</strong> "He reservado el vuelo RY104 de forma exitosa por 45€. Tengo el localizador. Puedo dar la respuesta final."</p>
+              <p><strong>Final Answer:</strong> "¡Hecho! He reservado tu vuelo a París para mañana a las 06:15 por un precio de 45€. Tu localizador de reserva es XP43B2."</p>
+            </div>
+          </div>
+
+          <h4>3. Self-Refine</h4>
+
+          <p>Es un patrón agencial donde el modelo evalúa de forma asíncrona sus propios borradores de salida para mejorarlos iterativamente. El agente genera un borrador inicial, luego se llama a sí mismo bajo un prompt de crítica para detectar errores, y finalmente reescribe y refina el resultado integrando su propia retroalimentación.</p>
+
+          <div class="example-block">
+            <div class="example-block-header">💡 Ejemplo de Self-Refine: El Programador de Código de Base de Datos</div>
+            <div class="example-block-body">
+              <p><strong>Borrador 1:</strong> Le pides a la IA que cree una base de datos SQL para almacenar usuarios. Genera un código simple que crea la tabla, pero se le olvida añadir la clave primaria o indexación de contraseñas.</p>
+              <p><strong>Paso de Autocrítica (Self-Refine):</strong> El agente revisa su propio código bajo una rúbrica estricta: "¿Este código es seguro? ¿Tiene llaves primarias? ¿Cifra las contraseñas?". Se responde a sí mismo: "Fallo grave detectado: las contraseñas se guardan en texto plano y no hay llave primaria. Esto es inseguro".</p>
+              <p><strong>Refinamiento:</strong> El agente toma esa retroalimentación y vuelve a escribir el código, añadiendo <code>PRIMARY KEY</code> y encriptación de hash en las contraseñas. Entrega el resultado final pulido, robusto e impecable sin intervención humana.</p>
+            </div>
+          </div>
+
+          <h4>4. Reflexion</h4>
+
+          <p>Extiende Self-Refine introduciendo una estructura de <strong>Memoria a Corto y Largo Plazo</strong> que evalúa las trayectorias de acciones pasadas completas del agente. Si el agente falla en cumplir un objetivo, el módulo de autorreflexión analiza retrospectivamente el árbol de decisiones y extrae una lección de aprendizaje formal que se almacena en su memoria. En las siguientes ejecuciones similares, el agente consulta esta memoria de errores del pasado para reajustar su estrategia, emulando procesos metacognitivos humanos.</p>
+
+          <div class="example-block">
+            <div class="example-block-header">💡 Ejemplo de Reflexion: El Agente Autónomo en un Entorno de Red (CTF)</div>
+            <div class="example-block-body">
+              <p><strong>Primer Intento:</strong> Un agente autónomo tiene que conectarse a un servidor remoto de seguridad. En su primer intento, utiliza un escaneo agresivo muy ruidoso que activa las alertas del servidor y hace que bloqueen su IP (la tarea falla).</p>
+              <p><strong>Autorreflexión retrospectiva:</strong> El agente analiza el fracaso en su memoria de largo plazo: "La estrategia de escaneo agresivo activó el firewall. Lección de aprendizaje: para servidores con firewalls activos, debo utilizar escaneos sigilosos ralentizados en el tiempo".</p>
+              <p><strong>Segundo Intento (Éxito):</strong> Al ser asignado a un servidor similar al día siguiente, el agente lee su memoria de reflexión. Ajusta su estrategia y realiza un escaneo sigiloso, logrando entrar al servidor de forma exitosa y sin activar ninguna alerta. Ha aprendido de su propio historial de errores.</p>
+            </div>
+          </div>
+
+          <h3 class="subsection-title">Sistemas Multi-Agente, Orquestación y MCP</h3>
+
+          <p>Cuando la complejidad sobrepasa las capacidades de un único agente, se escalan los flujos hacia <strong>Sistemas Multi-Agente (MAS)</strong>. Las tareas complejas se dividen en subproblemas gestionados por agentes especializados.</p>
+
+          <div class="concept-card highlight">
+            <div class="concept-card-label">⚡ Orquestador-Trabajador (Orchestrator-Worker)</div>
+            <p>Un patrón multi-agente centralizado donde un Agente Orquestador central recibe la solicitud global del usuario, desglosa la tarea en un plan de acción formal y delega las subtareas a múltiples Agentes Trabajadores especializados, consolidando y unificando posteriormente sus resultados en un entregable final.</p>
+          </div>
+
+          <div class="example-block">
+            <div class="example-block-header">💡 Ejemplo de Orquestador-Trabajador: La Agencia de Desarrollo de Software</div>
+            <div class="example-block-body">
+              <p><em>La Petición Global:</em> Un cliente quiere desarrollar un videojuego web móvil interactivo completo.</p>
+              <ul>
+                <li><strong>El Agente Orquestador:</strong> Recibe la orden del cliente, analiza la viabilidad y define un plan de 3 subtareas.</li>
+                <li><strong>Agente Trabajador Diseñador:</strong> Recibe la orden de crear las hojas de estilo CSS y la interfaz visual. Genera el diseño visual estático de alta calidad.</li>
+                <li><strong>Agente Trabajador Programador:</strong> Recibe la orden de escribir la lógica del motor del juego en JavaScript.</li>
+                <li><strong>Agente Trabajador Escritor:</strong> Redacta los diálogos y la historia del juego.</li>
+              </ul>
+              <p><strong>Consolidación:</strong> El Orquestador recibe los fragmentos de cada trabajador, los ensambla en un único archivo HTML listo para jugar, ejecuta pruebas de depuración automáticas y entrega el juego funcional al cliente.</p>
+            </div>
+          </div>
+
+          <h4>Model Context Protocol (MCP)</h4>
+
+          <p>El <strong>Model Context Protocol (MCP)</strong> es un protocolo de comunicación unificado de código abierto, un estándar técnico cliente-servidor estructurado para facilitar la conexión bidireccional segura entre modelos de lenguaje generativos y sus entornos de desarrollo. MCP define interfaces estandarizadas para tres operaciones críticas:</p>
+
+          <ul>
+            <li><strong>Recursos (Resources):</strong> Acceso seguro y controlado a fuentes de datos estáticas o flujos dinámicos de información.</li>
+            <li><strong>Herramientas (Tools):</strong> Funciones o acciones que el modelo puede llamar de forma interactiva desde el entorno de ejecución.</li>
+            <li><strong>Prompts:</strong> Plantillas y directrices predefinidas expuestas de forma dinámica para estructurar el contexto del prompt.</li>
+          </ul>
+
+          <div class="example-block">
+            <div class="example-block-header">💡 Ejemplo de MCP: El Enchufe Eléctrico Universal de Viaje</div>
+            <div class="example-block-body">
+              <p><strong>El Problema del Acoplamiento Técnico (Sin MCP):</strong> Diseñas un secador de pelo (el agente de IA) con un enchufe de clavija triangular especial para el país "A". Si viajas al país "B" (un nuevo entorno con base de datos Postgres), el secador no entra. Tienes que contratar a un ingeniero para que le instale un enchufe diferente, perdiendo compatibilidad con el país A. Cada base de datos requeriría reprogramar por completo tu agente.</p>
+              <p><strong>La Solución MCP (Con MCP):</strong> MCP actúa como un estándar unificado de enchufe y toma de corriente universal. Tu agente tiene una clavija estandarizada compatible con MCP y cualquier base de datos o API ofrece una toma de corriente hembra estándar compatible con MCP. Llegas con tu agente, lo enchufas de inmediato a cualquier servidor que implemente el protocolo estándar, y el agente puede leer archivos, ejecutar comandos o interrogar datos en milisegundos sin necesidad de reescribir ni una sola línea de su software original.</p>
+            </div>
+          </div>
+
+          <h3 class="subsection-title">Humanos en el Bucle (Human-in-the-Loop) e Interfaces Agenciales</h3>
+
+          <p>A medida que los agentes asumen roles operacionales críticos, se estructuran interfaces de diseño que integran la supervisión humana y previenen fallos catastróficos:</p>
+
+          <div class="concept-card">
+            <div class="concept-card-label">📐 1. Humanos en el Bucle (HITL, Human-in-the-Loop)</div>
+            <p>Implementa interrupciones y compuertas de control formales en el flujo agencial (por ejemplo, interrupciones en LangGraph) donde el agente autónomo está obligado a detener su ejecución y solicitar la aprobación explícita de un supervisor humano antes de realizar una acción irreversible, como enviar correos electrónicos a clientes, ejecutar transacciones financieras de alto costo o modificar bases de datos de producción.</p>
+          </div>
+
+          <div class="concept-card">
+            <div class="concept-card-label">📐 2. Principio Poka-yoke y Agent-Computer Interface (ACI)</div>
+            <p>Aplica principios de ingeniería de herramientas para diseñar interfaces seguras de interacción entre el agente y el software del ordenador. Inspirado en el término industrial japonés <em>Poka-yoke</em> (mecanismo de prevención de errores a prueba de tontos), el diseño ACI restringe de forma estructural el espacio de acciones permitidas para el agente. En lugar de darle acceso de administrador absoluto al sistema operativo, se le entrega un conjunto acotado de herramientas seguras y auto-validadas que impiden de forma física que el agente cometa un error catastrófico.</p>
+          </div>
+
+          <div class="example-block">
+            <div class="example-block-header">💡 Ejemplo de HITL y Poka-yoke: El Cajero Automático del Banco</div>
+            <div class="example-block-body">
+              <p><strong>Poka-yoke (Diseño a prueba de fallos):</strong> Cuando insertas tu tarjeta bancaria en un cajero, la ranura física solo permite que la tarjeta entre en una orientación exacta y específica; si la intentas meter al revés o de lado, la ranura bloquea físicamente la entrada impidiendo que dañes la tarjeta o la máquina (mecanismo Poka-yoke). De igual forma, el software del cajero expone botones y campos numéricos limitados en pantalla en lugar de darte un teclado de consola de comandos.</p>
+              <p><strong>HITL (Human-in-the-Loop):</strong> Decides retirar una cantidad de dinero inusualmente grande (ej. 10,000€). El agente del cajero automático suspende la operación de inmediato, bloquea la salida y te pide que esperes un minuto mientras un supervisor humano de seguridad revisa las cámaras, confirma tu identidad facial, ingresa un código de autorización maestro y desbloquea manualmente la entrega del dinero. El sistema autónomo opera bajo el resguardo seguro de la supervisión humana.</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- CONCLUSIÓN -->
+      <!-- ============================== -->
+      <section id="conclusion" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">11</span>
+          <h2 class="section-title">Conclusión General y Perspectivas Futuras</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <div class="quote-block">
+            <p>El presente compendio técnico unifica los fundamentos teóricos con las consideraciones de ingeniería de software necesarias para desplegar sistemas avanzados de inteligencia artificial generativa.</p>
+          </div>
+
+          <p>Desde los principios algorítmicos probabilísticos hasta la orquestación distribuida multi-agente, la optimización paramétrica y la inferencia eficiente dictan el éxito y rentabilidad de los modelos en producción. Aquellas organizaciones que logren dominar e integrar estos pilares de forma unificada liderarán la construcción de la próxima generación de sistemas inteligentes autónomos.</p>
+
+          <div class="concept-card insight">
+            <div class="concept-card-label">🧠 Visión Integral</div>
+            <p>Este compendio ha recorrido un arco completo: desde los paradigmas computacionales fundamentales (Módulo 1), pasando por la mecánica matemática de la optimización de redes neuronales (Módulos 2–3), las representaciones vectoriales y el mecanismo de autoatención que revolucionó el campo (Módulos 4–5), el funcionamiento interno de los LLMs y su paradigma de entrenamiento (Módulo 6), los pilares operativos de Grounding y Harness (Módulo 7), las técnicas de inferencia eficiente (Módulo 8), la recuperación de información avanzada (Módulo 9), hasta los sistemas agenciales que representan la frontera actual de la autonomía artificial (Módulo 10). La convergencia de estos fundamentos constituye la base para construir, evaluar y desplegar los sistemas de IA generativa del futuro.</p>
+          </div>
+
+        </div>
+      </section>
+
+    </div><!-- /content-wrapper -->
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <p class="footer-text">
+        Curso IA Commercial — Cuaderno 03: Compendio Técnico de Inteligencia Artificial Generativa · 10 Módulos
+      </p>
+    </footer>
+  </main>
+
+  <!-- Back to Top -->
+  <button class="back-to-top" aria-label="Volver arriba">↑</button>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/search-data.js"></script>
+  <script src="../js/search.js"></script>
+  <script src="../js/highlighter.js"></script>
+  <!-- External Dependencies -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@9.4.3/dist/mermaid.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+  
+  <!-- Custom Scripts -->
+  <script src="../js/diagrams.js"></script>
+  <script src="../js/edit-mode.js"></script>
+  <script src="../js/playground.js"></script>
+  <script src="../js/glossary.js"></script>
+  <script src="../js/ai-tutor.js"></script>
+  <script src="../js/text-zoom.js"></script>
+</body>
+</html>

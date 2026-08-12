@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Transcripción completa de la entrevista a Pep Martorell en Arpa Talks. Definición de IA, Transformers, impacto productivo, geopolítica y futuro de la ciencia.">
+  <meta name="keywords" content="Fundamentos IA, Transformers, Geopolítica, Productividad, Ciencia">
+  <title>Cuaderno 01 — Pep Martorell: La Naturaleza de la IA | Curso IA Commercial</title>
+  <link rel="manifest" href="../manifest.json">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <nav class="top-nav">
+    <button class="menu-toggle" aria-label="Abrir menú">☰</button>
+    <a href="../index.html" class="nav-brand">
+      <div class="nav-brand-icon">IA</div>
+      <div class="nav-brand-text"><span>Curso IA</span> Commercial</div>
+    </a>
+    <div class="nav-links">
+      <a href="../index.html" class="nav-link">Cuadernos</a>
+      <a href="../muro.html" class="nav-link">Lienzo</a>
+      <a href="../recursos.html" class="nav-link">Recursos</a>
+      <a href="#" class="nav-link">Acerca de</a>
+    </div>
+  </nav>
+
+  <!-- Reading Progress -->
+  <div class="progress-bar">
+    <div class="progress-bar-fill"></div>
+  </div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Contenido del cuaderno</div>
+      <a href="#intro" class="sidebar-link active">
+        <span class="sidebar-link-number">00</span>
+        Introducción y presentación
+      </a>
+      <a href="#definicion" class="sidebar-link">
+        <span class="sidebar-link-number">01</span>
+        Definición y naturaleza de la IA
+      </a>
+      <a href="#interpolador" class="sidebar-link">
+        <span class="sidebar-link-number">02</span>
+        El superinterpolador estadístico
+      </a>
+      <a href="#determinismo" class="sidebar-link">
+        <span class="sidebar-link-number">03</span>
+        Determinismo vs. estocasticidad
+      </a>
+      <a href="#combinacion" class="sidebar-link">
+        <span class="sidebar-link-number">04</span>
+        Combinación humano-algoritmo
+      </a>
+      <a href="#software" class="sidebar-link">
+        <span class="sidebar-link-number">05</span>
+        IA como software y los tres pilares
+      </a>
+      <a href="#transformers" class="sidebar-link">
+        <span class="sidebar-link-number">06</span>
+        Transformers y la polisemia
+      </a>
+      <a href="#datos" class="sidebar-link">
+        <span class="sidebar-link-number">07</span>
+        Datos, Common Crawl y límites
+      </a>
+      <a href="#world-models" class="sidebar-link">
+        <span class="sidebar-link-number">08</span>
+        Modelos del mundo y datos sensoriales
+      </a>
+      <a href="#inteligencia" class="sidebar-link">
+        <span class="sidebar-link-number">09</span>
+        ¿Qué es la inteligencia?
+      </a>
+      <a href="#llm-material" class="sidebar-link">
+        <span class="sidebar-link-number">10</span>
+        Materialidad de un LLM
+      </a>
+      <a href="#tres-vectores" class="sidebar-link">
+        <span class="sidebar-link-number">11</span>
+        Los tres vectores de impacto
+      </a>
+      <a href="#automatizacion" class="sidebar-link">
+        <span class="sidebar-link-number">12</span>
+        Automatización e impacto laboral
+      </a>
+      <a href="#agentizacion" class="sidebar-link">
+        <span class="sidebar-link-number">13</span>
+        Agentización del puesto de trabajo
+      </a>
+      <a href="#invivo" class="sidebar-link">
+        <span class="sidebar-link-number">14</span>
+        Invivo Partners y el sistema de consenso
+      </a>
+      <a href="#disrupcion" class="sidebar-link">
+        <span class="sidebar-link-number">15</span>
+        Disrupción y ciencia
+      </a>
+      <a href="#saas" class="sidebar-link">
+        <span class="sidebar-link-number">16</span>
+        SaaS, pilotos y producción
+      </a>
+      <a href="#cuellos-botella" class="sidebar-link">
+        <span class="sidebar-link-number">17</span>
+        Cuellos de botella industriales
+      </a>
+      <a href="#modelo-negocio" class="sidebar-link">
+        <span class="sidebar-link-number">18</span>
+        Modelo de negocio y gobernanza
+      </a>
+      <a href="#electronica" class="sidebar-link">
+        <span class="sidebar-link-number">19</span>
+        Electrónica de potencia y chips
+      </a>
+      <a href="#geopolitica" class="sidebar-link">
+        <span class="sidebar-link-number">20</span>
+        Geopolítica y estrategia europea
+      </a>
+      <a href="#gigafactorias" class="sidebar-link">
+        <span class="sidebar-link-number">21</span>
+        Gigafactorías y ejecución pública
+      </a>
+      <a href="#ciencia-ia" class="sidebar-link">
+        <span class="sidebar-link-number">22</span>
+        La IA haciendo ciencia
+      </a>
+      <a href="#descubrimientos" class="sidebar-link">
+        <span class="sidebar-link-number">23</span>
+        Grandes descubrimientos futuros
+      </a>
+      <a href="#gobernanza" class="sidebar-link">
+        <span class="sidebar-link-number">24</span>
+        Peligros y gobernanza
+      </a>
+      <a href="#libros" class="sidebar-link">
+        <span class="sidebar-link-number">25</span>
+        IA y el futuro de los libros
+      </a>
+      <a href="#cierre" class="sidebar-link">
+        <span class="sidebar-link-number">26</span>
+        Cierre y recomendaciones
+      </a>
+    </div>
+  </aside>
+
+  <!-- Sidebar Overlay (mobile) -->
+  <div class="sidebar-overlay"></div>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="content-wrapper">
+
+      <!-- Page Header -->
+      <header class="page-header">
+        <div class="breadcrumb">
+          <a href="../index.html">Curso IA</a>
+          <span class="separator">›</span>
+          <span>Cuaderno 01</span>
+        </div>
+
+        <div class="page-meta">
+          <span class="meta-badge">Cuaderno 01</span>
+          <span class="meta-badge blue">Arpa Talks</span>
+          <span class="meta-badge cyan">Transcripción íntegra</span>
+        </div>
+
+        <h1 class="page-title">La Naturaleza de la IA y su Impacto en el Sistema Productivo</h1>
+
+        <p class="page-subtitle">
+          Transcripción completa e íntegra de la conversación con Pep Martorell en el podcast Arpa Talks. Desde la definición pragmática de la IA hasta la geopolítica de los chips, pasando por la agentización del trabajo y el futuro de la ciencia.
+        </p>
+
+        <!-- Guest Card -->
+        <div class="guest-card">
+          <div class="guest-avatar">PM</div>
+          <div class="guest-info">
+            <h3>Pep Martorell</h3>
+            <p class="guest-role">Invivo Partners · Ex-Director General de Investigación (Generalitat de Catalunya) · Físico</p>
+            <p>Experto en IA, capital riesgo en deep tech y política científica. Anteriormente vinculado al Barcelona Supercomputing Center (BSC).</p>
+          </div>
+        </div>
+      </header>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 00: INTRODUCCIÓN       -->
+      <!-- ============================== -->
+      <section id="intro" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">00</span>
+          <h2 class="section-title">Introducción y presentación</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <div class="quote-block">
+            <p>Ahora estamos con una tecnología de la cual no conocemos el límite. La IA se equivoca, sí, como tú y como yo, como todos. La cuestión es: ¿en el proceso en que tú integras la inteligencia artificial hay una combinación humano o algoritmo que permita minimizar los errores totales? Esa es la clave de la integración y la adopción de la IA en un proceso.</p>
+            <div class="attribution">— Pep Martorell</div>
+          </div>
+
+          <p>Estamos todos un poco enloquecidos pero es muy importante comprender que las bases teóricas fundamentales no han cambiado desde hace décadas. Hay mejoras importantes en alguno de estos pilares pero esto ahora ha explotado porque a la vez hay algoritmos nuevos, muchos más datos que se pueden mover de manera mucho más rápida y computadores extremadamente potentes que en un tiempo razonable, que son unos cuantos meses, pueden hacer centenares de septillones de operaciones matemáticas. Que una tecnología haga mejor que un humano una cosa que fundamentalmente es creatividad intelectual no significa que el humano deje de hacerlo. Ahora mismo está produciendo cambios importantes en tres vectores: vector número uno, automatización de procesos; vector número dos, cambio de productividad individual; vector número tres, disrupción. El problema hoy de Europa creo que no es el dinero, hay el talento. ¿Qué nos falta? La rapidez de ejecución que sí están teniendo otros países, sobre todo desde el sector público.</p>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 01: DEFINICIÓN IA      -->
+      <!-- ============================== -->
+      <section id="definicion" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">01</span>
+          <h2 class="section-title">Definición y naturaleza de la Inteligencia Artificial</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Pues bienvenido Pep a este podcast. ¿De verdad la importancia histórica de la IA es comparable con la de la rueda o la electricidad o la máquina de vapor o estos grandes, estas grandes tecnologías, estos grandes inventos que han marcado la historia humana?</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Siendo honesto la respuesta es que solo sabremos cuando haya acabado la revolución. Siendo un poco atrevido todo hace pensar que seguramente sí porque tienen en común con todo lo que has dicho es que son tecnologías transversales, por tanto que no tienen una sola aplicación, que son tecnologías muy fáciles de universalizar, es decir que enseguida llegan al uso común, y que además son tecnologías diseñadas por el humano para los humanos, ¿no?</p>
+
+          <p>Aunque hay una diferencia con todas estas tecnologías que has mencionado que a mí me gusta siempre ponerla encima de la mesa y es que yo tengo la sensación de que ahora estamos con una tecnología de la cual no conocemos el límite. La rueda, la revolución industrial, el fuego, etcétera, tienen infinitud de aplicaciones y han cambiado la manera como entendemos el mundo, pero es obvio que tienen una utilidad determinada y precisa que luego la puedes desarrollar en muchos otros casos, ¿no?</p>
+
+          <p>Ahora estamos en una tecnología de la cual todavía no hemos visto el límite tecnológico. No sabemos cuándo lo vamos a ver y eso es lo que a mi parecer debería hacernos muy prudentes a la hora de predecir cuál será el impacto real que tendrá. Por tanto, en realidad todavía no podemos responder a esta pregunta. No ocurre lo mismo con muchas otras tecnologías.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Estaba pensando en la electricidad. La electricidad es un fenómeno físico. Cuando decimos que la electricidad es un invento, ¿qué queremos decir? Eh, la electricidad tuvo muchos usos en los gabinetes de curiosidades, simplemente se jugaba con ella para impresionar a la burguesía, pero después también se podría defender que la computación es una forma de seguir con la invención de la electricidad. En fin, no sé si la electricidad no es tanto una invención. La invención es el control de la electricidad, la capacidad humana de…</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>De hecho al final la invención es la capacidad humana de manipular la realidad a nivel macroscópico o a nivel microscópico y eso es lo que hacen todas estas tecnologías, ¿no? Si hablas de la inteligencia artificial ahora estamos a un nivel de ser capaces de manipular la información de la realidad. Son unos y ceros, son algoritmos, es qué información tenemos sobre la realidad y cómo jugamos sobre ella, ¿no?</p>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 02: INTERPOLADOR       -->
+      <!-- ============================== -->
+      <section id="interpolador" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">02</span>
+          <h2 class="section-title">El superinterpolador estadístico</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Entonces déjame pedirte que precises qué es la inteligencia artificial. Cuando decimos que la inteligencia artificial es una tecnología o una innovación, en realidad ¿de qué estamos hablando exactamente?</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Mira, en primer lugar, estrictamente hablando la inteligencia artificial es una rama de la informática que se dedica a diseñar sistemas que son capaces de hacer tareas para las que habitualmente necesitamos inteligencia humana. Yo diría que bajo esta definición, que es muy amplia y muy genérica, se enmarca bastante bien de qué va esta tecnología.</p>
+
+          <p>Cuando bajas más al detalle y dices "Vale, muy bien, pero esto exactamente ¿cómo se construye? ¿Cómo se declina esto de aquí, no?" Cuando la gente me pregunta qué es exactamente la IA, yo siempre le respondo con otra pregunta que es: "¿Tú sabes qué es una interpolación?"</p>
+
+          <p>Una interpolación es coger datos que conoces y a través de la estadística interpolar el patrón y el comportamiento. Por tanto, el ejemplo típico es la altura y el peso de un ser humano, ¿no? Tú podías poner una gráfica de altura y peso, un montón de puntitos, cada puntito es un ser humano, y te saldría más o menos pues una recta así, porque cuanto más altos somos más pesamos, aunque hay casos muy extremos en los dos ejes, ¿no?</p>
+
+          <p>Entonces una inteligencia artificial al final es algo así como un interpolador estadístico de la información disponible. Cuando teníamos poca información y era información de un fenómeno físico, de un proceso, la inteligencia artificial te permitía extrapolar el comportamiento, detectar patrones, hacer tratamiento estadístico de los datos que tenías.</p>
+
+          <div class="concept-card highlight">
+            <div class="concept-card-label">⚡ Concepto clave</div>
+            <p>«El problema es que ahora hemos ido a tal nivel tecnológico que la información sobre la cual haces ese tratamiento estadístico es literalmente toda la información en abierto que ha desarrollado nunca la humanidad. Entonces la inteligencia artificial que hoy utilizamos a mí me gusta verla como un superinterpolador estadístico sobre toda la información generada por la humanidad.»</p>
+          </div>
+
+          <p>Por eso es tan espectacular en temas como la generación de texto, porque es — permíteme la metáfora — como si alguien hubiera tenido tiempo para leerse toda la producción literaria y textual que ha hecho toda la humanidad en su historia y con todo eso aprendido le fuéramos haciendo preguntas y nos fuera respondiendo con contextos, ¿no?</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>La IA sería un superinterpolador estadístico del conjunto de la información textual humana abierta. Abierta, súper… eh, definición… es una visión un poco pragmática, ¿sí? Pero es una bonita manera, encuentro, nunca había oído…</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Estas técnicamente yo creo que es bastante cierto lo que acabo de decir, ¿vale? No he dicho un disparate. Y además incorpora un elemento que muy a menudo nos olvidamos y es el profundo carácter estadístico de esta tecnología.</p>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 03: DETERMINISMO       -->
+      <!-- ============================== -->
+      <section id="determinismo" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">03</span>
+          <h2 class="section-title">Determinismo vs. estocasticidad</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>La gente a veces dice "No, es que la IA se equivoca, ¿no?" Bueno, porque para nosotros la tecnología es una cosa determinista. ¿Qué es una tecnología determinista? Por ejemplo, yo que sé, el teclado del ordenador, ¿no? Tú aprietas la barra espaciadora, avanza el cursor. La aprietas dos veces, avanza dos veces. La aprietas 10 veces, avanza 10 veces. Si aprietas otra vez y no avanza, llamas a alguien que el teclado no funciona, ¿no? Esto es una tecnología determinista.</p>
+
+          <p>La inteligencia artificial es una tecnología no determinista, que no se dedica a responder según leyes deterministas preestablecidas sino que busca resultados a partir de interpolaciones, a veces no lineales, estadísticas, con un montón de datos. Y entonces cuando la gente dice "No, es que a veces se equivoca, es que a veces alucina", la respuesta es: sí, claro, es que es el comportamiento obvio de cualquier tecnología no determinista basada en principios puramente estadísticos. Lo que no quiere decir que no sea tremendamente útil, pero ese es su carácter.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Déjame preguntarte una cosa al respecto del carácter estocástico de la IA. Si la IA hace un mismo proceso, exactamente un mismo proceso, dos veces, ¿no debería alcanzar un mismo output?</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Sí, pero es que no hace un mismo proceso dos veces. Es decir, ¿por qué no? Mira, hay… lo intento hacer con un ejemplo muy simple, ¿no? Estoy simplificando y cuando nos vea alguien que sea muy experto dirá "Mira, existe apretar un botón en IA."</p>
+
+          <p>Imagínate que intentamos ver cómo lo hace un ChatGPT de turno para simplificar, para generar la siguiente palabra en una frase, ¿vale? Esta herramienta a partir de todas las palabras hasta entonces, que es lo que llamamos el contexto, en un espacio n-dimensional, donde n pueden ser miles y por tanto que no lo comprendemos, buscará el token, es decir la pieza de información más cercana, en un cierto espacio vectorial, a la última palabra que está en ese texto.</p>
+
+          <p>Hasta ahí te sigo, ¿vale? Entonces no hay una, hay varias que son cercanas, que nosotros diríamos que son varias palabras posibles que tienen sentido. Todas estas, con una métrica de distancia en un espacio multidimensional, las puede ordenar de la más cercana a la menos cercana. El tema es cuál escoge. Entonces dependiendo de cómo esté programada, habrá una función de coste que determinará si siempre coge la primera o a veces la segunda o a veces la tercera, a veces otra vez la primera. Y ahí está parte del planteamiento estadístico.</p>
+
+          <p>Pero es que además la posición de estos tokens en el espacio n-dimensional puede cambiar cada vez que tú le pones información nueva para reentrenar este sistema, para que este sistema aprenda. Y además todo eso tiene que ver con el contexto que tú le estás poniendo. Por tanto, en un contexto distinto la generación del siguiente token puede ser perfectamente distinto que el anterior.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Si le preguntamos 2 + 2…</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Si le preguntas 2 + 2 te dirá cuatro. ¿Por qué dirá cuatro? Porque simplemente porque en ese espacio n-dimensional no hay distintas opciones. La pregunta es muy buena. Déjame pasar de la suma a la multiplicación, que es un poco más divertido. Si le dices 2 por 2 te dirá cuatro, pero yo te diría: pregúntale a cualquiera de estas IAs por el resultado de una multiplicación de dos números de 10 dígitos. Es muy posible que el resultado que te dé se parezca mucho al correcto, pero no sea exactamente el correcto, porque extrapola o interpola.</p>
+
+          <p>Imagínate que a ti te hubieran hecho aprender la multiplicación — no hace el cálculo, ¿no? — imagínate que te hubieran dado un libro enorme lleno de millones de multiplicaciones resueltas y te hubieran dicho "Aprende a multiplicar." Al final hubieras sido capaz de ver patrones con los cuales el 2 por 2 es trivial y un número muy gordo por un número muy gordo eres capaz de interpolar por dónde irá, pero no necesariamente sacar el número concreto, porque tú has aprendido reglas, ¿no? A partir de casos.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Y supongo que a nivel técnico, a nivel de usabilidad y técnico, existe la posibilidad de combinar… Claro, hablamos de IA de manera muy sintética, pero me imagino que a nivel ya digo técnico, analítico, una IA es un conjunto de tecnologías, y la propia IA para devolver una respuesta a una query puede decidir hacer uso de una calculadora que tiene un comportamiento determinista. Es poner una regla determinista que sea que si la cuestión es una multiplicación, coges esta rutina y la ejecutas.</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Claro, bueno, esto para una multiplicación es muy sencillo.</p>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 04: COMBINACIÓN        -->
+      <!-- ============================== -->
+      <section id="combinacion" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">04</span>
+          <h2 class="section-title">La combinación humano-algoritmo</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>A nivel de la productividad, por así decir, que puede terminar teniendo la IA, o a nivel de la capacidad de transformación del sistema productivo mundial de la IA, entiendo que esto es muy importante: el hecho de que la propia IA pueda jugar al mismo tiempo con… Perdón, ya sabes lo que voy a decir…</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Es una mala idea. Es una mala idea. ¿Por qué? A veces nos preocupamos mucho porque una tecnología de base estadística cometa errores. La gente siempre — digo lo mismo — la IA se equivoca, sí, como tú y como yo, como todos. La cuestión es: en el proceso en que tú integras la inteligencia artificial, ¿hay una combinación humano o algoritmo que permita minimizar los errores totales? Esa es la clave de la integración y la adopción de la IA en un proceso.</p>
+
+          <p>Porque hay otra cosa muy importante: se ha demostrado — y estoy simplificando mucho, eh, pero intento no decir cosas que no sean precisas — los errores que la IA comete acostumbran a estar muy descorrelacionados con los errores que los humanos cometemos. Lo simplificaría diciendo que muchas veces donde la IA sufre, nosotros lo hacemos muy bien, y donde nosotros nos cuesta mucho, la IA lo hace muy bien.</p>
+
+          <div class="concept-card insight">
+            <div class="concept-card-label">🧠 Insight</div>
+            <p>«A nivel matemático hay gente que dice que algebraicamente son perpendiculares. Entonces, como los errores se multiplican cuando se combinan, hábilmente si tú un mismo proceso ligas un humano con una IA — estoy simplificando — conseguirás un proceso en el cual el error de uno irá compensado por el sentido común del otro y la combinación será tremendamente potente.»</p>
+          </div>
+
+          <p>De hecho hay un paper — y esto lo podemos poner para tus oyentes en las referencias del podcast — hay un paper publicado en diciembre en Nature de un grupo de investigadores que cogieron más de 100 artículos sobre diagnóstico médico con inteligencia artificial y demostraron que en prácticamente la totalidad de los artículos la combinación humano-algoritmo es mejor que el humano solo, el algoritmo solo o el mejor de los dos. Porque hay un punto en que lo importante no es intentar corregir el error de la IA. Lo importante es que el proceso esté hecho de tal manera que la IA y los humanos nos podamos combinar para que cuando uno no es fino, el otro lo compense.</p>
+
+          <p>A mí me gusta decirlo de la siguiente manera, y ahí tomo ideas de otra gente, como siempre: yo puedo simplificar diciendo que al final los humanos hacemos básicamente tres cosas cuando pensamos, ¿no? Deducción, inducción y abducción. La deducción y la inducción son cosas que es ir de la causa a los efectos, de los efectos a la causa, y es algo que funciona bien cuando todos los datos están encima de la mesa. Si la película va de esto, la inteligencia artificial es sin duda mucho mejor que los humanos.</p>
+
+          <p>Pero en cambio, en la abducción, que es el explorar el terreno desconocido — a veces lo llamamos sentido común, a veces lo llamamos conectar puntos — ahí, donde no todos los datos están encima de la mesa, ahí el humano es imbatible.</p>
+
+          <p>Entonces, si tú puedes combinar las capacidades de uno y otro de manera hábil, puedes llegar a conseguir sistemas mucho más potentes que meter muchos esfuerzos para empezar a buscar casuísticas de que "no, aquí la IA quizás se equivoca, entonces le pondré unas reglas deterministas para que cuando pase esto…" ¿No? La tentación de lo que llamamos en la informática "if then else" — si pasa eso hace eso y si no hace eso otro — es una tentación super presente en los humanos porque venimos de esta lógica determinista, pero que con la IA no es necesario. Es mucha mejor idea para mí trabajar combinaciones humano-algoritmo que permitan estas performances mayores que utilizándolo por separado.</p>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 05: SOFTWARE Y PILARES -->
+      <!-- ============================== -->
+      <section id="software" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">05</span>
+          <h2 class="section-title">La IA como software y los tres pilares</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Bueno, hemos empezado muy a saco. Luego te preguntaré por el funcionamiento, o sea, te pediré que desarrolles un poco en realidad lo que acabas de decir, pero déjame volver, dar un paso atrás y volver a una cosa que has dicho antes. Creo, si recuerdo bien, me lo he apuntado, que antes has dicho que la inteligencia artificial es una rama de la informática que se ocupa del diseño de sistemas que ejecutan tareas que generalmente requieren inteligencia humana. Es verdad.</p>
+
+          <p>Sí, bueno, ¿qué diferencia hay entre esto y un software? ¿O entre esto y la informática tradicional? Es que la inteligencia artificial es un software…</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Bueno, la informática tradicional… pero le llamamos inteligencia artificial, bueno bueno, de hecho es un mal nombre. Esto se lo empezó a llamar machine learning, es decir, cómo las máquinas aprenden, ¿vale? Pero siempre intentamos utilizar palabras que nos recuerden a los humanos, ¿no?</p>
+
+          <p>Un software es un conjunto de líneas de código en el que hay codificadas una serie de instrucciones que acostumbran a ser deterministas: si pasa esto haz aquello, si no haz aquel otro, etcétera, etcétera. Estoy simplificando mucho, pero básicamente es esto. La inteligencia artificial no es más que un software, ¿sí? La IA no es más que un software que incorpora unas metodologías que permiten, de muchos datos, extraer correlaciones, hacer esta inferencia o interpolación estadística que decíamos. No es más ni es menos que esto.</p>
+
+          <p>Lo que pasa es que ahora le hemos dado tal potencia tecnológica al tema que es capaz de hacer cosas que son muy visibles. Pero oye, y hoy sé meter ese doctoral en cosas parecidas a estas hace 20 años o más, que ya tenemos una edad. Yo siempre cuento, conceptualmente lo que yo hacía hace 20-25 años, o lo que había gente que hacía en los 60 y 70 del siglo pasado, no es muy distinto a lo que estamos hablando.</p>
+
+          <p>Pero hay tres grandes diferencias, y insisto un poco más en qué es exactamente la IA. Al final una inteligencia artificial es un algoritmo, un software, un programa de ordenador más o menos sofisticado — ahora lo hablaremos — que aprende o se entrena (siempre palabras muy antropomórficas) con muchos datos — segundo elemento importante — en grandes superordenadores para poder hacer estos procesos matemáticos en un tiempo razonable. Por tanto: algoritmos, datos, ordenadores.</p>
+
+          <div class="concept-card">
+            <div class="concept-card-label">📐 Los tres pilares</div>
+            <p>Algoritmos (software) + Datos (información masiva) + Computación (superordenadores) = La convergencia que ha provocado la explosión actual de la IA.</p>
+          </div>
+
+          <p>Cuando yo hice mi tesis — y ahora estiramos del hilo de los tres que quieras — ni había los algoritmos que hoy sabemos programar, ni por supuesto había los datos que hoy tenemos encima de la mesa, y no solo los datos sino las redes de comunicación que nos permiten moverlos a la velocidad que los podemos mover, ni obviamente había la capacidad de computación que hay hoy.</p>
+
+          <p>Para que te hagas una idea te doy dos datos. Uno: el computador más potente del mundo del año 2001, hace 25 años, tenía una capacidad de cálculo bastante equivalente al último móvil del mercado. Es decir, en 25 años te pones el supercomputador más potente del mundo en el bolsillo.</p>
+
+          <p>Y segundo número: para hacer este proceso — acabo de explicar un algoritmo que con muchos datos aprende patrones y demás dentro de un supercomputador — esto se hace con operaciones matemáticas, álgebra de toda la vida, matriz por vector, sumas y multiplicaciones, muchas. ¿Cuántos son "muchas"? Los últimos datos que miré eran del orden de centenares de septillones. Esto es un uno seguido de 26 ceros. Es imposible humanamente comprender qué significa un uno seguido de 26 ceros. No hay nada en nuestro mundo que sea un uno seguido 26 ceros algo.</p>
+
+          <p>Entonces ahora estamos todos un poco enloquecidos con una tecnología que hace cosas increíbles — y que ahora hablaremos — pero es muy importante comprender que las bases teóricas fundamentales no han cambiado desde hace décadas. Hay mejoras importantes en alguno de estos pilares pero esto ahora ha explotado porque a la vez hay algoritmos nuevos, muchos más datos que se pueden mover de manera mucho más rápida y computadores extremadamente potentes que en un tiempo razonable, que son unos cuantos meses, pueden hacer centenares de septillones de operaciones matemáticas.</p>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 06: TRANSFORMERS       -->
+      <!-- ============================== -->
+      <section id="transformers" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">06</span>
+          <h2 class="section-title">Transformers, la polisemia y el espacio vectorial</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Tengo que agarrarme porque claro, es que… te he pedido caña, pues la vamos teniendo. Por tanto, si un software normal y corriente son líneas de código, tú dices "Hombre, la IA es lo mismo, pero hay algunas especificidades propias a la IA que serían estas tres, ¿no? Que has estado: algoritmos un poco distintos — ahora te quería preguntar por los algoritmos — muchos datos y mucha capacidad de cálculo, grandes ordenadores. ¿Qué es un algoritmo en informática y qué es un buen algoritmo?</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Mira, un algoritmo es un programa de ordenador, es decir, es un conjunto de instrucciones habitualmente secuenciales, a veces paralelas, para hacer tareas.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Vuelve a decirlo.</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Un conjunto de instrucciones típicamente secuenciales — primero una, después otra, después otra — a veces paralelas — a la vez que tal haces cuál — que básicamente dan instrucciones. El ejemplo perfecto es el "if then else": si pasa no sé qué, haces esto; si no, haces lo otro. Esto es un algoritmo.</p>
+
+          <p>En inteligencia artificial, desde los 50 del siglo pasado empezamos con unos algoritmos que eran las redes neuronales. Que esto suena así como algo muy… ¿Qué es una red neuronal? Es lo que llamaríamos una arquitectura, un tipo de algoritmo que intenta simular cómo se comportan las neuronas en el cerebro. Digo "intenta simular" porque el cerebro es una cosa muy complicada.</p>
+
+          <p>Eso quiere decir: hombre, que si en el cerebro hay un montón de neuronas conectadas entre ellas, estas neuronas — yo no soy neurocientífico y por tanto lo diré de manera muy aproximada — se comunican con ciertos impulsos. Entonces tú puedes llegar a establecer reglas que digas: si no sé qué, esta se comunica con esta; si no sé qué, con la otra. Hay unos thresholds que se llaman, los niveles, que si la función está por arriba se comunica y si no, no se comunica. Y tú puedes construir como una arquitectura que te recuerda a unas cuantas neuronas conectándose entre sí.</p>
+
+          <p>La lógica original fue: oye, si esto que tenemos aquí dentro con un montón de neuronas conectándose nos permite llegar a pensar, ¿por qué no hacemos un programa de ordenador que siguiendo las mismas reglas quizás pueda también aprender? Y por eso el primer nombre fue machine learning, aprendizaje máquina.</p>
+
+          <div class="concept-card highlight">
+            <div class="concept-card-label">🔑 Transformers (2017)</div>
+            <p>«El gran cambio que ha habido en los últimos 10-12 años es algo que apareció en 2017 que son los Transformers. La gente se piensa que no los ha utilizado nunca y los utilizamos cada 10 minutos. Cuando uno utiliza un ChatGPT, nadie sabe lo que significa GPT: Generative Pre-trained Transformer. Es decir, un Transformer preentrenado para generar información.»</p>
+          </div>
+
+          <p>Al final es un tipo distinto de algoritmo que resuelve un problema. Es muy complejo, pero me gusta explicar un problema que resuelve que creo que se puede entender muy bien, que es lo que yo llamo el problema de la polisemia.</p>
+
+          <p>Es decir, si yo te digo "Mira, esta mañana he ido al banco a sacar dinero", tú sabes perfectamente de lo que estoy hablando y no te imaginas que me he ido a un parque y me he sentado en un sitio que también se llama banco. Pero ¿por qué? La B, la A, la N, la C y la O son las mismas letras en el mismo orden. ¿Por qué no te has confundido? Porque hay un contexto que me ha permitido interpretar.</p>
+
+          <p>Esa atención al contexto — y por eso en 2017 hay un paper que se titula "Attention Is All You Need", que por cierto es un nombre de paper muy extraño para un paper científico, ¿no? Porque dice: esto lo único que necesita es la atención al contexto.</p>
+
+          <p>Entonces ellos fueron capaces — un equipo de Google — que fue capaz de saber cómo programar una inteligencia artificial para que tuviera esta atención al contexto que le permitiera — y eso para mí conceptualmente es muy fuerte — comprender el significado de una palabra.</p>
+
+          <p>Y esto, ¿para una IA qué significa? Vuelvo un poco atrás con lo que decíamos del interpolador. ¿Vale? Yo me imagino un mundo en dos con dos ejes, ¿no? Podemos pensar que jugamos a barcos, A2, B3, C4, o podemos pensar el ejemplo que te decía de la altura y el peso, y podemos ver los ciudadanos del mundo ahí en este esquema, ¿no?</p>
+
+          <p>Al final lo que hacen ahí es colocar a todas las palabras — simplificándolo — en un espacio que no tiene dos dimensiones o tres, que nos movemos bien en esta lógica, que tiene miles de dimensiones. Entonces cada palabra — simplifico — ocupa unas coordenadas en este espacio milidimensional, y la IA va como tejiendo un camino en este espacio milidimensional de una a la más cercana siguiente, y con eso construye texto, por ejemplo.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Milidimensional, ¿es… no quieres decir billones pero son miles? ¿Son cientos? ¿Son cientos de miles?</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Son miles. Y es importante que sean miles, o ¿sería mejor que fueran cientos de miles? Bueno, yo creo que la capacidad computacional que tenemos nos permite jugar con una cierta confortabilidad en ese tamaño. Pero sigue, sigue.</p>
+
+          <p>Entonces hemos conseguido que la palabra "banco" en función de si es una entidad financiera o si es un sitio para sentarse en un parque, ocupe coordenadas distintas en este espacio milidimensional. Esto debe ser algo bastante parecido a lo que es el significado de una palabra para la IA. El significado de una palabra es una posición en un espacio milidimensional.</p>
+
+          <p>Pues con esto, entre otras cosas, los Transformers consiguen separar la misma palabra en distintos contextos en dos partes de este espacio, y con eso resolvemos el problema de la polisemia.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>¿Y cuáles son estas dimensiones? ¿No tienen significación física?</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Por eso a veces hablamos de — decimos un poco de manera exagerada — que una IA es como una caja negra. No tiene una dimensión física que vamos a decir "Mira, de estas dimensiones una es el espacio, otra es el tiempo, otra es no sé qué", ¿no? Y por eso nos cuesta tanto comprender esto qué significa.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Lo que quieres decir es que tienen simplemente utilidad porque generan un número de coordenadas que crece de forma exponencial a medida que creces en dimensiones y, de tal manera que, alcanzado un determinado punto de coordenadas posibles en un espacio, ya tienes suficiente inteligencia contextual como para entender lo que significan las cosas. Diríamos: ¿comprendes? Tienes un espacio vectorial de suficiente complejidad como para capturar todo el significado de las palabras. ¿Ese es el stake?</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Sí. Es decir, nosotros tenemos suficiente con tres dimensiones para situar las cosas en el mundo. Para capturar el significado de un texto, puedes jugar en tres dimensiones, pero lo que te va a quedar será una cosa que no tiene ningún sentido. Trabajando en miles de dimensiones puedes capturar lo que para nosotros es el significado suficientemente como para hacer lo que hoy en día estamos haciendo.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Por tanto, en la utilidad concreta de las IAs generativas, el componente de fuerza bruta sí entiendo que es muy importante, y volvemos a tus tres dimensiones, o sea, primero intentas construir un algoritmo inteligente. Este tema me interesa muchísimo, pero no sé si es fácil ir más allá…</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Es muy útil a veces cuando la gente me pregunta "Oye, ¿tal persona entiende mucho, poco de inteligencia artificial?" Eso es un poco injusto decirlo así, ¿eh? Pero a veces la respuesta es: pregúntale si nunca en su vida ha programado un perceptrón. Una red al fácil. Haberlo hecho, claro, te permite comprender profundamente qué está pasando exactamente ahí y medio entender qué pasa en un entorno de un espacio vectorial mucho más dimensional.</p>
+
+          <p>Porque parece que la parte complicada, la parte del entrenamiento con muchos datos o la parte que tiene que ver con la capacidad de computación, seguro que tienen muchísima complejidad y luego nos podemos meter en ello.</p>
+
+          <p>Pero es verdad que a primera vista, hombre, el diseño de una red neuronal o de un algoritmo de computación de IA, el buen diseño de un buen algoritmo de IA, parece una cosa extraordinaria. Porque cuando pensamos en el cerebro hay un montón de variables que pueden… porque no solo está la comunicación eléctrica, hay comunicación química, hay comunicación de corta distancia y de larga distancia, hay comunicaciones entre neurona y neurona y entre grupos de neuronas, etcétera, etcétera, etcétera, ¿no?</p>
+
+          <p>No es tan tremendamente sofisticado, ¿no? Es decir, si no has pasado por las cosas más básicas es difícil comprender las siguientes, ¿no? Pero la arquitectura de un algoritmo de IA yo te diría que con un par de horas y una pizarra es algo que se puede llegar a comprender bastante bien. Ojo, que no hagamos un podcast con una pizarra un día, ¿eh?</p>
+
+          <p>Bueno, sabiendo que luego hay infinitos matices en cómo lo haces: el preprocesado, el postprocesado, las capas ocultas, la dimensionalidad de cada capa, la parte del contexto y la polisemia del Transformer. No digo que sea una trivialidad, pero se han hecho muchos avances y hoy en día es una cosa que está al alcance de mucha gente comprender profundamente cómo funciona.</p>
+
+          <p>De hecho yo diría, si me preguntas, que de los tres pilares — la algoritmia, los datos y la computación — yo me atrevería a decir, y creo que no me equivoco, que hoy en día la algoritmia es el menor cuello de botella de los tres. Es más difícil acceder a datos suficientes o a capacidad computacional que a programar un algoritmo con una sofisticación mínima para que se genere a partir de ahí una IA más o menos razonable.</p>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 07: DATOS              -->
+      <!-- ============================== -->
+      <section id="datos" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">07</span>
+          <h2 class="section-title">Datos, Common Crawl y los límites del entrenamiento</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Claro, porque al respecto de los datos, el problema que tienen los datos textuales en abierto — insisto mucho en abierto — claro, porque hay un detalle importante aquí: yo creo que hoy podemos afirmar que ya nos hemos acabado todos los datos en abierto para entrenar inteligencias artificiales.</p>
+
+          <p>La gente puede ir a un sitio muy divertido que se llama Common Crawl, que es un proyecto que se dedica básicamente — y voy a simplificar de nuevo — a bajarse internet, todos los datos abiertos en internet. Datos abiertos quiere decir que si tú tienes datos detrás de una pasarela de pago ahí no entran, que si tú tienes datos que explícitamente hacen algo que se llama el opt-out de los datos ahí no entran, pero que todo el resto de internet se entra. Y esto es básicamente el núcleo de información con el cual estas grandes compañías entrenan sus modelos de inteligencia artificial.</p>
+
+          <p>De hecho, una de las limitaciones para el crecimiento futuro de la tecnología es la dificultad de encontrar datos textuales nuevos que tengan valor para entrenar IAs.</p>
+
+          <p>Y me voy un poco y luego me haces volver. Por ejemplo, cosas que están pasando: uno, el nuevo modelo de Anthropic — un modelo que ha provocado mucho festival geopolítico, el gobierno americano prohibiéndole que sí que no, y podemos hablar un poco de esto — ¿cuál es una de las razones por las cuales ha hecho un salto importante respecto a los anteriores? Y esto la gente de Anthropic lo cuenta.</p>
+
+          <p>Porque claro, hablamos de datos textuales, ¿vale? Los datos textuales están hechos en idiomas, muchos y variados. Bien, pero hay idiomas que no son estrictamente humanos. Por ejemplo, el código: que sí que es humano, pero no es un lenguaje digamos en el sentido clásico. O por ejemplo las proteínas: las proteínas las escribimos con letras y reglas. Letras y reglas al final implica un idioma.</p>
+
+          <p>Por tanto, en el momento que Anthropic uno de sus modelos lo entrena masivamente con código desarrollado anteriormente por humanos, ¡pum! Ese algoritmo desarrolla una capacidad tremenda de trabajar, por ejemplo, en ciberseguridad.</p>
+
+          <p>Por tanto, una línea muy interesante de investigación cada vez más es: ¿de dónde sacar nuevos datos textuales para entrenar nuevos modelos? Una variable de esto es los datos sintéticos. ¿Por qué vamos a buscar datos generados por humanos si no le pedimos a la IA que genere más datos? No es obvio entrenar una IA con datos generados por otra IA, porque se puede producir un loop de autoconocimiento que no te aporte valor, pero eso es una línea de investigación muy interesante.</p>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 08: WORLD MODELS       -->
+      <!-- ============================== -->
+      <section id="world-models" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">08</span>
+          <h2 class="section-title">Modelos del mundo y datos sensoriales</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Y la última que para mí es algo que tenemos que tener mucha atención es lo que se llaman los modelos del mundo, los world models, que son inteligencias artificiales construidas sobre datos sensóricos. Y aquí hay una reflexión que a mí me interesa mucho, y luego volvemos porque si no me voy mucho, que es la siguiente:</p>
+
+          <p>Los humanos no aprendemos cómo funciona el mundo leyendo. Aprendemos cómo funciona el mundo observando, escuchando, tocando. Hasta los 5, 6, 7, 8 años no leemos de facto.</p>
+
+          <p>Pero un chaval, una chavala de 5, 6, 7 años, ¿no? Pues si chuta una pelota y va corriendo a buscarla, porque sabe dónde va a caer, no está calculando el tiro parabólico. Tiene un modelo del mundo, un sentido común, una intuición que le dice que la pelota va a caer ahí. ¿De dónde ha sacado esto? De toda la información sensorial que en los primeros años de su vida está recogiendo.</p>
+
+          <div class="concept-card">
+            <div class="concept-card-label">📊 Dato revelador de Yann LeCun</div>
+            <p>«Tú calculas a cuántos bits por segundo tu nervio óptico captura y llega a tu cerebro, multiplicas esto por el número de segundos que un chaval de los 0 a los 5 años está despierto, y te sale una cantidad de información que en orden de magnitud es similar a toda la información en internet hoy en día.»</p>
+          </div>
+
+          <p>Esto es muy contraintuitivo, pero eso explica en parte por qué los humanos aprendemos: y es que lo hacemos no solo por una lógica textual, en buena parte por una lógica sensórica. Y hay algunos que piensan que solo saltaremos las siguientes fronteras en inteligencias artificiales si las entrenamos no con datos textuales sino con datos sensóricos, fruto de la visión humana, del contexto.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>¿Como Yann LeCun?</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Porque, y a lo mejor nos estamos avanzando y hablaremos de esto más adelante, pero hay quien piensa que el tipo que algoritmos más datos textuales más grandes ordenadores no conducirán a inteligencia artificial general. Es muy posible. Es muy posible que lo que estemos haciendo tenga una limitación inherente a nivel de capacidades y que para hacer el siguiente salto en inteligencias artificiales…</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>LeCun lo dice muy bien. ¿Tú serías lecuniano en esto?</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Bastante. En esto, bastante. Me parece muy interesante intelectualmente esta idea de que no conseguiremos una IA general — es decir, al final con el sentido común de un humano — si no le damos un modelo del mundo, que es nuestra capacidad de intuición y sentido común que hemos obtenido a partir de interactuar sensóricamente con el mundo que nos rodea.</p>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 09: INTELIGENCIA       -->
+      <!-- ============================== -->
+      <section id="inteligencia" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">09</span>
+          <h2 class="section-title">¿Qué es la inteligencia?</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Déjame hacerte una pregunta sobre esto. Cuando Yann LeCun y tú ahora decís que por el nervio óptico de un niño de cinco o de 7 años ha pasado mucha información, ¿no estás poniendo en cuestión fundamentalmente que para aprender lo que necesitas es un montón de datos?</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>No, al revés. De hecho estás… que para aprender necesitamos otro tipo de datos también. Otro tipo de datos. Pero en realidad simplemente un montón de datos, solo que no son textuales.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Sí, los datos textuales, ¿no? Porque supongo que hay quien puede pensar que para que la inteligencia… no va de haber sido expuesto a un montón de información, a un montón de datos.</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Yo, excepto si nos vamos a cuestiones casi más filosóficas de si hay verdades no demostrables y realidades no computables — pero ahí entraremos en Gödel, Penrose y compañía — la inteligencia entendida como la capacidad de ejecutar tareas para las cuales habitualmente hace falta inteligencia es una cuestión de aprendizaje a partir de datos. Entendiendo que los datos son los que te enseñan casos previos.</p>
+
+          <p>Los humanos fundamentalmente aprendemos en esta lógica de deducción, inducción: yo veo que las cosas caen, pues mi cerebro al final construye un modelo del mundo según el cual las cosas caen, antes de estudiar las leyes de Newton y de entender qué es la gravitación, ¿no?</p>
+
+          <p>Entonces yo simpatizo con esta idea de que los siguientes saltos en inteligencia pueden venir quizás no por algoritmos muy distintos, quizás no por muchísima más capacidad de computación, porque tampoco tendremos mucha más — podemos hablar de esto después — quizás por el hecho de introducir tipologías de datos muy distintos y parecidas a los que los humanos utilizamos para aprender.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>¿Qué es para ti la inteligencia? Antes hemos hablado de deducción, inducción, abducción, pero entiendo que tu visión de la inteligencia es más amplia, o a efectos prácticos y a efectos de lo que estamos hablando hoy, en realidad, ¿tú crees que es eso?</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Es un campo en que no voy más allá, porque como no tengo formación de neurociencia ni nada parecido, tengo mucho miedo de acabar haciendo de tertuliano. Bueno, y sí, y me… el destino de cualquier español es ser tertuliano. Bueno, me incomoda hablar de este tipo de cosas donde no tengo una base teórica un poco fuerte, y entonces ahora mismo me siento cómodo pensando que la inteligencia es la capacidad de hacer tareas que implican las cosas que hemos hablado hasta ahora. Bien, si hay otras cosas más profundas, que seguro que las hay, me cuesta ser capaz de expresarme.</p>
+
+          <p>Por ejemplo, hace poco Anthropic ha dado un paper que yo creo que va a tener más importancia del que de momento se le ha dado, donde cuentan — lo contaré mal, eh, pero para tener una intuición — donde cuentan que están empezando a mirar qué pasa dentro de la caja, ¿no? Tú le haces una pregunta, para simplificar, el algoritmo te responde, ¿vale? Y hay una conversación. Pero igual que cuando tú lees un libro, por ejemplo, tu cuerpo no se olvida de hacer cosas mientras tanto — respirar, estar atento, escuchar lo que sea — la idea es que una inteligencia artificial, mientras te responde, también está haciendo otras cosas y está como pensando en background.</p>
+
+          <p>Hay teorías de neurociencia que a esto — no me acuerdo de cómo le llaman — pero dicen: "Oye, una cosa es la parte de inteligencia que se está mostrando y otra cosa es como lo que hay detrás que sigue haciendo tareas, ¿no?" Bueno, la gente de Anthropic acaba de publicar un paper donde cuentan que empiezan a ver que mientras te está respondiendo preguntas, hay partes de ese modelo, de su inteligencia, que se están activando y están haciendo cosas.</p>
+
+          <p>Entonces yo aquí confieso que en buena parte me pierdo, porque la comprensión profunda de la neurociencia yo no la tengo. Y de hecho, un paréntesis pequeño: hay mucha gente en medicina que opina que claramente la siguiente frontera es la neuro. Es decir, que buena parte de las otras patologías y disciplinas estamos mejorando mucho, estamos avanzando una barbaridad, y poco a poco con ayuda de la IA y muchas tecnologías llegaremos, si no a curar, a cronificar muchas cosas. Pero cuando entras en el mundo de la neurociencia, ahí todavía queda mucho terreno por recorrer y lo que sabemos todavía es modesto comparado con lo que nos gustaría saber algún día. Y por eso a mí en este tema me gusta ser muy, muy modesto y muy prudente.</p>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 10: LLM MATERIAL       -->
+      <!-- ============================== -->
+      <section id="llm-material" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">10</span>
+          <h2 class="section-title">La materialidad de un LLM</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Déjame preguntarte algo. Vamos abriendo un montón de puertas, ¿vale? Pero creo que ahora conviene hablar de una cosa. Claro, estás hablando de este modelo, este LLM, que piensa, uno le pregunta, entonces él responde pero está pensando. ¿Qué significa? ¿Qué materialidad tiene todo esto? ¿Dónde está el LLM? ¿Qué es concretamente el LLM? ¿Cuál es la dimensión material, la capa material de todo esto que estamos hablando de forma tan abstracta hasta ahora?</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Al final un LLM es un conjunto de números que son lo que llamamos los pesos del modelo, que es lo que regula — simplificándolo mucho — la interacción entre una neurona y la siguiente en este modelo. Esto reside en un centro de datos, en un gran ordenador, de tal manera que cada vez que recibe — simplificamos el tema pregunta-respuesta — una query, una pregunta, esto se convierte en el input, que se codifica con una serie de parámetros matemáticos, y esto dispara una serie de operaciones matemáticas de acuerdo con estos parámetros del modelo, que llega a unos números que se codifican en un texto que te dan como respuesta.</p>
+
+          <p>En cuanto a la materialidad de esto, al final son los parámetros matemáticos — miles de millones — que están dentro de un data center preparado para hacer lo que se llama la inferencia, que es codificar la pregunta, trabajarla matemáticamente y codificar la respuesta. No es más ni es menos que esto.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>No estoy seguro de entenderlo. ¿Puedes volver a contarlo?</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Imagínate un ejemplo muy simple que yo hago a veces en clase, ¿no? Imagínate que queremos construir un algoritmo, una IA, que cuando yo le doy una imagen de un cuadrado, un triángulo, una circunferencia o algo que se parezca — esto es el input — y que su output sea si es un cuadrado, una circunferencia o un triángulo, ¿vale? Es un ejemplo que yo hago en clase en la pizarra.</p>
+
+          <p>Entonces este input, que es una imagen, lo primero que hacemos es codificarla. Una imagen al final es una matriz de píxeles. Si lo ponemos en blanco y negro para no liarnos, cada píxel puede ser un cero o un uno, y esto lo puedo abrir como un vector, y es un vector muy largo con todos los ceros y unos que determinan esa imagen, ¿vale?</p>
+
+          <p>Sobre todos estos ceros y unos, esto entra en un programa de ordenador que hace un montón de operaciones matemáticas de acuerdo con estos pesos estadísticos fruto del entrenamiento de la IA. Con todas estas operaciones matemáticas, al final, si te lo simplifico, obtengo como output tres números entre un cero y uno que son la probabilidad de que sea una circunferencia, un cuadrado o un triángulo. Eso es una inteligencia artificial.</p>
+
+          <p>Si consigo que funcione es porque estos parámetros matemáticos que hay en las operaciones los he optimizado de tal manera que cualquier imagen que le pongo, y que la codifico y la entro, si es un triángulo me da 1 0 0, si es un cuadrado me da 0 1 0, y si es una circunferencia me da 0 0 1. Con esto podría decir que mi algoritmo, estos pesos matemáticos, han aprendido cuándo es un cuadrado, cuándo es una circunferencia, cuándo es un triángulo.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Esa es la versión simple de lo que al final es un algoritmo de inteligencia artificial. En este ejemplo que estás utilizando hay un número de outputs finito, que es tres, por ejemplo: dime cuál es la probabilidad de que sea un cuadrado, un triángulo, una circunferencia. ¿Puedo complicar esto?</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Sí. Y hacer que, en vez de tres numeritos, sea la siguiente palabra en mi frase que te he introducido.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Era lo que iba a preguntar. El output de un LLM… claro, es que un LLM, bueno, lo que hace de verdad es predecir, es simplemente pensar qué palabra tiene que sacar. O sea, el output de un LLM que nosotros vemos en una pantalla cuando nos responde es cada una de las palabras de la respuesta, ¿correcto?</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>La que en ese momento escoge. Tú le pones, hace una frase, la siguiente palabra, le da la vuelta a este sistema, la más probable. La siguiente, le da la vuelta, la más probable. Es un poco más complejo que esto, pero básicamente te lo puedes imaginar como un predictor de la siguiente palabra en una secuencia. Lo cual es increíble.</p>
+
+          <p>Porque significa que la primera palabra de la respuesta del LLM — que digamos que es, no sé, pues por ejemplo "de", para decir "de acuerdo", o "la", para decir "la respuesta" — dependerá del contexto. Dependerá del contexto. Y estás hablando, insisto, de un algoritmo que ha sido entrenado con prácticamente toda la información en internet abierta generada por los humanos.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>La razón por la que la primera palabra y la última tienen cierto sentido — aunque luego pueda alucinar y demás — es de nuevo la cantidad de datos, o sea la fuerza bruta a la que ha sido expuesto, sido entrenado, estos parámetros. ¿Es sorprendente realmente? ¿Es poco intuitivo?</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Es poco intuitivo. Quiero decir, es poco intuitivo que un niño aprenda de la misma forma.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Es que no lo hace así.</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Bueno, pero tú lo que dices es que lo hace así solo que con información no solo textual, o vaya, no fundamentalmente no textual sino sensorial, ¿no?</p>
+
+          <p>Bueno, yo no sé. Es decir, que hagamos que hayamos construido algoritmos inspirados en cómo funcionan unas neuronas no quiere necesariamente decir — y ahí es donde yo no conozco suficiente — que el cerebro humano como tal funcione exactamente como un LLM a lo bestia. Vale. Pero parece razonable pensar, ¿por qué no?, que buena parte de los procesos de razonamiento que tenemos se parecen mucho a estos que estamos definiendo.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Si intento resumir lo que estábamos diciendo para avanzar: dice Pep que hay un conjunto de números en unos centros de datos y esos números, que son los pesos, se emplean para dar respuesta a cada una de las queries de cada usuario, y se utilizan un montón de veces por respuesta porque en realidad se limitan a predecir palabra por palabra lo que la IA tiene que ir diciendo. Una pregunta como no tengo ni idea informática te la tengo que hacer: ¿qué significa que esos números, esos pesos, están en centros de datos? ¿Están en un centro de datos, en un lugar determinado?</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Sí, sí, sí. No, no, están 80 veces en 80 centros de datos en 80 regiones del mundo para servir… Claro, claro, es decir, cuando tú tiras una query, en función de la parte del mundo en que estés, esto irá a un cloud. Sí, un cloud, ¿no? Como dice esta camiseta típica de frikis: el cloud no es más que el ordenador de otro, ¿no? El cloud es una máquina que está en algún sitio y tú irás a esa máquina en función de dónde estés del mundo, de tu proveedor, de lo que sea. Y en esa máquina está alojado la IA correspondiente, el LLM al que tú estás pidiendo una respuesta, que es lo que se llama la inferencia.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>¿Qué aspecto tiene el documento? De un LLM, digamos que no es posible ver un modelo cerrado como los de Anthropic, pero en modelos abiertos sí. ¿Qué aspecto tiene un modelo abierto? ¿Es un… carpetas? ¿Es un software?</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Varias… verías varios documentos. Uno que te explica la arquitectura: es decir, esta red neuronal cuántas capas tiene, la complejidad de cada capa, la dimensionalidad, etcétera. Y luego lo que se llama el documento de pesos, que son los numeritos que, puestos ahí dentro, determinan las operaciones, el valor de las operaciones matemáticas para llegar a sacar la respuesta. Y hay muchas cosas más: la función de coste con la cual la operación matemática funciona en cada caso, y mil otras historias.</p>
+
+          <p>Por tanto, se parecen muchísimo a cualquier software, son documentos y carpetas. Sí, sí, sí, sí, sí. Al final es información, ¿no? No hay más, que estamos manipulando información a una escala que nunca antes nos habíamos imaginado.</p>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 11: TRES VECTORES      -->
+      <!-- ============================== -->
+      <section id="tres-vectores" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">11</span>
+          <h2 class="section-title">Los tres vectores de impacto de la IA</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Bueno, yo espero que a la gente le resulte todo esto interesante, porque puede ser un poco frustrante preguntar a una persona tan inteligente y culta en este ámbito, al menos como tú, por estos temas, porque dices muchas cosas. Seguramente el que sepa mucho considerará que estás diciendo banalidades y quiera preguntarte y repreguntarte ocho veces, y en cambio hay otros que hace mucho rato que han dejado de escuchar. Lo que cuesta mucho encontrar ese término medio para que el que no sabe siga y el que sabe no se aburra.</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Solución para el sistema de pesos: que no te importe, ¿no? O sea, simplemente intentar fluir, como se dice ahora, y esperar que la audiencia sea benevolente.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Exactamente. Entonces hemos hablado de todo esto. ¿Para qué sirve la IA en su estado técnico actual? ¿Cómo crees que modificará la vida humana y el sistema productivo, la economía en concreto, y la vida humana?</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Mira, en general yo creo ahora mismo está produciendo cambios importantes en tres vectores. A mí me gusta decir — y yo creo que a veces los mezclamos y eso lleva un poco un cierto desconcierto — vector número uno: automatización de procesos; luego entramos. Vector número dos: cambio de productividad individual. Vector número tres: disrupción. Y creo que son tres cosas distintas que si las mezclamos nos vamos a marear un poco.</p>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 12: AUTOMATIZACIÓN     -->
+      <!-- ============================== -->
+      <section id="automatizacion" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">12</span>
+          <h2 class="section-title">Automatización de procesos e impacto laboral</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>El primero es una cosa yo diría bastante clásica. Automatización de procesos es lo que toda la vida hemos intentado hacer cada vez que tenemos una tecnología nueva, sea una tecnología industrial, sea la informática, sea lo que sea. Yo estaba haciendo una cosa a manija, repitiendo tareas sistemáticamente, que era un rollo, que no aportó valor, etcétera. Ahora tengo una tecnología nueva que me permite automatizarlo, escalarlo, hacerlo barato, rápido, perfecto. Esto es lo que dice el manual, y eso está empezando a pasar, yo diría quizá menos de lo que parece, porque hay mucha gente hablando y luego implementando menos, porque esto es muy complicado.</p>
+
+          <p>Y esto está provocando una discusión para mí ni mucho menos cerrada sobre cuál va a ser el impacto laboral de esto. La lógica primera dice: "Oye, la automatización masiva de tareas que va a provocar esa tecnología implicará tal disrupción del mercado laboral que habrá un montón de gente que se va a quedar sin faena, y ahí vamos entonces a las historias de la renta universal, de no sé cuántas cosas más."</p>
+
+          <p>Yo ahí soy un poco escéptico, aunque tengo colegas que respeto intelectualmente muchísimo que están convencidos de ello, y de momento me quedo en qué está pasando ahora mismo. Y ahora mismo lo que está pasando es que, excepto en cosas muy concretas, la captura del valor que se genera es más por incremento de productividad que por decremento de personas. Intento explicarlo bajando mucho al mundo real.</p>
+
+          <p>Desde un punto de vista empresarial, ¿no? Yo les digo, cuando haces trabajo con alguna empresa, les digo: la IA es un gran generador de tiempo, es un gran liberador de tiempo si quieres decirlo así, ¿no? Entonces tú tendrás que tomar, como empresario o como empresaria, una decisión importante. Vamos a hacer un ejemplo: tienes n personas que hacen unas cosas, automatizas con IA y resulta que liberas el 40% del tiempo, imaginemos, ¿vale? Perfecto. ¿Qué puedes hacer para capturar el valor generado? Algo tienes que hacer, porque si no de momento te has gastado dinero con la IA y no ha pasado nada más.</p>
+
+          <p>Puedes hacer básicamente dos cosas, una combinación. Una: si me liberan el 40% del tiempo, echo al 40% de la gente. Es fácil y es como muy simple. Capturo el valor porque tengo menos gasto en mi cuenta de resultados. Y aquí me quedo, no voy a capturar más valor porque ya lo tengo todo.</p>
+
+          <p>La otra visión, que es un poco más sofisticada y compleja, es: no, yo lo que voy a intentar hacer es esta liberación de tiempo convertirla en más negocio, en más clientes, en más producto. Es decir, si te miras la cuenta de resultados de una empresa, en lugar de reducir por abajo voy a incrementar por arriba. Esto es más complicado que el anterior, pero diría que el upside, la potencialidad, es mucho más elevada.</p>
+
+          <div class="concept-card highlight">
+            <div class="concept-card-label">📈 Paradoja de los radiólogos (Efecto Jevons)</div>
+            <p>«Automatizar las tareas te permite ser tan productivo que de repente levantas mucha más demanda. Es conocido el caso de los radiólogos: es obvio que hay algoritmos que lo hacen muy bien a la hora de interpretar placas de radiología, pero tú sigues teniendo radiólogos. Lo que has conseguido con la tecnología es multiplicar por muchísimo la cantidad de pruebas diagnósticas que haces, que tiene muchísimo valor porque diagnosticas antes, mejoras tratamientos, etcétera.»</p>
+          </div>
+
+          <p>Y empezamos a ver empresas — primero, donde ha habido despidos que se han echado para atrás, porque, oh sorpresa, los costes de la IA quizá no son los que parecían — y empezamos a ver compañías, y recientemente han salido dos o tres estudios bastante serios, donde hay una correlación bastante positiva entre las compañías que son muy intensas en inteligencia artificial y aquellas que incrementan personal. Y esto es un poco contraintuitivo, pero me lleva a lo que se conoce como la paradoja de los radiólogos, que esto es algo que introdujo bueno, es el efecto Jevons.</p>
+
+          <p>Entonces empezamos a ver muchas compañías donde han sido capaces de superar la tentación de capturar el valor sacando a gente y empiezan a capturar el valor siendo mucho más productivas por arriba, ¿no? Esto es una de las cosas que está pasando.</p>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 13: AGENTIZACIÓN       -->
+      <!-- ============================== -->
+      <section id="agentizacion" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">13</span>
+          <h2 class="section-title">La agentización del puesto de trabajo</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>La segunda — y voy de cosas más fáciles a más difíciles — es el cambio de paradigma en la productividad individual. Es lo que yo a veces llamo la agentización del puesto de trabajo, ¿no? Que en parte estabas comentando ya.</p>
+
+          <p>En parte sí, pero aquí hay una derivada superior, que es: la automatización estricta la pienso con inteligencias artificiales de las que hacíamos hasta ahora. La agentización del puesto de trabajo para mí aparece cuando llegan los agentes, que en el fondo son IAs que no responden solo a tus preguntas sino que tienen voluntad propia para hacer cosas. Tú les puedes delegar cosas y hacen muchas veces con voluntad propia, con unas constraintments, unas limitaciones que tú les marcas.</p>
+
+          <div class="concept-card">
+            <div class="concept-card-label">🤖 Cambio de paradigma</div>
+            <p>«Mi hipótesis es que todos y cada uno de nosotros en cualquier puesto de trabajo tiene que pensar en dejar de ser un ejecutor de tareas — muchas veces secuenciales, ahora una, luego otra, luego otra — para pasar a ser orquestadores de agentes.»</p>
+          </div>
+
+          <p>Esto no es muy raro. Cualquiera que tenga equipo en su empresa sabe que tiene un equipo, tiene colaboradores, y que parte de su trabajo es coordinarlos y delegarles tareas, y que mientras tú haces una cosa tu equipo está haciendo otras cosas. Bueno, ahora el cambio de paradigma es que aparte de tener equipo humano empezarás a tener equipo agéntico, y todos tendremos IAs que trabajan 24x7, que tendrán una cierta voluntad propia y que harán cosas, ¿no?</p>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 14: INVIVO PARTNERS    -->
+      <!-- ============================== -->
+      <section id="invivo" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">14</span>
+          <h2 class="section-title">Invivo Partners y el sistema de consenso</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Yo pongo últimamente el ejemplo de la compañía de trabajo, Invivo Partners, que es una gestora de capital riesgo. Llevamos fondos de inversión, hacemos inversiones en temas de tecnología profunda, y tenemos una agente que hemos programado, una cosa bastante compleja, que cariñosamente la llamamos "Moder", ¿no? Cada uno tiene sus frikadas, nosotros tenemos esta.</p>
+
+          <p>Y es muy interesante discutir en qué momento todos — yo el primero — fuimos conscientes de que esto no era un chat a quien le preguntabas "Hoy te mando un documento, hazme un resumen", sino que esto era un agente, algo que tenía voluntad. ¿Y sabes cuál fue el momento? Cuando le dimos email. Cuando le dimos un email.</p>
+
+          <p>Ah, claro, eso es distinto, porque ahora resulta que yo le puedo enviar un email y me contesta. Y como tiene una cierta voluntad, a veces me envía emails: "Oye, he visto esto, creo que te puede interesar." Y el siguiente paso — porque a frikis no nos gana nadie — ha sido ponerle voz, que no es muy difícil. Y claro, si le pones voz y le das un número de Telegram, pues ya puedes chatear y llamarte.</p>
+
+          <p>Entonces, de repente te das cuenta que ya no es un chat al que le preguntas y te responde, que puede llegar a ser un colaborador más. Este cambio de mindset — de "yo tengo un trabajo que consiste en unas tareas que yo voy a hacer" a "yo tengo un trabajo que consiste quizá en unas tareas que yo voy a supervisar como mis colaboradores agénticos las hacen" — para mí este es el nuevo reto que hay a nivel laboral.</p>
+
+          <p>Es mucho más fácil decirlo que hacerlo, obviamente, porque esto que estoy diciendo es muy complicado de implementar, y en una compañía de 15 personas es fácil, en una de 3.000 ni me imagino cómo lo van a hacer. Pero para mí el segundo eje fundamental es cómo está cambiando, cómo va a cambiar el puesto de trabajo con la agentización masiva.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Te iba a preguntar por vuestra experiencia en Invivo Partners. Dices que le habéis dado email, número de Telegram y voz a la IA. Concretamente, ¿qué LLM utilizáis? ¿O en fin, qué tipo de montaje tenéis?</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>El montaje lo tenemos publicado en un paper en LinkedIn, porque además el conocimiento cada vez más es abierto, y mi socio Luis Paras es nuestro managing partner. Si alguien lo busca en LinkedIn encontrará un artículo reciente en que ha publicado toda la arquitectura. Es café para los muy cafeteros, o sea, una cosa con formulación matemática algo duro.</p>
+
+          <p>Y lo contamos todo excepto un detalle. Básicamente es un sistema que opera en lo que se llama un sistema de consenso. Entonces tú tienes una IA que opina, que hace, con otra que le critica y una tercera que busca el consenso. Esto es un sistema muy habitual en este tipo de cuestiones.</p>
+
+          <p>Lo que no hacemos el disclosure es exactamente qué IAs están detrás de cada uno de estos sistemas. ¿Por qué no? Bueno, porque por acuerdos que tenemos, acceso a algunos modelos que todavía no son públicos. Y aquí se combinan modelos cerrados y de hecho esta es una tendencia que empezaremos a ver en muchas compañías, y también híbridos. Hay cosas por cuestiones de coste, por cuestiones de coste, y porque la distancia entre lo que te puede hacer un open source y lo que te puede hacer un comercial sigue manteniendo constante en 6-12 meses de delay.</p>
+
+          <p>Es decir, si tú necesitas hacer algo que OpenAI o Anthropic te lo permiten hacer con un Sonnet o un ChatGPT, un Gemini o lo que sea de hace 12 meses, tú ya tienes hoy un modelo open source que te lo puede hacer. Entonces aquí hay un ahorro de costes y una cuestión de privacidad de datos, porque lo instalas en local, que para negocios como el nuestro es muy importante.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Por tanto, habéis creado un sistema de consenso en local que tiene acceso a IAs open source y a IAs privadas, que habéis entrenado con vuestros datos, con vuestra experiencia de inversión, con vuestras tesis de inversión, ¿sí? Y que está 24x7 leyendo y aprendiendo continuamente de información que para vosotros es interesante — por ejemplo, artículos científicos por un tubo, etcétera. Tiene por tanto una función que tiene que ver con el desarrollo intelectual, por así decir, la actualización intelectual permanente, continua de vuestra organización. Entiendo que también estará metida en los procesos de selección, evaluación y selección…</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Claro, ahora estamos aprendiendo. Somos una empresa como cualquier otra, estamos aprendiendo en todos los procesos en cuáles tiene sentido que se involucre y por qué. El caso de análisis de inversión es un caso que me gusta mucho comentar, ¿no? Este agente es capaz de hacer análisis de propuestas de inversión con una calidad y un tiempo de respuesta que es imposible que un humano lo haga literalmente. ¿Eso quiere decir que esta es una capa en que no necesitamos humanos? No. Eso quiere decir que gracias a esta tecnología — vuelvo al ejemplo de radiólogos — podemos atender muchas más propuestas, las podemos analizar mucho mejor y podemos dar un servicio, entre comillas, y un feedback de mucho más valor.</p>
+
+          <p>Por tanto, yo como gestora de capital riesgo gano dos cosas: una, analizo muchas más oportunidades que antes y por tanto incremento mi probabilidad de encontrar la buena. Y dos, intento como mínimo que el feedback que doy al emprendedor sea de mucha más calidad.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>¿Y no habéis creado un fondo gestionado directamente por este sistema de consenso solo por espíritu científico básico, por tener una experiencia…?</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>No, y es que déjame volver a lo que decíamos al principio: es que la combinación óptima es algoritmo más humano. Sí, dice Nature hace unos meses. Espérate, espérate a que otros digan otras cosas, porque esto es…</p>
+
+          <p>Con las sillas que tenemos ahora, insisto en lo de antes de la abducción: hay ciertas cosas que tienen que ver con la temperatura en una sala, con el carácter de la persona… Hay, cuando tú te dedicas a la inversión — llevo muchos años como business angel de muchos negocios — hay un "algo" que nadie sabe definir y que le ves al emprendedor cuando entra por la puerta, que es importante. Hay una respuesta prácticamente corporal a ciertas preguntas que es muy importante. Hay un feeling personal que es muy importante. Hay una intuición sobre esa evolución tecnológica que te permitirá llegar a un sitio. Todo esto son cosas que yo no sé muy bien por qué los humanos ahí funcionamos muy bien y la IA todavía no.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Cuando intentáis que vuestro sistema de consenso aprenda o se actualice 24/7, ¿hacéis también que os ayude a actualizaros a vosotros, o descorrelacionáis su proceso de aprendizaje del vuestro?</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>No sé si me estoy explicando, pero seguro que sí. Es un círculo virtuoso continuo. ¿Cómo os informa a vosotros? Bueno, por ejemplo, yo qué sé, cada lunes por la mañana nos envía un email con un resumen priorizado y muy bien analizado sobre los deals que han habido en los espacios de inversión en que nosotros trabajamos.</p>
+
+          <p>O por ejemplo, esto nos pasó hace unos meses, te puede llamar un domingo por la tarde diciéndote: "Oye, se acaba de publicar un press release en que esta compañía acaba de comprar a esta otra, y creo que te interesa porque esta otra opera en un espacio de inversión donde nosotros tenemos alguna compañía invertida." Y eso te permite inmediatamente aprender. No solo aprender, sino reaccionar muy rápido.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Hay una pregunta que no sé si vosotros os hacéis de la misma forma que se la hacen otras organizaciones, que es la siguiente: ¿para qué me voy a matar a ganar 6 o 12 meses haciendo esto si dentro de 6 o 12 meses esto lo habrá hecho otro y lo habrá convertido en un servicio mucho mejor para mi empresa que el prototipo, que el experimento que yo me voy a montar internamente?</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Esto es muy posible, pero yo creo que probarlo, hacerlo y jugar tiene dos virtudes. Una: desarrollar pilotos, MVPs, llámale como quieras, te lleva a un proceso de maduración y pensamiento sobre el negocio que no tiene precio. El solo hecho de tener que hacerlo te plantea preguntas sobre el negocio que quizá antes no te habías planteado nunca.</p>
+
+          <p>Y el otro elemento es: en ciertos negocios, 6-12 meses es una ventaja brutal respecto a la competencia. Yo ya sé que pronto Anthropic, alguien sacará quizás un modelo que sea capaz de hacer evaluación de compañías de Deeptech para que todas las gestoras del mundo lo utilicen. Quizás sí. Oye, quizás no, o quizás un nicho donde no hay suficiente negocio para hacer. Pero aunque lo haga, yo llevo 6 o 12 o 18 meses de ventaja. Todo lo que he hecho este tiempo no me lo quita nadie, y todo lo que he aprendido pues una buena oportunidad para montar encima de esto la siguiente generación.</p>
+
+          <p>Es muy duro ir siempre 6-12 meses por delante cuando te persiguen porque tienes que meterle mucho esfuerzo, pero nuestra tesis es que el esfuerzo tiene todo el sentido del mundo.</p>
+
+          <p>A veces hay compañías pequeñas que me dicen esto: "Oye, mira, yo esto de la IA paso bastante, dejo que me vayan trayendo productos y ya lo implementaré." Bueno, esto es una visión que confunde un poco la IA con la última actualización de Microsoft o del Windows o del software más básico. No es solo esto, es algo más. Intentar desarrollar con IA cosas del negocio no es un upgrade de software, es preguntarse sobre el negocio. Y esto tiene mucho valor a nivel empresarial.</p>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 15: DISRUPCIÓN         -->
+      <!-- ============================== -->
+      <section id="disrupcion" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">15</span>
+          <h2 class="section-title">Disrupción: hacer lo que antes era imposible</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Y el tercer vector, ¿no? Automatización, agentización, para mí el tercer vector es la disrupción. Que no es "voy a hacer cosas más rápidas que antes, más eficientes que antes", es "voy a hacer cosas que antes no podía hacer". Y ese es el cambio fundamental para la disrupción. Y eso es todavía más complicado.</p>
+
+          <p>De hecho yo diría que el único campo donde hoy se está viendo realmente este impacto es en el campo de la ciencia. La manera como está cambiando la actividad científica por la entrada masiva de la inteligencia artificial y cómo esto está permitiendo llegar a hacer cosas que nunca nos habíamos imaginado que serían posibles… Esto marca un antes y un después en la actividad científica en todos los campos de conocimiento.</p>
+
+          <p>Y esto mi hipótesis es que empezará a llegar cada vez más al mundo real, a la empresa, etcétera. Pero que es como de más simple a más complicado, ¿no? Automatizar procesos lo llevamos haciendo décadas con otras tecnologías. Agentizar el puesto de trabajo será algo que va a costar llegar a comprender. Y para disruptar cómo haces las cosas, va a ser algo todavía mucho más complicado.</p>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 16: SaaS               -->
+      <!-- ============================== -->
+      <section id="saas" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">16</span>
+          <h2 class="section-title">SaaS, pilotos y la dificultad de escalar a producción</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Pero también es cierto que hay muchas empresas de software, muy como la tuya quizás, muy relacionadas con el mundo de la tecnología y de la ciencia y de la investigación, que pueden agotarse creando experimentos permanentes en torno a la IA, y de hecho es muy difícil sostener un ritmo. Es muy difícil seguirle el ritmo al presente, ¿no? Perseguir el presente o el futuro es cansadísimo, ¿no?</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Yo aquí te diría que la ventaja de esta tecnología es que, primero, el coste de fallar es prácticamente nulo, porque la tecnología es baratísima. Fallas, no pasa nada. Y la posibilidad de hacer algo útil en el corto tiempo es muy alta. Por tanto, aunque luego decidas que no sigues por esa línea, es que vale mucho la pena porque gastas muy poco tiempo. Lo que no puedes hacer es convertirte en un eterno innovador de pilotos y nunca bajar a producción. Pero dedicar siempre una parte del tiempo a estar estos 3 meses por delante, por si eso que hago aporta un cierto valor, yo creo que vale mucho la pena.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>¿Crees que la IA pone en peligro el SaaS?</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Creo que mi opinión es que menos de lo que parece, por las mismas razones en realidad que estás comentando ahora. No es que… una cosa es hacer un piloto y otra escalarlo a producción. Una cosa es hacer algo que aparentemente sustituye eso que me venden como un SaaS y otra cosa es implementarlo, integrarlo, orquestrarlo, hacer el mantenimiento, estar seguro que cumple todos los principios de ciberseguridad, y además hacer updates a tal ritmo que sea igual que el que me provee el SaaS puede hacer.</p>
+
+          <p>Entonces, para mí, hoy en día la capacidad que tenemos de hacer cosas es brutal. Esto es muy bueno para MVPs, para pilotos, para hacer todas esas historias tremendas que siempre habías querido hacer y nunca habías tenido el tiempo ni el proveedor para hacerlas. Pero de aquí a meter en producción algo que hoy en día te está dando un SaaS, yo creo que todavía estamos un poco lejos de ahí. Y no sé si vamos a llegar, por todo lo que no tiene que ver con la tecnología de desarrollo estricto.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Estoy de acuerdo, estoy de acuerdo, y por eso también es interesante experimentar.</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Claro, claro. Pero una cosa es experimentar. Te pongo el ejemplo, es muy conocido, el ejemplo del CTO de Mercadona, ¿sí? Que hace no mucho publicó en su blog un buscador en su tienda online que habían hecho con un fin de semana, dos personas, ¿no? Que era una cosa espectacular. Decía: "Funciona mejor, funciona muy bien, está implementado perfecto." ¿Cuál es el debate que ha continuado ahí? Precisamente este: hacer algo de nicho que te funciona mejor, ¿implica necesariamente llevarlo a producción y discontinuar el contrato con el que había antes? Bueno, quizás no. Quizás necesitas un plan B, quizás necesitas alguien que te asegure unos términos y condiciones determinados, no sé si tendrás la capacidad de tener un equipo de mantenimiento que te lo actualice.</p>
+
+          <p>Entonces, una cosa, hacer pilotos, probar, jugar y hacer cosas increíbles que te permiten ver hacia dónde ir, y otra cosa es hablar del software de producción empresarial. Y además, la mayoría de empresas, cuando empresas como la tuya pero vaya yo creo que muchas empresas están haciendo lo mismo, intentan introducir IA en sus actividades clave, en su core business, están haciendo precisamente eso: ir a las capas del negocio que tienen mayor valor añadido e intentar entender cómo la IA contribuye a todo eso. Lo que no vas a hacer como organización es divertirte a transformar un montón de capas o de herramientas que no tienen tanto valor, que no están en tu core business, divertirte a transformar todo eso que está bien hecho, pues eso, ¿no? Con esas características — seguridad informática, estabilidad, etcétera — que estabas comentando, por un conjunto de codex o de lovables o de no sé qué que te has montado.</p>
+
+          <p>A nosotros tenemos la suerte de trabajar en un terreno donde digamos que el contexto, la regulación, es relativo. Pero ahora intenta pensar en esto en un banco, en una aseguradora, en una compañía que tiene supermercados y que cada día en el lineal tiene que haber exactamente lo que tiene que haber. Experimentos con gaseosa en estos campos… Con lo cual una cosa son los pilotos y demás y la otra es el escalado a producción industrial en campos donde además hay mucha regulación. Que esto es algo para mí muy distinto.</p>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 17: CUELLOS DE BOTELLA -->
+      <!-- ============================== -->
+      <section id="cuellos-botella" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">17</span>
+          <h2 class="section-title">Cuellos de botella industriales de la IA</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Hablemos un poco de geopolítica y antes del tema del estado actual del desarrollo industrial de la IA, o del desarrollo de la IA como industria. ¿Cuáles son los cuellos de botella actuales, los recursos materiales o naturales, la energía, el talento, la financiación, otros?</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Yo diría sobre todo la energía, que es muy obvio. Estos grandes centros de datos son infraestructuras brutales bajo las cuales hay una capa de energía sin la cual no puedes tirar. Energía implica dos variables que a menudo nos olvidamos de una de ellas: energía implica producción, pero también distribución. Hay mucho megavatio que te lo tienes que mover mucho de un sitio a otro, no es trivial, y hay países que ahí no están muy bien preparados. Por tanto, energía es un cuello de botella absolutamente fundamental.</p>
+
+          <p>Hay otro cuello de botella desconocido que empieza a sonar mucho en el mundo industrial, que es toda la parte de electrónica de potencia que uno necesita dentro de un centro de datos, la mayoría de la cual, por cierto, se está produciendo en China. Oh sorpresa, empiezan a estreñirse algunas cadenas de distribución de este tipo de tecnología, por tanto ahí hay otro cuello de botella.</p>
+
+          <p>Otro cuello de botella es puramente tecnológico: ¿cuántos chips podemos producir hoy en día en el mundo versus la demanda que hay? No es trivial que esto esté casando y además, obviamente, cada vez es más difícil miniaturizar más los transistores, ir a hacer chips más potentes, más eficientes, etcétera.</p>
+
+          <p>Y hay otro cuello de botella para mí que es muy importante y que nos olvidamos de él, que es el propio modelo de negocio de las compañías que te dan este servicio.</p>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 18: MODELO DE NEGOCIO  -->
+      <!-- ============================== -->
+      <section id="modelo-negocio" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">18</span>
+          <h2 class="section-title">Modelo de negocio, IPOs y gobernanza</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Hoy es muy obvio que el precio que tú pagas para acceder a esa tecnología va por debajo del coste que tiene desarrollar esa tecnología o servírtela, y esto se ve porque todas estas compañías — OpenAI, Anthropic, etcétera — básicamente pierden dinero a espuertas, pierden billions ahora mismo, y lo que esperan es que la adopción masiva más un cierto incremento de precios les lleve a grandes beneficios en el futuro.</p>
+
+          <p>Y creo que hay algún cuello de botella más, pero yo principalmente diría que industrialmente hay estos. De todos, a mí me preocupa mucho el último porque esto va a funcionar si se cruza bien la curva. Es decir, si consiguen bajar el coste de producir la energía, la demanda tuya utilizando IAs no crece mucho, pueden incrementar mucho el número de usuarios y clientes, y además pueden empujar un poquito para arriba el precio, y que la combinación de todo esto les dé para modelo de negocio.</p>
+
+          <p>Pero ahora mismo, con el coste de producción, el número de usuarios y lo que todos pagamos, los números es obvio que no salen, y por eso el déficit tan grande que tienen año tras año, y por eso necesitan estas rondas de financiación y algún día eventualmente salir a bolsa. Para mí estos son los tres o cuatro puntos más importantes.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Ahora se está hablando justamente de la salida a bolsa de estas empresas, y hay dos hipótesis al respecto, ¿no? Una: que el capitalismo estadounidense se ha civilizado y ahora por fin quiere compartir sus ganancias con el pueblo. Y otra más escéptica o cínica directamente, que considera que en realidad esto va a ser la mayor pasada de patata caliente de la historia, de los inversores profesionales al retail investor. ¿Dónde estás?</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>No lo sé y quiero ver cómo salen estas IPOs, si acaban pasando, que de momento todavía es "ya más adelante, más adelante, más adelante". Me preocupa menos, entre muchas comillas, el reparto de beneficios; me preocupa más la gobernanza de estas compañías, estén en mercado o no estén en mercado, parcial o totalmente.</p>
+
+          <p>Déjame hacer un paso atrás. Quizás es la primera vez en la historia — quizás no, pero déjamelo decir así — en que la investigación de frontera en una disciplina, en este caso la inteligencia artificial, en que el empuje de la frontera del conocimiento humano se está dando no en la academia sino en el mundo privado.</p>
+
+          <div class="concept-card highlight">
+            <div class="concept-card-label">⚠️ Cambio histórico</div>
+            <p>«Hasta ahora, en cualquier campo científico, en cualquier disciplina, lo más avanzado se producía en una institución académica, un centro de investigación, una universidad, un hospital, y eso tenía muchísimas virtudes: primera, que el conocimiento era siempre abierto y publicable; segunda, que el paso de la academia al mercado era lento y por tanto había tiempo para pensar en las cosas; y tercero, que la capacidad de influencia gubernamental era relativamente alta. Ahora, en esta tecnología, la frontera del conocimiento la están empujando las compañías privadas por primera vez.»</p>
+          </div>
+
+          <p>Y eso provoca una cuestión de discusión sobre beneficios puramente económicos de esta tecnología, pero para mí todavía más importante, provoca una discusión de gobernanza.</p>
+
+          <p>Y para mí es muy interesante lo que ha pasado últimamente en Estados Unidos donde los extremos se tocan un poco, ¿no? Y confieso aquí que no acabo de tener una posición muy cerrada sobre lo que dicen. Bernie Sanders, el senador demócrata de Vermont — que yo creo que es lo más de izquierdas que se puede ser en Estados Unidos — dice: "Vamos a coger el 51% de la propiedad de estas compañías el estado, porque tenemos que repartir los beneficios entre los ciudadanos." Y JD Vance, el vicepresidente norteamericano, que debe ser el otro extremo político más extremo, sale y dice: "Pues no me parece mal la idea de Bernie Sanders, aunque yo no lo haría por un tema de socializar beneficios, entre comillas, sino por un tema de control gubernamental, porque la tecnología que se está desarrollando empieza a ser de impacto importante en seguridad nacional."</p>
+
+          <p>Cuento esto porque en el momento en que los dos extremos políticos de un sitio como Estados Unidos empiezan a decir estas cosas, inmediatamente OpenAI ha salido diciendo: "Bueno, bueno, oye, si hace falta nosotros un 5 o un 10% quizá lo podríamos ceder a manos gubernamentales para que estén implicadas en el desarrollo de la tecnología." Todo esto lleva a un punto que es: estoy de acuerdo que la discusión sobre los beneficios es compleja, y para mí me preocupa más la discusión sobre la gobernanza.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Antes has mencionado a Fabel, el nuevo modelo de Anthropic, ¿no? Repasemos un momento qué ha pasado con Fabel y con Mizos.</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Anthropic en abril dice: "Acabo de entrenar un nuevo modelo que es Mizos preview, que es tan bestia en algunos temas como ciberseguridad que no lo puedo sacar al público. Hago un consorcio que se llama Glasswing, meto dentro una docena de compañías tecnológicas americanas que luego abro a una cuarentena de compañías de ciberseguridad americanas, y nosotros vamos a probar cómo funciona este modelo, buscar todos los agujeros de ciberseguridad para parchearlos todos y dejarlo todo bien hecho."</p>
+
+          <p>Cuando tengo esto hecho, le dice al gobierno americano: "Oye, saco una versión mini que es Fabel de este Mizos, que en el fondo es lo mismo pero si alguien le pregunta sobre ciberseguridad el modelo dirá que no le puede contestar con estas capacidades y será el modelo menor y así será digamos menos problemático."</p>
+
+          <p>Lo sacan, los ingenieros de Amazon se ponen a intentar reventar este guardarrail, creo que en 4 horas lo consiguen, se comunican con el gobierno norteamericano, el gobierno norteamericano en 2 horas avisa a Anthropic, Anthropic saca el modelo del mercado, pasan tres o cuatro semanas, lo vuelven a sacar con muchas más limitaciones.</p>
+
+          <p>En paralelo, OpenAI saca los modelos tierra, sol, luna — no sé cómo los llaman, los nuevos modelos — y dicen: "Lo hemos sacado, la nota de prensa es muy bestia. Y después de un productivo y tranquilo diálogo con la administración norteamericana, hemos decidido sacarlo solo a un pequeño grupo de primeros usuarios seleccionados."</p>
+
+          <div class="concept-card">
+            <div class="concept-card-label">🔒 Acceso restringido a modelos</div>
+            <p>«Ya estamos en el momento en que nosotros no vamos a poder utilizar el último modelo con las máximas capacidades posibles porque la tecnología ya ha llegado a un punto en que puede tener impacto sobre temas que van más allá del mundo empresarial o ciudadano y entran en temas de seguridad nacional.»</p>
+          </div>
+
+          <p>Todo este rollo, ¿para decir qué? Para decir que ya estamos en el momento en que nosotros no vamos a poder utilizar el último modelo con las máximas capacidades posibles, porque la tecnología ya ha llegado a un punto en que puede tener impacto sobre temas que van más allá del mundo empresarial o ciudadano y entran en temas de seguridad nacional y demás.</p>
+
+          <p>Y por tanto, que ahora por primera vez en esta tecnología los gobiernos de los países donde están compañías dicen: "No, no, no, antes de que tú uses un modelo yo lo voy a mirar y decidiré cuáles capacidades de este modelo te voy a dejar utilizar y cuáles las dejo cerradas para un cierto grupo de empresas, de gobiernos o de lo que sea."</p>
+
+          <p>Y a mí esto me lleva a preguntarme si estamos viendo, si hemos visto la última vez en que tú o yo podremos tener acceso al último modelo sin ningún tipo de cortapisa. Y quizás ya no. Quizás el futuro que nos espera es un futuro donde las IAs futuras más potentes serán más o menos limitadas para un uso científico, gubernamental, de seguridad, llámale como quieras, y el uso empresarial y cotidiano será en otros modelos, quizá con menores capacidades para ciertas cosas, con autentificaciones para el uso de ellas especialmente potentes, ¿no?</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Tampoco parece malo para el business model de estas empresas y para la sostenibilidad de la industria de la IA en general que el calentamiento masivo que ha habido con el ritmo de gasto, de inversión, de crecimiento de capacidad de cálculo de todos estos modelos, que este calentamiento se enfríe un poquito. En principio parece bueno, porque debería permitir pues no sé, a la gente del mundo de las finanzas y del marketing y a las autoridades regulatorias y demás empezar a pensar justamente en la sostenibilidad de la industria.</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Sí, tiene otra derivada, y es que si esto se consigue hacer — que ya veremos, porque tú puedes hablar con OpenAI y con Anthropic y con Google y con Microsoft, pero no con un grupo que está encerrado no sé dónde haciendo cosas de código abierto — si esto se consigue, podría ser una especie de regulación bottom-up un poco improvisada de cómo vamos a conseguir un cierto control de que esa tecnología no sea utilizada para ciertos usos, porque directamente para ciertos usos la tecnología ya no mostrará sus capacidades.</p>
+
+          <p>Y de esto va el trabajo que está intentando hacer Naciones Unidas, que veremos si lo consigue, de establecer una especie de pseudo-marco no regulatorio sino más bien de gobernanza, de quién debería decir cosas sobre qué capacidades de estas IAs. Me parece que no es una mala idea. No es tanto un tema regulatorio como de gobernanza y decidir quién va a desarrollar a partir de ahora para qué tipo de usos y qué instancias gubernamentales pueden tener capacidad de gobernar este tipo de tecnologías.</p>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 19: ELECTRÓNICA        -->
+      <!-- ============================== -->
+      <section id="electronica" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">19</span>
+          <h2 class="section-title">Electrónica de potencia, chips y costes de tokens</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Sobre el cuarto cuello de botella, hablábamos de energía, electrónica de potencia, chips y business model de las compañías de IA. Sobre todavía el modelo de negocio de estas compañías, ¿se sabe cuánto cuesta generar un token, o digamos cuánto dinero se está perdiendo realmente por token generado?</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Mira, de memoria te diré: por ejemplo, OpenAI presentó, creo recordar, un plan financiero en 2024 que es público y ha corrido por ahí, y que por ejemplo considera que antes de llegar a break even, que creo que eran 2028-2029, creo que preveían quemar unos 45 billions. Por ejemplo, que es una cantidad muy bestia, pero que teniendo en cuenta el tamaño de mercado, si consigues llevar a break even y beneficios, puede ser un modelo de negocio razonable, y por eso los inversores que invierten se lo creen, ¿no?</p>
+
+          <p>Otra cifra interesante, y esto salió hace no mucho: hubo alguien que cogió las tres licencias de ChatGPT — la de 20, la de 100 y la de 200 al mes — y las tres de Anthropic — que cuestan exactamente lo mismo — se puso a quemarlas a lo bruto, es decir, a pedirles tokens y tokens y cosas hasta que le dijeron: "Oye, ya vale, no, para, hoy se ha acabado." Intentó calcular los costes equivalentes de producir todo esto, y el resultado era, simplificando mucho, que el coste de producción al máximo de que una licencia te permite, creo recordar que era entre 10 y 50 veces mayor que el precio que tú pagas por esa licencia. Es una barbaridad.</p>
+
+          <p>Y entonces te das cuenta que en parte ahí está el problema, pero en parte ellos también se basan en que casi ninguno de nosotros quemamos las licencias que tenemos. Bueno, claro, por supuesto, es como un gimnasio donde hay gente que está todo el día y hay gente que no va nunca. Hay gente que no va nunca, pues es exactamente lo mismo.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Y supongo que también, voy al tres, ¿vale?, a la producción de chips. Decías: hombre, está costando miniaturizar aún más los transistores porque ya estamos en cuatro o 5 nanómetros, 3 nanómetros, pero yo tenía entendido que justamente la ley de Moore había explotado.</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Ha explotado de manera sintética, por la combinación algoritmia más datos más… Es decir, estamos creciendo mucho más rápido que lo que la ley de Moore preveía porque al impacto de la ley de Moore le estamos añadiendo otras cosas.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Okay, pero no porque el diseño de los chips haya evolucionado.</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>De hecho, yo diría que en los últimos años vamos un poquito así cumpliendo la ley de Moore. El señor de IBM ya va a tener que dejar de tener razón. Bueno, hemos bajado a 3 nm, sí, se están construyendo infraestructuras para intentar bajar a 1.8, 2 nm, pero es que no vamos a poder ir mucho más abajo. Es que si vas más abajo no te caben los átomos de silicio.</p>
+
+          <p>Con lo cual hay un montón de generación de investigación para conseguir arquitecturas distintas. Hay gente que trabaja, por ejemplo, en tres dimensiones: si hacemos así, ¿por qué no los hacemos también así? Hay gente que trabaja en lo que se llama el post-silicon: por qué no hacemos chips con combinaciones de otros materiales que tengan otras propiedades. Y obviamente hay gente que trabaja en computación cuántica o nanotecnológica, como Sonia Contera, por ejemplo.</p>
+
+          <p>Sí, bueno, que es al final un transistor mide 3 nanómetros como mínimo, esto es la escala nanotecnológica. Pues la gente que hace nanotecnología, ¿qué materiales y qué disrupciones puede aportar para que podamos o seguir bajando el tamaño o, sin bajar el tamaño, incrementar la capacidad de ese dispositivo? Y hay muchísima investigación hoy porque la capacidad en sí mismo de los chips bueno, se ve que sigue incrementando, pero que hay unas limitaciones físicas obvias, ¿no?</p>
+
+          <p>Esto es una cosa. Otra cosa relacionada con esto, que te las he mezclado, es la dificultad de que la oferta sirva a la demanda. Es decir, ¿cuántas GPUs, por decirlo de alguna manera simple, a Nvidia le pedimos cada año? ¿Y cuántas GPUs Nvidia puede producir? Digo Nvidia, AMD, IBM o quien sea. Y hoy en día la demanda de chips, por simplificar, es mayor que la oferta que estos grandes gigantes pueden llegar a proveer, lo cual cosa también explica su valoración en bolsa, etcétera, etcétera.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Vale, entonces déjame volver un momento al cuatro. Decimos que están sirviendo tokens con pérdidas, pero también es cierto que los tokens, creo que en los últimos dos o tres años han bajado muchísimo de precio, ¿no? En el sentido de que a ellos les cuesta un 98 o un 99% menos producirlos que hace dos o tres años. Igual que tú hablabas de la supercomputadora del 2001 que ahora cabe en un bolsillo, pues a ellos les está pasando eso mismo, ¿no? Por tanto, ¿realmente no está claro si estas empresas son un desastre o si al contrario van a poder reventarlo todo de una forma…?</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Si estuviera claro, ningún inversor les seguiría. Claro, claro. Si han bajado un 98 o 99%, pueden volver a bajar. Si bajan el coste de producción en uno o dos órdenes de magnitud más, estarías ya ganando dinero por cada token que tú pagas con tu cuota mensual, por ejemplo, con este precio.</p>
+
+          <p>Con este precio. Otra cosa es que luego además suban precios o depende del uso. O tú ahora estás pagando un tanto por mes, y hay empresas que empiezan a recibir emails de compañías que proveen tecnología que les dicen: "Oye, lo de tanto al mes lo vamos a cambiar, vamos a pasar a un coste, a un precio de tanto por token, a tanto por uso." Pues yo creo que será una mezcla de todo esto en lo que se basa su modelo de negocio y futuro.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Al respecto de la energía, ¿qué es la electrónica de potencia?</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Electrónica de potencia, por simplificarlo, me refiero a: oye, maquinotas gordas que se ponen dentro de este tipo de infraestructuras, por ejemplo, para gestionar todo el flujo eléctrico que tiene que alimentar a todo el CPD, a todos los armarios donde tú pones todas las GPUs. Todo esto que hay alrededor de lo que es estrictamente el ordenador y que hace que el CPD funcione. Todo esto es lo que se llama electrónica de potencia, y son aparatejos que no es computación en sí mismo, pero que sirve para que todo esto funcione.</p>
+
+          <p>Por ejemplo, estas máquinas hay que enfriarlas, ¿no? Si no se enfrían, te pondrían a 70 u 80 grados y obviamente habría un incendio, ¿no? ¿Cómo se enfrían hoy? Sobre todo con lo que se llama el DLC, el direct liquid cooling, es decir, con circuitos de líquido, de agua — agua o a veces glicol — que pasa físicamente por encima del chip. Y por tanto, llega agua fresquita, el chip provoca calor y esa agua fresquita se lleva el calor y marcha más caliente, ¿no?</p>
+
+          <p>Esto, que en el chip es un circuito muy pequeñito de una goma negra que se ve encima del chip cuando ves una placa, al final de todos los chips acaba en una instalación de refrigeración que es una instalación industrial con tubos, aguas, temperaturas, chillers enfriando. Ahí hay un montón de electrónica de potencia, electrónica industrial, que requiere montarse y que sin esto un centro de datos no funciona.</p>
+
+          <p>Entonces, parte de esa electrónica, parte de toda esa maquinaria industrial, en parte nos viene de China, en parte nos viene de mercados que están muy tensionados, porque la petición, igual que para las GPUs pedimos más de las que pueden producir, pues para este tipo de dispositivos pasa exactamente lo mismo.</p>
+
+          <p>De hecho, en Estados Unidos, alguna de las grandes compañías que montan data centers empieza a decir que les preocupa más la provisión de estos mecanismos que no de las GPUs que Nvidia o AMD les puede llegar a servir. Porque deben ser cadenas de valor poco estratégicas y, por tanto, muy concentradas en China. Claro, de aparatejos que se han utilizado siempre pero nunca tanto como ahora. No es obvio incrementar capacidades de producción, no es obvio si alguien está haciendo geopolítica con esta cadena de valor, y por tanto ahí hay una nueva incógnita a medir en todo este tipo de…</p>
+
+          <p>De hecho, hay una estadística que selecciono mucho de los centros de datos anunciados nuevos en Estados Unidos, ordenados por la fecha en que van a estar operativos: cuáles en el 27, en el 28, en el 30, y al final había una columna que es "cuáles no se sabe cuándo van a estar operativos". Esta columna era la más alta de todas, y a la pregunta de por qué, la mayoría de respuestas era porque lo que tiene que ver con la electrónica de potencia alrededor de la energía no era más este cuello de botella que el de energía. El cuello de botella energético es que yo no sé si hace falta comentarlo porque es muy evidente, ¿no?</p>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 20: GEOPOLÍTICA        -->
+      <!-- ============================== -->
+      <section id="geopolitica" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">20</span>
+          <h2 class="section-title">Geopolítica, Europa y estrategia de soberanía</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Entonces, decía antes que íbamos a hablar de geopolítica, ahora has explicado muy bien los cuellos de botella que estructuran el desarrollo de la industria a día de hoy. A todas estas, estamos en España, en Barcelona, y estamos todos cagados con la ventaja técnica que nos están sacando los estadounidenses y los chinos en el ámbito de la IA. ¿Esto es así? O vaya, intenta explicar como español, como catalán, cómo debe pensarse este tema en términos geopolíticos.</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Mira, primero, en términos geopolíticos no tiene sentido pensar nada que no sea en lógica europea. Cualquier dimensión inferior a la europea es una dimensión que no tiene masa crítica suficiente para hacer ningún impacto en el mundo. Cuando pensamos algo en cualquiera de nuestras escalas políticas, yo defiendo que solo tiene sentido pensarlo en tanto que contribución a una estrategia europea. Punto número uno.</p>
+
+          <p>Punto número dos, para comparar cómo está Europa versus otras partes del mundo, esto de la IA es muy genérico. A mí me gusta pensar en el stack de la IA, que le llamamos, ¿no? El stack, los informáticos hablan del stack porque hablan de una pila de cosas. Yo lo simplifico de la siguiente manera: cuando tú utilizas una IA — una aplicación, un ChatGPT, un Copilot, un Gemini, lo que sea — tú ves la aplicación, que es la capa de arriba. Esta aplicación se ha programado sobre unos modelos, unos LLMs, que se han entrenado en una infraestructura, y esta infraestructura necesita una capa que está debajo que es la energía para funcionar.</p>
+
+          <p>Entonces, a mí lo que me interesa: primero, me gustaría que Europa fuera autónoma y soberana en todo el stack. Mi opinión es que a medio plazo esto es imposible. Medio plazo, ¿qué son, tres años?</p>
+
+          <p>Que sea imposible a medio plazo no quiere decir que no tengas que correr para conseguirlo, y además mi visión es que de este stack deberíamos ser hábiles y seleccionar aquellas pequeñas partes del stack donde sí que podemos ser autónomos y soberanos, y en aquellas partes en que no, hacer algún tipo de alianza bilateral o multilateral con el mundo.</p>
+
+          <p>Por ejemplo, en la capa de energía, Europa tiene que poder ser soberana. Tiene suficiente dinero, capacidad, recursos naturales, territorio, masa crítica, llámale como quieras, como para poder llegar a ser soberana.</p>
+
+          <p>En la capa de infraestructura puede ser soberana en tener infraestructuras que provean el servicio, no será soberana en tener propiedad intelectual de la tecnología que hay dentro de estas infraestructuras como mínimo a medio plazo.</p>
+
+          <p>En la capa de los modelos yo no veo a una compañía europea que pueda atrapar a los grandes del mundo, pero en cambio en la capa de las aplicaciones tenemos todo el tejido tecnológico, empresarial, industrial como para que, sobre todo en el B2B, podamos ser soberanos.</p>
+
+          <div class="concept-card insight">
+            <div class="concept-card-label">🇪🇺 Estrategia europea</div>
+            <p>«Primero tener la visión de dónde sí y dónde a medio plazo no. Donde sí, tenemos que proteger esta ventaja competitiva sí o sí. Donde todavía no, hay que hacer una carretera de doble carril: por un carril circulas intentando ser soberano, mientras por el otro carril lo que haces es intentar un acuerdo con alguien para que mientras tanto puedas acceder a la tecnología.»</p>
+          </div>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Cuando hablabas de la IP de la infraestructura o que corre por dentro de la infraestructura, ¿a qué te referías? ¿Te referías a los modelos?</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>No, no, me refería a los chips, por ejemplo, ¿no? En Barcelona tenemos un gran ordenador, el MareNostrum 5, por ejemplo, ¿no? Y otras infraestructuras que hay en España y en el sur de Europa, ¿vale? Son ordenadores propiedad de instituciones europeas, fantástico, que están abiertos a usuarios europeos en diferentes maneras: científicos, empresas, vale, perfecto. Somos soberanos en la provisión del servicio, en la propiedad de la infraestructura, sí.</p>
+
+          <p>¿El chip que hay dentro me lo puede ofrecer una compañía europea? No hay una compañía europea que sea soberana en el diseño de ese chip para que en el futuro, aunque sea fabricándolo en otro sitio, me lo pueda ofrecer a corto/medio plazo. ¿No tengo que abandonar esta carrera? No. ¿Tengo que ser suficientemente hábil para generar compañías en Europa que sean muy buenas diseñadoras de chips? Y esto está empezando a pasar, para que en 10 años compitan con quien haga falta. Y a la vez tengo que tener un acuerdo geoestratégico, en este caso con Estados Unidos, para que yo pueda acceder a la tecnología de AMD, de Nvidia, de Intel y llenar esta infraestructura de la mejor tecnología factible. Eso es exactamente lo que ahora se está haciendo en Europa.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>¿Hay alguna empresa europea que sea líder mundial? Es decir, ¿hay algún ámbito en el que Europa esté claramente por delante de China y de Estados Unidos?</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>ASML del mundo, ¿no? Es decir, dejo a ASML un poco al margen, ahora lo comentaré. En todo lo demás, tú puedes tener compañías o instituciones académicas que tengan capacidades iguales a… No tienes compañías o instituciones académicas que tengan capacidades superiores a… El único caso extremadamente singular es ASML.</p>
+
+          <p>Para que la gente lo entienda es muy simple: cuando yo fabrico chips, y hoy en día estos chips de alta capacidad, estos chips se fabrican solo — no me quiero olvidar de nada — en Taiwán, Corea, Estados Unidos básicamente: TSMC, Samsung e Intel. El proceso de fabricación se hace por litografía.</p>
+
+          <p>Litografía, a veces lo comparo a eso que hacíamos de pequeños en la escuela que nos daban una lámina de linóleo y que con una especie de pincho íbamos sacando las cosas y quedaba un dibujito. Pues la litografía es algo parecido. Si quieres hacer esto a 3 nanómetros de ancho, necesitas una litografía de ultravioleta extremo que hay una sola compañía en el mundo que tenga la capacidad de hacerlo, que es ASML, que es una compañía neerlandesa, es una compañía europea.</p>
+
+          <p>Yo creo que es el único caso en el que pasa, y a mí me resulta siempre muy frustrante este ejemplo porque entonces la gran pregunta es: ¿y cómo puñetas los europeos no hemos sido capaces de utilizar el hecho de ser los únicos que tenemos esa tecnología para construir alrededor todo un ecosistema que vaya desde el diseño hasta la fabricación?</p>
+
+          <p>Bueno, esto no hemos sido capaces de hacerlo. La siguiente década lo deberíamos poder hacer. Como mínimo, sabemos que tenemos este asset que tiene una tecnología que no es fácil de reproducir y que llevamos muchos años, sobre todo con China intentando llegar a este nivel y sin poder hacerlo. Para mí es un asset europeo alrededor del cual construir todo el resto del ecosistema.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>El liderazgo de ASML es muy particular, tiene una cultura corporativa muy distinta de la que yo creo que hace falta para intentar conseguir un cluster. Ahora han invertido mucho dinero en Mistral, pero bueno, seguro que les habrán obligado porque no han hecho nada de motu proprio en los últimos años, por no hacer no han ni subido precios, no han negociado. Es una cosa muy curiosa, una compañía muy singular.</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Es una compañía muy singular.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Vale, por tanto, a la problemática geopolítica estratégica de la inferioridad tecnológica europea en el ámbito de la IA, tú dices: soberanía y alianzas. Del lado de la soberanía deberían quedar la energía, la producción de energía, la capacidad para la infraestructura, la capacidad para ofrecer servicio de infraestructura y algunas aplicaciones, en particular en terreno del B2B. Y en cambio, del lado de las alianzas al menos a corto-medio plazo, en menos de una década, los modelos, la IP, bueno, los chips o la IP de todo lo que está dentro de la infraestructura, y los propios modelos.</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Sobre todo modelos e infra y lo que hay dentro de la infraestructura.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>En el ámbito de la energía, ¿te refieres… me ha sorprendido que pongas la energía del lado de la soberanía, porque claramente Europa está del lado de las alianzas. Es decir, si hablamos de electricidad aún, si hablas de energía, evidentemente la mayor parte de la energía que consume Europa no la produce.</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Yo creo que no es tanto así, pero en todo caso para estos usos — o sea, el petróleo, el carbón y el gas… bien, fuera, en parte de fuera — pero estás creciendo mucho con renovables en terreno propio. Creo que hemos parado, yo diría por suerte, ciertos planes de desnuclearización. Y como mínimo para estas infraestructuras y para estos usos, yo creo que hay capacidad suficiente como para garantizar una soberanía en este campo.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>¿Y tú conoces muy bien el ámbito de la energía o hablas del… o en realidad te estás refiriendo a la energía en relación con IA, con infraestructuras de IA?</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Energía en relación con estas infraestructuras. Para mí es fundamental llegar a ser autónomo y soberano en este campo. Yo entiendo que el ser totalmente autónomo para los 400 millones de habitantes de Europa es una película. Esta es otra película, que sí que es factible: es tener una política más pro-energy en estas infraestructuras.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Por tanto, podrías aplicar la misma lógica de soberanía más alianzas a la energía y al mix de consumo energético. Hay algunas industrias que requieren de un consumo soberano, y a lo mejor hay otros usos energéticos que no requieren de críticos y no hay problema.</p>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 21: GIGAFACTORÍAS      -->
+      <!-- ============================== -->
+      <section id="gigafactorias" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">21</span>
+          <h2 class="section-title">Gigafactorías, sector público y velocidad de ejecución</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Imaginemos que tienes que redactar un informe estratégico que contribuya, o vaya, que le sirva a Europa para avanzar en esta dirección. ¿Cuáles son los pilares de ese informe?</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Bueno, este informe lo tienen hecho y existe, y te voy a decir cuál es para mí el problema fundamental para su implementación. Pero los pilares del informe son: uno, garantizar la provisión energética para estas infraestructuras — pero esto insisto, es posible, no tiene una gran dificultad. Dos, desplegar toda la política que se llama de gigafactorías, es decir, lo que todavía nos falta, que son estos grandes data centers para la provisión de servicios de IA a grandes compañías, sector público, etcétera. Yo diría que es factible en el medio plazo.</p>
+
+          <p>Una gran inversión en el desarrollo de modelos de IA y este tipo de tecnologías, con compañías como Mistral que trabajan en sí mismo en el desarrollo de IAs, o con compañías como Multiverse que trabajan en servicios alrededor de estas IA, por ejemplo. Y toda la política que hay de soberanía y autonomía en el diseño de chips y de toda la parte microelectrónica, también se está invirtiendo mucho.</p>
+
+          <div class="concept-card highlight">
+            <div class="concept-card-label">⏱️ El verdadero problema de Europa</div>
+            <p>«Mi diagnóstico es que el problema de Europa no son los planes, están bien. No es el dinero, hay suficiente. No es el talento, nadie nos gana en esto. Casi te diría que no es el consenso político entre los Estados miembros. Es nuestra dificultad como europeos para ser capaces de tomar la velocidad que todo esto requiere, fundamentalmente por las limitaciones que nos autoponemos desde el sector público.»</p>
+          </div>
+
+          <p>Pongo un ejemplo que es muy particular, pero me va bien para ilustrarlo. Las gigafactorías, ¿vale? Gigafactorías son o serán grandes centros de datos de centenares de miles de GPUs que deberían dar autonomía absoluta a Europa en la provisión de servicios de IA para sector público y sector privado, sobre todo en temas estratégicos.</p>
+
+          <p>En febrero del 2025, Von der Leyen anuncia las gigafactorías con un plan de inversión superambicioso, con un planteamiento técnico que yo diría que es muy razonable, y anunciando que habrá mínimo cinco en Europa en los próximos años. Todo sonaba magníficamente bien: febrero 2025. En julio 2026 todavía no ha salido la convocatoria para que Bruselas decida dónde van a ir, cuándo se empiecen a construir.</p>
+
+          <p>Si vamos a este ritmo, no podremos competir con nadie. Oí el otro día una metáfora que me gustó mucho que decía: "Por fin Europa ha despertado, pero todavía no se ha levantado de la cama." Bueno, pues ahí estamos. ¿Hay un plan? Sí. ¿Es adecuado? Me parece que sí. ¿La gente que está detrás es supercompetente? Hay dinero. El problema hoy de Europa creo que no es el dinero, hay el talento, nadie nos supera en talento. ¿Qué nos falta? La rapidez de ejecución que sí están teniendo otros países, sobre todo desde el sector público. Si no resolvemos esto, no conseguiremos esta autonomía en los campos donde la podemos conseguir, y la perderemos ahí donde la podemos tener, por culpa estrictamente nuestra.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>¿Por qué crees que han pasado 18 meses sin que se haya convocado una convocatoria, valga la redundancia?</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Cuesta trasladar la sensación de urgencia, y porque el sector público administrativo europeo es tremendamente lento y no está preparado para esto. Está preparado para ser el… El sector público en Europa debe ser el mejor del mundo. El estado de bienestar de Europa es el mejor del mundo, es garantista, es fair, es lógico, es universal de acceso, es muy difícil que alguien te diga que se vive mejor que en Europa respecto a todo este tipo de cosas, no hay nada que decir, nos gustaría que fuera más rápido, vale, de acuerdo.</p>
+
+          <p>El problema es que ahora ha aparecido un tema que son todas las tecnologías estratégicas, que ya no es una cosa de cuatro científicos locos: es que es la base sobre la cual tu competitividad como continente se va a construir, que va a un ritmo con el cual no casan las restricciones que nosotros mismos en el sector público nos hemos impuesto.</p>
+
+          <p>Entonces alguien deberá tener el coraje político, y no es evidente hacerlo, para decir explícitamente que hay que sacar estas tecnologías de las limitaciones habituales que son razonables en todo el resto del sector público — no digo que no — pero que en este tipo de cosas no se pueden tener estas limitaciones.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Tú tuviste un cargo de mucha responsabilidad en la Generalitat de Cataluña, ¿cómo…? Un poco de responsabilidad, un poco de responsabilidad, o mucha poco…</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Yo fui director general de investigación.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>¿Y consideras que es poca responsabilidad?</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>No, o sea, hombre, me lo pasé muy bien y era una cosa muy interesante, pero… Yo tenía responsabilidad sobre ciertas cosas interesantes, pero encima mío tenía varias capas de autoridad donde estaba realmente la responsabilidad.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Y tu experiencia… claro, tú como director de investigación, en todos los ámbitos. Investigación, sí, sí, sí, no trataba solo el tema de la IA. Lo que estás diciendo es que en ese cargo no tuviste problemas para drivear, para generar, para acompañar los procesos de innovación en distintos ámbitos. Lo que estás diciendo es que ese problema se da de manera muy específica en IA. Porque yo qué sé, porque el mundo se ha vuelto loco en este campo, pero que en realidad en el resto de campos Europa sí que logra seguir, superar a veces…</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>El mundo académico en Europa, por ejemplo, cuando tú miras las grandes publicaciones científicas, la generación de conocimiento, ¿sí? Europa compite muy bien con Estados Unidos y China, compite muy bien. Y eso que la inversión por habitante y por PIB y tal tampoco es muy espectacular, pero compite bastante bien. Hay talento, hay buena calidad de vida, hay muy buenas organizaciones académicas, hay políticas científicas razonables en la mayoría de los gobiernos. Hay mejoras para hacer, pero es muy razonable, funciona bien.</p>
+
+          <p>¿Funciona bien, por qué? Porque la academia tiene unos ciertos ritmos a los cuales la lentitud propia del sector público, hombre, no digo que le ayude, porque nos gustaría ir mucho más rápido en algunas cosas, pero no es un drama que determina que pierdas el tren mundial. También mis colegas en el laboratorio de Chicago tenían un dolor de cabeza tremendo para conseguir hacer un expediente de no sé qué historia.</p>
+
+          <p>Pero ahora no hablamos de esto. No hablamos de generación de conocimiento, no hablamos de academia, no hablamos del sector público: hablamos de que hay una tecnología o un conjunto de tecnologías con un impacto sobre el futuro de nuestra sociedad en todos los niveles absolutamente brutal, y que tener o no autonomía en esas tecnologías determinará el futuro del continente, y que esas tecnologías se desarrollan y se implementan a un ritmo con el cual no casan las restricciones que nosotros mismos en el sector público nos hemos impuesto.</p>
+
+          <p>Y o esto lo resolvemos y lo cambiamos, o iremos quedando atrás, atrás, atrás, atrás, atrás, sin darnos cuenta. ¿Por qué no teníamos dinero? No. ¿Porque teníamos malos planes? No. ¿Porque no había talento? No. Porque no fuimos capaces de poner en marcha un funcionamiento mucho más ágil en las cosas en que se requerían. Esto es más fácil de decir que luego de hacer, eh, se entiende, pero para mí es el problema fundamental que tiene ahora mismo Europa. Y no me estoy inventando nada: informe Letta, informe Draghi. Tú te los lees y todo el informe Draghi es un canto a la flexibilización administrativa de todo lo que tiene que ver con las tecnologías estratégicas.</p>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 22: CIENCIA E IA       -->
+      <!-- ============================== -->
+      <section id="ciencia-ia" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">22</span>
+          <h2 class="section-title">La IA haciendo ciencia</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Déjame hacerte una pregunta sobre el tema de la disrupción. La ciencia ha dependido del descubrimiento humano, lógicamente. ¿De qué tiene que depender, si no, en el futuro? ¿La IA puede hacer ciencia? ¿Está haciendo ciencia?</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Está haciendo ciencia.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>¿Demostrar un teorema?</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>La IA puede aportar demostraciones de teoremas matemáticos. Esto está pasando, a teoremas que nunca nadie había resuelto, sin que ningún humano entienda la solución que propone la IA.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Ahí discrepo un poco, ¿no? Yo no lo afirmo, te lo pregunto. Yo no tengo ni idea, yo… estos tweets misteriosos, a eso me refiero, donde a veces hay gente que dice: "Hola, la IA ha resuelto un problema y no entendemos cómo lo ha hecho."</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Sí, bueno, y ahí soy un poco escéptico. Se entiende bastante bien cómo lo hace, simplemente explora caminos que hasta ahora no se habían explorado. O sea, exactamente igual que en el ajedrez.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Pero en la resolución de un teorema…</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Es una muy buena metáfora, una muy buena comparación, sí. De hecho, por ejemplo, tú escuchas a Magnus Carlsen hoy, el campeón mundial de ajedrez, y te dice que él juega mejor ajedrez que antes porque trasteando con la IA ha descubierto otras estrategias en las que no había pensado.</p>
+
+          <p>Simplificándolo mucho, esto en ciencia están pasando un par o tres de cosas a la vez, ¿eh? Una, la que tú dices: hacer de ping pong con una IA te permite que aparezcan caminos de exploración que a ti no se te habían ocurrido. Punto número uno, bien.</p>
+
+          <p>Punto número dos: te permite simular computacionalmente cosas que antes solo podías hacer en el laboratorio físico, y por tanto escalar a dimensiones nunca antes conseguidas, porque la realidad física es la que es. Si yo hago un experimento con unas células que tardan unas horas en hacer no sé qué, y que puedo hacer solo 10 en mi laboratorio, si puedo simular computacionalmente esto, puedo hacer tantos como capacidad computacional tenga.</p>
+
+          <p>Y tres: además me está permitiendo acelerar el ciclo propio de la investigación científica. El ciclo normal de… y parecerá algo muy simple, es muy complejo, eh… Yo tengo una idea con mi grupo, la trabajamos, vamos al laboratorio, experimentamos, probamos, testeamos, parece que una idea puede tener sentido, escribimos, publicamos, volvemos… A todo este ciclo propio de la investigación que tenía varias etapas, cada una de ellas antes era muy lenta. Ahora algunas de ellas pueden ser tremendamente aceleradas, y eso está permitiendo que, claro, si haces más ciclos por unidad de tiempo, la capacidad de aceleración del descubrimiento puede ser mucho más alta.</p>
+
+          <p>Entonces, todo esto que digo, combinado, está implicando que en algunas áreas científicas podamos hacer cosas que antes no se habían hecho nunca.</p>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 23: DESCUBRIMIENTOS    -->
+      <!-- ============================== -->
+      <section id="descubrimientos" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">23</span>
+          <h2 class="section-title">Grandes descubrimientos futuros impulsados por la IA</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>¿Qué grandes descubrimientos esperas tú que la IA pueda generar en las próximas décadas?</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Descubrimientos que la IA genere, no estoy seguro que sean muchos. Descubrimientos que podamos hacer impulsados por la IA, creo que van a ser muchísimos. Ahí me gustaría pensar que resolveremos algunos de los mayores problemas de la humanidad, por ejemplo.</p>
+
+          <p>Me gustaría pensar que la IA nos ayudará definitivamente a resolver la fusión nuclear y a poder tener generación de energía prácticamente infinita, limpia, barata, etcétera, etcétera. De aquí a poder enchufar algo ahí pasarán décadas, eh, pero claramente, si uno piensa en los problemas fundamentales de la humanidad, la generación de energía limpia y casi infinita y prácticamente gratis es claramente un problema de la humanidad.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>¿Por qué crees que la IA contribuirá a resolver la fusión?</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Bueno, porque la fusión, igual que la computación cuántica u otras tecnologías de este tipo, son tecnologías que a nivel teórico las tenemos resueltas. Ya sabemos que es posible, sabemos que eso va a acabar pasando. Ahora lo que hay es un problema de ingeniería, un problema tremendamente complejo de ingeniería.</p>
+
+          <p>Entonces, para resolver todas las problemáticas que hay en la implementación de esa idea, de hacerla realidad, la IA nos acelera muchas de estas cosas. ¿No? Por ejemplo, hay un campo de investigación muy interesante que tiene que ver con saber cómo se comporta el plasma dentro de un reactor de fusión cuando te vas a centenares de miles de grados. Esto es evidente que mejor que en el laboratorio no lo pruebes, que no puedes: de hecho la primera vez que lo construyas es la primera vez que experimentes con ello, ¿no? Simular esto computacionalmente es supercomplejo. La IA está ayudando a muchos grupos de investigación a ir más rápido, a encontrar una solución de qué materiales, de qué geometría, de qué va a pasar, etcétera. Entonces, estas cosas que hasta ahora no las podías hacer, la IA te permite acelerar para hacerlas.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Por tanto, volvemos a la automatización de procesos y al aumento de la productividad individual.</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Sí, y en este caso aplicado a organizaciones que se dedican a la investigación. Esto por una parte. Y por otra parte, hacer saltos a cosas que tú no podrás hacer nunca, porque quizá experimentalmente no lo puedes hacer porque las condiciones no son simulables, pero en cambio computacionalmente sí que lo puedes trabajar.</p>
+
+          <p>Para mí la generación de energía es un campo claro. Otro campo claro es la simulación climática a gran escala, tanto en pequeña escala espacial y en larga escala temporal. Ahí se están haciendo progresos muy espectaculares, y yo creo que en los próximos años veremos resultados súper interesantes a nivel de predicción de clima y el impacto que esto puede tener en aseguradoras, en transportes, en movilidad, en infraestructuras, en un montón de cosas.</p>
+
+          <p>Creo que habrá cambios que a mí se me escapan un poco porque no vengo de esta disciplina, brutales en biomedicina. Y las cosas que yo veo en Invivo Partners y a mi alrededor, de nuevas terapias que aceleran gracias al uso de la IA, son absolutamente espectaculares. La capacidad que ahora empezamos a tener de probar cosas en lo que se llaman cohortes virtuales de pacientes — es decir, pacientes virtuales construidos con IA a partir de datos reales de pacientes — nos pueden dar luz a cosas que hasta ahora no hemos podido comprobar. Y yo creo que ahí, relacionado con el tema de longevidad, veremos cambios importantes en el medio plazo.</p>
+
+          <p>Me gustaría pensar que en temas de recursos naturales, alimentación y demás también habrá disrupciones.</p>
+
+          <div class="quote-block">
+            <p>«Si todo va como creemos que va, la IA nos permitirá hacer en 2030 la ciencia que esperábamos para 2050.»</p>
+            <div class="attribution">— Vicepresidente de ciencia de OpenAI, citado por Pep Martorell</div>
+          </div>
+
+          <p>Es decir, yo creo… Escuchaba hace no mucho una entrevista al vicepresidente de ciencia de OpenAI — esto es una cosa muy interesante: ahora las grandes compañías tecnológicas tienen una posición que se llama Vice President for Science, de alguien que se ocupa de mirar qué disrupciones en ciencia provocará la tecnología que están desarrollando, ¿no? Y este hombre básicamente decía: "Si todo va como creemos que va, la IA nos permitirá…" Era un titular muy, muy escandaloso, eh, pero el titular era: "La IA nos permitirá hacer en 2030 la ciencia que esperábamos para 2050."</p>
+
+          <p>Y creo que en algunas cosas esto es cierto. Cosas que le vemos todavía 25, 30 años para que lleguen como algunas de las que he contado, la inteligencia artificial nos puede ayudar a llevarlas mucho antes en términos de tiempo.</p>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 24: GOBERNANZA         -->
+      <!-- ============================== -->
+      <section id="gobernanza" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">24</span>
+          <h2 class="section-title">Peligros y gobernanza de la IA</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Muy bien, esto… Hemos hablado todo el rato de algunas oportunidades, pero también de algunas amenazas. Esto para mí es la gran oportunidad de la humanidad: la productividad empresarial, la automatización, el puesto de trabajo, todo esto está muy bien. Pero si conseguimos resolver los tres, cuatro, cinco grandes problemas materiales de la humanidad gracias en parte a esta tecnología, a su combinación con la ciencia, para mí esta es la gran oportunidad en las próximas décadas. ¿Cuál es el peligro entonces?</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>El peligro es la falta de gobernanza. Como con cualquier tecnología, los humanos hemos mostrado que podemos tener tecnología que nos puede destruir varias veces en un mismo día, pero a la vez la podemos regular y hay tratados de no proliferación de bombas nucleares y cosas de este tipo.</p>
+
+          <p>Esta es una tecnología que podría llegar a tener consecuencias muy malas para la humanidad. La parte de ciberseguridad, que ahora está tan en boga por el tema de Mizos, tan encima de la mesa, es una parte obvia. Si dejamos escapar uno de estos modelos, cualquiera podría llegar a generar ataques de ciberseguridad muy complejos, y esto podría afectar desde los sistemas de pago bancarios hasta la red eléctrica, pasando por mil otras cosas.</p>
+
+          <p>Para mí el gran peligro a corto/medio plazo, el gran peligro, es la gobernanza de esa tecnología. A largo plazo, mi interrogante — y no sé si es un peligro — es si conseguimos llegar a inteligencias artificiales que vayan mucho más allá de lo que ahora tenemos, y eso para mí plantea otras preguntas que no sé casi ni formular, más a nivel de especie humana, de qué significa ser humano y de cómo vamos a vivir en un mundo donde convivamos con cosas que son mucho más inteligentes que nosotros.</p>
+
+          <p>Pero antes de llegar ahí, que todavía no estamos, a corto-medio plazo, para mí el punto fundamental es la gobernanza de la tecnología.</p>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 25: LIBROS             -->
+      <!-- ============================== -->
+      <section id="libros" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">25</span>
+          <h2 class="section-title">IA y el futuro de los libros</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Muy bien, Pep, pues vamos a ir terminando. No te he preguntado por algunas cosas muy interesantes, y al principio antes de empezar hemos hablado de religión y de espiritualidad, quizá otro día hablar de todo esto. Otro día de historia de la ciencia, que es un tema muy interesante. Sí que me gustaría preguntarte una última cosa antes de nuestra pregunta de cierre, que es la siguiente: ¿Cuál es tu opinión al respecto de la relación entre IA y libros? Los libros son lenguaje, la IA es muy buena en todo lo que es lenguaje o código, todo el mundo que se dedica a trabajar con lenguaje o código está bastante acojonado — no sé si la expresión es correcta. ¿Sustituirá la IA a los libros? ¿Cómo la industria editorial debe pensar el tema de la IA?</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Sí, yo diría: ¿la IA podría sustituir a los libros? Sí. ¿Lo va a hacer? Creo que no.</p>
+
+          <p>Intento hacer el símil: en los 80, yo soy muy aficionado al ajedrez y durante muchos años jugué, cuando era joven, federado y me lo pasaba muy bien. Yo viví una época que eran finales de los 80, primeros de los 90, que entonces tenía 14, 15, 16 años, donde sistemáticamente todos intentábamos afirmar con mucho convencimiento que nunca un ordenador iba a ganar a un humano jugando ajedrez, porque teníamos la percepción general de que si esto pasaba, se acababa el tema. ¿Qué sentido tendría jugar si una máquina ya nos puede ganar?</p>
+
+          <p>En el noventa y tantos, Deep Blue gana a Kasparov. Kasparov tiene esa reacción en la tercera partida, creo que es… Reaccionó mal porque la IA hizo una jugada que él creía imposible si no había un humano detrás. Y 20, 25, 30 años después nos hemos dado cuenta de dos cosas muy interesantes: una, que es obvio que cualquier algoritmo nos gana a cualquiera de los humanos, eso ya está superadísimo; dos, que con eso hemos aprendido a jugar mucho mejor ajedrez; y tres, que no solo no hemos dejado de jugar ajedrez, sino que jugamos mucho más.</p>
+
+          <div class="concept-card insight">
+            <div class="concept-card-label">♟️ Analogía con el ajedrez</div>
+            <p>«Que una tecnología haga mejor que un humano una cosa que fundamentalmente es creatividad intelectual no significa que el humano deje de hacerlo. Igual que hay impresoras en 3D que son capaces de hacer el David perfecto, seguimos yendo todos a Florencia a la Academia cada vez que vamos a Florencia a ver esa maravilla, porque hay algo por el hecho de haber sido hecho por un humano, con una historia detrás, en un momento determinado de la humanidad, que lo hace especial.»</p>
+          </div>
+
+          <p>Creo y espero que con los libros pase algo parecido. Claro que habrá IA que me generarán textos magníficos, fantásticos, y que me van a distraer un montón, igual que hay algoritmos que juegan mucho mejor ajedrez. Pero eso no quiere decir que haya dejado de jugar ajedrez, y eso no quiere decir que vaya a dejar de leer libros hechos por humanos, porque hay algo especial en leer un mensaje que una persona concreta me está enviando a mí.</p>
+
+          <p>Yo hace tiempo hablaba con un editor, una editora, y le decía: "¿Te has dado cuenta que, por ejemplo, Amazon debe estar así de sacar un producto que sea un escritor para ti? Y que tú, en lugar de estar en Amazon y pedir un libro, simplemente tengas a tu autor, tu escritor, a quien le digas: 'Oye mira, viernes por la tarde, estoy muy cansado de la semana, oye hazme una novela corta policial que pase en Barcelona, que se muera no sé quién, que yo sea el protagonista, y qué tal.' Te vas a pegar una ducha, te preparas algo para cenar, y la tienes en el Kindle para leer."</p>
+
+          <p>Eso técnicamente es posible, y si no lo es hoy, lo será mañana. ¿Eso quiere decir que disruptará la industria editorial hasta el punto que dejaremos de escribir libros y de leer libros escritos por humanos? Yo estoy convencido que no, porque en todas las disciplinas donde se ha… disciplinas artísticas, intelectuales, donde se ha producido una tecnología que mejore a los humanos, seguimos valorando lo hecho por los humanos.</p>
+
+          <p>Hay robots que pintan cuadros mejor que no sé quién, pero seguimos teniendo en los museos cuadros hechos por grandes figuras del arte. Hay máquinas que juegan mejor ajedrez que yo, hay impresoras 3D que hacen esculturas perfectas, pero seguimos admirando la obra humana. Al final, mientras la literatura sea transmitir un mensaje de humano a humano, yo creo que la literatura, los libros, seguirán teniendo su espacio absolutamente.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Muy bien, dentro de unos años me dirás si he sido un optimista o si realmente hemos ido por ahí.</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Bueno, el libro tiene el culo pelado de que lo entierren.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Exactamente, algún día alguna deberá enterrarlo, eh, pero por el camino lo habrá pasado muy bien con tanto vaticinio erróneo.</p>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 26: CIERRE             -->
+      <!-- ============================== -->
+      <section id="cierre" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">26</span>
+          <h2 class="section-title">Cierre y recomendaciones</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Bueno, siempre cerramos así: ¿a quién te parecería interesante invitar al podcast?</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Mira, te diré un invitado nuevo y un invitado para volver a invitarlo, que creo que ya le invitasteis una vez.</p>
+
+          <p>Yo de invitado nuevo te sugeriría Cristian Cantón. Cristian es la persona que me sustituyó en el BSC, en el Barcelona Supercomputing Center. Es un individuo excepcional que tiene una trayectoria además empresarial en Estados Unidos muy interesante. Él es uno de los firmantes de los artículos en que Meta basa sus modelos de lenguaje, son los Llama, por tanto entiende mucho de esta tecnología y puede contar muy bien qué está pasando hoy, no solo en Europa, sino también en Estados Unidos.</p>
+
+          <p>Y me gustaría proponerte, creo que ya lo invitaste una vez, a José Ignacio Latorre.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Volverá, vuelve en unos meses.</p>
+
+          <p><span class="speaker pep">PEP MARTORELL:</span></p>
+          <p>Venga, pues perfecto por José Ignacio, que es una persona que, aparte de que fue profesor mío en la facultad y tengo un cariño tremendo por sus clases, muy buen recuerdo — soy físico — mantenemos una muy buena amistad y nos vemos de tanto en tanto. José Ignacio tiene un discurso muy bien trabajado sobre cómo esta tecnología va a afectar a un nuevo contrato social y cómo la manera como nos organizamos como sociedad puede ser que cambie debido a esta tecnología, y creo que las cosas que dice vale la pena escucharlas.</p>
+
+          <p><span class="speaker host">ENTREVISTADOR:</span></p>
+          <p>Muy bien, Pep, pues muchísimas gracias. Superinteresante, espero que te hayas sentido a gusto. Muy divertido. Ha sido un placer.</p>
+
+        </div>
+      </section>
+
+    </div><!-- /content-wrapper -->
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <p class="footer-text">
+        Curso IA Commercial — Cuaderno 01: Pep Martorell en Arpa Talks · Transcripción íntegra
+      </p>
+    </footer>
+  </main>
+
+  <!-- Back to Top -->
+  <button class="back-to-top" aria-label="Volver arriba">↑</button>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/search-data.js"></script>
+  <script src="../js/search.js"></script>
+  <script src="../js/highlighter.js"></script>
+  <!-- External Dependencies -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@9.4.3/dist/mermaid.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+  
+  <!-- Custom Scripts -->
+  <script src="../js/diagrams.js"></script>
+  <script src="../js/edit-mode.js"></script>
+  <script src="../js/playground.js"></script>
+  <script src="../js/glossary.js"></script>
+  <script src="../js/ai-tutor.js"></script>
+  <script src="../js/text-zoom.js"></script>
+</body>
+</html>

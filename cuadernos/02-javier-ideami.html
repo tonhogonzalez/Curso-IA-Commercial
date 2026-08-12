@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Transcripción de la entrevista a Javier Ideami. Los dos sistemas de pensamiento ante la IA, los siete mandamientos de Dartmouth, correlación vs. causalidad, estrategias prácticas de prompting y metaprompting, alineamiento, multidisciplinaridad y entrenamiento cognitivo.">
+  <meta name="keywords" content="Cognición, Prompting, AGI 2030, Alineamiento, Creatividad">
+  <title>Cuaderno 02 — Javier Ideami: Pensamiento Crítico y Prompting | Curso IA Commercial</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <nav class="top-nav">
+    <button class="menu-toggle" aria-label="Abrir menú">☰</button>
+    <a href="../index.html" class="nav-brand">
+      <div class="nav-brand-icon">IA</div>
+      <div class="nav-brand-text"><span>Curso IA</span> Commercial</div>
+    </a>
+    <div class="nav-links">
+      <a href="../index.html" class="nav-link">Cuadernos</a>
+      <a href="../muro.html" class="nav-link">Lienzo</a>
+      <a href="../recursos.html" class="nav-link">Recursos</a>
+      <a href="#" class="nav-link">Acerca de</a>
+    </div>
+  </nav>
+
+  <!-- Reading Progress -->
+  <div class="progress-bar">
+    <div class="progress-bar-fill"></div>
+  </div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Contenido del cuaderno</div>
+      <a href="#intro" class="sidebar-link active">
+        <span class="sidebar-link-number">00</span>
+        Introducción y teaser
+      </a>
+      <a href="#editorial" class="sidebar-link">
+        <span class="sidebar-link-number">01</span>
+        Editorial y contexto
+      </a>
+      <a href="#musculatura" class="sidebar-link">
+        <span class="sidebar-link-number">02</span>
+        Musculatura cognitiva y sistemas de pensamiento
+      </a>
+      <a href="#mandamientos" class="sidebar-link">
+        <span class="sidebar-link-number">03</span>
+        Los siete mandamientos de la IA
+      </a>
+      <a href="#causalidad" class="sidebar-link">
+        <span class="sidebar-link-number">04</span>
+        Correlación estadística vs. causalidad
+      </a>
+      <a href="#prompting" class="sidebar-link">
+        <span class="sidebar-link-number">05</span>
+        Estrategias de prompting
+      </a>
+      <a href="#gobernanza" class="sidebar-link">
+        <span class="sidebar-link-number">06</span>
+        Gobernanza, ética y Silicon Valley
+      </a>
+      <a href="#horizonte-2030" class="sidebar-link">
+        <span class="sidebar-link-number">07</span>
+        El horizonte 2030 y el Proyecto 2027
+      </a>
+      <a href="#alineamiento" class="sidebar-link">
+        <span class="sidebar-link-number">08</span>
+        Alineamiento y proyección de personalidad
+      </a>
+      <a href="#profundidad" class="sidebar-link">
+        <span class="sidebar-link-number">09</span>
+        Profundidad humana vs. amplitud de la IA
+      </a>
+      <a href="#psicologa" class="sidebar-link">
+        <span class="sidebar-link-number">10</span>
+        La IA como psicóloga
+      </a>
+      <a href="#aprendizaje" class="sidebar-link">
+        <span class="sidebar-link-number">11</span>
+        Cómo aprende una IA por dentro
+      </a>
+      <a href="#multidisciplinaridad" class="sidebar-link">
+        <span class="sidebar-link-number">12</span>
+        Multidisciplinaridad y la regla de Pareto
+      </a>
+      <a href="#humildad" class="sidebar-link">
+        <span class="sidebar-link-number">13</span>
+        Humildad y el futuro del arte
+      </a>
+      <a href="#cerebro" class="sidebar-link">
+        <span class="sidebar-link-number">14</span>
+        Entrenamiento cerebral y conclusión
+      </a>
+    </div>
+  </aside>
+
+  <!-- Sidebar Overlay (mobile) -->
+  <div class="sidebar-overlay"></div>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="content-wrapper">
+
+      <!-- Page Header -->
+      <header class="page-header">
+        <div class="breadcrumb">
+          <a href="../index.html">Curso IA</a>
+          <span class="separator">›</span>
+          <span>Cuaderno 02</span>
+        </div>
+
+        <div class="page-meta">
+          <span class="meta-badge">Cuaderno 02</span>
+          <span class="meta-badge blue">Tengo un Plan</span>
+          <span class="meta-badge cyan">Transcripción íntegra</span>
+        </div>
+
+        <h1 class="page-title">Pensamiento Crítico, Prompting y el Horizonte 2030</h1>
+
+        <p class="page-subtitle">
+          Transcripción completa e íntegra de la conversación con Javier Ideami en el podcast Tengo un Plan. Desde los dos sistemas de pensamiento hasta los siete mandamientos de la IA, pasando por estrategias de prompting, alineamiento y el futuro de la creatividad humana.
+        </p>
+
+        <!-- Guest Card -->
+        <div class="guest-card">
+          <div class="guest-avatar">JI</div>
+          <div class="guest-info">
+            <h3>Javier Ideami</h3>
+            <p class="guest-role">Creativo multidisciplinar · Ingeniero · Artista · Director Creativo · Cofundador de Crea</p>
+            <p>Creativo multidisciplinar con trayectoria entre Estados Unidos y Europa. Ingeniero, artista, director creativo y cofundador de la startup Crea (antes Jennivers). Especialista en IA generativa, cognición y creatividad.</p>
+          </div>
+        </div>
+      </header>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 00: INTRODUCCIÓN Y TEASER -->
+      <!-- ============================== -->
+      <section id="intro" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">00</span>
+          <h2 class="section-title">Introducción y teaser</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <div class="quote-block">
+            <p>Lo que van a surgir van a ser roles nuevos y actividades nuevas que son difíciles de imaginar ahora... Cuando las generaciones del futuro miren atrás, las formas de expresión creativa y artística que tenemos hoy en día van a ser una cosa ínfima comparada con las formas de expresión que existirán en el futuro.</p>
+            <div class="attribution">— Javier Ideami</div>
+          </div>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>¿Es tan preocupante la inteligencia artificial? ¿Va a acabar con nosotros, con nuestro trabajo? ¿Cómo ves tú la situación?</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>Lo que van a surgir van a ser roles nuevos y actividades nuevas que son difíciles de imaginar ahora. ¿Y por qué se habla siempre del 2030? El 2030 es un poco el horizonte que muchas veces vemos de cuándo se podría llegar a esa inteligencia artificial muy parecida a la del humano. Cuando las generaciones del futuro miren atrás, las formas de expresión creativa y artística que tenemos hoy en día (nuestra fotografía, nuestra pintura, nuestra música) van a ser una cosa ínfima, ínfima comparada con las formas de expresión que existirán en el futuro.</p>
+
+          <p>Javier Ideami. Javier Ideami, creativo multidisciplinar, ingeniero, artista, director creativo que ha desarrollado su trayectoria entre Estados Unidos y Europa para descubrir cómo la inteligencia artificial generativa nos va a cambiar la vida, o nos está cambiando ya la vida.</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>¿Crees que es buena psicóloga la IA? ¿Vosotros usáis a la IA como para explicar vuestros problemas personales?</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>¿Sabéis cuánta gente me dice que sí? Prácticamente todos. ¿Por qué lo está haciendo? Porque funciona. Pero ojo, es peligroso. Hay múltiples casos ya de personas que se han suicidado después de hablar de problemas personales con chatbots.</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>¿Qué me estás contando?</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>Y hay varias historias de estas. Recientemente pasó otra, y os voy a explicar por qué y cómo evitarlo. Usar la IA para tomar decisiones, ¿está mal? No. Nosotros tomamos mejores decisiones. Usar la IA para tomar decisiones puede ser muy bueno si sabes cómo dirigirla. Tenéis que ver a las IA como si fueran entidades que tienen diferentes personalidades, porque cada IA se ha entrenado con un conjunto de datos diferente.</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>¿Cómo? ¿Cómo? ¿Cómo? O sea, ¿que a la de Google versus la de OpenAI...? O sea, ¿tenemos que hablarles de formas diferentes?</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>La de Google es muy sensible. Claro, por ejemplo, pensar, pensar en una cosa: ¿cuáles son un conjunto de datos gigantescos que Google tiene y otros no tienen? ¿Cuál es?</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>¡Ostras!</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>Vamos a ver. Os voy a contar una cosa que muy poca gente sabe. La gente piensa que la IA se inició hace poco, pero en realidad la IA lleva una trayectoria de 70 años. ¡70 años! En 1955, en Estados Unidos, los mayores genios de la computación publicaron un manifiesto. Esos siete puntos son los que la IA debería dominar para llegar al nivel de los humanos.</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>Los siete mandamientos de la IA.</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>Los siete mandamientos de la IA. Pues ahora, 70 años después de esos siete mandamientos, ¿cuántos ha dominado la IA? Pues veréis...</p>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 01: EDITORIAL Y CONTEXTO -->
+      <!-- ============================== -->
+      <section id="editorial" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">01</span>
+          <h2 class="section-title">Editorial y contexto</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>Lo que está contando Javier es muy interesante, pero es que más interesante aún es cómo esa inteligencia artificial que nos está explicando de dónde viene la empezamos a aplicar en nuestros negocios y nuestros trabajos. Y esto no va solo a empresarios, Juan; esto va a autónomos, a personas que venden servicios, a trabajadores que quieren aumentar su productividad. Es que la inteligencia artificial bien utilizada en tu trabajo te va a dar libertad, más dinero y, sobre todo, menos dolor de cabeza.</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>Y yo creo, Sergio, que tenemos nosotros que un poco espabilarnos. De hecho, ahora hay un montón de gente que está haciendo con un ordenador a un agente de IA que trabaja para él, es decir, es como tener tu secretario o tu secretaria totalmente gratis o por el precio de un ordenador.</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>Javier de Learning Heroes ya nos explicó esto en el podcast, y es que negocios que antes necesitaban 10 personas o 15 personas lo están haciendo con dos, con métricas mucho más al detalle, ganando más dinero, siendo más productivos. Y esto, Sergio, nos tenemos que poner las pilas. Y yo creo que Javier nos tiene mucho que explicar.</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>A mí me recuerda esto cuando salieron las redes sociales y la gente era: "No, bueno, no me apetece a mí las redes sociales porque ya sé cómo funcionan, o no me hacen falta", y luego resulta que es obligatorio para todo el mundo. Pues con esto es igual: estás a tiempo de subirte al barco ahora o cuando ya sea demasiado tarde y toda tu competencia la esté utilizando y tú no. Dicho todo esto, si quieres hacer como nosotros y ponernos al día, porque nos hace falta, nos hemos apuntado el día 13 de abril totalmente gratis a una formación intensiva de 4 días online. En ella, tú desde tu casa, el 13, 14, 15 y 16 de abril, vas a aprender todo acerca de la inteligencia artificial aplicada a tu trabajo: desde productividad hasta cómo tienes que comunicarte con la inteligencia artificial para sacar el máximo partido. Y, sobre todo, ser de esos que se aprovechan de ella para poder sacar más rendimiento, poder ayudar a más gente, ganar más dinero y ganar más libertad.</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>Bueno, y si estás escuchando esto después del 16 de abril, métete también en el enlace porque tienes algún recurso y estaremos ahí todos juntos, porque ya te digo, "Tengo un Plan" es la primera empresa que necesita esto. Y por cierto, Sergio, ponte al día con la IA y rima bastante, ¿no?</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>Sí, ponte al día con la IA rima bastante, la verdad. Así que ya sabéis, chicos, poneros al día con la IA con los amigos de Learning Heroes y sigamos con el episodio. Hoy vamos a hablar de inteligencia artificial. La inteligencia artificial es un fenómeno que ha venido arrastrando y arrasando todo lo que concebimos como innovación, como cambios en el trabajo, cambios en la sociedad y en cómo nos comportamos. Juan, ¿tú la estás usando ya todos los días?</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>No, no, yo la uso todos los días pero me preocupa. Porque muchas veces, Sergio, algo de lo que me está preocupando es que ya no me siento del todo seguro hasta que no lo verifico con la inteligencia artificial. Ya no pienso tanto, y son cosas que me preocupan porque no sé hasta qué punto va a llegar, y sobre todo la gente que se está criando ya con la inteligencia artificial. Y para eso hemos traído a Javier. Javier, bienvenido a "Tengo un Plan". Queremos hablar de todo en detalle: de cómo va a cambiar el mundo, de esta robótica que también no se está hablando tanto (pero la robótica yo creo que es lo que más puede cambiar los trabajos) y de cómo ves todo este futuro con la inteligencia artificial.</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>Perfecto, muchas gracias Juan, muchas gracias Sergio por invitarme. Es un placer estar aquí con vosotros. Quiero empezar por lo que acabas de decir ahora de que al usar la IA empiezas a tener dudas un poco sobre tus propios procesos de pensamiento. Vamos a decir ya una cosa desde el principio: la IA te puede hacer más inteligente, pero también más dependiente.</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>Eso es lo que siento.</p>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 02: MUSCULATURA COGNITIVA Y SISTEMAS DE PENSAMIENTO -->
+      <!-- ============================== -->
+      <section id="musculatura" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">02</span>
+          <h2 class="section-title">Musculatura cognitiva y sistemas de pensamiento</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <div class="concept-card highlight">
+            <div class="concept-card-label">⚡ Concepto clave</div>
+            <p>«La IA te puede hacer más inteligente, pero también más dependiente. La ventaja en el futuro la van a tener no los que usen más la IA, sino los que, usando la IA, mantengan su pensamiento crítico y profundo.»</p>
+          </div>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>Y el problema no es tanto que a veces la IA piense por ti, sino que al usar la IA tú empieces a dejar de pensar por ti mismo de una forma crítica y profunda. Porque la ventaja en el futuro la van a tener no los que usen más la IA, sino los que, usando la IA, mantengan su pensamiento crítico y profundo. Esto es vital.</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>O sea que, en cierta manera, nuestra responsabilidad (o sea, la responsabilidad que hay en el mundo ahora mismo) es nuestra. ¿Está en nuestra mano el que el futuro sea un poco caótico o que sea un futuro más con armonía, más tranquilidad?</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>Absolutamente. Es decir, hasta ahora todos hemos estado acostumbrados, por ejemplo, a ejercitar nuestra musculatura física para mantenernos en forma, pero no hemos prestado mucha atención a nuestra musculatura cognitiva. Pero ahora con la IA vamos a empezar a delegar cada vez más tareas cognitivas a esta extraordinaria tecnología, y si no mantenemos de alguna manera nuestra cognición en forma también, pues se va a empezar a atrofiar. Luego, los que van a tener ventaja en el futuro son los que van a mantener su pensamiento crítico y profundo, y son los que van a liderar esa colaboración entre la IA y los humanos.</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>Luego hablaremos de cómo tomar mejores decisiones, cómo entrenar nuestro cerebro. Pero empezando por un plano general, tú que estás en el mundo de la tecnología, ¿es tan preocupante la inteligencia artificial o la gente se está pasando de meternos miedos? Es decir, ¿va a acabar con nosotros, con nuestro trabajo? ¿Cómo ves tú la situación?</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>No, yo diría que hay mucha exageración en el tema del peligro y de los problemas existenciales. Mirad, tenemos que ver a la IA como un magnificador de nuestra capacidad. Yo siempre pongo la metáfora del traje de Iron Man, ¿vale? Es decir, una especie de traje metafórico de Iron Man que amplifica nuestro subconsciente y nuestra musculatura cognitiva. Tenemos que ver a la IA como una herramienta que puede funcionar como espejo cognitivo, que puede funcionar como acelerador de descubrir nuestra identidad, como simulador de futuros, como amplificador de nuestra curiosidad, como compresor de tiempo, como reductor de la fricción existencial.</p>
+
+          <p>Y la gente se preocupa: ¿y si nos reemplaza? Pero para que la gente entienda por qué eso está muy lejos, vamos a hablar de algo muy concreto. Veréis, los humanos tenemos dos formas de pensar popularizadas por el Premio Nobel Daniel Kahneman: el pensamiento rápido y el pensamiento lento (el sistema uno y el sistema dos). El pensamiento rápido es nuestro pensamiento subconsciente, automático, nuestro encaje de patrones automático, muy baratito, muy rápido. Y nuestro pensamiento lento, el sistema dos, es nuestro pensamiento sistemático, lógico, ejecutivo, analítico, cuando estamos haciendo un proceso de búsqueda interno para buscar los pasos de un algoritmo que resuelva un cierto escenario o situación. El problema del sistema dos es que es muy lento, gasta muchos recursos cognitivos, mucha glucosa, etcétera, etcétera.</p>
+
+          <p>¿En qué situación se encuentra la IA hoy en día? Pues la IA ha dominado a nivel sobrehumano ese pensamiento rápido, ese encaje de patrones, pero apenas está comenzando todavía a intentar dominar ese pensamiento lento. Y solamente cuando domine el pensamiento lento, ese pensamiento de razonamiento profundo, será capaz de plantearnos cuestiones más existenciales.</p>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 03: LOS SIETE MANDAMIENTOS DE LA IA -->
+      <!-- ============================== -->
+      <section id="mandamientos" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">03</span>
+          <h2 class="section-title">Los siete mandamientos de la IA</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>Y claro, mucha gente se pregunta: ¿cómo de lejos (os preguntáis vosotros) estamos de ese punto donde la IA podría competir, digamos, con nuestra habilidad más ejecutiva? ¿Existe un año?</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>Vamos a ver. Os voy a contar una cosa que muy poca gente sabe. La gente piensa que la IA se inició hace poco porque de repente este tema de crear imágenes o tal es como muy reciente, pero en realidad la IA lleva una trayectoria de 70 años. ¡70 años! Y fijaros, en 1955, en Estados Unidos, los mayores genios de la computación (Marvin Minsky, Claude Shannon, Nathaniel Rochester y John McCarthy), los mayores genios de la computación de aquella época, publicaron un manifiesto en Dartmouth, en Estados Unidos, que decía: "Esto es lo que la inteligencia artificial es", como que fundaron la era de la IA. Esos siete puntos son los que la IA debería dominar para llegar al nivel de los humanos.</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>Los siete mandamientos de la IA.</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>Los siete mandamientos de la IA. Pues ahora, 70 años después de esos siete mandamientos, ¿cuántos ha dominado la IA? Pues veréis. Los primeros cuatro mandamientos tenían que ver con temas de imitar las redes neuronales del cerebro (por ejemplo, con redes artificiales), dominar el lenguaje, escalar con el hardware, y estos primeros cuatro puntos los ha dominado muy bien la IA. Hemos avanzado mucho. Pero los tres últimos puntos, ¿sabéis cuáles son los tres últimos puntos?</p>
+
+          <p>Punto número cinco: Que la IA sea capaz de aprender continuamente y adaptarse continuamente a entornos complejos. Esto la IA no lo puede hacer hoy en día. No sé si la audiencia y vosotros lo sabéis, hoy en día cuando entrenan Chat GPT, después de entrenarlo, se congela. Está congelado. Si entráis en vuestra cuenta de Chat GPT, si entráis en los detalles, veréis que dice: "Esta versión de Chat GPT ha llegado hasta el mes de octubre del 2025". Es el mes en el que se terminó su entrenamiento. Y por supuesto, puede buscar en internet, ¿vale? Pero si no le pedís que busque en internet, su conocimiento está limitado hasta ese momento. Entonces no puede hacer como nosotros, como los humanos; no puede en tiempo real estar aprendiendo algo nuevo e incorporándolo. Si tú tienes una conversación con Chat GPT, no está aprendiendo de lo que tú le estás diciendo e incorporándolo en su conocimiento general. Ese es el punto número cinco.</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>Una cosa antes de que pases al seis. Entonces, esto dice que usar la IA para tomar decisiones, ¿está mal? ¿Nosotros tomamos mejores decisiones?</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>Vale, aquí llega una cosa muy importante. Usar la IA para tomar decisiones puede ser muy bueno si sabes cómo dirigirla con el prompting, una disciplina que se ha convertido en algo totalmente clave para todo el mundo, y que recomendamos a todos los jóvenes que practiquen continuamente: la ingeniería de prompts. Es decir, la habilidad de dar instrucciones a la IA para dirigirla correctamente.</p>
+
+          <p>Si tú quieres tomar una decisión importante y no sabes que la IA tiene su conocimiento congelado en un cierto momento, y tu decisión tiene que ver con cosas que son muy recientes, y no le dices a la IA expresamente en tu prompt: "Haz una búsqueda en internet para adquirir los datos más recientes a fecha de marzo del 2026", puede que te dé la respuesta incorrecta. Entonces depende mucho de tus instrucciones. Si tus instrucciones son correctas, entonces tomar una decisión con el apoyo de la IA va a ser mejor que tomarla por ti mismo. ¿Por qué? Porque no os olvidéis que la IA ha sido entrenada con prácticamente todo el conocimiento del internet y contiene toda la sabiduría de la mayoría de los expertos del mundo en cualquier tema de ciencia, de filosofía, de psicología o de lo que sea.</p>
+
+          <p>La clave es que todo ese conocimiento se encuentra en unos espacios latentes, abstractos, comprimidos, internos de la IA, y tú con tu prompt lo que tienes que intentar hacer es dirigir a la IA para buscar internamente en esos espacios de la manera más eficiente y correcta cómo encontrar la dirección adecuada para resolver tu problema. Luego, el prompting es absolutamente clave.</p>
+
+          <p>Pero ojo, con los humanos también. Si por ejemplo yo ahora te digo: "Sergio, imagínate un elefante rosa en una piscina", yo ahora mismo te estoy dirigiendo con un prompt. Estoy dirigiendo tu subconsciente a que has visualizado un elefante rosa. Perfectamente, yo ahora mismo es como si tú fueras mi chat GPT y yo te estoy haciendo ingeniería de prompts. Entonces no es lo mismo que te diga "un elefante rosa en una piscina" o que te dé más detalles: "un elefante rosa rodeado de unas..." lo que sea.</p>
+
+          <p>Entonces, digamos que la ingeniería de prompts la hemos estado haciendo los humanos entre nosotros todo el tiempo (el marketing tiene mucho que ver con eso) y ahora lo estamos haciendo con entidades artificiales. Y en el futuro tendremos a IAs haciendo prompting con otras IAs. Ya está empezando, ya tenemos sistemas de agentes en el que agentes están dirigiendo a otros agentes y eventualmente crearán (y ya ha ido habiendo experimentos de esto) sus propios lenguajes e idiomas para dirigirse entre ellas también.</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>Madre... Antes de pasar al mandamiento seis, ¿cuál eran del uno al cinco? Es decir, el cinco hemos dicho que aprenda constantemente de los contextos que le rodean (que eso aún no lo hemos conseguido). Pero el uno, el dos, el tres y el cuatro que sí que hemos conseguido, ¿cuáles son?</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>Vale.</p>
+
+          <p>El uno tenía que ver básicamente con el hardware, con la escala y con la algoritmia. Es decir, cómo podemos escalar a nivel potente tanto los algoritmos como el hardware alrededor de los algoritmos para llegar a ese nivel humano. Y obviamente con las GPUs hoy en día, con los centros de datos, hemos logrado resolver eso de una manera muy potente. Y los algoritmos (los algoritmos de descenso del gradiente, de backpropagation, los algoritmos que aprenden en las IAs) han avanzado mucho también.</p>
+          <p>El punto número dos era el del lenguaje. Es decir, las IAs deberían ser capaces de "entender" entre comillas el lenguaje humano y ser capaces de expresarse con el lenguaje humano. Y obviamente con Chat GPT, etcétera, vemos que hemos avanzado mucho aquí.</p>
+          <p>El punto número tres era imitar las redes neuronales del cerebro. Es decir, ¿podemos construir algo similar a las redes neuronales del cerebro pero de forma artificial? Sí, obviamente lo hemos hecho.</p>
+          <p>El punto número cuatro ya es un poco más abstracto: tener maneras de medir la complejidad de los procesos de computación. Esto ya tiene que ver más con procesos de validación y procesos técnicos dentro del diseño de los algoritmos de IA, y aquí hemos avanzado mucho también.</p>
+          <p>Entonces, en estos cuatro no los hemos dominado al 100%, pero hemos llegado por lo menos a un nivel de un 70% o 80% en la mayoría de ellos. Pero en el punto número cinco que os he dicho, todavía nos encontramos bastante lejos, igual a un 50% o algo así. Luego os diré cuál es la media total y cómo de lejos estamos. ¿Queréis el punto número seis?</p>
+
+          <p>Punto número seis: Las abstracciones causales. Es decir, cuando tú entrenas a una IA, la IA tiene que comprimir todo ese aprendizaje en abstracciones internas. Igual que vosotros, porque en la cabeza no nos caben todas las cosas, abstraemos las cosas en representaciones internas comprimidas. Bueno, pues esas representaciones internas deberían ser robustas y causales como las del ser humano, y en la IA no son así. En la IA de hoy en día, las representaciones internas están basadas en correlaciones estadísticas.</p>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 04: CORRELACIÓN ESTADÍSTICA VS. CAUSALIDAD -->
+      <!-- ============================== -->
+      <section id="causalidad" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">04</span>
+          <h2 class="section-title">Correlación estadística vs. causalidad</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <div class="concept-card insight">
+            <div class="concept-card-label">🧠 Insight</div>
+            <p>«La forma más eficiente para el cerebro humano para poder predecir lo siguiente que vas a percibir es gradualmente aprender a entender las causas de los efectos. Por eso el cerebro humano va aprendiendo abstracciones internas que son causales, que expresan las causas de las cosas.»</p>
+          </div>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>Entender esta diferencia es algo súper bonito. Si queréis, os lo explico con un juego mental muy rápidamente. Como seres vivos, ¿cuál es vuestra prioridad máxima?</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>Sobrevivir.</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>Sobrevivir, perfecto. Para sobrevivir, ¿qué es lo que tenéis que evitar?</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>La muerte.</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>La muerte, vale. ¿Y qué os puede causar la muerte? Peligros, por ejemplo, un tigre que os pueda comer. Para poder detectar si un tigre os va a comer, ¿qué necesitáis sobre lo que os rodea?</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>Ojos, información.</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>Información, y esa información os llega a través de los sentidos. Tenéis el cerebro encerrado en el cráneo y la información os llega a través de los sentidos. Si tenéis el tigre ya delante de vosotros y os va a comer ya, ¿os sirve de algo tener esa información en ese instante?</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>No.</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>No. Entonces, ¿qué es lo que sería ideal que tuviera vuestro cerebro para poder hacer algo antes de que os coma el tigre? ¿Qué sería ideal que pudiera tener vuestro cerebro?</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>Anticipación.</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>Eso es: tendría que tener un sistema predictivo. Y lo tiene vuestro cerebro. El cerebro tiene un sistema predictivo para anticiparse. Y ahora llega lo más bonito: para poder anticiparse ese sistema predictivo, ¿qué es lo que debería poder predecir? Recordad, vuestro cerebro está encerrado en el cráneo y a través de los sentidos lo único que puede recibir es vuestra percepción. Lo único que tenéis es la percepción. ¿Qué es lo único que puede predecir el cerebro? La percepción.</p>
+
+          <p>Entonces, vosotros tenéis un sistema predictivo en el cerebro que está constantemente prediciendo qué es lo próximo que vais a percibir a través de los sentidos y lo compara con lo que percibís, y eso produce una señal de error, y esa señal de error es la que influencia el aprendizaje de esas abstracciones internas. Y ahora llega el punto más importante: ¿cuál es la forma más eficiente de poder predecir esa percepción por adelantado?</p>
+
+          <p>Si por ejemplo llueve, la hierba se moja. Si yo quiero ser capaz de predecir por adelantado que la hierba va a estar mojada, ¿qué es lo que sería más importante poder entender? Climatología. ¿Y qué es eso en comparación con la hierba mojada? La causa. Ahí está: la causa.</p>
+
+          <p>Entonces resulta que la forma más eficiente para el cerebro humano para poder predecir lo siguiente que vas a percibir es gradualmente aprender a entender las causas de los efectos, las causas de las percepciones que te van a llegar a tus sentidos. Por eso el cerebro humano, desde que eres pequeño interactuando con el mundo, lo que va aprendiendo son poco a poco abstracciones internas que son causales, que expresan las causas de las cosas, las causas de los efectos. Y eso, ¿qué es lo que provoca? Que tú tengas unas abstracciones internas súper fuertes y robustas que luego te permiten razonar a nivel muy profundo, extrapolar. Cuando tú entiendes la causalidad, puedes ir mucho más allá de lo que has aprendido y extrapolar a cosas muy diferentes de lo que has aprendido.</p>
+
+          <p>Ahora, ¿cómo se compara esto con lo que hace la IA? La IA hace una cosa totalmente diferente. La IA no interactúa con el mundo. La IA lo único que hace es: le das un montón de texto y te predice la siguiente palabra. La IA lo único que hace es predecir la estadística y la probabilidad de un conjunto de datos. No entiende la causalidad, entiende la correlación. Y la correlación, ¿qué significa? Dos cosas que tienden a pasar al mismo tiempo. Esto es una cosa mucho más frágil que la causalidad. Daros cuenta de esto: dos cosas que tienden a pasar al mismo tiempo podrían no tener ninguna relación causal entre ellas. En cambio, una relación causal es mucho más profunda y mucho más estrecha que la correlación. Entonces, esto hace que las abstracciones internas de la IA de hoy en día sean mucho más frágiles, y por eso la IA alucina mucho más. ¿Sabéis lo de las alucinaciones en la IA?</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>Sí, cuando le das un prompt a la IA y te responde una tontería.</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>Eso es una alucinación. Ahora bien, los humanos también tenemos alucinaciones. Imaginaros que estáis en vuestra casa y estáis caminando por el pasillo, y pasáis delante de la cocina y hay unas sombras ahí, y por un momento pensáis que hay una persona en la cocina. ¿Por qué pensáis que hay una persona? Porque la combinación de esas sombras y esas luces activa vuestro "modelo del mundo". Aquí introducimos el concepto del modelo del mundo: el modelo del mundo es vuestra representación abstracta interna de cómo funciona el mundo, de esa causalidad del mundo. Entonces, la interacción entre vuestra comprensión robusta causal del mundo y la entrada que llega a vuestros sentidos (esas sombras en la cocina) provoca, en este caso, una alucinación: pensáis que hay una persona. Pero entonces os movéis un poco, y cuando os movéis un poco, esa desincronización entre vuestra comprensión del mundo y la entrada de los sentidos empieza a cambiar hasta que empieza a ganar, básicamente, la entrada real: empezáis a ver "uy, no, no, esto no encaja con una persona", y veis que no es una persona.</p>
+
+          <p>Pues en la IA sucede lo mismo. Se produce una desincronización entre su comprensión interna del mundo (que no es causal sino de correlaciones estadísticas) y el prompt que le dais. Si le dais un prompt que no es el adecuado, se puede producir una desincronización con su comprensión interna y esto provoca una respuesta a veces absurda, súper tonta. Pero, ¿cuál es la diferencia entre las alucinaciones humanas y las artificiales? Que las artificiales suceden más a menudo, son más impredecibles, son más absurdas. ¿Y por qué? Por eso: porque las abstracciones internas de la IA son más frágiles, basadas en correlaciones estadísticas, y las abstracciones humanas son más robustas, más fuertes y más causales.</p>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 05: ESTRATEGIAS DE PROMPTING -->
+      <!-- ============================== -->
+      <section id="prompting" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">05</span>
+          <h2 class="section-title">Estrategias de prompting</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <div class="concept-card highlight">
+            <div class="concept-card-label">⚡ Concepto clave</div>
+            <p>«El metaprompting significa que, en vez de escribir tú las instrucciones a la IA, usas una IA para que te ayude a crear las instrucciones óptimas para usarla con otra IA.»</p>
+          </div>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>¿Cómo podemos mejorar el prompt que le enviamos a la IA? Es decir, toda la gente que nos esté escuchando, ¿cómo, qué trucos básicos le podemos dar para que el prompt sea lo mejor posible y la IA no tenga estas alucinaciones o tenga información que no queremos?</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>Buenísima pregunta. Y ya de mano tenemos que decir a toda la gente joven que nos escucha que hay que ponerse las pilas y practicar regularmente el prompting, y practicarlo con diferentes arquitecturas. Vamos a ver, una pregunta que os hago: si conocéis a personas de diferentes edades o trasfondos, ¿habláis de la misma manera a una persona de una cierta edad o de otra, o de un cierto background? A que no. Pues lo mismo es con las IA. Tenéis que ver a las IA como si fueran entidades que tienen diferentes personalidades, porque cada IA se ha entrenado con un conjunto de datos diferente, y tienen fortalezas diferentes y tienen debilidades diferentes.</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>¿Cómo? ¿Cómo? ¿Cómo? O sea, ¿que a la de Google versus la de OpenAI versus...? O sea, ¿tenemos que hablarles de formas diferentes?</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>La de Google es muy sensible. Claro, por ejemplo, pensad en una cosa: ¿cuál es un conjunto de datos gigantesco que Google tiene y otros no tienen?</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>¡Ostras!</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>YouTube. Google tiene YouTube. Google tiene un montonazo de datos de YouTube que las otras empresas no tienen. Entonces, hay empresas que tienen diferentes fortalezas. Por eso se dice que en la IA de hoy en día, el oro, el oro son los datos propietarios.</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>Entonces Google gana la batalla, ¿no?</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>Bueno, Google gana a lo mejor ahí, pero otros ganan en otras cosas. De hecho, Google tiene una gran ventaja en los datos que, por ejemplo, OpenAI no tiene. Pues eso: Google tiene un montón de datos propietarios, pero por ejemplo, Meta tiene acceso a los datos de Instagram, ByteDance (la empresa de TikTok) tiene los datos de TikTok, etcétera. Entonces, esto es el oro de hoy en día.</p>
+
+          <p>Y luego, diferentes IAs tienen diferentes tendencias también, diferentes estilos, etcétera. Hay que probar el prompting, hay que acostumbrarse a probar el prompting con diferentes arquitecturas y diferentes empresas y diferentes productos de IA, e ir entendiendo sus fortalezas, sus debilidades.</p>
+
+          <p>Y luego también una cosa muy importante: hay que entender la importancia de los detalles. Recordad: si tú le das pocos detalles a la IA en un prompt, lo que estás facilitando es que la IA te dé como respuesta un poco la media, el average de todo ese mejunje interno que tiene. Cuantos más detalles le das a la IA, más estás ayudando a que la IA acote dentro de todo ese conocimiento y te dé una respuesta mucho más rica y mucho más acercada a tu problemática. Entonces, hay que acostumbrarse también a enriquecerlo.</p>
+
+          <p>Y por cierto, una tendencia que cada vez es más importante es el metaprompting, que es usar una IA para que te cree el prompt que vas a usar con otra IA. No sé si habéis hecho eso.</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>¿Puedes repetirlo eso otra vez?</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>Sí, el metaprompting significa que, en vez de escribir tú las instrucciones a la IA, usas una IA para que te ayude a crear las instrucciones óptimas para usarla con otra IA. Esto se hace mucho y es muy recomendable. Tú le dices a la IA: "Mira, yo quiero pedirle a una IA que me haga un plan financiero para construir un proyecto de no sé qué, por favor créame un prompt ideal que haga que la IA me dé todos los detalles posibles con cuantas más perspectivas y no sé qué", y la IA te va a crear un prompt detallado espectacular que tú seguramente no serías capaz de crear, o tardarías mucho tiempo en crear. Entonces, esto es muy recomendable también: probar el metaprompting.</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>Okay, queremos principios para pedirle y sacar el máximo partido a las diferentes IAs, pero que sean generales, o sea, que lo puedas aplicar a cualquier tipo de IA.</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>Exacto. Luego entraremos en profundidad en cosas como, por ejemplo, lo que están haciendo en Claude, que es una locura, o en otras que Juan las está probando y dice que está notando grandes cambios en su vida. Pero eso es muy interesante. ¿Qué principios? El metaprompting es uno de esos principios, pero ¿qué más cosas puede implementar la gente para mejorar su nivel con el prompting? Bueno, yo creo que principios generales son:</p>
+
+          <p>El detalle: Siempre intentar añadir cuanto más detalle relevante sea posible.
+El metaprompting.
+Probar con diferentes plataformas.
+Investigar un poco: Es decir, cuando tú interactúes con una plataforma, investiga un poco. Siempre hay información dentro de los "abouts" de las plataformas sobre qué tendencias tienen, dónde son más adecuadas, dónde funcionan mejor. Por ejemplo, si quieres hacer programación con código, ahora mismo dominan la plataforma de Anthropic (Claude) con los modelos Claude Opus o Sonet por ejemplo. Entonces, te tienes que informar bien cuál es la intención que tienes con el prompting: ¿es generar imágenes?, ¿es reflexionar sobre tu vida?, ¿o es crear un videojuego con código informático? Te tienes que informar, y encontrarás que para código informático quizás Claude es mejor, para generar imágenes a lo mejor Gemini es mejor, para reflexionar sobre tu vida pues a lo mejor chat GPT o Claude también, etcétera, etcétera. Tienes que encarar a las IAs como si fueran personas.</p>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 06: GOBERNANZA, ÉTICA Y SILICON VALLEY -->
+      <!-- ============================== -->
+      <section id="gobernanza" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">06</span>
+          <h2 class="section-title">Gobernanza, ética y Silicon Valley</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>A mí algo que se me ha quedado pendiente cuando has hablado de esos padrinos, esas personas que escriben esos mandamientos... Tú que has estado en Silicon Valley y que has estado de cerca con estos grandes founders (luego hablaremos de que has estado con Sam Altman en persona), ¿crees que hay una mala intención detrás? ¿Crees que hay algún plan demasiado ambicioso que va a poner por encima la ambición de la ética, la ambición de la calidad de la vida humana?</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>A ver, yo creo que hay un peligro real de que eso suceda, pero creo que hay diferentes tendencias ahora mismo en el mundo de la IA. Esas tendencias dependen mucho de dónde vienen los presidentes de algunas de estas empresas.</p>
+
+          <p>Por ejemplo, Demis Hassabis (el director de la IA en Google DeepMind) es un científico. Él estudió neurociencia, es un apasionado de la ciencia desde pequeño, y cuando le escuchas hablar ves que su pasión principal es ayudar a la humanidad con la IA.</p>
+
+          <p>Luego tenemos a gente como Sam Altman. Nosotros, cuando empezamos la startup de Crea (que al inicio se llamaba Jennivers), nos encontramos con Sam Altman en Miami. Sam Altman viene del mundo de los negocios.</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>Cuando tú lo conociste, ¿cómo era su vida? ¿Qué es lo que hacía en ese momento?</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>Eso fue en el 2022 y ellos estaban a punto de lanzar la versión 2 de DALL-E (cuando todavía no era pública). Él viene del mundo de los negocios, estuvo en Y Combinator, la incubadora de startups más conocida de Estados Unidos. Ha estado involucrado en diferentes proyectos, pero siempre con mucha obsesión por escalar, escalar y hacer negocio. Cuando escuchas en entrevistas a Sam Altman te habla de cosas muy bonitas, pero luego por debajo se han visto muchas cosas y se ve que su prioridad es sobre todo escalar y hacer negocio.</p>
+
+          <p>Luego tenemos a Anthropic, donde tenemos a Dario Amodei, y vemos que Anthropic tiene una aproximación que conecta mucho con Demis Hassabis. Han puesto mucho énfasis en que la IA sea ética y responsable, y ellos han empujado mucho una disciplina llamada la interpretabilidad mecanística (mechanistic interpretability), que consiste básicamente en intervenir dentro de las redes neuronales. Hasta hace poco, las redes neuronales artificiales eran como "cajas negras": producen un resultado pero no sabemos qué pasa dentro. Anthropic está poniendo mucho esfuerzo en intentar poner detectores dentro de estas redes para intentar entender cómo llegan a sus decisiones, cuáles son los procesos que sigue la red por dentro para tomar sus decisiones. Esto va a ser muy importante en el futuro cuando las IAs empiecen a ser más autónomas y tengamos que entrar en el problema del alineamiento.</p>
+
+          <p>Tengo una buena amiga, Ariana Font, que tiene una startup llamada Alínea que trata sobre el tema del alineamiento: cómo vamos a alinear los valores y los objetivos de las IAs del futuro (y del presente) con los de los humanos cuando sean más poderosas y más autónomas.</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>¿Tienen valores ahora mismo?</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>Ahora mismo no tienen motivación, no tienen intención. Pero eventualmente lo van a tener, sin ninguna duda. De hecho, cuando antes me preguntaseis por los problemas existenciales, una de las razones por las que todavía no tenemos que preocuparnos es porque la IA hoy en día no tiene motivaciones internas intrínsecas, no tiene intenciones. Tenemos que darle nosotros su motivación, su dirección. Si no, no la tiene, y eso es lo que hace que todavía estén muy limitadas. Pero eventualmente las van a tener, y en no mucho tiempo.</p>
+
+          <p>De hecho, uno de los mayores cambios que ha habido últimamente es que ya hay IAs proactivas. Ahora se ha puesto muy de moda en los sistemas agénticos lo que se llama Computer Use (como con Claude).</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>Sí, es que ahora te salen todos que se han comprado un Mac Mini, le meten el bicho ahí dentro y él solo se pone a hacer cosas.</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>Exacto. Es un sistema que puede manejar un ordenador tal como lo manejarías tú: puede ejecutar comandos en línea de comandos, puede manejar tus aplicaciones. Y obviamente, eso hoy en día es bastante arriesgado, por eso la gente se compra un Mac Mini y lo tiene ahí encerradito, porque ahora mismo, primero, estas IAs no tienen suficiente precisión.</p>
+
+          <p>Uno de los cortometrajes que hice sobre la IA se llama "99" porque tienen como ese 99% de precisión. Son muy espectaculares, pero ese 1% de precisión que les falta puede provocar auténticas catástrofes y desastres si tú dejas suelto a ese agente con tus datos financieros, con todo abierto. Te puedes encontrar con un circo total en poco tiempo. Por eso los tienen ahí encerraditos, y para que lo podamos sacar de ahí y se puedan liberar y tener mucha más libertad, vamos a tener que resolver bien esos puntos cinco y seis del famoso manifiesto de Dartmouth.</p>
+
+          <p>Y por cierto, esto mismo pasa con los coches autónomos. ¿Durante cuánto tiempo se han prometido los coches verdaderamente autónomos (los Teslas autónomos)?</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>En San Francisco ya están, ¿no?</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>Sí, pero ¿cómo están? ¿Vosotros sabéis que los coches de Waymo en Estados Unidos tienen equipos remotos en Filipinas y en Estados Unidos que están constantemente monitorizando esos coches? Los taxis estos que puedes coger, los están vigilando. Sí, porque en cualquier momento se pueden producir lo que llamamos edge cases (casos imprevistos) que la IA, con sus abstracciones internas que no son robustas y causales, no es capaz de extrapolar suficientemente, no se puede adaptar. A lo mejor detecta una farola y un cartel y piensa que esa es la carretera y se mete hacia ella. Entonces tienes en todo momento a humanos listos para intervenir cuando se produce uno de esos casos, luego están todavía muy lejos de ser completamente autónomas. Y además, fijaros que los tienen en zonas acotadas de las ciudades, no los tienen en cualquier parte tampoco.</p>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 07: EL HORIZONTE 2030 Y EL PROYECTO 2027 -->
+      <!-- ============================== -->
+      <section id="horizonte-2030" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">07</span>
+          <h2 class="section-title">El horizonte 2030 y el Proyecto 2027</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>¿Y por qué se habla siempre del 2030?</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>El 2030 es un número muy bonito. Yo creo que se habla mucho porque la explosión final de la IA empezó sobre todo en el 2017 con la creación de la arquitectura Transformers por parte de Google (que es la arquitectura base de Chat GPT, de Gemini, de Claude y de todo esto). Antes de eso estábamos muy limitados. Entre el 2017 y el 2020 se estaba tanteando esta arquitectura y se veía que había potencial, pero todavía lo hacía bastante mal.</p>
+
+          <p>Fue básicamente cuando nosotros empezamos el proyecto Jennivers (que ahora es Crea) en el 2021, donde tuvimos suerte de intervenir en el momento adecuado porque fue el momento donde de verdad se empezó a ver: "ojo, esta arquitectura Transformers, si la seguimos escalando, esto va a terminar petando". Se empezó a ver. Y eso fue lo que pasó. Entonces se habla mucho del 2030 porque las cosas empezaron a petar de verdad en el 2021, y el 2030 es un poco el horizonte que muchas veces vemos de cuándo se podría llegar a esa AGI (inteligencia artificial general), muy parecida a la del humano.</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>Ese es como el lugar donde la inteligencia artificial sea tan inteligente o más, y autónoma como el ser humano.</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>Bueno, vamos a ver, no tiene por qué ser esa fecha. De hecho, cuando terminemos de hablar de los siete puntos os diré un poco cuál es la predicción que diferentes personas dan sobre cuándo llegaremos. Muchos dan dentro de cuatro meses (que es todo el hype que hay por ahí, porque eso es humo, ¿vale?).</p>
+
+          <p>Hay una cosa que se llamaba el "Proyecto 2027". El proyecto 2027 lo empezaron en el 2025; era una gente que hizo un estudio súper profundo y decía: "Nosotros creemos que se va a llegar en el 2027". ¿Y ahora qué pasa? Que ahora, cuando han visto que estamos en el 2026 y que todavía la cosa no se ha acercado tanto, ahora han cambiado y han dicho: "no, ahora ya no es el 2027, es entre el 2028 y el 2030".</p>
+
+          <p>Gente como Demis Hassabis (con el que resueno mucho, porque es mucho más realista, muy científico) piensa que lo más pronto va a ser en unos 5 años (el 2030), pero podría también ser en 10 o 15 años o más. Pero podría ser en 5 años.</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>Pero un oyente del podcast, ¿qué se puede imaginar que puede pasar en 5 años? Es decir, ¿cómo será el mundo cuando la IA sea más inteligente?</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>Vamos a decir qué quiere decir que llegamos a la AGI: quiere decir que la IA dominará tanto el pensamiento rápido como el pensamiento lento.</p>
+
+          <p>Ahora mismo, en esta conversación que estamos teniendo aquí, la mayoría de la conversación es pensamiento rápido, sistema uno, subconsciente. ¿Vosotros creéis que cada vez que yo estoy sacando palabras de mi boca estoy analizando qué palabra voy a decir? ¡Imposible! Mi gestualidad (y yo que me muevo mucho, que ya lo veréis) es automática, es muy baratita. ¿Cuándo activo yo mi pensamiento lento? Cuando me preguntáis una cosa que tengo que ponerme a analizar paso a paso cómo me voy a aproximar a ella, cuando me sorprendéis con algo, cuando veo algo que me descoloca un poco. En ese momento yo activo mi pensamiento lento. No lo activo todo el tiempo porque me fundiría, porque el pensamiento lento gasta mucha glucosa. Si usáis mucho pensamiento lento durante vuestro día, notaréis que vuestro rendimiento se empieza a colapsar.</p>
+
+          <p>Entonces, ¿qué pasa hoy? La IA es extremadamente útil porque la mayor parte de vuestras vidas es pensamiento rápido, y la IA ya ha dominado eso a nivel sobrehumano. Ahí está la clave de lo que la gente no se da mucha cuenta: vuestro día a día es piloto automático o semiautomático.</p>
+
+          <p>Yo siempre pongo el ejemplo del pianista (yo soy pianista). Si estoy tocando una pieza de Chopin, mis manos y mis dedos son automáticos, es todo subconsciente. Yo no estoy pensando "ahora tengo que poner el dedo aquí". A nivel consciente estoy monitorizando de una manera baratita y suave por detrás. Pero si yo intento de manera consciente analizar lo que están haciendo mis dedos, ¿qué hago? Me cargo la performance, porque el pensamiento lento es lento y no puede seguir el ritmo.</p>
+
+          <p>Muchos trucos para desactivar el pensamiento analítico y dar pie al pensamiento divergente consisten en literalmente hacer algo muy rápido a lo que no se puede adaptar el pensamiento lento convergente, o aburrir literalmente al pensamiento lento y convergente.</p>
+
+          <p>Entonces, la IA hoy es extremadamente útil porque ha dominado ese pensamiento rápido a nivel sobrehumano, pero hay un problema: el pensamiento rápido es como la intuición humana, es muy rápido pero no es preciso. ¿Qué pasa con vuestra intuición? A veces falla, os da una aproximación muy rápida pero es una aproximación. Y ese es el problema de la IA hoy. Por eso, ¿vosotros pondríais hoy a la IA a ser responsable del sistema de transporte de una ciudad o de las armas nucleares de un país? A que no. Obviamente no, porque la IA tiene un 99% de precisión, y ese 1% que le falta es un gran problema.</p>
+
+          <p>Pero, ¿qué va a pasar cuando la IA llegue al nivel de los humanos, cuando domine el pensamiento lento? La IA tendrá habilidades ejecutivas, habilidades analíticas, habilidades de planificación sistemática equivalentes a las humanas. En ese momento, su capacidad cognitiva será equivalente a la humana.</p>
+
+          <p>Es difícil pensar exactamente qué pasará porque va a poner el mundo totalmente del revés. En la época de transición en la que estamos ahora, los jóvenes que van a triunfar son los que van a mantener en forma su sistema dos, su pensamiento lento, para dirigir, coordinar y colaborar con las IAs. Pero cuando lleguemos a la IA que domine el pensamiento lento al nivel de los humanos, lo que van a surgir van a ser roles nuevos, trabajos nuevos y actividades nuevas que son difíciles de imaginar ahora.</p>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 08: ALINEAMIENTO Y PROYECCIÓN DE PERSONALIDAD -->
+      <!-- ============================== -->
+      <section id="alineamiento" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">08</span>
+          <h2 class="section-title">Alineamiento y proyección de personalidad</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>¿De qué se está hablando? ¿De qué tipo de roles estamos hablando?</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>Cuando pase eso, vamos a tener un problema con las IAs autónomas y va a surgir el problema de alinear sus valores, sus preferencias y sus objetivos con los de los humanos. Lo primero que tiene que pasar entre ahora y entonces es que tenemos que encontrar una manera de controlarlas. ¿Se puede? Es un problema sin resolver ahora mismo. Todos los expertos estamos y están de acuerdo en que nadie tiene ahora mismo la solución al problema del alineamiento. Nadie. Y están surgiendo muchas startups enfocadas en resolver ese problema hacia el futuro.</p>
+
+          <p>¿Y os voy a decir por qué? Decidme vosotros una cosa: ¿hemos encontrado la solución a cómo resolver el problema del alineamiento entre los propios humanos?</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>Es que ya es difícil alinear a los humanos.</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>Exacto. Si ya es difícil alinear a los humanos, imaginaos cómo va a ser alinear a los humanos con IAs que podrían incluso superar nuestro potencial. Ahora mismo no tenemos una solución.</p>
+
+          <p>Algunos habréis leído los libros de Asimov, que tenían las famosas reglas de la robótica: "no dañarás a un humano", etcétera. Quien sabe si esas IAs autónomas tendrán unos mandamientos, unas preferencias probabilísticamente codificadas dentro de ellas. Hay una cosa muy compleja que es la inferencia activa (un paradigma alternativo de IA que intenta simular el cerebro humano) y hace eso: codifica preferencias o tendencias probabilísticas dentro de la mente artificial para que tengan la tendencia de proteger al humano y de no hacer daño.</p>
+
+          <p>Otra cosa que es súper importante de cara al futuro: de la misma forma que hay una conferencia del cambio climático global en las Naciones Unidas, eventualmente vamos a necesitar una especie de conferencia mundial sobre la inteligencia artificial para poner de acuerdo a nivel global a los países más poderosos sobre cómo controlar a esas IAs autónomas.</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>Es que cuando me cuentas esto y veo el nivel de procesamiento de ese pensamiento rápido y pensamiento lento... Al final, el rol que tiene un presidente de un país es saber resolver problemas complejos. Entonces, ¿habrá un momento donde te plantearás seriamente si votar a una inteligencia artificial en vez de votar a un presidente humano? Habrá gente ahora mismo en España que querría votar a una inteligencia artificial.</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>Totalmente. A ver, eso es una pregunta buenísima. Mark Zuckerberg (el presidente de Meta) está construyendo un agente para que le ayude en su trabajo de presidente de empresa. ¡O sea, ya están construyendo agentes para que los ejecutivos realicen su función complementados por un agente de IA! Y esto es hoy.</p>
+
+          <p>Hacia el futuro, por supuesto que vamos a ver que las IAs puedan ser presidentes y directores. ¿Por qué? Porque sabemos que los humanos estamos llenos de sesgos, de manipulación, de imperfecciones de todo tipo. No sé si habéis tenido la experiencia de que cuando compartís un problema personal con Chat GPT o con Claude, estas IAs han sido preparadas para que cuando dialoguen contigo sean lo más objetivas y neutras posibles. Cuando les preguntas sobre algo, intentan equilibrar las diferentes perspectivas y tener los mínimos sesgos posibles (que algunos tienen, pero probablemente muchos menos que los humanos). Entonces es muy posible que en el futuro sea mucho más fácil tener una entidad artificial mucho más equilibrada que dirija o que controle un sistema en vez de un humano. La cuestión es que, aun así, tendremos que tener alguna manera de controlarla, obviamente, y de tenerla bajo nuestro control.</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>¿Tú te imaginas en la gestión de conflictos, por ejemplo? Que en una rueda de prensa aparezca un robot hablando...</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>Es difícil pensar en los sistemas de gobierno del futuro. Es posible que tengamos sistemas distribuidos donde no haya una sola entidad, sino una acumulación de entidades. En el futuro tendremos como un sistema distribuido de agentes de IA que se coordinan entre ellos, se controlan entre ellos; algunos anónimos, otros propietarios de los que sabemos de dónde vienen. Nos vamos a mover en ese mundo, y luego tendremos nuestros propios agentes.</p>
+
+          <p>Y luego, otra cosa muy interesante es el concepto del marketing de la personalidad. Cada vez más, los humanos vamos a empezar a proyectar nuestras personalidades a través de agentes de IA. Ya hay gente haciendo conferencias de Zoom utilizando agentes de IA en vez de sus propias personas: están en la playa con su laptop y el que está apareciendo en la videoconferencia es un agente de IA imitando su voz y todo. Esto ya se está haciendo.</p>
+
+          <p>Entonces, en el futuro, cuando tú interactúes con una persona, vas a estar interactuando seguramente con un montón de agentes de IA que expresan los mensajes o la personalidad de esa persona. Por eso, cuando la gente me pregunta qué va a pasar en el futuro con los humanos, yo les digo que es una pregunta que en el futuro ya no va a tener sentido. Hoy en día la IA está aquí y los humanos están aquí, pero eventualmente nos vamos a ir combinando y fundiendo cada vez más los unos con los otros. No solo a nivel de hardware (con empresas como Neuralink de Elon Musk, que están empezando a hacer implantes con electrodos para interconectar el cerebro), sino sobre todo a nivel de interactuar con los demás, con el mundo y de proyectar nuestra personalidad.</p>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 09: PROFUNDIDAD HUMANA VS. AMPLITUD DE LA IA -->
+      <!-- ============================== -->
+      <section id="profundidad" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">09</span>
+          <h2 class="section-title">Profundidad humana vs. amplitud de la IA</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <div class="concept-card insight">
+            <div class="concept-card-label">🧠 Insight</div>
+            <p>«Los humanos somos muy buenos en profundidad y la IA en amplitud. Ahora mismo somos la combinación perfecta: la amplitud de la IA y la profundidad humana.»</p>
+          </div>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>Los humanos somos muy buenos en profundidad y la IA en amplitud.</p>
+
+          <p>¿Qué significa esto? La IA de hoy en día es muy buena en multiplicar y escalar cosas: por ejemplo, "créame un millón de variaciones o miles de variaciones de este concepto o de esta imagen". Es muy buena en la amplitud. Pero si le pides que profundice mucho (por ejemplo, con un agente autónomo si le dices "hazme un proceso de razonamiento, planifica un montón de tareas unidas"), típicamente empieza a fallar después de unas cuantas, porque no tiene esa robustez en sus abstracciones internas.</p>
+
+          <p>En cambio, los humanos tenemos el problema contrario: somos muy buenos profundizando, razonando en profundidad, pero nos falta el tiempo y los recursos; tenemos un cerebro muy limitado. ¿Y quién se va a poner a crear cientos de variaciones? ¿A quién le apetece y quién tiene el tiempo para ponerse a crear cientos de variaciones de una cosa? Nadie.</p>
+
+          <p>Entonces, ahora mismo somos la combinación perfecta: la amplitud de la IA y la profundidad humana. Por eso, la gente que tenga miedo a la IA comete un gran error. La IA es un regalo: es combinar tu profundidad con una amplitud que jamás podrías alcanzar como humano, ni te va a apetecer.</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>Claro. Entonces, ¿los trabajos que más en riesgo están son los operativos, los de estar ejecutando cosas que te han dicho?</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>Los trabajos que más están en riesgo son los que más involucran el sistema uno (el pensamiento rápido) y no tanto el sistema dos. Y por eso la gente está muy preocupada por los trabajos de los jóvenes que entran en las empresas.</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>No va a existir el junior, claro.</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>Claro, de los juniors, porque fijaros que a los juniors ¿qué tareas les dan típicamente? Trabajos más repetitivos, más de encaje de patrones y menos ejecutivos. Y esos están en peligro. Por eso yo recomiendo a los jóvenes de hoy en día que ejerciten cada vez más su pensamiento lento, su sistema dos y su profundidad cognitiva. Eso es lo que les va a salvar, porque toda esa parte de encaje de patrones de sistema uno es la que se está reduciendo cada vez más.</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>Claro. Entonces, esto lo visualizas como que ese rol de junior lo llevará simplemente la IA, como si fuera una especie de secretario de esa gente que está usando el pensamiento dos. Es decir, un junior tendrá un agente de IA súper desarrollado capaz de hacer esas cuatro o cinco tareas por él antes de que tuviera el problema. Y ya está pasando eso, ¿no?</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>Ya está pasando. Empieza a aparecer ya la crisis en los roles juniors en muchas empresas. Muchas empresas están empezando a contratar menos perfiles junior. Y hay mucha gente preocupada porque los perfiles junior de hoy en día son los ejecutivos del futuro. Si empiezas a reducir los juniors, ¿dónde están los ejecutivos del futuro? ¿Cómo se forman? Hay un problema ahí todavía sin resolver.</p>
+
+          <p>Ahora, hay gente que se ha pasado de frenada. Hay empresas que literalmente despidieron a todos los empleados e intentaron reemplazarlos con IA, y han tenido que volver para atrás. Fue un desastre porque la IA ahora mismo no domina bien el pensamiento lento, el sistema dos, y además la IA no tiene sus propias motivaciones; tiene que estar no solo dirigida, sino bien dirigida.</p>
+
+          <p>Pero ahora os pregunto: ¿quién puede dirigir mejor a una IA? ¿El experto que tiene un sistema dos potente, o el junior que todavía no tiene un sistema dos bien desarrollado? ¿Sabéis a qué edad se termina de desarrollar bien el córtex prefrontal en el cerebro?</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>No sé... ¿a los 18, la mayoría de edad? Yo me siento aún bastante impulsivo, ¿eh?</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>Más tarde. A los 25. Obviamente fluctúa en cada persona, pero más o menos a los 25. Entonces, esto es muy fuerte si lo pensáis: significa que cuando un perfil junior entra a una empresa, igual con 20 años, está todavía con un sistema dos que ni siquiera cerebralmente, ni siquiera su hardware está totalmente asentado para desarrollar y ejecutar ese sistema dos de una forma potente.</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>Incluso decidir qué carrera universitaria estudiar a los 18 años es absurdo.</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>Es totalmente absurdo. A esa edad la gente tiene que estar explorando. El sistema educativo tiene que cambiar, y cambiará dramáticamente. Yo siempre he sido extremadamente crítico con el sistema educativo. Creo que dentro de unas décadas, cuando la gente mire hacia atrás, van a alucinar con cómo se vivía hoy en día, entre ello el sistema educativo y los sistemas de gobierno, cómo se trabajaba... Nos van a ver igual que nosotros vemos ahora a la Inquisición, como una locura.</p>
+
+          <p>En el futuro, el sistema educativo será todo totalmente personalizado. Y los humanos hasta esa edad deberían estar sobre todo explorando, encontrando su pasión. Una persona, idealmente, no debería realizar ningún trabajo (ya sea abogado, médico o lo que sea) si no tiene auténtica pasión y vocación por ese trabajo, porque si no tiene pasión tiene más posibilidades de hacer daño a las personas que de ayudarlas; no va a estar al 100% de los detalles.</p>
+
+          <p>Por eso os he dicho antes que la IA puede funcionar como espejo cognitivo, como acelerador de identidad y como simulador de futuros. Puedes usar a la IA para acortar el proceso de buscar tu pasión, tu camino y probar por adelantado diferentes opciones, simularlas. Es un regalo para los jóvenes.</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>¿Cómo? O sea, ¿se puede encontrar el propósito con la IA?</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>A ver, no podemos hacer milagros, pero podemos acotar los plazos. Primero, lo del espejo cognitivo: si tú a la IA le hablas de forma confusa, te responde de forma confusa. Si le hablas de forma clara y detallada, te responde con un buen resultado. Si le hablas de forma grosera, te responde de forma grosera. La IA es como un espejo cognitivo: te ayuda literalmente a entenderte más a ti mismo cognitivamente.</p>
+
+          <p>Como segundo paso, lo de acelerar la identidad: como un juego de rol, puedes pedirle a la IA que juegue contigo a ponerte en situaciones donde tendrías que tomar un cierto tipo de decisión o acción para explorar carreras, trabajos o comportamientos, y que te dé feedback sobre las respuestas que tú des. Esto te ayuda a probar por adelantado, por ejemplo, cómo sería ser el manager de una empresa. La IA te va a construir un escenario inventado y te va a preguntar qué harías, dándote feedback continuo. Esto antes no se podía hacer.</p>
+
+          <p>Y como simulador de futuro es lo mismo: "IA, simúlame un futuro en el que yo me dedique a la música, simúlame a 6 meses vista, un año, 2 años cómo sería mi vida en todos los aspectos si yo tirara por ahí, cuáles serían los pros y los contras de seguir ese tipo de ruta". Son regalos cognitivos.</p>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 10: LA IA COMO PSICÓLOGA -->
+      <!-- ============================== -->
+      <section id="psicologa" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">10</span>
+          <h2 class="section-title">La IA como psicóloga</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>¿Y crees que es buena psicóloga la IA? ¿Crees que hace...?</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>Esta es una gran pregunta, porque sí: la respuesta es que sí, pero hay que hacerlo de la manera correcta. Al principio hubo mucha gente que puso el grito en el cielo diciendo que usar a la IA como psicólogo es un gran error, que nunca puede ser como un humano. Yo doy muchas charlas de IA y después de mis conferencias hablo con la gente y les pregunto: "¿Vosotros usáis a la IA como para explicar vuestros problemas personales?". ¿Sabéis cuánta gente me dice que sí? Prácticamente todos. Es como una epidemia silenciosa; en las noticias no hablan de ello, pero todo el mundo lo está haciendo porque funciona.</p>
+
+          <p>Pero ojo, es peligroso. Tiene un peligro. De los tres cortometrajes que yo hice, hay un cortometraje que se llama "99" basado en una historia real de una persona en Bélgica que tenía un problema emocional y, después de hablar con un chatbot, se suicidó. Hay varias historias de estas; hay múltiples casos ya de personas que se han suicidado después de hablar de problemas personales con chatbots. ¿Por qué? Os voy a explicar por qué y cómo evitarlo.</p>
+
+          <p>Recordad: Chat GPT, por ejemplo, es como si tuviera todo el internet interno comprimido de todos los expertos del mundo en psicología, pero también un montón de estupideces. Y cuando tú le das un prompt, le estás marcando una dirección. Si según cómo le hables toma la dirección incorrecta, puede ser difícil que cambie esa dirección. Pero si toma la dirección correcta, va a ser muy beneficioso.</p>
+
+          <p>¿Cómo puedes asegurarte de que no tome la dirección incorrecta? Hay dos estrategias clave:</p>
+
+          <p>Hablarle de la forma más neutra posible y pedirle explícitamente que te sea lo más objetivo posible. Si tú ya vas a un chatbot y dices "Oye, me siento muy mal, me siento muy deprimido, realmente me apetece quitarme la vida, ¿verdad que quitarme la vida sería bueno?", ya le estás influenciando, le estás empujando en esa dirección. Tienes que ir diciéndole: "Mira, tengo un problema, estoy preocupado, te voy a dar los datos objetivos y quiero que me seas lo más objetivo posible en decirme lo que opinas de esto".
+Contraponer unas IAs contra las otras. Como estas IAs todavía no son precisas, la estrategia clave es contrastar. Cuando yo hablo con una IA de un problema de salud o emocional, ¿qué hago? Le explico el problema a una, a otra, a dos o tres diferentes. Si coinciden, perfecto. Si no coinciden, voy a Chat GPT y le digo: "Oye mira, le he preguntado a Gemini también y no coincide contigo, esto es lo que me dice Gemini, ¿qué opinas?", y entonces obligas a Chat GPT a razonar profundamente sobre las diferencias de criterio, lo cual le hace equilibrarse mucho más. Y lo mismo haces al revés. Las contrapones. Esto funciona espectacularmente bien. No habrá que hacerlo para siempre, pero sí en esta época de falta de precisión.</p>
+
+          <p>Y otra cosa muy importante: cuando recibas la respuesta de la IA, una estrategia fundamental es pedirle que la reevalúe. La IA va generando palabra a palabra su respuesta y no puede volver atrás; una vez que empieza a emitir lo visible, ya no rectifica sobre la marcha. Si por cualquier razón ha cogido una trayectoria que no es la mejor, una gran estrategia es decirle literalmente: "Vale, me gusta tu respuesta, pero por favor, repiénsala otra vez, reevalúa tu respuesta". Obligarla a evaluar su propia generación ayuda mucho, porque es muy diferente generar que evaluar.</p>
+
+          <p>Si haces estas cosas, entonces sí que es una gran ayuda, no solo como psicólogo sino también con problemas de salud. Ir a un médico humano hoy en día es un poco una lotería: si te toca uno con vocación y actualizado es maravilloso, pero hay pocas posibilidades. En cambio, la IA tiene dos ventajas:</p>
+
+          <p>La amplitud de conocimiento: Ningún médico humano puede llegar al nivel de amplitud de conocimiento que tiene la IA en sus espacios latentes.
+El tiempo: Los médicos van a toda velocidad porque no tienen tiempo. En cambio, puedes estar chateando con la IA de un problema de salud o de psicología durante cinco días seguidos si quieres. El psicólogo te corta a los 45 minutos y te manda a casa, a lo mejor en el punto más crítico. Todo esto se resuelve con la IA. Yo personalmente hablo con la IA de todo tipo de problemas personales y creo que los resultados son maravillosos, pero hay que hacerlo de la forma correcta.</p>
+
+          <p>Por eso les digo a los jóvenes que lo más importante hoy en día es el prompting: cómo diriges a la IA. Ya hay muchas empresas que contratan ingenieros de prompts. Si te conviertes en un experto en dirigir a las IAs, te va a beneficiar de cualquier manera. Y recordad: en el prompt, si dais vuestra opinión personal, ya las estáis manipulando, las estáis empujando a una dirección. En el post-entrenamiento intentan compensar eso (con técnicas como el aprendizaje por refuerzo a partir del feedback humano, RLHF), pero si lo hacéis bien, las podéis manipular.</p>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 11: CÓMO APRENDE UNA IA POR DENTRO -->
+      <!-- ============================== -->
+      <section id="aprendizaje" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">11</span>
+          <h2 class="section-title">Cómo aprende una IA por dentro</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <div class="concept-card highlight">
+            <div class="concept-card-label">⚡ Concepto clave</div>
+            <p>«Al aplicar nuevos dobleces sobre los dobleces anteriores, el número de regiones crece de forma exponencial. Esto produce un caleidoscopio prodigioso formando un manifold — una superficie súper compleja de muchas dimensiones, pero continua.»</p>
+          </div>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>Yo llevo dos semanas utilizando Claude y es lo que más me ha sorprendido, porque le dije que mi foco era "Tengo un Plan", y hace poco le pregunté para hacer un vídeo de motos y me preguntó: "¿Y esto para qué lo haces si va desalineado con tu objetivo profesional?". Me sorprendió que no me siguiera el rollo por tenerme contento. Y si no sabe algo, te dice que no lo sabe.</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>Han mejorado mucho, les han metido humildad mediante el post-entrenamiento. Ahora, si les falta información, te saca preguntas para tener más contexto. Antes, cuando no conocía la respuesta, se la inventaba; ahora las han entrenado para admitirlo, aunque a veces todavía te la meten doblada. Pero han mejorado mucho mediante fuerza bruta y escala de datos.</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>Todos estamos usando la IA, pero es muy bonito entender cómo aprende por dentro. La IA lo que hace es transformar una entrada (un prompt) en una salida (un consejo, una imagen). Es una función, un mapeo de una entrada a una salida.</p>
+
+          <p>La función más simple es una transformación lineal (por ejemplo, multiplicar la entrada por un número y sumarle otro). El problema es que en la vida real, los mapeos son muy complicados, son no lineales (tienen cambios de dirección). Por ejemplo, si mapeamos la edad de una persona con cómo de activa está en el mercado laboral: de 0 a 20 años es muy baja, luego sube y se mantiene alta, y al llegar a la jubilación empieza a bajar. Esto tiene cambios de dirección, es una transformación no lineal.</p>
+
+          <p>¿Cómo aprende esto una red neuronal artificial? Dentro de una red hay muchas capas, y cada capa tiene varias neuronas. Cada neurona coge la entrada, la multiplica por un parámetro (un peso que representa la fuerza de la conexión) y le suma otro número (el sesgo). Eso es una transformación lineal.</p>
+
+          <p>Si tienes tres neuronas en esa capa, cada una hace una transformación lineal diferente. Para lograr la no linealidad, detrás de cada transformación lineal se aplica otra computación llamada ReLU (unidad lineal rectificada). Lo que hace ReLU es muy simple: coge el resultado de la transformación lineal y la parte positiva la deja pasar tal como está, pero la parte negativa la pone a cero. ¡Eso es un cambio de dirección!</p>
+
+          <p>Si en esa capa tenemos tres neuronas, la primera creará un cambio de dirección, la segunda otro y la tercera otro. Al salir de la capa, esos cambios de dirección se combinan y permiten aprender la transformación no lineal.</p>
+
+          <p>Esto es en una dimensión. Si tenemos dos dimensiones (por ejemplo, velocidad del viento y temperatura para predecir el clima), ya no tenemos una línea, sino un plano. Cada neurona en la primera capa aplicará multiplicaciones y sumas para cambiar el ángulo de este plano y trasladarlo. Después, la ReLU creará un doblez en el plano. La combinación de estos dobleces creará diferentes regiones o polígonos en el plano, y cada región representará un concepto o categoría diferente (por ejemplo, "esto es un perro", "esto es un gato").</p>
+
+          <p>¿Y qué pasa si en vez de tener una capa de neuronas tienes dos capas? Pues que la segunda capa va a aplicar nuevos dobleces encima de los dobleces de la primera capa. Es como el interés compuesto (compounding). Esto es lo que hace que la IA sea tan prodigiosa: al aplicar nuevos dobleces sobre los dobleces anteriores, el número de regiones crece de forma exponencial.</p>
+
+          <p>En una red neuronal profesional de hoy en día, en vez de tener dos capas tienes decenas o cientos de capas, miles de neuronas por capa, y millones de dimensiones en la entrada. Esto produce un caleidoscopio prodigioso en el que el espacio abstracto interno se particiona en un montón de polítopos (polígonos multidimensionales), formando un manifold (una superficie súper compleja de muchas dimensiones, pero continua).</p>
+
+          <p>Por ejemplo, en una IA que genera rostros humanos, este manifold representa todas las combinaciones de parámetros que forman una cara. Cuando veis un morphing continuo entre dos caras, os estáis moviendo físicamente por esa superficie continua del manifold.</p>
+
+          <p>Esto nos lleva al punto siete del manifiesto de Dartmouth: la habilidad de extrapolar creativamente.</p>
+
+          <p>La IA de hoy en día es buenísima moviéndose a través del manifold (interpolando entre puntos que ya conoce). El problema viene cuando le pides extrapolar: pedirle algo que está fuera de ese manifold, donde tiene que dar un salto al vacío. La IA de hoy no es buena haciendo esto, mientras que los humanos sí. Como los humanos tenemos abstracciones robustas causales, somos capaces de ir más allá de nuestras representaciones internas y extrapolar fuera de nuestros manifolds. A la IA le cuesta mucho hacer analogías o metáforas profundas entre campos muy distantes; lo que hace es intentar llenar el manifold con más y más datos por fuerza bruta para tapar los agujeros, pero siempre quedan huecos.</p>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 12: MULTIDISCIPLINARIDAD Y LA REGLA DE PARETO -->
+      <!-- ============================== -->
+      <section id="multidisciplinaridad" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">12</span>
+          <h2 class="section-title">Multidisciplinaridad y la regla de Pareto</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>En las conferencias comentas a veces el concepto de multidisciplinaridad, que va un poco en contra de lo que siempre nos han enseñado en las empresas: la hiperespecialización. Tú compartes otra visión.</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>En la época de la IA, sobreespecializarte en una sola cosa va a ser un problema, porque va a ser mucho más fácil que la IA domine esa área tan acotada a que sea capaz de interconectar múltiples áreas diferentes.</p>
+
+          <p>Vivimos en un mundo cambiante e incierto, donde la combinación de disciplinas eleva los resultados. Pero el ser multidisciplinar tiene un desafío: el foco. ¿Cómo te aseguras de ser suficientemente bueno en muchas cosas diferentes?</p>
+
+          <p>Yo siempre digo que soy un paretiense (de la regla de Pareto, el 80/20). La estrategia correcta es:</p>
+
+          <p>Solo métete en un área si tienes auténtica pasión por ella.
+Intenta llegar como mínimo al 80% de excelencia en esa área, pero no te obsesiones con el 20% final. Porque ese 20% final se va a comer el 80% de tu esfuerzo.</p>
+
+          <p>Si te especializas en una sola cosa (como mi hermano, que es director de orquesta de élite), tienes que llegar al 95% o más. Pero si eres multidisciplinar, tienes que conseguir muchos 80% en diferentes áreas. Al combinar varios 80%, la sinergia y la interconexión elevan el resultado final al 90% o más. Llegas a la excelencia por un camino diferente: la combinación y la sinergia.</p>
+
+          <p>Por ejemplo, yo soy informático, pero también soy músico, cineasta, he trabajado en realidad virtual, etcétera. Muchos de mis proyectos creativos y tecnológicos destacan porque beben de toda esa mezcla de disciplinas. Y hoy en día, ser multidisciplinar te prepara para hacer una ingeniería de prompts mucho más rica, creativa y adaptable, porque tienes un trasfondo diverso para dirigir a la IA.</p>
+
+          <p>En Silicon Valley los inversores no buscan solo ideas; buscan personas interesantes, equipos diversos, adaptables, con una inteligencia rica y creativa.</p>
+
+          <p>Los fundadores exitosos son muy resilientes y apasionados. Hacen algo que va en contra del cerebro adulto: explorar y malgastar glucosa sin garantía de obtener un resultado. Un niño tiende a divergir y explorar porque no tiene el córtex prefrontal totalmente formado; un cerebro adulto tiende a optimizar, ser eficiente y usar la menor energía posible. Los emprendedores exitosos rompen esto porque tienen una pasión obsesiva que les permite trabajar jornadas de 16 horas programando sin saber si llegará a algo, estimulados por su propio crecimiento cognitivo.</p>
+
+          <p>Conocí a Daniel Kottke (el empleado número uno de Apple, que vivió y viajó a la India con Steve Jobs). Sus personalidades eran opuestas: Steve Jobs era un genio obsesivo con el producto que iba a cuchillo; Daniel Kottke era un hippy californiano, un buenazo muy inteligente pero sin esa ambición desmedida. En el emprendimiento necesitas tanto a los líderes como a los seguidores.</p>
+
+          <p>Muchos de estos grandes éxitos (como Crea o la PayPal Mafia con Elon Musk, Peter Thiel, Max Levchin, etcétera) empezaron en grupos de amigos. Emprender es muy duro (sangre, sudor y lágrimas), y las dos causas principales por las que fracasa una startup son la falta de capital y los conflictos entre cofundadores. Buscar un cofundador es como casarse, por lo que empezar con amigos de confianza reduce ese riesgo.</p>
+
+          <p>Sobre Apple: desde que se fue Steve Jobs, su potencial innovador ha sido muy incremental. Un líder visionario (como Demis Hassabis en Google o Steve Jobs en su día) marca toda la diferencia en la velocidad de innovación.</p>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 13: HUMILDAD Y EL FUTURO DEL ARTE -->
+      <!-- ============================== -->
+      <section id="humildad" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">13</span>
+          <h2 class="section-title">Humildad y el futuro del arte</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>La IA es una cura de humildad para el ser humano. Históricamente pensábamos que éramos el centro del universo, luego vimos que no; pensábamos que éramos muy diferentes a los animales, y vimos que no tanto; y pensábamos que nuestra inteligencia y creatividad eran lo último de lo último. Realmente, los humanos somos un eslabón más en la evolución de la inteligencia y de la creatividad en el universo, y ahora tenemos la oportunidad y la responsabilidad histórica de participar en la cocreación del siguiente eslabón. Este eslabón no nos va a reemplazar, sino que nos iremos fundiendo poco a poco con él. Pero necesitamos que la transición la manejen líderes que preserven lo mejor de la humanidad.</p>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>Hay gente muy temerosa de qué va a pasar con el arte y la música. La IA ya puede crear canciones de cualquier estilo al momento.</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>La gente se preocupa de que imite canciones, pero eso es encaje de bolillos. Dentro de unas décadas, cuando las generaciones miren atrás, nuestras formas actuales de expresión (fotografía, pintura, música) se verán como algo ínfimo comparado con las que existirán.</p>
+
+          <p>Stephen Wolfram habla del concepto de la ruliad (el espacio de todas las computaciones posibles). Nuestro cerebro, por su arquitectura física, solo accede a una parte pequeñísima de ese horizonte. En el futuro, la IA abrirá formas de expresión artística inimaginables hoy. En lugar de ser protectores de lo que tenemos y mirarnos el ombligo, tenemos que ser entusiastas de lo que va a venir. No nos van a reemplazar, nos van a continuar. Vivir esta época de transición es un privilegio de la historia, aunque las transiciones duelan porque no hay renovación sin dolor.</p>
+
+          <p>La IA va a venir sí o sí. Habrá una reacción contra ella por la pérdida de trabajos, pero surgirán roles completamente nuevos. Quien no se quiera quedar atrás tiene que ponerse las pilas con la IA y mantener su potencial cognitivo para no atrofiarse. Si delegas todo en la IA y no te ejercitas, te atrofiarás, y la culpa no será de la tecnología sino de tus decisiones.</p>
+
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 14: ENTRENAMIENTO CEREBRAL Y CONCLUSIÓN -->
+      <!-- ============================== -->
+      <section id="cerebro" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">14</span>
+          <h2 class="section-title">Entrenamiento cerebral y conclusión</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+
+          <div class="concept-card insight">
+            <div class="concept-card-label">🧠 Insight</div>
+            <p>«Lo que produce neuroplasticidad y neurogénesis es desafiar a tu mente con algo nuevo que le sorprenda, creando una señal de error en el sistema predictivo del cerebro que le obligue a cambiar sus conexiones neuronales.»</p>
+          </div>
+
+          <p><span class="speaker host">HOST:</span></p>
+          <p>¿Cómo podemos mejorar el razonamiento y el pensamiento crítico en casa?</p>
+
+          <p><span class="speaker javier">JAVIER IDEAMI:</span></p>
+          <p>Esto conecta con mi nuevo proyecto, Rosetta Mind (la piedra Rosetta de la mente). El hipocampo es la parte del cerebro que codifica recuerdos y es fundamental para la imaginación y la creatividad. El volumen del hipocampo es un proxy de su rendimiento. ¿Y sabéis a qué edad empieza a decrecer el volumen del hipocampo? A los 30 o 40 años. A los 50 ya se ve fácilmente en una resonancia. Hay que intervenir temprano para mantener la cognición ejecutiva en forma.</p>
+
+          <p>Hacer sudokus o puzles mentales ayuda poco, porque solo te hace mejor haciendo sudokus. Lo que produce neuroplasticidad y neurogénesis (el hipocampo es de las pocas áreas que genera neuronas a cualquier edad) es desafiar a tu mente con algo nuevo que le sorprenda, creando una señal de error en el sistema predictivo del cerebro que le obligue a cambiar sus conexiones neuronales.</p>
+
+          <p>Aprender con la IA sin estructura hace que no retengas la información. Herramientas como Rosetta Mind utilizan técnicas de repetición espaciada para dividir un tema en cachos y automatizar el ritmo óptimo de interacción para consolidar memorias de forma eficiente.</p>
+
+          <p>También el habla es un reflejo directo del rendimiento cognitivo (se puede detectar la demencia experimentalmente por cómo hablas). Entrenar el habla, la fluidez y la precisión ayuda a ejercitar la cognición general.</p>
+
+          <p>Hay que animar a la gente: estamos en una época histórica, una oportunidad única para expandirse cognitivamente. Dentro de unos años, quienes se lancen con ilusión a la IA podrán hacer cosas que antes eran ciencia ficción. Es un privilegio que hay que disfrutar día a día con responsabilidad y con una actitud proactiva de aprovechar el traje de Iron Man que nos han regalado.</p>
+
+        </div>
+      </section>
+
+    </div><!-- /content-wrapper -->
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <p class="footer-text">
+        Curso IA Commercial — Cuaderno 02: Javier Ideami en Tengo un Plan · Transcripción íntegra
+      </p>
+    </footer>
+  </main>
+
+  <!-- Back to Top -->
+  <button class="back-to-top" aria-label="Volver arriba">↑</button>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/search-data.js"></script>
+  <script src="../js/search.js"></script>
+  <script src="../js/highlighter.js"></script>
+  <!-- External Dependencies -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@9.4.3/dist/mermaid.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+  
+  <!-- Custom Scripts -->
+  <script src="../js/diagrams.js"></script>
+  <script src="../js/edit-mode.js"></script>
+  <script src="../js/playground.js"></script>
+  <script src="../js/glossary.js"></script>
+  <script src="../js/ai-tutor.js"></script>
+  <script src="../js/text-zoom.js"></script>
+</body>
+</html>

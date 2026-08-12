@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nuevo Cuaderno | Curso de IA</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  
+  <!-- KaTeX for Math -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <span class="logo-icon">✨</span>
+        <span class="logo-text">IA Master</span>
+      </div>
+    </div>
+    
+    <nav class="sidebar-nav">
+      <div class="nav-group">
+        <h4 class="nav-group-title">Cuadernos</h4>
+        <a href="../index.html" class="nav-link">Inicio</a>
+        <a href="01-pep-martorell.html" class="nav-link">01. Pep Martorell</a>
+        <a href="02-javier-ideami.html" class="nav-link">02. Javier Ideami</a>
+        <a href="03-compendio-tecnico.html" class="nav-link">03. Compendio Técnico</a>
+        <a href="#" class="nav-link active">XX. Nuevo Cuaderno</a>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="search-container">
+        <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="global-search" class="search-input" placeholder="Buscar conceptos, definiciones, expertos...">
+        <div id="search-results" class="search-results hidden"></div>
+      </div>
+    </header>
+
+    <!-- Content Area -->
+    <div class="content-area">
+      <header class="content-header">
+        <div class="meta-tags">
+          <span class="tag tag-technical">Técnico</span>
+        </div>
+        <h1 class="main-title">Título del Nuevo Cuaderno</h1>
+        <p class="subtitle">Breve descripción de los contenidos y conceptos que se abordarán en este cuaderno interactivo.</p>
+      </header>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN DE EJEMPLO -->
+      <!-- ============================== -->
+      <section id="modulo-1" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">01</span>
+          <h2 class="section-title">Primera Sección</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          
+          <p>Escribe aquí el contenido teórico. Puedes utilizar términos técnicos y el <strong>Glosario</strong> los detectará automáticamente.</p>
+          
+          <!-- Ejemplo de Diagrama -->
+          <h3 class="subsection-title">Diagrama Interactivo</h3>
+          <div class="flow-container">
+            <div class="mermaid">
+graph TD
+A[Inicio] --> B(Proceso)
+B --> C[Fin]
+            </div>
+          </div>
+
+          <!-- Ejemplo de Playground de Python -->
+          <h3 class="subsection-title">Python Playground</h3>
+          <p>Puedes incluir bloques de código interactivos como este:</p>
+<pre class="python-playground">
+print("¡Hola Mundo interactivo desde un nuevo cuaderno!")
+</pre>
+
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- External Dependencies -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@9.4.3/dist/mermaid.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+  
+  <!-- Custom Scripts (All Interactivity) -->
+  <script src="../js/main.js"></script>
+  <script src="../js/search-data.js"></script>
+  <script src="../js/search.js"></script>
+  <script src="../js/highlighter.js"></script>
+  <script src="../js/diagrams.js"></script>
+  <script src="../js/edit-mode.js"></script>
+  <script src="../js/playground.js"></script>
+  <script src="../js/glossary.js"></script>
+  <script src="../js/ai-tutor.js"></script>
+  <script src="../js/text-zoom.js"></script>
+</body>
+</html>
