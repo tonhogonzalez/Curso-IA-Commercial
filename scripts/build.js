@@ -152,7 +152,7 @@ if (replaceRegex.test(indexHtml)) {
 // 3. Update search-data.js
 const fileContent = `// AUTO-GENERATED SEARCH INDEX
 // Run \`node scripts/build.js\` to update this file when you add new notebooks.
-window.SEARCH_INDEX = ${JSON.stringify(searchIndex, null, 2)};
+(typeof self !== 'undefined' ? self : window).SEARCH_INDEX = ${JSON.stringify(searchIndex, null, 2)};
 `;
 fs.writeFileSync(outSearchPath, fileContent);
 console.log(`Search index built with ${searchIndex.length} sections.`);
