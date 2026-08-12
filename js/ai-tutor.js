@@ -1,13 +1,17 @@
 /**
  * AI Tutor - Contextual Chatbot
  * Integramos OpenRouter API para tener un asistente pedagógico en la plataforma.
+ *
+ * PARA USO LOCAL: pega tu API key de OpenRouter en la línea de abajo y el tutor se activará.
+ * VERSIÓN PÚBLICA: se deja vacía para no exponer la clave. El tutor no se muestra.
  */
 
 (function() {
-  // IMPORTANT: Never hardcode API keys in client-side code for public repos.
-  // Configure via environment variable or server-side proxy.
-  const OPENROUTER_API_KEY = '';
-  const MODEL_ID = 'z-ai/glm-5.2'; // Modelo especificado por el usuario
+  const OPENROUTER_API_KEY = ''; // ← Pega tu clave aquí para uso local
+  const MODEL_ID = 'z-ai/glm-5.2';
+
+  // Si no hay clave, no cargamos el tutor
+  if (!OPENROUTER_API_KEY) return;
 
   let chatHistory = [];
   
