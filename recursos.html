@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Recursos del Curso IA Commercial: Glosario, Playground de Python y Herramientas recomendadas.">
+  <title>Recursos de IA | Curso IA Commercial</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="css/styles.css">
+  
+  <style>
+    /* Estilos específicos para la página de Recursos */
+    .recursos-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    .recursos-section {
+      margin-bottom: 4rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-medium);
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+    .recursos-section h2 {
+      margin-top: 0;
+      color: var(--text-primary);
+      border-bottom: 2px solid var(--border-medium);
+      padding-bottom: 1rem;
+      margin-bottom: 2rem;
+    }
+    
+    /* Grid del Glosario */
+    .glossary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    .glossary-card {
+      background: var(--bg-body);
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      padding: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .glossary-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border-color: var(--accent-blue);
+    }
+    .glossary-card h3 {
+      margin: 0 0 0.5rem 0;
+      color: var(--accent-blue);
+      font-size: 1.1rem;
+      text-transform: capitalize;
+    }
+    .glossary-card p {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    /* Lista de herramientas */
+    .tools-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .tools-list li {
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px dashed var(--border-light);
+    }
+    .tools-list li:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    .tools-list a {
+      color: var(--accent-blue);
+      text-decoration: none;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .tools-list a:hover {
+      text-decoration: underline;
+    }
+    .tools-list p {
+      margin: 0.25rem 0 0 0;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <nav class="top-nav">
+    <a href="index.html" class="nav-brand">
+      <div class="nav-brand-icon">IA</div>
+      <div class="nav-brand-text"><span>Curso IA</span> Commercial</div>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Cuadernos</a>
+      <a href="muro.html" class="nav-link">Lienzo</a>
+      <a href="recursos.html" class="nav-link active">Recursos</a>
+      <a href="#" class="nav-link">Acerca de</a>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div style="padding-top: 64px; position: relative; z-index: 1;">
+    
+    <!-- Hero Section -->
+    <div class="index-hero" style="padding: 4rem 2rem;">
+      <h1 class="page-title" style="background: linear-gradient(135deg, #e8e6f0 0%, #c4b5fd 50%, #3b82f6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+        Recursos del Curso
+      </h1>
+      <p class="page-subtitle" style="margin: 0 auto; text-align: center;">
+        Explora el glosario interactivo, practica con código Python en el navegador y descubre las herramientas clave mencionadas en las entrevistas.
+      </p>
+    </div>
+
+    <div class="recursos-container">
+      
+      <!-- Glosario Section -->
+      <section class="recursos-section">
+        <h2>Glosario de Inteligencia Artificial</h2>
+        <div class="glossary-grid" id="glossary-grid">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+
+      <!-- Playground Section -->
+      <section class="recursos-section">
+        <h2>Playground Interactivo (Python)</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Prueba conceptos de programación y algoritmos directamente en tu navegador. Pyodide se encargará de ejecutar el código Python localmente.</p>
+        
+        <pre class="python-playground"><code># Un pequeño script para probar la generación de datos
+import random
+
+def simular_atencion():
+    print("Simulando Mecanismo de Atención (Transformers)...")
+    tokens = ["El", "banco", "de", "pescados"]
+    
+    for token in tokens:
+        peso = random.uniform(0.1, 0.9)
+        print(f"Token: '{token}' -> Peso de atención al contexto: {peso:.2f}")
+        
+simular_atencion()
+</code></pre>
+      </section>
+
+      <!-- Herramientas Section -->
+      <section class="recursos-section">
+        <h2>Herramientas y Lecturas Recomendadas</h2>
+        <ul class="tools-list">
+          <li>
+            <a href="https://huggingface.co/" target="_blank">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              Hugging Face
+            </a>
+            <p>El repositorio principal de modelos de IA de código abierto, datasets y herramientas como la biblioteca Transformers.</p>
+          </li>
+          <li>
+            <a href="https://commoncrawl.org/" target="_blank">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              Common Crawl
+            </a>
+            <p>Archivo abierto de la web que sirve como conjunto de datos principal para entrenar grandes modelos de lenguaje (LLMs).</p>
+          </li>
+          <li>
+            <a href="https://arxiv.org/abs/1706.03762" target="_blank">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              Attention Is All You Need (Paper)
+            </a>
+            <p>El paper original de Google (2017) que introdujo la arquitectura Transformer y revolucionó la IA generativa.</p>
+          </li>
+        </ul>
+      </section>
+
+    </div>
+  </div>
+
+  <footer class="site-footer" style="margin-left: 0;">
+    <p class="footer-text">
+      Curso IA Commercial — Cuadernos construidos con contenido íntegro de entrevistas
+    </p>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script src="js/search.js"></script>
+  
+  <!-- Dependencies -->
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+  
+  <!-- Custom Scripts -->
+  <script src="js/glossary.js"></script>
+  <script src="js/playground.js"></script>
+  
+  <!-- Script para poblar el Glosario en esta página -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const grid = document.getElementById('glossary-grid');
+      if (window.GLOSSARY_DICT) {
+        // Ordenar alfabéticamente
+        const keys = Object.keys(window.GLOSSARY_DICT).sort((a, b) => a.localeCompare(b));
+        
+        let html = '';
+        keys.forEach(key => {
+          html += `
+            <div class="glossary-card">
+              <h3>${key}</h3>
+              <p>${window.GLOSSARY_DICT[key]}</p>
+            </div>
+          `;
+        });
+        grid.innerHTML = html;
+      }
+    });
+  </script>
+</body>
+</html>

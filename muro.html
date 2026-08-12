@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lienzo de Conocimiento | Curso IA Commercial</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="css/styles.css">
+  <!-- PptxGenJS for PPTX Export -->
+  <script src="https://cdn.jsdelivr.net/gh/gitbrent/pptxgenjs@3.12.0/libs/jszip.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/gitbrent/pptxgenjs@3.12.0/dist/pptxgen.min.js"></script>
+</head>
+<body style="overflow: hidden;"> <!-- Prevent body scroll to let canvas scroll -->
+
+  <!-- Top Navigation -->
+  <nav class="top-nav">
+    <a href="index.html" class="nav-brand">
+      <div class="nav-brand-icon">IA</div>
+      <div class="nav-brand-text"><span>Curso IA</span> Commercial</div>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Cuadernos</a>
+      <a href="muro.html" class="nav-link active">Lienzo</a>
+      <a href="recursos.html" class="nav-link">Recursos</a>
+    </div>
+  </nav>
+
+  <!-- Canvas Container -->
+  <main class="lienzo-container" id="lienzo-container">
+    
+    <!-- Floating Toolbar -->
+    <div class="lienzo-toolbar">
+      <button class="btn-icon" id="btn-export-md" title="Exportar a Markdown">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+        Markdown
+      </button>
+      <button class="btn-icon" id="btn-export-ppt" title="Exportar a PowerPoint">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+        PowerPoint
+      </button>
+      <div style="width: 1px; background: var(--border-medium); margin: 0 4px;"></div>
+      <button class="btn-icon" id="btn-clear" title="Limpiar Lienzo" style="color: var(--accent-rose);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+        Limpiar
+      </button>
+    </div>
+
+    <!-- The Infinite Board -->
+    <div id="canvas-board">
+      <!-- Post-its will be rendered here via JS -->
+    </div>
+
+  </main>
+
+  <script src="js/main.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/muro.js"></script>
+</body>
+</html>
