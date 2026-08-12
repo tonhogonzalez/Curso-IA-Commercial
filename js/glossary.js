@@ -123,7 +123,7 @@
 
   // Initialize
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initGlossary);
+    (function(fn) { if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', fn); } else { fn(); } })( initGlossary);
   } else {
     initGlossary();
   }

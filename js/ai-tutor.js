@@ -217,7 +217,7 @@ ${getPageContext()}
 
   // Initialize when DOM is ready
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initTutor);
+    (function(fn) { if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', fn); } else { fn(); } })( initTutor);
   } else {
     initTutor();
   }

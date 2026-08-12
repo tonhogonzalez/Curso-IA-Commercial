@@ -2,7 +2,7 @@
  * Diagrams (Mermaid.js) Initialization
  */
 
-document.addEventListener('DOMContentLoaded', () => {
+(function(fn) { if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', fn); } else { fn(); } })( () => {
   // We check if mermaid is loaded from CDN
   if (typeof mermaid !== 'undefined') {
     mermaid.initialize({

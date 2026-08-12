@@ -3,7 +3,7 @@
 // Navigation, Progress, Interactions
 // ============================================
 
-document.addEventListener('DOMContentLoaded', () => {
+(function(fn) { if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', fn); } else { fn(); } })( () => {
 
   // --- Reading Progress Bar & Local Persistence ---
   const progressBarFill = document.querySelector('.progress-bar-fill');

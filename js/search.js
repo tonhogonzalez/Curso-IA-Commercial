@@ -324,7 +324,7 @@
   });
 
   // --- Initialize ---
-  document.addEventListener('DOMContentLoaded', () => {
+  (function(fn) { if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', fn); } else { fn(); } })( () => {
     createSearchUI();
     addSearchButton();
     initWorker();
