@@ -28,17 +28,47 @@
   <!-- Canvas Container -->
   <main class="lienzo-container" id="lienzo-container">
     
-    <!-- Floating Toolbar -->
+    <!-- Floating Enhanced Toolbar -->
     <div class="lienzo-toolbar">
+      <!-- Filter Chips -->
+      <div class="lienzo-filters">
+        <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">Filtrar:</span>
+        <button class="filter-chip active" data-filter="all">Todos</button>
+        <button class="filter-chip" data-filter="01">Pep M.</button>
+        <button class="filter-chip" data-filter="02">J. Ideami</button>
+        <button class="filter-chip" data-filter="03">Técnico</button>
+      </div>
+
+      <div style="width: 1px; background: var(--border-medium); margin: 0 4px; height: 24px;"></div>
+
+      <!-- Action Buttons -->
+      <button class="btn-icon" id="btn-add-note" title="Crear nueva nota libre">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        Nueva Nota
+      </button>
+
+      <button class="btn-icon" id="btn-connect-mode" title="Conectar notas con flechas">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+        Conectar
+      </button>
+
+      <button class="btn-icon" id="btn-export-obsidian" title="Exportar a Obsidian Canvas (.canvas)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+        Obsidian
+      </button>
+
       <button class="btn-icon" id="btn-export-md" title="Exportar a Markdown">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
         Markdown
       </button>
+
       <button class="btn-icon" id="btn-export-ppt" title="Exportar a PowerPoint">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
         PowerPoint
       </button>
-      <div style="width: 1px; background: var(--border-medium); margin: 0 4px;"></div>
+
+      <div style="width: 1px; background: var(--border-medium); margin: 0 4px; height: 24px;"></div>
+
       <button class="btn-icon" id="btn-clear" title="Limpiar Lienzo" style="color: var(--accent-rose);">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
         Limpiar
@@ -47,6 +77,14 @@
 
     <!-- The Infinite Board -->
     <div id="canvas-board">
+      <!-- SVG Connector Layer for Dynamic Bezier Arrows -->
+      <svg id="canvas-svg-layer" width="5000" height="5000">
+        <defs>
+          <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="var(--accent-violet)" />
+          </marker>
+        </defs>
+      </svg>
       <!-- Post-its will be rendered here via JS -->
     </div>
 

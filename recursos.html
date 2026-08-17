@@ -3,63 +3,65 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Recursos del Curso IA Commercial: Glosario, Playground de Python y Herramientas recomendadas.">
-  <title>Recursos de IA | Curso IA Commercial</title>
+  <meta name="description" content="Recursos del Curso IA Commercial: Simuladores interactivos de IA, Glosario, Playground de Python y Herramientas recomendadas.">
+  <title>Laboratorio & Recursos | Curso IA Commercial</title>
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="css/styles.css">
   
   <style>
-    /* Estilos específicos para la página de Recursos */
     .recursos-container {
-      max-width: 900px;
+      max-width: 960px;
       margin: 0 auto;
-      padding: 2rem;
+      padding: 2rem 1.5rem;
     }
     .recursos-section {
-      margin-bottom: 4rem;
+      margin-bottom: 3.5rem;
       background: var(--bg-card);
       border: 1px solid var(--border-medium);
-      border-radius: 12px;
+      border-radius: var(--radius-xl);
       padding: 2rem;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      box-shadow: var(--shadow-md);
     }
     .recursos-section h2 {
       margin-top: 0;
       color: var(--text-primary);
-      border-bottom: 2px solid var(--border-medium);
+      border-bottom: 2px solid var(--border-subtle);
       padding-bottom: 1rem;
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
+      font-family: var(--font-display);
+      font-size: 1.4rem;
     }
     
     /* Grid del Glosario */
     .glossary-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.25rem;
     }
     .glossary-card {
-      background: var(--bg-body);
-      border: 1px solid var(--border-light);
-      border-radius: 8px;
-      padding: 1.5rem;
-      transition: transform 0.2s, box-shadow 0.2s;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
     }
     .glossary-card:hover {
       transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      border-color: var(--accent-blue);
+      box-shadow: var(--shadow-md);
+      border-color: var(--accent-violet);
     }
     .glossary-card h3 {
       margin: 0 0 0.5rem 0;
-      color: var(--accent-blue);
-      font-size: 1.1rem;
+      color: var(--accent-violet);
+      font-size: 1.05rem;
       text-transform: capitalize;
+      font-family: var(--font-display);
     }
     .glossary-card p {
       margin: 0;
       color: var(--text-secondary);
-      font-size: 0.95rem;
-      line-height: 1.5;
+      font-size: 0.9rem;
+      line-height: 1.55;
     }
 
     /* Lista de herramientas */
@@ -71,7 +73,7 @@
     .tools-list li {
       margin-bottom: 1rem;
       padding-bottom: 1rem;
-      border-bottom: 1px dashed var(--border-light);
+      border-bottom: 1px dashed var(--border-subtle);
     }
     .tools-list li:last-child {
       border-bottom: none;
@@ -79,20 +81,21 @@
       padding-bottom: 0;
     }
     .tools-list a {
-      color: var(--accent-blue);
+      color: var(--accent-violet);
       text-decoration: none;
       font-weight: 600;
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      font-size: 1.05rem;
     }
     .tools-list a:hover {
       text-decoration: underline;
     }
     .tools-list p {
-      margin: 0.25rem 0 0 0;
+      margin: 0.35rem 0 0 0;
       color: var(--text-secondary);
-      font-size: 0.95rem;
+      font-size: 0.92rem;
     }
   </style>
 </head>
@@ -108,7 +111,6 @@
       <a href="index.html" class="nav-link">Cuadernos</a>
       <a href="muro.html" class="nav-link">Lienzo</a>
       <a href="recursos.html" class="nav-link active">Recursos</a>
-      <a href="#" class="nav-link">Acerca de</a>
     </div>
   </nav>
 
@@ -116,69 +118,92 @@
   <div style="padding-top: 64px; position: relative; z-index: 1;">
     
     <!-- Hero Section -->
-    <div class="index-hero" style="padding: 4rem 2rem;">
-      <h1 class="page-title" style="background: linear-gradient(135deg, #e8e6f0 0%, #c4b5fd 50%, #3b82f6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
-        Recursos del Curso
+    <div class="index-hero" style="padding: 3.5rem 2rem 2rem;">
+      <div class="page-meta" style="justify-content: center; margin-bottom: 1rem;">
+        <span class="meta-badge">Laboratorio & Herramientas</span>
+      </div>
+      <h1 class="page-title" style="background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-violet) 50%, var(--accent-blue) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-align: center;">
+        Recursos & Simuladores
       </h1>
-      <p class="page-subtitle" style="margin: 0 auto; text-align: center;">
-        Explora el glosario interactivo, practica con código Python en el navegador y descubre las herramientas clave mencionadas en las entrevistas.
+      <p class="page-subtitle" style="margin: 0 auto; text-align: center; max-width: 680px;">
+        Experimenta con simuladores visuales de mecanismos de IA, ejecuta código Python en el navegador y consulta el glosario técnico integral.
       </p>
     </div>
 
     <div class="recursos-container">
-      
-      <!-- Glosario Section -->
+
+      <!-- Sección 1: Simuladores Interactivos de IA -->
       <section class="recursos-section">
-        <h2>Glosario de Inteligencia Artificial</h2>
+        <h2>1. Simuladores Interactivos de IA</h2>
+        
+        <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+          Explora los principios matemáticos y de hardware que rigen los modelos de lenguaje modernos.
+        </p>
+
+        <!-- Visualizador de Self-Attention -->
+        <div class="attention-visualizer-target"></div>
+
+        <!-- Calculadora de VRAM & KV Cache -->
+        <div class="vram-calculator-target" style="margin-top: 2rem;"></div>
+      </section>
+      
+      <!-- Sección 2: Glosario -->
+      <section class="recursos-section">
+        <h2>2. Glosario de Inteligencia Artificial</h2>
         <div class="glossary-grid" id="glossary-grid">
           <!-- Populated by JS -->
         </div>
       </section>
 
-      <!-- Playground Section -->
+      <!-- Sección 3: Playground Python -->
       <section class="recursos-section">
-        <h2>Playground Interactivo (Python)</h2>
-        <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Prueba conceptos de programación y algoritmos directamente en tu navegador. Pyodide se encargará de ejecutar el código Python localmente.</p>
+        <h2>3. Playground Interactivo (Python WebAssembly)</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+          Ejecuta y modifica código directamente en tu navegador utilizando Pyodide sin necesidad de instalar nada.
+        </p>
         
-        <pre class="python-playground"><code># Un pequeño script para probar la generación de datos
-import random
+        <pre class="python-playground"><code># Simulación de Softmax y Atención en Python
+import math
 
-def simular_atencion():
-    print("Simulando Mecanismo de Atención (Transformers)...")
-    tokens = ["El", "banco", "de", "pescados"]
-    
-    for token in tokens:
-        peso = random.uniform(0.1, 0.9)
-        print(f"Token: '{token}' -> Peso de atención al contexto: {peso:.2f}")
-        
-simular_atencion()
+def softmax(scores):
+    exp_scores = [math.exp(s) for s in scores]
+    total = sum(exp_scores)
+    return [round(s / total, 3) for s in exp_scores]
+
+tokens = ["Pep", "explica", "Transformers", "en", "Arpa"]
+raw_scores = [1.2, 0.4, 3.8, 0.1, 2.1]
+attention_weights = softmax(raw_scores)
+
+for token, weight in zip(tokens, attention_weights):
+    bar = "█" * int(weight * 30)
+    print(f"{token:14} {weight:5.3f} | {bar}")
 </code></pre>
       </section>
 
-      <!-- Herramientas Section -->
+      <!-- Sección 4: Herramientas y Papers -->
       <section class="recursos-section">
-        <h2>Herramientas y Lecturas Recomendadas</h2>
+        <h2>4. Herramientas y Lecturas Esenciales</h2>
         <ul class="tools-list">
           <li>
-            <a href="https://huggingface.co/" target="_blank">
+            <a href="https://huggingface.co/" target="_blank" rel="noopener">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-              Hugging Face
+              Hugging Face Hub & Transformers
             </a>
-            <p>El repositorio principal de modelos de IA de código abierto, datasets y herramientas como la biblioteca Transformers.</p>
+            <p>Ecosistema de referencia para pesos abiertos de LLMs, cuantizaciones GGUF/AWQ y datasets de entrenamiento.</p>
           </li>
           <li>
-            <a href="https://commoncrawl.org/" target="_blank">
+            <a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-              Common Crawl
+              Attention Is All You Need (Vaswani et al., 2017)
             </a>
-            <p>Archivo abierto de la web que sirve como conjunto de datos principal para entrenar grandes modelos de lenguaje (LLMs).</p>
+            <p>El paper fundacional de Google Brain que introdujo la arquitectura Transformer y el mecanismo de autoatención.</p>
           </li>
           <li>
-            <a href="https://arxiv.org/abs/1706.03762" target="_blank">
+            <a href="https://arxiv.org/abs/1711.05101" target="_blank" rel="noopener">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-              Attention Is All You Need (Paper)
+              Decoupled Weight Decay Regularization (AdamW)
             </a>
-            <p>El paper original de Google (2017) que introdujo la arquitectura Transformer y revolucionó la IA generativa.</p>
+            <p>Paper de Ilya Loshchilov y Frank Hutter que solucionó la integración de Weight Decay en Adam, estándar de facto en LLMs.</p>
           </li>
         </ul>
       </section>
@@ -194,22 +219,16 @@ simular_atencion()
 
   <script src="js/main.js"></script>
   <script src="js/search.js"></script>
-  
-  <!-- Dependencies -->
-  <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
-  
-  <!-- Custom Scripts -->
   <script src="js/glossary.js"></script>
   <script src="js/playground.js"></script>
+  <script src="js/simulations.js"></script>
   
   <!-- Script para poblar el Glosario en esta página -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const grid = document.getElementById('glossary-grid');
-      if (window.GLOSSARY_DICT) {
-        // Ordenar alfabéticamente
+      if (window.GLOSSARY_DICT && grid) {
         const keys = Object.keys(window.GLOSSARY_DICT).sort((a, b) => a.localeCompare(b));
-        
         let html = '';
         keys.forEach(key => {
           html += `

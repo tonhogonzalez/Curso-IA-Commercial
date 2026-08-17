@@ -934,6 +934,9 @@ for i, palabra in enumerate(palabras):
 
           <h3 class="subsection-title">Optimizaciones del KV Cache</h3>
 
+          <!-- Widget Interactivo: Calculadora de VRAM & KV Cache -->
+          <div class="vram-calculator-target"></div>
+
           <p>Para evitar recalcular redundantemente las proyecciones de Clave y Valor de los tokens procesados anteriormente en cada paso de la decodificación, se almacenan los estados de atención mediante la técnica de <strong>KV Caching</strong>. Sin embargo, el almacenamiento de este caché escala linealmente con la longitud de la secuencia, consumiendo masivamente la VRAM de la GPU.</p>
 
           <h4>1. Caching de Prefijos (RadixAttention)</h4>
@@ -1275,6 +1278,9 @@ for i, palabra in enumerate(palabras):
         </div>
       </section>
 
+      <!-- Autoevaluación interactiva -->
+      <div class="quiz-target"></div>
+
     </div><!-- /content-wrapper -->
 
     <!-- Footer -->
@@ -1292,9 +1298,6 @@ for i, palabra in enumerate(palabras):
   <script src="../js/search-data.js"></script>
   <script src="../js/search.js"></script>
   <script src="../js/highlighter.js"></script>
-  <!-- External Dependencies -->
-  <script src="https://cdn.jsdelivr.net/npm/mermaid@9.4.3/dist/mermaid.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
   
   <!-- Custom Scripts -->
   <script src="../js/diagrams.js"></script>
@@ -1303,5 +1306,7 @@ for i, palabra in enumerate(palabras):
   <script src="../js/glossary.js"></script>
   <script src="../js/ai-tutor.js"></script>
   <script src="../js/text-zoom.js"></script>
+  <script src="../js/simulations.js"></script>
+  <script src="../js/quiz.js"></script>
 </body>
 </html>
