@@ -1,9 +1,13 @@
-const CACHE_NAME = 'curso-ia-v2';
+const CACHE_NAME = 'curso-ia-v3';
 const ASSETS = [
   './',
   './index.html',
   './muro.html',
   './recursos.html',
+  './cuadernos/01-pep-martorell.html',
+  './cuadernos/02-javier-ideami.html',
+  './cuadernos/03-compendio-tecnico.html',
+  './cuadernos/04-el-universo-del-transformer.html',
   './css/styles.css',
   './js/main.js',
   './js/simulations.js',

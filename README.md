@@ -43,6 +43,7 @@
 | **01** | **La Naturaleza de la IA y su Impacto en el Sistema Productivo** | Pep Martorell (*Arpa Talks*) | *Transformers, Polisemia, Superinterpolador estadístico, Supercomputación.* |
 | **02** | **Pensamiento Crítico, Prompting y el Horizonte 2030** | Javier Ideami (*Tengo un Plan*) | *Correlación vs Causalidad, 7 Mandamientos de Dartmouth, Metaprompting, AGI.* |
 | **03** | **Compendio Técnico de IA Generativa** | Compendio Especializado | *Matemáticas, Backprop, Optimización AdamW, KV Cache, RAG, Agentes Autónomos.* |
+| **04** | **El Universo del Transformer y Operatividad de LLMs** | Compendio Docente Avanzado | *Attention Is All You Need, Softmax Saturation, MHA, RoPE/ALiBi, GPT Lifecycle, Grounding, PyTorch.* |
 
 ---
 
