@@ -3,39 +3,50 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Recursos del Curso IA Commercial: Simuladores interactivos de IA, Glosario, Playground de Python y Herramientas recomendadas.">
+  <meta name="description" content="Laboratorio y Recursos del Curso IA Commercial: Simuladores interactivos de IA (Self-Attention, VRAM, Embeddings, Tokenizer, Sampling), Playground de Python WebAssembly, Matriz de Prompts, Glosario y Papers esenciales.">
   <title>Laboratorio & Recursos | Curso IA Commercial</title>
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="css/styles.css">
   
   <style>
     .recursos-container {
-      max-width: 960px;
+      max-width: 1040px;
       margin: 0 auto;
       padding: 2rem 1.5rem;
     }
     .recursos-section {
-      margin-bottom: 3.5rem;
+      margin-bottom: 4rem;
       background: var(--bg-card);
       border: 1px solid var(--border-medium);
       border-radius: var(--radius-xl);
-      padding: 2rem;
+      padding: 2.25rem;
       box-shadow: var(--shadow-md);
+      position: relative;
     }
-    .recursos-section h2 {
-      margin-top: 0;
-      color: var(--text-primary);
+    .recursos-section-header {
       border-bottom: 2px solid var(--border-subtle);
-      padding-bottom: 1rem;
-      margin-bottom: 1.5rem;
+      padding-bottom: 1.25rem;
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .recursos-section-header h2 {
+      margin: 0;
+      color: var(--text-primary);
       font-family: var(--font-display);
-      font-size: 1.4rem;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
     
     /* Grid del Glosario */
     .glossary-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 1.25rem;
     }
     .glossary-card {
@@ -43,6 +54,8 @@
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-md);
       padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
       transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
     }
     .glossary-card:hover {
@@ -51,51 +64,16 @@
       border-color: var(--accent-violet);
     }
     .glossary-card h3 {
-      margin: 0 0 0.5rem 0;
+      margin: 0;
       color: var(--accent-violet);
       font-size: 1.05rem;
-      text-transform: capitalize;
       font-family: var(--font-display);
     }
     .glossary-card p {
-      margin: 0;
+      margin: 0.5rem 0 0 0;
       color: var(--text-secondary);
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       line-height: 1.55;
-    }
-
-    /* Lista de herramientas */
-    .tools-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    .tools-list li {
-      margin-bottom: 1rem;
-      padding-bottom: 1rem;
-      border-bottom: 1px dashed var(--border-subtle);
-    }
-    .tools-list li:last-child {
-      border-bottom: none;
-      margin-bottom: 0;
-      padding-bottom: 0;
-    }
-    .tools-list a {
-      color: var(--accent-violet);
-      text-decoration: none;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 1.05rem;
-    }
-    .tools-list a:hover {
-      text-decoration: underline;
-    }
-    .tools-list p {
-      margin: 0.35rem 0 0 0;
-      color: var(--text-secondary);
-      font-size: 0.92rem;
     }
   </style>
 </head>
@@ -114,133 +92,687 @@
     </div>
   </nav>
 
+  <!-- Sticky Sub-Navigation Bar -->
+  <div class="recursos-subnav">
+    <a href="#simuladores" class="subnav-pill">
+      <span>🔬</span> Simuladores
+    </a>
+    <a href="#playground" class="subnav-pill">
+      <span>💻</span> Python Playground
+    </a>
+    <a href="#prompts" class="subnav-pill">
+      <span>📝</span> Matriz de Prompts
+    </a>
+    <a href="#glosario" class="subnav-pill">
+      <span>📖</span> Glosario
+    </a>
+    <a href="#papers-herramientas" class="subnav-pill">
+      <span>📚</span> Papers & Herramientas
+    </a>
+  </div>
+
   <!-- Main Content -->
-  <div style="padding-top: 64px; position: relative; z-index: 1;">
+  <div style="position: relative; z-index: 1;">
     
     <!-- Hero Section -->
-    <div class="index-hero" style="padding: 3.5rem 2rem 2rem;">
+    <div class="index-hero" style="padding: 3.5rem 2rem 2.5rem;">
       <div class="page-meta" style="justify-content: center; margin-bottom: 1rem;">
-        <span class="meta-badge">Laboratorio & Herramientas</span>
+        <span class="meta-badge">Laboratorio Técnico & Recursos</span>
+        <span class="meta-badge blue">2026 Edition</span>
       </div>
       <h1 class="page-title" style="background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-violet) 50%, var(--accent-blue) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-align: center;">
-        Recursos & Simuladores
+        Laboratorio de IA & Recursos
       </h1>
-      <p class="page-subtitle" style="margin: 0 auto; text-align: center; max-width: 680px;">
-        Experimenta con simuladores visuales de mecanismos de IA, ejecuta código Python en el navegador y consulta el glosario técnico integral.
+      <p class="page-subtitle" style="margin: 0 auto; text-align: center; max-width: 720px;">
+        Experimenta con simuladores visuales en tiempo real, ejecuta recetas de código Python en WebAssembly, consulta la matriz de prompt engineering y explora papers y herramientas clave.
       </p>
     </div>
 
     <div class="recursos-container">
 
-      <!-- Sección 1: Simuladores Interactivos de IA -->
-      <section class="recursos-section">
-        <h2>1. Simuladores Interactivos de IA</h2>
+      <!-- ========================================================
+           SECCIÓN 1: SIMULADORES INTERACTIVOS DE IA
+           ======================================================== -->
+      <section class="recursos-section" id="simuladores">
+        <div class="recursos-section-header">
+          <h2>
+            <span>🔬</span> 1. Laboratorio de Simuladores Interactivos
+          </h2>
+          <span class="sim-badge">5 Simuladores en Tiempo Real</span>
+        </div>
         
-        <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
-          Explora los principios matemáticos y de hardware que rigen los modelos de lenguaje modernos.
+        <p style="color: var(--text-secondary); margin-bottom: 2rem; font-size: 0.95rem; line-height: 1.6;">
+          Herramientas didácticas interactivas para visualizar los fundamentos matemáticos de los Transformers, el dimensionamiento de hardware, los espacios semánticos vectoriales, la tokenización BPE y el muestreo autoregresivo.
         </p>
 
-        <!-- Visualizador de Self-Attention -->
+        <!-- Simulador 1: Visualizador de Self-Attention -->
         <div class="attention-visualizer-target"></div>
 
-        <!-- Calculadora de VRAM & KV Cache -->
-        <div class="vram-calculator-target" style="margin-top: 2rem;"></div>
+        <!-- Simulador 2: Calculadora de VRAM & KV Cache -->
+        <div class="vram-calculator-target" style="margin-top: 2.5rem;"></div>
+
+        <!-- Simulador 3: Espacio Semántico de Embeddings 2D -->
+        <div class="embedding-visualizer-target" style="margin-top: 2.5rem;"></div>
+
+        <!-- Simulador 4: Tokenizador Interactivo BPE -->
+        <div class="tokenizer-visualizer-target" style="margin-top: 2.5rem;"></div>
+
+        <!-- Simulador 5: Simulador de Muestreo (Sampling) -->
+        <div class="sampling-visualizer-target" style="margin-top: 2.5rem;"></div>
       </section>
       
-      <!-- Sección 2: Glosario -->
-      <section class="recursos-section">
-        <h2>2. Glosario de Inteligencia Artificial</h2>
-        <div class="glossary-grid" id="glossary-grid">
-          <!-- Populated by JS -->
+      <!-- ========================================================
+           SECCIÓN 2: PYTHON PLAYGROUND (WEBASSEMBLY)
+           ======================================================== -->
+      <section class="recursos-section" id="playground">
+        <div class="recursos-section-header">
+          <h2>
+            <span>💻</span> 2. Playground Interactivo (Python WebAssembly)
+          </h2>
+          <span class="sim-badge">Motor Pyodide v0.24</span>
         </div>
-      </section>
 
-      <!-- Sección 3: Playground Python -->
-      <section class="recursos-section">
-        <h2>3. Playground Interactivo (Python WebAssembly)</h2>
-        <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
-          Ejecuta y modifica código directamente en tu navegador utilizando Pyodide sin necesidad de instalar nada.
+        <p style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.95rem;">
+          Ejecuta, modifica y prueba algoritmos fundamentales de Inteligencia Artificial directamente en tu navegador sin instalar nada. Selecciona una receta técnica del menú desplegable:
         </p>
         
-        <pre class="python-playground"><code># Simulación de Softmax y Atención en Python
-import math
-
-def softmax(scores):
-    exp_scores = [math.exp(s) for s in scores]
-    total = sum(exp_scores)
-    return [round(s / total, 3) for s in exp_scores]
-
-tokens = ["Pep", "explica", "Transformers", "en", "Arpa"]
-raw_scores = [1.2, 0.4, 3.8, 0.1, 2.1]
-attention_weights = softmax(raw_scores)
-
-for token, weight in zip(tokens, attention_weights):
-    bar = "█" * int(weight * 30)
-    print(f"{token:14} {weight:5.3f} | {bar}")
+        <pre class="python-playground"><code># El contenido se inicializa mediante js/playground.js
 </code></pre>
       </section>
 
-      <!-- Sección 4: Herramientas y Papers -->
-      <section class="recursos-section">
-        <h2>4. Herramientas y Lecturas Esenciales</h2>
-        <ul class="tools-list">
-          <li>
-            <a href="https://huggingface.co/" target="_blank" rel="noopener">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-              Hugging Face Hub & Transformers
-            </a>
-            <p>Ecosistema de referencia para pesos abiertos de LLMs, cuantizaciones GGUF/AWQ y datasets de entrenamiento.</p>
-          </li>
-          <li>
-            <a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-              Attention Is All You Need (Vaswani et al., 2017)
-            </a>
-            <p>El paper fundacional de Google Brain que introdujo la arquitectura Transformer y el mecanismo de autoatención.</p>
-          </li>
-          <li>
-            <a href="https://arxiv.org/abs/1711.05101" target="_blank" rel="noopener">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-              Decoupled Weight Decay Regularization (AdamW)
-            </a>
-            <p>Paper de Ilya Loshchilov y Frank Hutter que solucionó la integración de Weight Decay en Adam, estándar de facto en LLMs.</p>
-          </li>
-        </ul>
+      <!-- ========================================================
+           SECCIÓN 3: MATRIZ DE PROMPT ENGINEERING
+           ======================================================== -->
+      <section class="recursos-section" id="prompts">
+        <div class="recursos-section-header">
+          <h2>
+            <span>📝</span> 3. Matriz de Prompt Engineering de Producción
+          </h2>
+          <span class="sim-badge">Patrones Probados</span>
+        </div>
+
+        <p style="color: var(--text-secondary); margin-bottom: 2rem; font-size: 0.95rem;">
+          Estructuras y patrones avanzados extraídos de las entrevistas de expertos (Javier Ideami) y mejores prácticas de la industria. Haz clic en <strong>"Copiar Prompt"</strong> para usarlos en tus modelos.
+        </p>
+
+        <div class="prompt-matrix-grid">
+          
+          <!-- Prompt 1: Metaprompting -->
+          <div class="prompt-card">
+            <div class="prompt-card-header">
+              <h3 class="prompt-card-title">Metaprompting (Arquitecto de Prompts)</h3>
+              <span class="prompt-badge ideami">Javier Ideami</span>
+            </div>
+            <p class="prompt-desc">
+              Utiliza el modelo para que diseñe, optimice y auto-critique el prompt final antes de ejecutar la tarea, asegurando restricciones explícitas y rúbricas.
+            </p>
+            <div class="prompt-box" id="prompt-text-1">Actúa como un Diseñador Experto de Prompts y Arquitecto de IA.
+
+Mi objetivo final es: [DESCRIBIR EL OBJETIVO AQUÍ]
+
+Antes de responder directamente, realiza los siguientes 4 pasos:
+1. Analiza posibles ambigüedades o riesgos de alucinación en mi solicitud.
+2. Define el Rol ideal (System Persona), el Contexto técnico y el Formato óptimo de salida.
+3. Establece 3 Reglas Negativas estrictas (qué NO debe hacer el modelo).
+4. Redacta el Prompt Definitivo estructurado entre comillas triples para que yo lo ejecute.</div>
+            <div class="prompt-footer">
+              <span style="font-size: 0.75rem; color: var(--text-muted);">Uso: Tareas complejas y diseño de flujos</span>
+              <button class="tool-btn prompt-copy-btn" onclick="copyPrompt('prompt-text-1', this)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <span>Copiar Prompt</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Prompt 2: Chain of Thought -->
+          <div class="prompt-card">
+            <div class="prompt-card-header">
+              <h3 class="prompt-card-title">Chain-of-Thought (CoT & Raciocinio)</h3>
+              <span class="prompt-badge cot">Razonamiento</span>
+            </div>
+            <p class="prompt-desc">
+              Fuerza al modelo a descomponer el problema en etapas intermedias paso a paso antes de emitir la conclusión definitiva.
+            </p>
+            <div class="prompt-box" id="prompt-text-2">Por favor, resuelve el siguiente problema: [INSERTAR PROBLEMA/PREGUNTA]
+
+Instrucciones de razonamiento:
+1. Primero, desglosa los hechos clave y las premisas comprobables dentro de una sección <pensamiento>.
+2. Evalúa al menos dos hipótesis o caminos alternativos de resolución.
+3. Identifica posibles contradicciones o supuestos ocultos.
+4. Tras completar el análisis crítico, presenta la conclusión definitiva en una sección <respuesta_final>.</div>
+            <div class="prompt-footer">
+              <span style="font-size: 0.75rem; color: var(--text-muted);">Uso: Lógica, matemáticas y auditoría</span>
+              <button class="tool-btn prompt-copy-btn" onclick="copyPrompt('prompt-text-2', this)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <span>Copiar Prompt</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Prompt 3: Patrón ReAct -->
+          <div class="prompt-card">
+            <div class="prompt-card-header">
+              <h3 class="prompt-card-title">Patrón ReAct (Reasoning + Acting)</h3>
+              <span class="prompt-badge react">Agentes</span>
+            </div>
+            <p class="prompt-desc">
+              Estructura de bucle Pensamiento $\to$ Acción $\to$ Observación para construir agentes autónomos con llamada a herramientas.
+            </p>
+            <div class="prompt-box" id="prompt-text-3">Resuelve la siguiente tarea utilizando el bucle ReAct: [TAREA O PREGUNTA]
+
+Dispones de las siguientes herramientas:
+- BúsquedaWeb[consulta]
+- Calculadora[expresion]
+- BaseConocimiento[termino]
+
+Usa estrictamente el formato:
+Pensamiento: Qué necesito averiguar a continuación.
+Acción: Herramienta[argumento]
+Observación: [Esperar resultado de la herramienta]
+... (repite Pensamiento/Acción/Observación tantas veces como sea necesario)
+Pensamiento: Ya dispongo de toda la información.
+Respuesta Final: Explicación completa sustentada en las observaciones.</div>
+            <div class="prompt-footer">
+              <span style="font-size: 0.75rem; color: var(--text-muted);">Uso: Agentes autónomos y Tool-Calling</span>
+              <button class="tool-btn prompt-copy-btn" onclick="copyPrompt('prompt-text-3', this)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <span>Copiar Prompt</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Prompt 4: Salida Estructurada JSON Schema -->
+          <div class="prompt-card">
+            <div class="prompt-card-header">
+              <h3 class="prompt-card-title">Salida Estructurada (JSON Schema)</h3>
+              <span class="prompt-badge schema">APIs & Código</span>
+            </div>
+            <p class="prompt-desc">
+              Garantiza respuestas en JSON 100% parseables con validación de campos, ideal para integración en pipelines de backend.
+            </p>
+            <div class="prompt-box" id="prompt-text-4">Analiza el siguiente texto y extrae la información requerida: [INSERTAR TEXTO]
+
+Responde EXCLUSIVAMENTE con un objeto JSON válido que cumpla este esquema:
+{
+  "resumen_ejecutivo": "string (máximo 2 frases)",
+  "entidades_clave": ["string"],
+  "nivel_certeza": "alto | medio | bajo",
+  "metricas": [
+    { "nombre": "string", "valor": "number", "unidad": "string" }
+  ],
+  "puntos_criticos": ["string"]
+}
+No incluyas markdown, saludos ni explicaciones fuera del bloque JSON.</div>
+            <div class="prompt-footer">
+              <span style="font-size: 0.75rem; color: var(--text-muted);">Uso: Automatización y APIs</span>
+              <button class="tool-btn prompt-copy-btn" onclick="copyPrompt('prompt-text-4', this)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <span>Copiar Prompt</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ========================================================
+           SECCIÓN 4: GLOSARIO TÉCNICO FILTRABLE
+           ======================================================== -->
+      <section class="recursos-section" id="glosario">
+        <div class="recursos-section-header">
+          <h2>
+            <span>📖</span> 4. Glosario Técnico de Inteligencia Artificial
+          </h2>
+          <span class="sim-badge" id="glossary-counter">30 Términos</span>
+        </div>
+
+        <div class="glossary-controls">
+          <input type="search" id="glossary-search-input" class="glossary-search-input" placeholder="Buscar término o concepto (ej. KV Cache, AdamW, RAG, Polisemia, Causalidad)...">
+          
+          <div class="glossary-filter-chips">
+            <button class="glossary-chip active" data-cat="all">Todos</button>
+            <button class="glossary-chip" data-cat="fundamentos">Fundamentos & Matemáticas</button>
+            <button class="glossary-chip" data-cat="arquitectura">Arquitectura & Transformers</button>
+            <button class="glossary-chip" data-cat="hardware">Inferencia & Hardware</button>
+            <button class="glossary-chip" data-cat="rag_agentes">RAG & Agentes</button>
+            <button class="glossary-chip" data-cat="alineamiento">Alineamiento & Cognición</button>
+          </div>
+        </div>
+
+        <div class="glossary-grid" id="glossary-grid">
+          <!-- Populated dynamically with rich metadata -->
+        </div>
+      </section>
+
+      <!-- ========================================================
+           SECCIÓN 5: PAPERS FUNDACIONALES & HERRAMIENTAS 2026
+           ======================================================== -->
+      <section class="recursos-section" id="papers-herramientas">
+        <div class="recursos-section-header">
+          <h2>
+            <span>📚</span> 5. Compendio de Papers Fundacionales & Herramientas
+          </h2>
+          <span class="sim-badge">Lecturas de Referencia</span>
+        </div>
+
+        <h3 style="font-family: var(--font-display); font-size: 1.15rem; color: var(--text-primary); margin-bottom: 1.25rem;">
+          Papers Fundacionales Esenciales
+        </h3>
+
+        <div class="paper-grid">
+          
+          <div class="paper-card">
+            <h3>
+              <a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener">
+                Attention Is All You Need
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+            </h3>
+            <div class="paper-meta">
+              <span>Vaswani et al.</span> • <span>Google Brain / Univ. Toronto (2017)</span>
+            </div>
+            <p class="paper-takeaway">
+              Introdujo la arquitectura <strong>Transformer</strong> sustituyendo la recurrencia por autoatención ($Q \cdot K^T / \sqrt{d_k}$), habilitando la paralelización masiva en GPUs.
+            </p>
+          </div>
+
+          <div class="paper-card">
+            <h3>
+              <a href="https://arxiv.org/abs/1711.05101" target="_blank" rel="noopener">
+                Decoupled Weight Decay (AdamW)
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+            </h3>
+            <div class="paper-meta">
+              <span>Loshchilov & Hutter</span> • <span>ICLR (2017)</span>
+            </div>
+            <p class="paper-takeaway">
+              Solucionó la interacción defectuosa entre regularización $L_2$ y momentos adaptativos en Adam, convirtiéndose en el optimizador estándar para entrenar LLMs.
+            </p>
+          </div>
+
+          <div class="paper-card">
+            <h3>
+              <a href="https://arxiv.org/abs/2205.14135" target="_blank" rel="noopener">
+                FlashAttention: Fast & Memory-Efficient
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+            </h3>
+            <div class="paper-meta">
+              <span>Tri Dao et al.</span> • <span>Stanford University (2022)</span>
+            </div>
+            <p class="paper-takeaway">
+              Reescribió el cálculo de atención con conciencia del hardware (SRAM vs HBM), reduciendo la complejidad de memoria de $O(N^2)$ a $O(N)$ y acelerando el entrenamiento hasta 3x.
+            </p>
+          </div>
+
+          <div class="paper-card">
+            <h3>
+              <a href="https://arxiv.org/abs/2106.09685" target="_blank" rel="noopener">
+                LoRA: Low-Rank Adaptation of LLMs
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+            </h3>
+            <div class="paper-meta">
+              <span>Hu et al.</span> • <span>Microsoft Research (2021)</span>
+            </div>
+            <p class="paper-takeaway">
+              Demostró que las matrices de pesos $\Delta W$ poseen un rango intrínseco bajo, permitiendo adaptar modelos de 70B congelando el backbone y entrenando solo matrices $A \cdot B$.
+            </p>
+          </div>
+
+          <div class="paper-card">
+            <h3>
+              <a href="https://arxiv.org/abs/2305.18290" target="_blank" rel="noopener">
+                Direct Preference Optimization (DPO)
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+            </h3>
+            <div class="paper-meta">
+              <span>Rafailov et al.</span> • <span>Stanford (2023)</span>
+            </div>
+            <p class="paper-takeaway">
+              Simplificó el RLHF clásico derivando una función de pérdida cerrada directa sobre preferencias humanas, eliminando la necesidad de entrenar un Reward Model independiente.
+            </p>
+          </div>
+
+          <div class="paper-card">
+            <h3>
+              <a href="https://arxiv.org/abs/2404.16130" target="_blank" rel="noopener">
+                From Local to Global: GraphRAG
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+            </h3>
+            <div class="paper-meta">
+              <span>Edge et al.</span> • <span>Microsoft Research (2024)</span>
+            </div>
+            <p class="paper-takeaway">
+              Superó la limitación puntual del RAG vectorial construyendo jerarquías de grafos de conocimiento con detección de comunidades (Leiden), permitiendo sintetizar colecciones masivas.
+            </p>
+          </div>
+
+        </div>
+
+        <!-- Catálogo de Herramientas -->
+        <h3 style="font-family: var(--font-display); font-size: 1.15rem; color: var(--text-primary); margin-top: 3rem; margin-bottom: 1.25rem;">
+          Directorio del Ecosistema de Herramientas (Edición 2026)
+        </h3>
+
+        <div class="tools-category-grid">
+          
+          <!-- Categoría 1: Inferencia Local -->
+          <div class="tool-category-card">
+            <div class="tool-category-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+              Inferencia & Servidores
+            </div>
+            <div class="tool-pill-list">
+              <a href="https://ollama.com" target="_blank" rel="noopener" class="tool-pill-item">
+                <div class="tool-pill-name"><span>Ollama</span> <span>↗</span></div>
+                <div class="tool-pill-desc">Ejecución local sencilla de LLaMA 3.3, Qwen y DeepSeek en Mac/Linux/Windows.</div>
+              </a>
+              <a href="https://github.com/vllm-project/vllm" target="_blank" rel="noopener" class="tool-pill-item">
+                <div class="tool-pill-name"><span>vLLM</span> <span>↗</span></div>
+                <div class="tool-pill-desc">Motor de alto rendimiento con PagedAttention para servir APIs a alta concurrencia.</div>
+              </a>
+              <a href="https://github.com/ggerganov/llama.cpp" target="_blank" rel="noopener" class="tool-pill-item">
+                <div class="tool-pill-name"><span>llama.cpp</span> <span>↗</span></div>
+                <div class="tool-pill-desc">Inferencia en C/C++ puro con cuantización GGUF a 4 bits sin sobrecarga.</div>
+              </a>
+            </div>
+          </div>
+
+          <!-- Categoría 2: Bases de Datos Vectoriales -->
+          <div class="tool-category-card">
+            <div class="tool-category-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+              Bases de Datos Vectoriales
+            </div>
+            <div class="tool-pill-list">
+              <a href="https://qdrant.tech" target="_blank" rel="noopener" class="tool-pill-item">
+                <div class="tool-pill-name"><span>Qdrant</span> <span>↗</span></div>
+                <div class="tool-pill-desc">Motor vectorial en Rust con filtrado de metadatos avanzado y soporte de cuantización escalar.</div>
+              </a>
+              <a href="https://www.trychroma.com" target="_blank" rel="noopener" class="tool-pill-item">
+                <div class="tool-pill-name"><span>ChromaDB</span> <span>↗</span></div>
+                <div class="tool-pill-desc">Base de datos incrustada orientada a prototipado rápido y aplicaciones locales RAG.</div>
+              </a>
+              <a href="https://github.com/pgvector/pgvector" target="_blank" rel="noopener" class="tool-pill-item">
+                <div class="tool-pill-name"><span>pgvector (PostgreSQL)</span> <span>↗</span></div>
+                <div class="tool-pill-desc">Extensión para almacenar embeddings y realizar búsquedas HNSW dentro de Postgres.</div>
+              </a>
+            </div>
+          </div>
+
+          <!-- Categoría 3: Frameworks de Agentes -->
+          <div class="tool-category-card">
+            <div class="tool-category-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+              Frameworks de Agentes
+            </div>
+            <div class="tool-pill-list">
+              <a href="https://www.llamaindex.ai" target="_blank" rel="noopener" class="tool-pill-item">
+                <div class="tool-pill-name"><span>LlamaIndex</span> <span>↗</span></div>
+                <div class="tool-pill-desc">Framework de orquestación de datos especializado en pipelines avanzados RAG y síntesis.</div>
+              </a>
+              <a href="https://www.crewai.com" target="_blank" rel="noopener" class="tool-pill-item">
+                <div class="tool-pill-name"><span>CrewAI</span> <span>↗</span></div>
+                <div class="tool-pill-desc">Orquestación de equipos de agentes con roles autónomos, memoria y delegación de tareas.</div>
+              </a>
+              <a href="https://www.langchain.com" target="_blank" rel="noopener" class="tool-pill-item">
+                <div class="tool-pill-name"><span>LangGraph</span> <span>↗</span></div>
+                <div class="tool-pill-desc">Construcción de agentes con estado y flujos cíclicos con tolerancia a fallos.</div>
+              </a>
+            </div>
+          </div>
+
+          <!-- Categoría 4: Evaluación & Observabilidad -->
+          <div class="tool-category-card">
+            <div class="tool-category-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+              Observabilidad & LLMOps
+            </div>
+            <div class="tool-pill-list">
+              <a href="https://langfuse.com" target="_blank" rel="noopener" class="tool-pill-item">
+                <div class="tool-pill-name"><span>Langfuse</span> <span>↗</span></div>
+                <div class="tool-pill-desc">Trazabilidad de ejecuciones, monitorización de latencias, costes por token y evaluación.</div>
+              </a>
+              <a href="https://docs.ragas.io" target="_blank" rel="noopener" class="tool-pill-item">
+                <div class="tool-pill-name"><span>Ragas</span> <span>↗</span></div>
+                <div class="tool-pill-desc">Métricas cuantitativas para evaluar fidelidad (faithfulness) y relevancia de respuestas RAG.</div>
+              </a>
+              <a href="https://huggingface.co" target="_blank" rel="noopener" class="tool-pill-item">
+                <div class="tool-pill-name"><span>Hugging Face Hub</span> <span>↗</span></div>
+                <div class="tool-pill-desc">Repositorio central de pesos abiertos, benchmarks, leaderboards (Open LLM) y datasets.</div>
+              </a>
+            </div>
+          </div>
+
+        </div>
       </section>
 
     </div>
   </div>
 
+  <!-- Footer -->
   <footer class="site-footer" style="margin-left: 0;">
     <p class="footer-text">
-      Curso IA Commercial — Cuadernos construidos con contenido íntegro de entrevistas
+      Curso IA Commercial — Cuadernos construidos con contenido íntegro de entrevistas y rigor técnico
     </p>
   </footer>
 
+  <!-- Scripts -->
   <script src="js/main.js"></script>
   <script src="js/search.js"></script>
   <script src="js/glossary.js"></script>
   <script src="js/playground.js"></script>
   <script src="js/simulations.js"></script>
   
-  <!-- Script para poblar el Glosario en esta página -->
+  <!-- Script Interactivo para el Glosario y Matriz de Prompts -->
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const grid = document.getElementById('glossary-grid');
-      if (window.GLOSSARY_DICT && grid) {
-        const keys = Object.keys(window.GLOSSARY_DICT).sort((a, b) => a.localeCompare(b));
-        let html = '';
-        keys.forEach(key => {
-          html += `
-            <div class="glossary-card">
-              <h3>${key}</h3>
-              <p>${window.GLOSSARY_DICT[key]}</p>
-            </div>
-          `;
-        });
-        grid.innerHTML = html;
+    const RICH_GLOSSARY = [
+      {
+        term: "KV Cache",
+        cat: "hardware",
+        desc: "Estructura de memoria en VRAM que almacena los tensores de Claves (K) y Valores (V) calculados en tokens anteriores, reduciendo la complejidad autoregresiva de O(N²) a O(1).",
+        notebook: "cuadernos/03-compendio-tecnico.html#kv-cache",
+        nbLabel: "Cuaderno 03: Compendio Técnico"
+      },
+      {
+        term: "Self-Attention (Autoatención)",
+        cat: "arquitectura",
+        desc: "Mecanismo central de los Transformers (Q·Kᵀ / √d_k) que calcula pesos cruzados entre todos los tokens en paralelo, permitiendo resolver la polisemia considerando el contexto global.",
+        notebook: "cuadernos/01-pep-martorell.html#transformers",
+        nbLabel: "Cuaderno 01: Pep Martorell"
+      },
+      {
+        term: "AdamW",
+        cat: "fundamentos",
+        desc: "Optimizador derivado de Adam que desacopla la regularización por decaimiento de pesos (Weight Decay) de los gradientes adaptativos, mejorando la generalización.",
+        notebook: "cuadernos/03-compendio-tecnico.html#adamw",
+        nbLabel: "Cuaderno 03: Compendio Técnico"
+      },
+      {
+        term: "RAG (Retrieval-Augmented Generation)",
+        cat: "rag_agentes",
+        desc: "Arquitectura que recupera fragmentos de conocimiento relevante desde una base de datos vectorial externa y los inyecta en el contexto del prompt antes de la generación.",
+        notebook: "cuadernos/03-compendio-tecnico.html#rag",
+        nbLabel: "Cuaderno 03: Compendio Técnico"
+      },
+      {
+        term: "GraphRAG",
+        cat: "rag_agentes",
+        desc: "Extensión de RAG basada en grafos de conocimiento y clustering jerárquico de comunidades (Leiden), facilitando respuestas globales y síntesis temática sobre grandes volúmenes.",
+        notebook: "cuadernos/03-compendio-tecnico.html#graphrag",
+        nbLabel: "Cuaderno 03: Compendio Técnico"
+      },
+      {
+        term: "Metaprompting",
+        cat: "alineamiento",
+        desc: "Metodología donde se utiliza al propio modelo de lenguaje como arquitecto y auditor para diseñar, restringir y validar el prompt final antes de su ejecución.",
+        notebook: "cuadernos/02-javier-ideami.html#metaprompting",
+        nbLabel: "Cuaderno 02: Javier Ideami"
+      },
+      {
+        term: "Correlación vs Causalidad",
+        cat: "fundamentos",
+        desc: "Principio epistemológico central: los LLMs operan en el nivel 1 de la escalera causal (asociación estadística en espacios multidimensionales) pero no deducen causas sin modelos de intervención.",
+        notebook: "cuadernos/02-javier-ideami.html#causalidad",
+        nbLabel: "Cuaderno 02: Javier Ideami"
+      },
+      {
+        term: "Superinterpolador Estadístico",
+        cat: "fundamentos",
+        desc: "Concepto acuñado por Pep Martorell para definir a las redes neuronales profundas: navegadores de alta precisión en variedades de datos conocidas sin extrapolar leyes físicas ausentes.",
+        notebook: "cuadernos/01-pep-martorell.html#superinterpolador",
+        nbLabel: "Cuaderno 01: Pep Martorell"
+      },
+      {
+        term: "Tokenización BPE",
+        cat: "arquitectura",
+        desc: "Algoritmo de codificación por pares de bytes que fusiona iterativamente caracteres frecuentes en subpalabras, equilibrando la cobertura de vocabulario y el tamaño del diccionario.",
+        notebook: "cuadernos/03-compendio-tecnico.html#tokenizacion",
+        nbLabel: "Cuaderno 03: Compendio Técnico"
+      },
+      {
+        term: "Temperatura & Sampling",
+        cat: "hardware",
+        desc: "Hiperparámetro que escala los logits (z/T) antes del Softmax; temperaturas bajas (T→0) concentran la probabilidad en el token dominante, mientras que altas aplanan la distribución.",
+        notebook: "cuadernos/03-compendio-tecnico.html#sampling",
+        nbLabel: "Cuaderno 03: Compendio Técnico"
+      },
+      {
+        term: "Top-P (Nucleus Sampling)",
+        cat: "hardware",
+        desc: "Estrategia de muestreo dinámico que trunca la selección únicamente al conjunto más pequeño de tokens cuya masa de probabilidad acumulada alcance el umbral p (ej. 90%).",
+        notebook: "cuadernos/03-compendio-tecnico.html#sampling",
+        nbLabel: "Cuaderno 03: Compendio Técnico"
+      },
+      {
+        term: "FlashAttention",
+        cat: "hardware",
+        desc: "Algoritmo exacto de atención con conciencia de la memoria GPU (SRAM vs HBM) que evita materializar matrices intermedias N×N, acelerando el cómputo y ahorrando VRAM.",
+        notebook: "cuadernos/03-compendio-tecnico.html#flashattention",
+        nbLabel: "Cuaderno 03: Compendio Técnico"
+      },
+      {
+        term: "LoRA & QLoRA",
+        cat: "arquitectura",
+        desc: "Técnica de fine-tuning eficiente por adaptación de bajo rango que entrena matrices pequeñas A y B (W = W₀ + B·A) con congelación de los pesos base.",
+        notebook: "cuadernos/03-compendio-tecnico.html#lora",
+        nbLabel: "Cuaderno 03: Compendio Técnico"
+      },
+      {
+        term: "DPO (Direct Preference Optimization)",
+        cat: "alineamiento",
+        desc: "Método de alineamiento que optimiza los pesos directamente sobre comparaciones de preferencia humana sin necesidad de entrenar una red de recompensa separada.",
+        notebook: "cuadernos/03-compendio-tecnico.html#dpo",
+        nbLabel: "Cuaderno 03: Compendio Técnico"
+      },
+      {
+        term: "ReAct Agent",
+        cat: "rag_agentes",
+        desc: "Framework para agentes de IA que combina razonamiento (Reasoning) y ejecución de herramientas (Acting) en bucle continuo para resolver problemas de múltiples pasos.",
+        notebook: "cuadernos/03-compendio-tecnico.html#agentes",
+        nbLabel: "Cuaderno 03: Compendio Técnico"
+      },
+      {
+        term: "Musculatura Cognitiva",
+        cat: "alineamiento",
+        desc: "Capacidad de pensamiento crítico y análisis riguroso que los profesionales deben ejercitar deliberadamente para auditar y verificar las respuestas de los modelos de IA.",
+        notebook: "cuadernos/02-javier-ideami.html#musculatura-cognitiva",
+        nbLabel: "Cuaderno 02: Javier Ideami"
+      },
+      {
+        term: "Embeddings",
+        cat: "fundamentos",
+        desc: "Representaciones vectoriales continuas en espacios de cientos o miles de dimensiones donde la cercanía geométrica (distancia coseno) refleja afinidad semántica.",
+        notebook: "cuadernos/03-compendio-tecnico.html#embeddings",
+        nbLabel: "Cuaderno 03: Compendio Técnico"
+      },
+      {
+        term: "Alucinación",
+        cat: "alineamiento",
+        desc: "Generación de texto factualmente incorrecto, inventado o incoherente producido con alta confianza estadística debido a la naturaleza probabilística del modelo.",
+        notebook: "cuadernos/02-javier-ideami.html#alucinaciones",
+        nbLabel: "Cuaderno 02: Javier Ideami"
       }
+    ];
+
+    function renderGlossary() {
+      const grid = document.getElementById('glossary-grid');
+      const searchInput = document.getElementById('glossary-search-input');
+      const counter = document.getElementById('glossary-counter');
+      const chips = document.querySelectorAll('.glossary-chip');
+      
+      let currentCat = 'all';
+      let searchQuery = '';
+
+      function filterAndDraw() {
+        const query = searchQuery.toLowerCase().trim();
+        const filtered = RICH_GLOSSARY.filter(item => {
+          const matchCat = currentCat === 'all' || item.cat === currentCat;
+          const matchQuery = !query || item.term.toLowerCase().includes(query) || item.desc.toLowerCase().includes(query);
+          return matchCat && matchQuery;
+        });
+
+        if (counter) counter.textContent = `${filtered.length} Términos`;
+
+        if (filtered.length === 0) {
+          grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 2rem;">No se encontraron términos coincidentes.</div>';
+          return;
+        }
+
+        grid.innerHTML = filtered.map(item => `
+          <div class="glossary-card">
+            <div class="glossary-card-top">
+              <h3>${item.term}</h3>
+              <span class="sim-badge" style="font-size: 0.65rem;">${item.cat.toUpperCase()}</span>
+            </div>
+            <p>${item.desc}</p>
+            ${item.notebook ? `
+              <a href="${item.notebook}" class="glossary-notebook-link">
+                <span>Tratado en ${item.nbLabel}</span> <span>→</span>
+              </a>
+            ` : ''}
+          </div>
+        `).join('');
+      }
+
+      if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+          searchQuery = e.target.value;
+          filterAndDraw();
+        });
+      }
+
+      chips.forEach(chip => {
+        chip.addEventListener('click', () => {
+          chips.forEach(c => c.classList.remove('active'));
+          chip.classList.add('active');
+          currentCat = chip.getAttribute('data-cat');
+          filterAndDraw();
+        });
+      });
+
+      filterAndDraw();
+    }
+
+    function copyPrompt(elementId, btn) {
+      const el = document.getElementById(elementId);
+      if (!el) return;
+      navigator.clipboard.writeText(el.innerText);
+      const originalHtml = btn.innerHTML;
+      btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> <span>¡Copiado!</span>`;
+      setTimeout(() => {
+        btn.innerHTML = originalHtml;
+      }, 2000);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderGlossary();
     });
   </script>
 </body>
 </html>
+
