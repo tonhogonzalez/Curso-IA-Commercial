@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Manual docente y técnico sobre el mecanismo de autoatención, atención multi-cabeza, codificación posicional (APE, RoPE, ALiBi), arquitectura Encoder-Decoder, ciclo de vida de LLMs, Grounding y laboratorio PyTorch.">
+  <meta name="keywords" content="Transformers, Attention Is All You Need, Self-Attention, Multi-Head Attention, RoPE, ALiBi, GPT, Preentrenamiento, RLHF, Grounding, Evaluation Harness, PyTorch">
+  <title>Cuaderno 04 — El Universo del Transformer y Operatividad de LLMs | Curso IA Commercial</title>
+  <link rel="manifest" href="../manifest.json">
+  <link rel="stylesheet" href="../css/styles.css">
+  <!-- KaTeX for LaTeX math rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ],
+      throwOnError: false
+    });"></script>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <nav class="top-nav">
+    <button class="menu-toggle" aria-label="Abrir menú">☰</button>
+    <a href="../index.html" class="nav-brand">
+      <div class="nav-brand-icon">IA</div>
+      <div class="nav-brand-text"><span>Curso IA</span> Commercial</div>
+    </a>
+    <div class="nav-links">
+      <a href="../index.html" class="nav-link">Cuadernos</a>
+      <a href="../muro.html" class="nav-link">Lienzo</a>
+      <a href="../recursos.html" class="nav-link">Recursos</a>
+      <a href="#" class="nav-link">Acerca de</a>
+    </div>
+  </nav>
+
+  <!-- Reading Progress -->
+  <div class="progress-bar">
+    <div class="progress-bar-fill"></div>
+  </div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Contenido del cuaderno</div>
+      <a href="#intro" class="sidebar-link active">
+        <span class="sidebar-link-number">00</span>
+        Introducción y Objetivos
+      </a>
+      <a href="#seccion-1" class="sidebar-link">
+        <span class="sidebar-link-number">01</span>
+        El Ocaso de la Recurrencia
+      </a>
+      <a href="#seccion-2" class="sidebar-link">
+        <span class="sidebar-link-number">02</span>
+        Queries, Keys y Values en el Espacio Latente
+      </a>
+      <a href="#seccion-3" class="sidebar-link">
+        <span class="sidebar-link-number">03</span>
+        Matemática de la Autoatención Escalada
+      </a>
+      <a href="#seccion-4" class="sidebar-link">
+        <span class="sidebar-link-number">04</span>
+        Atención Multi-Cabeza (MHA)
+      </a>
+      <a href="#seccion-5" class="sidebar-link">
+        <span class="sidebar-link-number">05</span>
+        Arquitectura: Codificador y Decodificador
+      </a>
+      <a href="#seccion-6" class="sidebar-link">
+        <span class="sidebar-link-number">06</span>
+        Evolución Posicional: APE, RoPE y ALiBi
+      </a>
+      <a href="#seccion-7" class="sidebar-link">
+        <span class="sidebar-link-number">07</span>
+        El Ciclo de Vida del Token y GPT
+      </a>
+      <a href="#seccion-8" class="sidebar-link">
+        <span class="sidebar-link-number">08</span>
+        Grounding y Evaluation Harness
+      </a>
+      <a href="#seccion-9" class="sidebar-link">
+        <span class="sidebar-link-number">09</span>
+        Laboratorio Práctico en PyTorch
+      </a>
+    </div>
+  </aside>
+  <div class="sidebar-overlay"></div>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="content-wrapper">
+
+      <!-- Page Header -->
+      <div class="page-header">
+        <div class="breadcrumb">
+          <a href="../index.html">Cuadernos</a>
+          <span class="separator">/</span>
+          <span>Cuaderno 04</span>
+        </div>
+
+        <div class="page-meta">
+          <span class="meta-badge">CUADERNO 04</span>
+          <span class="meta-badge blue">Compendio Docente — Transformers & LLMs</span>
+          <span class="meta-info">Manual Técnico Avanzado</span>
+        </div>
+
+        <h1 class="page-title">El Universo del Transformer, "Attention Is All You Need" y la Operatividad de los Grandes Modelos de Lenguaje (LLMs)</h1>
+        <p class="page-subtitle">Un manual docente y técnico de alta densidad sobre el mecanismo de autoatención, evolución posicional, preentrenamiento GPT, Grounding y arneses de evaluación de LLMs.</p>
+      </div>
+
+      <!-- SECCIÓN 00: INTRODUCCIÓN -->
+      <section id="intro" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">00</span>
+          <h2 class="section-title">Introducción y Objetivos de este Cuaderno</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p class="editorial-lead">
+            Este cuaderno formativo de nivel de posgrado está diseñado para desglosar, con el máximo rigor teórico, matemático y práctico, los fundamentos de la arquitectura que revolucionó la inteligencia artificial moderna: el <strong>Transformer</strong>. Concebido originalmente por un equipo de investigación de Google Brain en 2017, el Transformer es hoy el motor indiscutible que impulsa el procesamiento del lenguaje natural y la inteligencia artificial generativa a escala global.
+          </p>
+
+          <p>
+            A través de esta guía, no solo asimilarás la teoría detrás de esta revolución, sino que conectarás cada concepto matemático complejo con ejemplos ilustrativos del mundo real y demostraciones algebraicas detalladas. Al finalizar este cuaderno, dominarás:
+          </p>
+
+          <div class="concept-card highlight">
+            <div class="concept-card-label">🎯 Objetivos de Aprendizaje</div>
+            <ul style="margin: 0.5rem 0 0 1.25rem; color: var(--text-secondary); line-height: 1.6;">
+              <li><strong>La física del hardware y la computación secuencial:</strong> Las razones por las cuales las redes recurrentes (RNNs y LSTMs) colapsaron ante las capacidades de procesamiento paralelo de las GPUs modernas.</li>
+              <li><strong>Queries, Keys y Values en el Espacio Latente:</strong> La intuición profunda detrás de estas tres proyecciones vectoriales dinámicas y su analogía con los sistemas de recuperación de información.</li>
+              <li><strong>La matemática exacta de la Autoatención Escalada:</strong> La demostración rigurosa de por qué la varianza escala con la dimensionalidad $d_k$, el peligro de saturación de la función softmax, la atenuación del gradiente y cómo el factor de escala $1/\sqrt{d_k}$ estabiliza el entrenamiento.</li>
+              <li><strong>La mecánica de la Atención Multi-Cabeza (MHA):</strong> Cómo el modelo distribuye el aprendizaje de relaciones sintácticas y semánticas a través de múltiples subespacios vectoriales paralelos de coste computacional optimizado.</li>
+              <li><strong>La anatomía del Codificador y del Decodificador:</strong> Desglose capa por capa (autoatención bidireccional, causal, cruzada y FFN), junto con el debate estructural de colocación de normalización (Post-LN, Pre-LN, Peri-LN, DeepNorm y Keel).</li>
+              <li><strong>Evolución de la Codificación Posicional:</strong> Comparación geométrica, matemática y de extrapolación de contexto entre la Codificación Absoluta Sinusoidal (APE), los Embeddings Rotatorios (RoPE) y los Sesgos de Atención Lineal (ALiBi).</li>
+              <li><strong>El ciclo de vida operativo de un LLM:</strong> Desde el preentrenamiento causal autorregresivo (GPT) y la alineación (SFT/RLHF) hasta la generación paso a paso controlada por temperatura, Top-P y Top-K.</li>
+              <li><strong>Anclaje (Grounding) y Evaluación (Harness):</strong> Las metodologías para dotar de veracidad fáctica a un modelo (RAG/GraphRAG) y medir de forma científica su desempeño frente a benchmarks de frontera.</li>
+              <li><strong>Un laboratorio de PyTorch funcional:</strong> Implementación trazable y comentada de la autoatención y la atención multi-cabeza paso a paso.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 01 -->
+      <section id="seccion-1" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">01</span>
+          <h2 class="section-title">El Ocaso de la Recurrencia y las Limitaciones de la Computación Secuencial</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            Antes de la publicación del paper seminal <em>"Attention Is All You Need"</em> en junio de 2017, el procesamiento de secuencias y el modelado de lenguaje natural dependían de las Redes Neuronales Recurrentes (RNNs) y sus variantes avanzadas, como las LSTMs (Long Short-Term Memory) y las GRUs (Gated Recurrent Units). Aunque estas arquitecturas representaron un gran avance para su época, presentaban cuellos de botella intrínsecos que impedían el escalado masivo de parámetros y el entrenamiento sobre grandes corpus de datos a nivel de internet.
+          </p>
+
+          <h3>La Física del Hardware: Por qué la GPU detesta la Recurrencia</h3>
+          <p>
+            Las unidades de procesamiento gráfico (GPUs) modernas son aceleradores de hardware masivamente paralelos diseñados para ejecutar simultáneamente miles de operaciones aritméticas independientes. Las GPUs operan de manera óptima bajo el modelo SIMT (Single Instruction, Multiple Threads), organizando hilos de ejecución (threads) en bloques paralelos que realizan multiplicaciones de matrices y operaciones de álgebra lineal de forma concurrente.
+          </p>
+          <p>
+            En una red recurrente (RNN), el flujo de información es estrictamente lineal y temporalmente secuencial. El estado oculto actual $h_t$ se calcula a partir del estado oculto inmediatamente anterior $h_{t-1}$ y del token de entrada actual $x_t$ mediante una ecuación recursiva:
+          </p>
+
+          $$\mathbf{h}_t = \tanh(\mathbf{W}_{hh} \mathbf{h}_{t-1} + \mathbf{W}_{xh} \mathbf{x}_t + \mathbf{b}_h)$$
+
+          <p>
+            Esta formulación matemática introduce una dependencia de datos secuencial insalvable. Para procesar el token en la posición $t = 100$ de una frase, la GPU está obligada a esperar a que el hilo de ejecución termine de procesar el token $99$, el cual a su vez depende del $98$, y así sucesivamente hasta el token inicial en $t=0$.
+          </p>
+
+          <p>Como consecuencia:</p>
+          <ul>
+            <li><strong>Inutilización del paralelismo del silicio:</strong> Las GPUs no pueden procesar los tokens de una secuencia de manera simultánea durante el entrenamiento. Los miles de núcleos CUDA de la GPU permanecen inactivos esperando secuencialmente la señal del paso de tiempo anterior, un fenómeno conocido como <em>starvation</em> de hardware.</li>
+            <li><strong>Velocidad de entrenamiento prohibitiva:</strong> La velocidad de entrenamiento escala de forma lineal $\mathcal{O}(N)$ con la longitud de la secuencia, lo que limitaba el tamaño de los conjuntos de datos de entrenamiento a fracciones diminutas de lo que se utiliza hoy en día.</li>
+          </ul>
+
+          <div class="quote-block">
+            <p>💡 <strong>Analogía de la Línea de Montaje Secuencial:</strong> Imagina una fábrica donde se construye un automóvil. Una RNN es como una fábrica de un solo operario que debe completar paso a paso cada tornillo antes de pasar al siguiente componente; si un tornillo requiere 100 pasos, el proceso completo se serializa. Por el contrario, el Transformer es como si una legión de obreros especializados procesara simultáneamente todas las partes del vehículo en paralelo, comunicándose instantáneamente de forma colectiva.</p>
+          </div>
+
+          <h3>La Matemática del Desvanecimiento y Explosión del Gradiente Temporal</h3>
+          <p>
+            En las RNNs, durante la fase de optimización, el cálculo de las derivadas de la pérdida $\mathcal{L}$ respecto a los pesos de la red requiere propagar los gradientes hacia atrás en el tiempo (algoritmo <em>Backpropagation Through Time</em> o BPTT).
+          </p>
+          <p>
+            Consideremos el gradiente de la pérdida respecto a un estado oculto lejano $h_t$ en el paso de tiempo $t$, provocado por el error en un paso futuro $T$:
+          </p>
+
+          $$\frac{\partial \mathcal{L}}{\partial \mathbf{h}_t} = \frac{\partial \mathcal{L}}{\partial \mathbf{h}_T} \frac{\partial \mathbf{h}_T}{\partial \mathbf{h}_t} = \frac{\partial \mathcal{L}}{\partial \mathbf{h}_T} \prod_{i=t+1}^{T} \frac{\partial \mathbf{h}_i}{\partial \mathbf{h}_{i-1}}$$
+
+          <p>
+            El jacobiano de la transición de estado $\frac{\partial \mathbf{h}_i}{\partial \mathbf{h}_{i-1}}$ se deriva de la ecuación recursiva de la RNN, incorporando la matriz de pesos recurrentes transpuesta $\mathbf{W}_{hh}^T$ modificada por la derivada de la función de activación no lineal $\tanh$:
+          </p>
+
+          $$\frac{\partial \mathbf{h}_i}{\partial \mathbf{h}_{i-1}} = \text{diag}\left(1 - \tanh^2(\mathbf{W}_{hh} \mathbf{h}_{i-1} + \mathbf{W}_{xh} \mathbf{x}_i + \mathbf{b}_h)\right) \mathbf{W}_{hh}^T$$
+
+          <p>
+            Al calcular el gradiente total, la multiplicación de este término se encadena de forma recursiva a lo largo del intervalo de tiempo $(T - t)$. Por las propiedades de la potenciación matricial, si el valor singular máximo de la matriz de pesos $\mathbf{W}_{hh}$ es menor que 1.0 (o si las derivadas de la activación amortiguan la señal), el gradiente total decrece de forma exponencial a medida que aumenta la distancia temporal $(T - t)$, tendiendo asintóticamente a cero:
+          </p>
+
+          $$\lim_{T-t \to \infty} \frac{\partial \mathbf{h}_T}{\partial \mathbf{h}_t} = \vec{\mathbf{0}}$$
+
+          <p>
+            Este <strong>desvanecimiento del gradiente</strong> (<em>vanishing gradient</em>) borra la señal de error de largo alcance. La red pierde la capacidad física de aprender dependencias o relaciones semánticas entre palabras lejanas (por ejemplo, relacionar un sujeto al inicio de un párrafo largo con el verbo principal tres líneas más abajo). Si intentamos forzar que los pesos superen este umbral (valor singular mayor que 1.0), el gradiente explota de forma exponencial (<em>exploding gradient</em>), provocando inestabilidad numérica, desbordamiento de memoria (NaNs) y el colapso del entrenamiento.
+          </p>
+
+          <h3>El Cuello de Botella de Información en Seq2Seq</h3>
+          <p>
+            En las arquitecturas recurrentes de codificador-decodificador clásicas (empleadas en traducción automática hasta 2017), se producía un acoplamiento crítico: la totalidad de la secuencia de entrada (que podía constar de decenas de palabras) debía ser comprimida secuencialmente por el codificador en un único vector de contexto de tamaño fijo (el último estado oculto $h_N$).
+          </p>
+
+          <pre class="ascii-diagram"><code>Secuencia de Entrada (prompt largo) ───> [ RNN Codificadora ] ───> [ Vector de Contexto Único ] (Cuello de Botella) ───> [ RNN Decodificadora ] ───> Salida</code></pre>
+
+          <p>
+            Este diseño genera una pérdida masiva de entropía de representación. Forzar a un vector de dimensión fija (por ejemplo, de 512 números flotantes) a retener con precisión la sintaxis, el estilo, el tono y los hechos de un párrafo complejo de 100 palabras es físicamente imposible, degradando drásticamente el rendimiento de las traducciones a medida que aumentaba la longitud del texto de entrada.
+          </p>
+
+          <div class="quote-block">
+            <p>💡 <strong>Analogía del Teléfono Descompuesto:</strong> Imagina que tienes una fila de 100 personas. La primera persona lee una página de un libro y le susurra al oído un breve resumen de tres palabras a la segunda persona. La segunda persona le susurra lo que entendió a la tercera, y así sucesivamente. Para cuando el mensaje llegue a la persona número 100, la información original se habrá perdido, distorsionado y simplificado de forma irreversible.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 02 -->
+      <section id="seccion-2" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">02</span>
+          <h2 class="section-title">La Intuición de la Autoatención: Queries, Keys y Values en el Espacio Latente</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            Para solucionar las limitaciones de la recurrencia, el Transformer elimina por completo el paso secuencial de información temporal. En su lugar, implementa el mecanismo de <strong>autoatención (self-attention)</strong>. En la autoatención, cada palabra de la secuencia de entrada evalúa de forma directa y paralela su relación de compatibilidad semántica con todas las demás palabras que la rodean en un único paso de cálculo de la GPU.
+          </p>
+          <p>
+            Para estructurar esta interacción de forma dinámica, el Transformer se inspira en el paradigma de recuperación de información de las bases de datos relacionales, asignando tres proyecciones vectoriales independientes a cada token de la secuencia: <strong>Consulta (Query)</strong>, <strong>Clave (Key)</strong> y <strong>Valor (Value)</strong>.
+          </p>
+
+          <h3>El Mapeo Relacional de Base de Datos</h3>
+          <p>
+            Imagina que estás buscando un video explicativo en YouTube. El proceso de recuperación se compone de tres elementos:
+          </p>
+          <ul>
+            <li><strong>Consulta (Query - $Q$):</strong> Es la cadena de búsqueda que escribes en la barra de texto (por ejemplo, <em>"tutorial de cocina italiana de pasta"</em>). En el Transformer, representa la información o contexto que el token actual está buscando activamente en su entorno para complementar o refinar su propio significado.</li>
+            <li><strong>Clave (Key - $K$):</strong> Son los metadatos que acompañan a cada video en la base de datos (el título del video, los tags, la descripción). En el Transformer, representa la tarjeta de presentación semántica de cada palabra, detallando sus características y propiedades para determinar si es un buen emparejamiento con la consulta de otros tokens.</li>
+            <li><strong>Valor (Value - $V$):</strong> Es el contenido real del video que terminas reproduciendo tras hacer clic. En el Transformer, representa la información semántica real que la palabra aportará a la representación final enriquecida del token que la consultó, escalada proporcionalmente por la compatibilidad de su Clave.</li>
+          </ul>
+
+          <pre class="ascii-diagram"><code>                     [ INPUT EMBEDDINGS (X) ]
+                              │
+         ┌────────────────────┼────────────────────┐
+         ▼ Projection         ▼ Projection         ▼ Projection
+     Query (Q)            Key (K)              Value (V)
+  "¿Qué busco?"        "¿Qué ofrezco?"      "¿Qué aporto de contenido?"</code></pre>
+
+          <h3>Proyecciones Lineales y Espacio Latente (Cambio de Base SVD)</h3>
+          <p>
+            ¿Por qué no calculamos la autoatención utilizando directamente el vector de embedding inicial del token?
+          </p>
+          <p>
+            Si usáramos los embeddings estáticos iniciales $X$, la similitud entre dos palabras siempre sería la misma, sin importar el contexto sintáctico o el rol gramatical que desempeñan en la frase. Al multiplicar $X$ por tres matrices de pesos entrenables independientes $W_Q, W_K, W_V \in \mathbb{R}^{d_{\text{model}} \times d_k}$:
+          </p>
+
+          $$Q = XW_Q, \quad K = XW_K, \quad V = XW_V$$
+
+          <p>
+            Estamos realizando una proyección lineal hacia tres subespacios latentes diferenciados. Matemáticamente, esto representa un cambio de base en el espacio vectorial (análogo a la Descomposición en Valores Singulares o SVD). Cada matriz de pesos descompone el embedding original en diferentes componentes o ejes de significado latente.
+          </p>
+          <p>
+            Por ejemplo, una región del subespacio de Claves de $W_K$ puede especializarse en codificar el género gramatical (masculino/femenino), otra región en codificar si el concepto es una acción o un objeto físico, y otra región en codificar la pluralidad. Esto permite que el modelo proyecte y compare las palabras basándose en dimensiones abstractas específicas de forma flexible, optimizando dinámicamente las relaciones semánticas complejas a través del flujo de gradientes del entrenamiento.
+          </p>
+
+          <div class="concept-card">
+            <div class="concept-card-label">🔍 Ejemplo Práctico de Desambiguación Semántica</div>
+            <p>Consideremos el pronombre neutro inglés <em>"it"</em> en estas dos frases casi idénticas:</p>
+            <p><strong>Frase A:</strong> <em>"The animal didn't cross the street because <u>it</u> was tired."</em><br>
+            <strong>Frase B:</strong> <em>"The animal didn't cross the street because <u>it</u> was too wide."</em></p>
+            <p>Como humanos, entendemos instantáneamente que en la Frase A, <em>"it"</em> se refiere al animal (porque los animales se cansan), mientras que en la Frase B, <em>"it"</em> se refiere a la calle (porque las calles son anchas). El Transformer resuelve esta desambiguación sintáctica mediante la autoatención:</p>
+            <ol style="margin-left: 1.25rem; font-size: 0.9rem; color: var(--text-secondary);">
+              <li>Al procesar el token <em>"it"</em> en la Frase A, su vector de Consulta ($Q_{it}$) se proyecta hacia toda la frase.</li>
+              <li>Se realiza el producto escalar de esta consulta contra los vectores de Clave ($K_j$) de todas las demás palabras: "animal", "cross", "street", "tired".</li>
+              <li>El subespacio de claves asocia la consulta de "it" combinado con el adjetivo "tired" de forma que genera una alta similitud con la clave de "animal", y una similitud casi nula con "street".</li>
+              <li>La distribución de probabilidad de la softmax asigna un peso alto a "animal". Al multiplicarse por los Valores ($V$), el vector resultante para la palabra "it" en la capa de salida absorbe la semántica y el contexto de la palabra "animal", actualizando su significado.</li>
+              <li>En la Frase B, el adjetivo "wide" (ancho) redirige la Consulta ($Q_{it}$) hacia la Clave de "street" (calle), logrando que el mismo token "it" absorba en este segundo caso la semántica de la calle.</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 03 -->
+      <section id="seccion-3" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">03</span>
+          <h2 class="section-title">Desglose Matemático de la Autoatención Escalada (Scaled Dot-Product Attention)</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            La formulación matricial compacta de la autoatención sobre una secuencia completa se expresa elegantemente mediante la ecuación fundacional:
+          </p>
+
+          $$\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$$
+
+          <p>
+            Donde las dimensiones de los tensores de entrada son $Q \in \mathbb{R}^{N \times d_k}$, $K \in \mathbb{R}^{N \times d_k}$, $V \in \mathbb{R}^{N \times d_v}$, $N$ es la longitud de la secuencia de tokens, $d_k$ es la dimensión de las consultas y claves, y $d_v$ es la dimensión de los valores.
+          </p>
+
+          <pre class="ascii-diagram"><code>Q [N x d_k]  ──┐
+               ├─> [ Matmul (QK^T) ] ──> [ N x N ] ──> [ Scale (÷√d_k) ] ──> [ Softmax ] ──> Weights [N x N] ──┐
+K^T [d_k x N] ─┘                                                                                            ├─> [ Matmul ] ──> Output [N x d_v]
+                                                                                                            │
+V [N x d_v] ────────────────────────────────────────────────────────────────────────────────────────────────┘</code></pre>
+
+          <h3>Derivación Matemática Formal: Crecimiento de la Varianza con $d_k$</h3>
+          <p>
+            El factor de escala $\frac{1}{\sqrt{d_k}}$ es un componente crítico de diseño que previene el colapso del flujo de gradientes en redes profundas. A continuación, se presenta la demostración algebraica rigurosa que justifica su necesidad estadística:
+          </p>
+          <p>
+            Consideremos un vector de consulta individual $q \in Q$ y un vector de clave individual $k \in K$, ambos de dimensión $d_k$. Por hipótesis de inicialización de pesos (como la inicialización de Xavier o Kaiming), asumamos que los componentes individuales de los vectores $q_i$ y $k_i$ son variables aleatorias independientes e idénticamente distribuidas (i.i.d.) con media cero y varianza unitaria:
+          </p>
+
+          $$\mathbb{E}[q_i] = \mathbb{E}[k_i] = 0, \quad \text{Var}(q_i) = \text{Var}(k_i) = 1 \quad \forall \quad i \in \{1, \dots, d_k\}$$
+
+          <p>
+            El producto de dos componentes de la misma dimensión, $q_i k_i$, conserva una media nula debido a la independencia mutua de los vectores:
+          </p>
+
+          $$\mathbb{E}[q_i k_i] = \mathbb{E}[q_i]\mathbb{E}[k_i] = 0 \cdot 0 = 0$$
+
+          <p>
+            Para calcular la varianza de este producto de componentes, aplicamos la definición de la varianza para el producto de dos variables aleatorias independientes:
+          </p>
+
+          $$\text{Var}(q_i k_i) = \mathbb{E}[(q_i k_i)^2] - (\mathbb{E}[q_i k_i])^2$$
+
+          <p>
+            Dado que $(\mathbb{E}[q_i k_i])^2 = 0$, la ecuación se reduce a $\mathbb{E}[q_i^2 k_i^2]$. Por independencia, separamos las esperanzas:
+          </p>
+
+          $$\text{Var}(q_i k_i) = \mathbb{E}[q_i^2]\mathbb{E}[k_i^2]$$
+
+          <p>
+            Utilizando la identidad $\text{Var}(X) = \mathbb{E}[X^2] - (\mathbb{E}[X])^2$, reescribimos el término de la esperanza del cuadrado como $\mathbb{E}[X^2] = \text{Var}(X) + (\mathbb{E}[X])^2$. Sustituyendo los valores de nuestra hipótesis:
+          </p>
+
+          $$\mathbb{E}[q_i^2] = \text{Var}(q_i) + (\mathbb{E}[q_i])^2 = 1 + 0^2 = 1$$
+          $$\mathbb{E}[k_i^2] = \text{Var}(k_i) + (\mathbb{E}[k_i])^2 = 1 + 0^2 = 1$$
+
+          <p>Por lo tanto, la varianza de cada producto de componentes es exactamente unitaria:</p>
+
+          $$\text{Var}(q_i k_i) = 1 \cdot 1 = 1$$
+
+          <p>
+            El producto escalar de ambos vectores, $q \cdot k = \sum_{i=1}^{d_k} q_i k_i$, representa la suma de estas $d_k$ variables aleatorias independientes. Utilizando la propiedad aditiva de la varianza para la suma de variables aleatorias independientes de varianza finita, demostramos que la varianza total es la suma de sus componentes individuales:
+          </p>
+
+          $$\text{Var}(q \cdot k) = \text{Var}\left(\sum_{i=1}^{d_k} q_i k_i\right) = \sum_{i=1}^{d_k} \text{Var}(q_i k_i) = d_k \cdot 1 = d_k$$
+
+          <p>
+            Este resultado fundamental demuestra que <strong>la varianza del producto escalar de dos vectores en alta dimensionalidad crece de forma lineal y proporcional con la dimensión de las claves ($d_k$)</strong>.
+          </p>
+
+          <h3>El Problema de la Saturación de la Softmax y Desvanecimiento de Gradientes</h3>
+          <p>
+            En dimensiones de clave prácticas de modelos industriales (por ejemplo, $d_k = 128$), el producto escalar bruto $q \cdot k$ genera valores flotantes con desviaciones estándar muy elevadas, fluctuando de forma natural en rangos de $\pm \sqrt{128} \approx \pm 11.3$.
+          </p>
+          <p>
+            Al aplicar la función no lineal softmax sobre estos valores no regulados, la distribución de probabilidad se deforma y satura de forma extrema. La softmax asigna casi el $100\%$ de la masa de probabilidad (un valor de $1.0$) al token que tenga una puntuación ligeramente superior y un valor de $0.0$ plano a todas las demás posiciones, convirtiendo la atención en una máscara binaria casi discreta.
+          </p>
+          <p>
+            En términos de optimización matemática, esta saturación empuja a la función softmax hacia sus regiones asintóticas extremadamente planas. El gradiente de la softmax para cualquier componente $i$ respecto a una entrada $j$ se define como:
+          </p>
+
+          $$\frac{\partial \text{softmax}(z)_i}{\partial z_j} = \text{softmax}(z)_i (\delta_{ij} - \text{softmax}(z)_j)$$
+
+          <p>
+            Cuando la distribución de probabilidad se satura (es decir, un componente tiende a $1$ y todos los demás a $0$), el término de la derivada parcial tiende exponencialmente a cero para todas las posiciones de la matriz:
+          </p>
+
+          $$\lim_{z_i \gg z_j} \frac{\partial \text{softmax}(z)_i}{\partial z_j} \approx 0$$
+
+          <p>
+            Durante la retropropagación, el gradiente de la pérdida respecto a los parámetros de proyección de atención ($W_Q$ y $W_K$) se multiplica por este término de derivada parcial de la softmax por regla de la cadena. Al multiplicar sistemáticamente por valores cercanos a cero, los gradientes se desvanecen (<em>vanishing gradient</em>), deteniendo de inmediato el aprendizaje de los pesos de la red profunda.
+          </p>
+
+          <h3>El Factor de Escala como Solución Estadística</h3>
+          <p>
+            Al dividir sistemáticamente el producto escalar por la raíz de la dimensión de las claves, $\sqrt{d_k}$, la varianza de la entrada de la softmax se normaliza y se mantiene constante en un valor óptimo de $1.0$:
+          </p>
+
+          $$\text{Var}\left(\frac{q \cdot k}{\sqrt{d_k}}\right) = \left(\frac{1}{\sqrt{d_k}}\right)^2 \text{Var}(q \cdot k) = \frac{1}{d_k} \cdot d_k = 1$$
+
+          <p>
+            Esta normalización estadística asegura que las puntuaciones que entran a la softmax permanezcan en un rango donde la función conserva gradientes significativos, continuos y saludables, facilitando una convergencia estable y un aprendizaje rápido del modelo profundo.
+          </p>
+
+          <!-- Simulador de Autoatención incrustado -->
+          <div class="attention-visualizer-target"></div>
+
+          <h3>Un Ejemplo Numérico Trazable Paso a Paso</h3>
+          <p>
+            Para comprender de forma práctica la mecánica de las operaciones matriciales, realizaremos una simulación completa paso a paso con un caso simplificado de dos tokens ($N=2$) y dimensión de clave/valor de $d_k = d_v = 4$ (por lo tanto, el factor de escala es $\sqrt{4} = 2$).
+          </p>
+          <p>
+            Asumamos que el paso de proyección lineal ha generado las siguientes tres matrices para nuestra secuencia:
+          </p>
+
+          $$Q = \begin{pmatrix} 2 & 0 & 1 & -1 \\ 0 & 1 & 2 & 0 \end{pmatrix}, \quad K = \begin{pmatrix} 1 & 1 & 0 & 2 \\ 0 & 2 & 1 & -1 \end{pmatrix}, \quad V = \begin{pmatrix} 10 & 0 \\ 0 & 20 \end{pmatrix}$$
+
+          <p><strong>Paso 1: Computar el producto escalar $QK^T$</strong><br>
+          Multiplicamos la matriz de consultas $Q$ por la transpuesta de la matriz de claves $K^T$:</p>
+
+          $$QK^T = \begin{pmatrix} 2 & 0 & 1 & -1 \\ 0 & 1 & 2 & 0 \end{pmatrix} \begin{pmatrix} 1 & 0 \\ 1 & 2 \\ 0 & 1 \\ 2 & -1 \end{pmatrix} = \begin{pmatrix} 0 & 2 \\ 1 & 4 \end{pmatrix}$$
+
+          <p><strong>Paso 2: Aplicar el Factor de Escala (división por $\sqrt{d_k} = 2$)</strong></p>
+
+          $$\text{Scores Escalados} = \frac{QK^T}{2} = \begin{pmatrix} 0 & 1 \\ 0.5 & 2 \end{pmatrix}$$
+
+          <p><strong>Paso 3: Aplicar la Función Softmax por Filas</strong><br>
+          Normalizamos los scores de cada fila para obtener una distribución de probabilidad que sume $1.0$:</p>
+          <ul>
+            <li>Fila 1: Puntuaciones $[0.0, 1.0] \to [e^0, e^1] = [1.0, 2.718] \to \mathbf{[0.27, 0.73]}$</li>
+            <li>Fila 2: Puntuaciones $[0.5, 2.0] \to [e^{0.5}, e^2] = [1.649, 7.389] \to \mathbf{[0.18, 0.82]}$</li>
+          </ul>
+
+          $$A = \begin{pmatrix} 0.27 & 0.73 \\ 0.18 & 0.82 \end{pmatrix}$$
+
+          <p><strong>Paso 4: Multiplicar por la Matriz de Valores $V$</strong></p>
+
+          $$\text{Output} = AV = \begin{pmatrix} 0.27 & 0.73 \\ 0.18 & 0.82 \end{pmatrix} \begin{pmatrix} 10 & 0 \\ 0 & 20 \end{pmatrix} = \begin{pmatrix} 2.7 & 14.6 \\ 1.8 & 16.4 \end{pmatrix}$$
+
+          <p>
+            Este resultado práctico muestra cómo se han fusionado y contextualizado las representaciones semánticas. El Token 1 ha absorbido un $73\%$ del valor semántico del Token 2 debido a la compatibilidad de sus vectores de clave y consulta, enriqueciendo su representación original de forma dinámica y paralela.
+          </p>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 04 -->
+      <section id="seccion-4" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">04</span>
+          <h2 class="section-title">Multi-Head Attention (Atención Multi-Cabeza): Paralelismo en Subespacios Vectoriales</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            En lugar de realizar una única operación de autoatención con la dimensionalidad completa del embedding del modelo $d_{\text{model}}$, el Transformer original introduce el concepto de <strong>Atención Multi-Cabeza (Multi-Head Attention o MHA)</strong>. Este mecanismo permite al modelo atender simultáneamente a información procedente de diferentes subespacios de representación a distintas posiciones de forma paralela.
+          </p>
+
+          <pre class="ascii-diagram"><code>                                  MULTI-HEAD ATTENTION
+                                           │
+         ┌─────────────────────────────────┼─────────────────────────────────┐
+         ▼ Projection 1                    ▼ Projection 2                    ▼ Projection H
+     head_1 = Attn(Q1, K1, V1)         head_2 = Attn(Q2, K2, V2)         head_h = Attn(Qh, Kh, Vh)
+  "Relaciones gramaticales"         "Resolución de pronombres"       "Conexión de verbos y tiempos"
+         │                                 │                                 │
+         └─────────────────────────────────┼─────────────────────────────────┘
+                                           ▼
+                                 [ Concatenación (Concat) ]
+                                           ▼
+                                [ Linear Projection (W^O) ]</code></pre>
+
+          <h3>Formulación Matemática y Concatenación</h3>
+          <p>
+            La atención multi-cabeza se calcula proyectando linealmente las matrices $Q$, $K$ y $V$ un número $h$ de veces con diferentes proyecciones lineales entrenables:
+          </p>
+
+          $$\text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, \dots, \text{head}_h)W^O$$
+
+          <p>Donde cada cabeza de atención individual $\text{head}_i$ se define como:</p>
+
+          $$\text{head}_i = \text{Attention}(QW_i^Q, KW_i^K, VW_i^V)$$
+
+          <p>Y las proyecciones de pesos son matrices de parámetros entrenables:</p>
+          <ul>
+            <li>$W_i^Q \in \mathbb{R}^{d_{\text{model}} \times d_k}$</li>
+            <li>$W_i^K \in \mathbb{R}^{d_{\text{model}} \times d_k}$</li>
+            <li>$W_i^V \in \mathbb{R}^{d_{\text{model}} \times d_v}$</li>
+            <li>$W^O \in \mathbb{R}^{h d_v \times d_{\text{model}}}$</li>
+          </ul>
+
+          <h3>Presupuesto Computacional Óptimo y Dimensiones</h3>
+          <p>
+            Para evitar que el uso de múltiples cabezas incremente exponencialmente la carga de cálculo y el número de parámetros de la red, el Transformer original implementa un diseño óptimo de dimensiones.
+          </p>
+          <p>
+            La dimensión de los vectores de clave, consulta y valor por cabeza se reduce dividiendo la dimensión total de embedding del modelo $d_{\text{model}}$ de forma exacta por el número de cabezas $h$:
+          </p>
+
+          $$d_k = d_v = \frac{d_{\text{model}}}{h}$$
+
+          <p>Por ejemplo, en la arquitectura del Transformer Base original:</p>
+          <ul>
+            <li>$d_{\text{model}} = 512$</li>
+            <li>Número de cabezas $h = 8$</li>
+            <li>Dimensión de claves y valores por cabeza: $d_k = d_v = \frac{512}{8} = 64$</li>
+          </ul>
+          <p>
+            Gracias a esta reducción de dimensiones, cada cabeza de atención realiza cálculos en un espacio vectorial de tamaño reducido (dimensión 64 en lugar de 512). Al concatenar las salidas de las 8 cabezas, la dimensión conjunta resultante es exactamente $8 \times 64 = 512$, restaurando la dimensionalidad original.
+          </p>
+          <p>
+            De este modo, el coste computacional total y el número de parámetros de la atención multi-cabeza es matemáticamente comparable a realizar una única autoatención con la dimensionalidad completa ($d_{\text{model}} = 512$), pero dotando al modelo de una capacidad masivamente superior para aprender múltiples relaciones sintácticas y semánticas de forma simultánea.
+          </p>
+
+          <div class="quote-block">
+            <p>💡 <strong>Analogía del Comité de Expertos (Revisión de Informe):</strong> Imagina que tienes un informe comercial complejo. Si una sola persona lo lee todo con un enfoque general (Single-Head), puede pasar por alto detalles específicos. En su lugar, el enfoque Multi-Cabeza asigna la lectura a un comité de expertos: un especialista financiero busca errores en las cifras, un abogado revisa los contratos de forma paralela, y un corrector de estilo analiza la gramática. Al final, concatenas las notas de los tres expertos en un informe de síntesis final altamente enriquecido ($W^O$).</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 05 -->
+      <section id="seccion-5" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">05</span>
+          <h2 class="section-title">La Arquitectura Completa del Transformer: Codificador y Decodificador</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            La topología de la arquitectura original del Transformer se compone de una estructura clásica de <strong>Codificador (Encoder)</strong> y <strong>Decodificador (Decoder)</strong>. Cada uno de estos bloques está compuesto por un apilamiento secuencial de $N = 6$ capas idénticas.
+          </p>
+
+          <pre class="ascii-diagram"><code>  [ CODIFICADOR (Encoder) ]                   [ DECODIFICADOR (Decoder) ]
+┌───────────────────────────┐               ┌───────────────────────────┐
+│ Input Text (Source)       │               │ Output Text (Shifted Right)
+└─────────────┬─────────────┘               └─────────────┬─────────────┘
+              ▼                                           ▼
+┌───────────────────────────┐               ┌───────────────────────────┐
+│ Multi-Head Self-Attention │               │ Masked Self-Attention     │
+│ (Bidireccional completa)  │               │ (Causalmente enmascarado) │
+└─────────────┬─────────────┘               └─────────────┬─────────────┘
+              ▼                                           │
+┌───────────────────────────┐                             │
+│ Position-wise FFN         │                             ▼
+└─────────────┬─────────────┘               ┌───────────────────────────┐
+              │                             │ Cross-Attention           │
+              └────────────────────────────>│ (Q: Decoder, K,V: Encoder)│
+                                            └─────────────┬─────────────┘
+                                                          ▼
+                                            ┌───────────────────────────┐
+                                            │ Position-wise FFN         │
+                                            └───────────────────────────┘</code></pre>
+
+          <h3>El Bloque Codificador (Encoder)</h3>
+          <p>
+            El codificador procesa la secuencia de tokens de entrada (por ejemplo, el texto en el idioma origen) y genera una representación vectorial rica en contexto para cada token. Cada una de las 6 capas del codificador contiene dos subcapas principales:
+          </p>
+          <ol>
+            <li><strong>Autoatención multicabezal bidireccional (Self-Attention):</strong> Permite que cada token de la secuencia se relacione de forma libre y completa con todas las demás posiciones (tanto anteriores como posteriores) de la capa anterior, capturando un contexto global bidireccional sin restricciones.</li>
+            <li><strong>Red de alimentación hacia adelante por posición (Position-wise Feed-Forward Network, FFN):</strong> Una red neuronal totalmente conectada que procesa la representación de cada token de manera idéntica e independiente en cada posición espacial:
+              $$\text{FFN}(x) = \max(0, xW_1 + b_1)W_2 + b_2$$
+              Donde la primera proyección lineal expande la dimensionalidad desde $d_{\text{model}} = 512$ hacia un espacio oculto de $d_{\text{ff}} = 2048$ utilizando una activación no lineal ReLU o GELU, y la segunda proyección la reduce de vuelta a $d_{\text{model}} = 512$.
+            </li>
+          </ol>
+
+          <h3>El Bloque Decodificador (Decoder)</h3>
+          <p>
+            El decodificador genera la secuencia de salida (por ejemplo, la traducción al idioma destino) de forma autorregresiva token por token. Para lograr esto, añade un tercer componente estructural a sus capas:
+          </p>
+          <ol>
+            <li><strong>Autoatención multicabezal causal enmascarada (Masked Self-Attention):</strong> Modifica el cálculo de atención para impedir que un token asista a posiciones futuras de la secuencia (lo que violaría el principio de generación autorregresiva). Esta restricción causal se implementa sumando una máscara $M$:
+              $$\text{Scores Causales} = \frac{QK^T}{\sqrt{d_k}} + M$$
+              Donde $M$ es una matriz triangular superior donde los elementos diagonales e inferiores son $0$, y las posiciones superiores son $-\infty$. Al aplicar softmax, $e^{-\infty} = 0$, garantizando que la predicción para la posición $i$ dependa exclusivamente de los tokens en posiciones $\le i$.
+            </li>
+            <li><strong>Atención codificador-decodificador (Cross-Attention):</strong> Subcapa donde las Consultas ($Q$) provienen del decodificador, mientras que las Claves ($K$) y Valores ($V$) proceden de la salida del codificador.</li>
+            <li><strong>Red de alimentación hacia adelante (FFN):</strong> Idéntica a la del codificador.</li>
+          </ol>
+
+          <h3>Conexiones Residuales y Normalización de Capa (LayerNorm)</h3>
+          <p>
+            Para facilitar el flujo del gradiente a través de docenas de capas y evitar su desvanecimiento, el Transformer incorpora conexiones residuales (estilo ResNet) alrededor de cada subcapa, seguidas de normalización de capa (LayerNorm).
+          </p>
+
+          <div class="concept-card">
+            <div class="concept-card-label">⚖️ Debate Estructural: Post-LN vs. Pre-LN, Peri-LN y Keel</div>
+            <pre class="ascii-diagram"><code>1. POST-LN (Original del paper de 2017):
+X ───> [ Sublayer (Attention/FFN) ] ───> Add (+) ───> [ LayerNorm ] ───> Output
+
+2. PRE-LN (Estándar de la industria moderna):
+X ───> [ LayerNorm ] ───> [ Sublayer (Attention/FFN) ] ───> Add (+) ───> Output</code></pre>
+            <ul style="margin: 0.5rem 0 0 1.25rem; font-size: 0.88rem; color: var(--text-secondary);">
+              <li><strong>Post-LN (Original de 2017):</strong> Aplica $\text{LayerNorm}(x + \text{Sublayer}(x))$. Preserva una representación semántica rica, pero sufre de inestabilidad de gradiente en las primeras etapas, requiriendo un calentamiento cuidadoso (warm-up) de la tasa de aprendizaje.</li>
+              <li><strong>Pre-LN (Estándar actual):</strong> Aplica $x + \text{Sublayer}(\text{LayerNorm}(x))$. Crea un camino de gradiente directo e ininterrumpido a través de las conexiones residuales, permitiendo entrenamientos sumamente estables sin warm-ups complejos.</li>
+              <li><strong>Peri-LN:</strong> Normaliza de forma consecutiva la entrada y el output de los módulos de atención, equilibrando la estabilidad de Pre-LN con la expresividad de Post-LN.</li>
+              <li><strong>DeepNorm y Keel:</strong> Técnicas avanzadas que permiten estabilizar la expresividad superior de Post-LN a profundidades extremas (superando las 1000 capas de forma nativa) mediante un re-escalado dinámico de la inicialización de parámetros.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 06 -->
+      <section id="seccion-6" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">06</span>
+          <h2 class="section-title">Evolución de la Codificación Posicional: APE, RoPE y ALiBi</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            Debido a que el mecanismo de autoatención procesa todos los tokens en paralelo, la operación es equivalente ante permutaciones (<em>permutation equivariance</em>). Si alteramos el orden de las palabras en el prompt de entrada, el Transformer generará exactamente las mismas representaciones vectoriales de salida (permutadas de orden), perdiendo la estructura sintáctica del lenguaje. Para dotar al modelo de una noción intrínseca de secuencia y orden temporal, es necesario inyectar explícitamente señales de posición en la red.
+          </p>
+
+          <pre class="ascii-diagram"><code>  APE: Suma aditiva de vectores sinusoidal en la entrada.
+  RoPE: Rotación compleja de consultas (Q) y claves (K) por capa.
+  ALiBi: Sesgo de penalización lineal restado de los scores antes de softmax.</code></pre>
+
+          <h3>1. Absolute Positional Encoding (APE - Sinusoidal)</h3>
+          <p>
+            Propuesta en el paper original de Vaswani et al. (2017), consiste en generar vectores de coordenadas absolutas estáticos basados en funciones trigonométricas de diferentes frecuencias y sumarlos directamente a los embeddings semánticos de entrada en la primera capa:
+          </p>
+
+          $$PE_{(pos, 2i)} = \sin\left(\frac{pos}{10000^{2i/d_{\text{model}}}}\right), \quad PE_{(pos, 2i+1)} = \cos\left(\frac{pos}{10000^{2i/d_{\text{model}}}}\right)$$
+
+          <p><strong>Limitaciones de APE:</strong> Inyecta ruido aditivo directamente sobre la representación semántica en la primera capa. Además, al asociar de forma determinista coordenadas estáticas a índices fijos, el modelo es incapaz de extrapolar de forma eficaz a longitudes de secuencia superiores a la ventana máxima vista durante su entrenamiento.</p>
+
+          <h3>2. Rotary Position Embedding (RoPE)</h3>
+          <p>
+            Implementado de forma nativa en los LLMs contemporáneos más exitosos (como Llama 3, Qwen, DeepSeek), RoPE no suma vectores estáticos a las entradas. En su lugar, aplica una <strong>rotación geométrica</strong> a los vectores proyectados de consultas ($Q$) y claves ($K$) en el plano complejo para cada capa de atención:
+          </p>
+
+          $$\text{RoPE}(\mathbf{x}, m) = \begin{pmatrix} \cos(m\theta) & -\sin(m\theta) \\ \sin(m\theta) & \cos(m\theta) \end{pmatrix} \begin{pmatrix} x_1 \\ x_2 \end{pmatrix}$$
+
+          <p><strong>Propiedades y Ventajas de RoPE:</strong></p>
+          <ul>
+            <li><strong>Preservación de la norma:</strong> Al ser una multiplicación por una matriz ortogonal de rotación, la norma del vector semántico permanece inalterada ($|e^{jm\theta}| = 1$).</li>
+            <li><strong>Conciencia de distancia relativa:</strong> El producto escalar resultante entre una consulta en la posición $m$ y una clave en la posición $n$ depende de forma exclusiva de la distancia relativa $(m - n)$:
+              $$\langle \text{RoPE}(\mathbf{q}, m), \text{RoPE}(\mathbf{k}, n) \rangle = \mathbf{q}^T \mathbf{R}_{d_k}^{m-n} \mathbf{k}$$
+            </li>
+            <li><strong>Capacidad de Extrapolación:</strong> Altamente compatible con técnicas de re-escalado de frecuencias (como interpolación NTK-aware, YaRN o interpolación posicional dinámica), permitiendo expandir la ventana de contexto de 4,000 tokens a cientos de miles de tokens de forma computacionalmente económica y fáctica.</li>
+          </ul>
+
+          <h3>3. Attention with Linear Biases (ALiBi)</h3>
+          <p>
+            ALiBi prescinde por completo de cualquier embedding posicional aditivo o rotacional. En su lugar, inyecta la noción de posición directamente como una penalización lineal estática restada de los scores de atención antes del cálculo de la softmax:
+          </p>
+
+          $$\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}} - m \cdot d\right)V$$
+
+          <p>
+            Donde $d$ es una matriz de distancias relativas entre los tokens ($|i - j|$), y $m$ es una pendiente geométrica constante fija para cada cabeza de atención individual.
+          </p>
+          <p><strong>Propiedades y Ventajas de ALiBi:</strong> <em>Train Short, Test Long</em>. Al penalizar linealmente la atención a medida que los tokens se alejan, el modelo puede ser entrenado de forma barata con secuencias cortas (ej. 2,048 tokens) y ser desplegado para realizar inferencias estables sobre textos masivamente más largos con pérdidas de perplejidad ínfimas.</p>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 07 -->
+      <section id="seccion-7" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">07</span>
+          <h2 class="section-title">El Viaje del Token: Cómo Funciona un LLM de Extremo a Extremo</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            Para comprender cómo opera en producción un gran modelo de lenguaje (LLM), podemos trazar el viaje completo de la información desde que el usuario escribe un prompt hasta que el modelo emite la respuesta paso a paso de forma autorregresiva:
+          </p>
+
+          <pre class="ascii-diagram"><code>[ Texto del Usuario ] ──> Tokenización (BPE) ──> Embedding + Posición ──> Bloques Transformer (MHA + FFN) x N ──> Unembedding (Logits) ──> Softmax + Temperatura ──> Muestreo (Top-P/Top-K) ──> [ Siguiente Token ]</code></pre>
+
+          <ol style="margin-left: 1.25rem; line-height: 1.7; color: var(--text-secondary);">
+            <li><strong>Paso 1: Tokenización y Vocabulario:</strong> El texto libre de entrada es procesado por un tokenizador (Byte-Pair Encoding o BPE), dividiendo las palabras en subpalabras y mapeándolas a índices enteros en $[1, V]$.</li>
+            <li><strong>Paso 2: Embedding de Entrada e Inyección de Posición:</strong> Se recupera el vector denso de la matriz de embeddings $E \in \mathbb{R}^{V \times d_{\text{model}}}$ y se inyecta la señal posicional (RoPE / ALiBi).</li>
+            <li><strong>Paso 3: Flujo Vertical a través de las Capas:</strong> Las capas de autoatención multi-cabeza y FFN refinan la representación vectorial, absorbiendo el contexto global e intenciones del prompt.</li>
+            <li><strong>Paso 4: Capa de Proyección de Salida (Unembedding y Logits):</strong> El vector contextualizado del último token se proyecta linealmente al vocabulario mediante $W_U \in \mathbb{R}^{d_{\text{model}} \times V}$, produciendo las puntuaciones brutas (logits).</li>
+            <li><strong>Paso 5: Normalización Probabilística y Muestreo:</strong> Se aplica Softmax regulada por la Temperatura ($T$), Top-K y Top-P (Nucleus Sampling):
+              $$P(\text{token}_i) = \frac{e^{\text{logit}_i / T}}{\sum_j e^{\text{logit}_j / T}}$$
+            </li>
+          </ol>
+
+          <h3>El Paradigma GPT (Generative Pretrained Transformer): Preentrenamiento y Alineación</h3>
+          <pre class="ascii-diagram"><code>1. PREENTRENAMIENTO (Autosupervisado en internet) ───> 2. AJUSTE FINO (SFT: Ejemplos de alta calidad) ───> 3. ALINEACIÓN (RLHF: Valores y preferencias humanas)</code></pre>
+
+          <ul>
+            <li><strong>Preentrenamiento Autorregresivo Causal:</strong> El modelo se entrena sobre billones de tokens de internet con el objetivo de predecir el siguiente token de manera autosupervisada (Causal Language Modeling), asimilando gramática, lógica y patrones de razonamiento.</li>
+            <li><strong>Ajuste Fino Supervisado (SFT - Supervised Fine-Tuning):</strong> Se entrena al modelo base con un dataset curado de instrucciones pregunta-respuesta de alta calidad, enseñándole a actuar como un asistente conversacional útil.</li>
+            <li><strong>Alineación mediante Preferencias Humanas (RLHF / DPO):</strong> Se entrena mediante aprendizaje por refuerzo con retroalimentación humana para asegurar que sus respuestas sean seguras, veraces y éticamente alineadas.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 08 -->
+      <section id="seccion-8" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">08</span>
+          <h2 class="section-title">Grounding y Harness: Anclaje y Evaluación Científica de LLMs</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            En la era del despliegue empresarial de modelos de lenguaje generativos, dos de las mayores prioridades de ingeniería consisten en dotar de veracidad fáctica al modelo (<strong>Grounding</strong>) y medir de forma rigurosa y reproducible su rendimiento técnico (<strong>Evaluation Harness</strong>).
+          </p>
+
+          <h3>Grounding (Anclaje al Mundo Real)</h3>
+          <p>
+            El preentrenamiento de un modelo de lenguaje está congelado en el tiempo. Además, al ser un interpolador estadístico, el modelo tiende a rellenar vacíos de información inventando hechos plausibles de su espacio latente (alucinación).
+          </p>
+          <p>
+            El <strong>Anclaje (Grounding)</strong> es la técnica de inyectar dinámicamente contextos fácticos relevantes y verificables en el prompt del modelo antes de ejecutar la generación autorregresiva (mediante RAG y GraphRAG):
+          </p>
+
+          <pre class="ascii-diagram"><code>Usuario realiza pregunta ──> Sistema interroga Base de Datos/Grafos ──> Recupera Hechos Fácticos ──> Inyecta Contexto en el Prompt (Grounding) ──> LLM responde</code></pre>
+
+          <div class="quote-block">
+            <p>💡 <strong>Analogía del Examen con Apuntes Abiertos:</strong> Imagina que tienes un examen médico de alta complejidad. Si respondes confiando exclusivamente en tu memoria a largo plazo (el espacio paramétrico congelado del modelo), puedes dudar o confundir detalles. Por el contrario, si te permiten realizar el examen con acceso directo a la literatura de soporte y libros certificados de medicina (Grounding), tus respuestas estarán perfectamente fundamentadas en evidencias científicas reales.</p>
+          </div>
+
+          <h3>Evaluation Harness (Arnés de Evaluación Científica)</h3>
+          <p>
+            Evaluar el rendimiento de un gran modelo de lenguaje requiere medir sus capacidades cognitivas de razonamiento, código y lógica fáctica a través de arneses estandarizados (como el <em>lm-evaluation-harness</em> de EleutherAI):
+          </p>
+          <ul>
+            <li><strong>MMLU (Massive Multitask Language Understanding):</strong> Mide el conocimiento general y comprensión a través de miles de preguntas de opción múltiple en docenas de disciplinas académicas.</li>
+            <li><strong>GSM8K (Grade School Math):</strong> Evalúa el razonamiento matemático y resolución de problemas algebraicos de múltiples pasos.</li>
+            <li><strong>HellaSwag:</strong> Mide la capacidad de razonamiento de sentido común situacional y predicción lógica de secuencias de eventos.</li>
+            <li><strong>ARC (AI2 Reasoning Challenge):</strong> Preguntas de ciencia que requieren razonamiento cualitativo complejo más allá de búsquedas literales.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 09 -->
+      <section id="seccion-9" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">09</span>
+          <h2 class="section-title">Laboratorio Práctico: Implementación de la Autoatención en PyTorch</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            Para consolidar los conceptos teóricos y matemáticos explicados a lo largo de este cuaderno, a continuación se presenta una implementación limpia, detallada y totalmente comentada en Python y PyTorch de las capas de Autoatención Escalada y Atención Multi-Cabeza (MHA), lista para ejecutarse:
+          </p>
+
+          <pre class="python-playground"><code>import math
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+def scaled_dot_product_attention(q, k, v, mask=None):
+    """
+    Implementa la ecuación de la Autoatención Escalada por Producto Escalar:
+    Attention(Q, K, V) = softmax( (Q K^T) / sqrt(d_k) ) V
+    """
+    # Obtener la dimensión del subespacio de claves por token
+    d_k = q.size(-1)
+
+    # Paso 1: Computar el producto escalar bruto QK^T
+    # Dimensiones: q (B, h, N, d_k) x k^T (B, h, d_k, N) -> (B, h, N, N)
+    scores = torch.matmul(q, k.transpose(-2, -1))
+
+    # Paso 2: Aplicar el factor de escala estadística para normalizar la varianza
+    scaled_scores = scores / math.sqrt(d_k)
+
+    # Aplicar máscara en caso de decodificación causal o relleno (padding)
+    if mask is not None:
+        scaled_scores = scaled_scores + mask
+
+    # Paso 3: Aplicar la softmax para obtener la distribución de probabilidad de pesos
+    attention_weights = F.softmax(scaled_scores, dim=-1)
+
+    # Paso 4: Multiplicar los pesos probabilísticos por la matriz de valores V
+    # Dimensiones: weights (B, h, N, N) x v (B, h, N, d_v) -> (B, h, N, d_v)
+    output = torch.matmul(attention_weights, v)
+
+    return output, attention_weights
+
+
+class MultiHeadAttentionLab(nn.Module):
+    """
+    Clase que implementa el bloque de Atención Multi-Cabeza (MHA) formativo.
+    Diseñado para desglosar la división de subespacios vectoriales.
+    """
+    def __init__(self, d_model, num_heads):
+        super().__init__()
+        assert d_model % num_heads == 0, "d_model debe ser divisible por num_heads para el presupuesto óptimo."
+
+        self.d_model = d_model
+        self.num_heads = num_heads
+        self.head_dim = d_model // num_heads # d_k = d_v = d_model / h
+
+        # Proyecciones lineales conjuntas para optimizar el paso de cálculo
+        self.q_projection = nn.Linear(d_model, d_model)
+        self.k_projection = nn.Linear(d_model, d_model)
+        self.v_projection = nn.Linear(d_model, d_model)
+
+        # Proyección lineal final para unificar las cabezas concatenadas
+        self.out_projection = nn.Linear(d_model, d_model)
+
+    def forward(self, x, mask=None):
+        batch_size, seq_len, d_model = x.size()
+        print(f"[Entrada al Bloque MHA] x shape: {x.size()} (Batch, Longitud_Secuencia, d_model)")
+
+        # Paso 1: Proyectar linealmente los embeddings de entrada
+        q = self.q_projection(x)
+        k = self.k_projection(x)
+        v = self.v_projection(x)
+        print(f"[Proyecciones Producidas] Q, K, V shape: {q.size()} (Cada una tiene tamaño d_model)")
+
+        # Paso 2: Reshapear y permutar para dividir en múltiples cabezas de atención
+        # Esperado: (B, N, d_model) -> (B, N, h, d_k) -> (B, h, N, d_k)
+        q = q.view(batch_size, seq_len, self.num_heads, self.head_dim).transpose(1, 2)
+        k = k.view(batch_size, seq_len, self.num_heads, self.head_dim).transpose(1, 2)
+        v = v.view(batch_size, seq_len, self.num_heads, self.head_dim).transpose(1, 2)
+        print(f"[División de Cabezas] Q shape: {q.size()} (Batch, Cabezas, Longitud_Secuencia, head_dim)")
+
+        # Paso 3: Calcular la autoatención escalada de forma paralela en todas las cabezas
+        attn_output, attention_weights = scaled_dot_product_attention(q, k, v, mask)
+        print(f"[Autoatención Escalada Completada] output shape: {attn_output.size()}")
+        print(f"[Matriz de Afinidad Softmax] weights shape: {attention_weights.size()} (Batch, Cabezas, N, N)")
+
+        # Paso 4: Concatenar las cabezas permutando de vuelta las dimensiones
+        # Esperado: (B, h, N, d_v) -> (B, N, h, d_v) -> (B, N, h * d_v = d_model)
+        attn_output = attn_output.transpose(1, 2).contiguous()
+        concatenated_heads = attn_output.view(batch_size, seq_len, self.d_model)
+        print(f"[Concatenación de Cabezas] concat shape: {concatenated_heads.size()}")
+
+        # Paso 5: Proyección lineal final para mezclar las cabezas unificadas
+        output = self.out_projection(concatenated_heads)
+        print(f"[Salida del Bloque MHA] output shape: {output.size()}")
+
+        return output, attention_weights
+
+# --- Verificación Práctica en el Laboratorio ---
+B_size = 2       # Tamaño de Batch
+Seq_length = 5   # Secuencia de 5 tokens (ej. "Atención es todo lo que")
+embedding_dim = 128
+heads_count = 4
+
+# Crear entrada simulada de embeddings estáticos de tokens
+x_test = torch.randn(B_size, Seq_length, embedding_dim)
+
+# Inicializar nuestro bloque formativo
+mha_module = MultiHeadAttentionLab(d_model=embedding_dim, num_heads=heads_count)
+
+# Ejecutar la pasada hacia adelante en modo de depuración
+with torch.no_grad():
+    output, weights = mha_module(x_test)
+print("\n¡Ejecución de MHA en PyTorch completada con éxito!")
+</code></pre>
+        </div>
+      </section>
+
+      <!-- Autoevaluación interactiva -->
+      <div class="quiz-target"></div>
+
+    </div><!-- /content-wrapper -->
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <p class="footer-text">
+        Curso IA Commercial — Cuaderno 04 · Compendio Docente: El Universo del Transformer y LLMs
+      </p>
+    </footer>
+  </main>
+
+  <!-- Back to Top -->
+  <button class="back-to-top" aria-label="Volver arriba">↑</button>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/search-data.js"></script>
+  <script src="../js/search.js"></script>
+  <script src="../js/highlighter.js"></script>
+  
+  <!-- Custom Scripts -->
+  <script src="../js/diagrams.js"></script>
+  <script src="../js/edit-mode.js"></script>
+  <script src="../js/playground.js"></script>
+  <script src="../js/glossary.js"></script>
+  <script src="../js/ai-tutor.js"></script>
+  <script src="../js/text-zoom.js"></script>
+  <script src="../js/simulations.js"></script>
+  <script src="../js/quiz.js"></script>
+</body>
+</html>

@@ -37,8 +37,15 @@ for (const file of files) {
   // Guest
   const guestMatch = html.match(/<div class="guest-info">\s*<h3>([^<]+)<\/h3>/);
   const guestBadgeMatch = html.match(/<span class="meta-badge blue">([^<]+)<\/span>/);
-  let guest = guestMatch ? guestMatch[1].trim() : 'Pendiente';
-  if (guestBadgeMatch) guest += ` — ${guestBadgeMatch[1].trim()}`;
+  let guest = '';
+  if (guestMatch) {
+    guest = guestMatch[1].trim();
+    if (guestBadgeMatch) guest += ` — ${guestBadgeMatch[1].trim()}`;
+  } else if (guestBadgeMatch) {
+    guest = guestBadgeMatch[1].trim();
+  } else {
+    guest = 'Compendio Especializado';
+  }
 
   // Description
   const descMatch = html.match(/<meta name="description" content="([^"]+)">/);

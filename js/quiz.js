@@ -110,6 +110,39 @@
         correct: 1,
         explanation: "Mientras que el RAG vectorial clásico recupera fragmentos aislados por similitud semántica (búsqueda puntual), GraphRAG agrupa comunidades temáticas y sintetiza resúmenes cruzados entre múltiples documentos interconectados."
       }
+    ],
+
+    "04-el-universo-del-transformer": [
+      {
+        question: "¿Por qué es matemáticamente necesario el factor de escala 1/√d_k en la autoatención?",
+        options: [
+          "Porque la varianza del producto escalar de dos vectores aleatorios crece proporcionalmente con d_k, empujando la función softmax a regiones de saturación donde los gradientes se desvanecen.",
+          "Porque reduce el consumo de memoria VRAM a una fracción logarítmica O(log N).",
+          "Porque invierte el orden temporal de las secuencias para acelerar la decodificación."
+        ],
+        correct: 0,
+        explanation: "Como se demuestra formalmente, Var(q · k) = d_k. Al dividir por √d_k, la varianza se normaliza a 1.0, manteniendo las puntuaciones en la región sensible de la softmax donde el gradiente no se extingue."
+      },
+      {
+        question: "¿Cuál es la ventaja arquitectónica de Rotary Position Embedding (RoPE) frente a la codificación absoluta (APE)?",
+        options: [
+          "Suma vectores estáticos fijos únicamente al inicio de la primera capa para no alterar los pesos.",
+          "Aplica una rotación geométrica ortogonal en Q y K que preserva la norma vectorial, haciendo que la atención dependa de la distancia relativa (m - n) y facilitando la extrapolación de contexto.",
+          "Elimina la necesidad de usar matrices de proyección de Valores (V)."
+        ],
+        correct: 1,
+        explanation: "RoPE rota los vectores en el plano complejo con matrices ortogonales, garantizando que el producto escalar resultante dependa exclusivamente del desplazamiento relativo entre tokens y habilitando técnicas de escalado como YaRN."
+      },
+      {
+        question: "En sistemas de IA en producción, ¿cuál es el propósito del Anclaje (Grounding) y los arneses de evaluación (Harness)?",
+        options: [
+          "El Grounding inyecta hechos verídicos externos (RAG/GraphRAG) para mitigar alucinaciones, y el Harness evalúa científicamente las capacidades cognitivas del modelo bajo benchmarks estandarizados (MMLU, GSM8K).",
+          "El Grounding comprime los pesos a 1 bit y el Harness mide la temperatura física de la GPU.",
+          "El Grounding sustituye al tokenizador BPE por uno binario y el Harness elimina el aprendizaje por refuerzo."
+        ],
+        correct: 0,
+        explanation: "El Grounding dota al modelo de veracidad fáctica consultando fuentes de verdad externas en tiempo real, mientras que arneses como lm-evaluation-harness someten al LLM a pruebas reproducibles de razonamiento y conocimiento."
+      }
     ]
   };
 
