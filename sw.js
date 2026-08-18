@@ -1,4 +1,4 @@
-const CACHE_NAME = 'curso-ia-v1';
+const CACHE_NAME = 'curso-ia-v2';
 const ASSETS = [
   './',
   './index.html',
@@ -6,6 +6,9 @@ const ASSETS = [
   './recursos.html',
   './css/styles.css',
   './js/main.js',
+  './js/simulations.js',
+  './js/playground.js',
+  './js/quiz.js',
   './js/search.js',
   './js/search-worker.js',
   './js/highlighter.js',
