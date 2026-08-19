@@ -230,7 +230,8 @@
       { id: '01-pep-martorell.html', num: '01', title: 'La Naturaleza de la IA y su Impacto', guest: 'Pep Martorell (Arpa Talks)' },
       { id: '02-javier-ideami.html', num: '02', title: 'Pensamiento Crítico y Prompting', guest: 'Javier Ideami (Tengo un Plan)' },
       { id: '03-compendio-tecnico.html', num: '03', title: 'Compendio Técnico de IA Generativa', guest: 'Compendio Especializado' },
-      { id: '04-el-universo-del-transformer.html', num: '04', title: 'El Universo del Transformer y LLMs', guest: 'Compendio Docente Avanzado' }
+      { id: '04-el-universo-del-transformer.html', num: '04', title: 'El Universo del Transformer y LLMs', guest: 'Compendio Docente Avanzado' },
+      { id: '05-paradigmas-y-computacion.html', num: '05', title: 'Compendio Integral: Paradigmas al Grounding y Harness', guest: 'Compendio Integral de 7 Módulos' }
     ];
 
     const currentFile = window.location.pathname.split('/').pop();
