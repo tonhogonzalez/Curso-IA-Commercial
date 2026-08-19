@@ -965,6 +965,601 @@
     });
   }
 
+  // ========================================================
+  // 6. PIPELINE VISUAL RAG (RETRIEVAL-AUGMENTED GENERATION)
+  // ========================================================
+  const RAG_DOCS = [
+    {
+      id: "DOC-01",
+      source: "Cuaderno 01 — Pep Martorell",
+      title: "Polisemia y Superinterpolación",
+      text: "Los Transformers resuelven la polisemia calculando atención contextual global en paralelo. La IA actúa como un superinterpolador estadístico en espacios vectoriales multidimensionales.",
+      keywords: ["polisemia", "transformers", "interpolador", "atencion", "contexto", "superinterpolador", "estadistico", "pep"]
+    },
+    {
+      id: "DOC-02",
+      source: "Cuaderno 02 — Javier Ideami",
+      title: "Correlación vs Causalidad & Metaprompting",
+      text: "La correlación estadística (Nivel 1 de Pearl) no implica causalidad estructural (Nivel 3). El Metaprompting aprovecha la metacognición del LLM para estructurar restricciones y roles antes de la ejecución.",
+      keywords: ["correlacion", "causalidad", "metaprompting", "pearl", "pensamiento", "razonamiento", "ideami", "prompting"]
+    },
+    {
+      id: "DOC-03",
+      source: "Cuaderno 03 — Compendio Técnico",
+      title: "Optimización de Inferencia y KV Cache",
+      text: "El KV Cache almacena en VRAM los tensores de Claves (Keys) y Valores (Values) de tokens previos, transformando la complejidad de atención de O(N^2) a O(N) por cada nuevo token generado.",
+      keywords: ["kv cache", "cache", "vram", "inferencia", "memoria", "complejidad", "claves", "valores", "tokens"]
+    },
+    {
+      id: "DOC-04",
+      source: "Cuaderno 04 — Universo Transformer",
+      title: "Codificación Posicional RoPE y ALiBi",
+      text: "RoPE (Rotary Position Embedding) aplica matrices de rotación ortogonal 2D en el plano complejo, permitiendo una degradación natural de afinidad con la distancia y mejor extrapolación de contexto.",
+      keywords: ["rope", "posicional", "rotacion", "alibi", "extrapolacion", "contexto", "embeddings", "atencion"]
+    },
+    {
+      id: "DOC-05",
+      source: "Cuaderno 01 & 03 — Geopolítica & Hardware",
+      title: "Cuellos de Botella y Centros de Datos",
+      text: "El escalado de modelos de frontera enfrenta cuellos de botella físicos: suministro energético para gigafactorías de cómputo, empaquetado CoWoS de GPUs y ancho de banda de memoria HBM.",
+      keywords: ["hardware", "vram", "energia", "gigafactorias", "centros de datos", "chips", "cowos", "hbm", "geopolitica"]
+    }
+  ];
+
+  const RAG_PRESET_QUERIES = [
+    {
+      query: "¿Por qué la correlación estadística no implica causalidad en los modelos de IA?",
+      desc: "Consulta epistemológica sobre el Cuaderno 02"
+    },
+    {
+      query: "¿Cómo reduce el KV Cache el consumo computacional durante la inferencia?",
+      desc: "Consulta técnica sobre el Cuaderno 03"
+    },
+    {
+      query: "¿De qué forma resuelve el mecanismo de atención la polisemia del lenguaje?",
+      desc: "Consulta arquitectónica sobre el Cuaderno 01"
+    },
+    {
+      query: "¿Qué ventajas aporta la codificación posicional rotatoria RoPE frente a APE?",
+      desc: "Consulta matemática sobre el Cuaderno 04"
+    }
+  ];
+
+  function computeRagScores(query) {
+    const qClean = query.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    const qWords = qClean.split(/\s+/).filter(w => w.length > 2);
+
+    return RAG_DOCS.map(doc => {
+      let score = 0.12; // base ambient similarity
+      qWords.forEach(word => {
+        if (doc.keywords.some(k => k.includes(word) || word.includes(k))) {
+          score += 0.32;
+        }
+        const docTextClean = doc.text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        if (docTextClean.includes(word)) {
+          score += 0.22;
+        }
+      });
+      score = Math.min(0.96, score + (Math.random() * 0.04));
+      return {
+        ...doc,
+        similarity: parseFloat(score.toFixed(3))
+      };
+    }).sort((a, b) => b.similarity - a.similarity);
+  }
+
+  function initRagVisualizer() {
+    const containers = document.querySelectorAll('.rag-visualizer-target');
+    if (containers.length === 0) return;
+
+    containers.forEach(container => {
+      let currentQuery = RAG_PRESET_QUERIES[0].query;
+      let topK = 2;
+      let minThreshold = 0.40;
+
+      container.innerHTML = `
+        <div class="sim-container">
+          <div class="sim-header">
+            <div class="sim-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+              <span>Simulador de Pipeline RAG (Retrieval-Augmented Generation)</span>
+            </div>
+            <span class="sim-badge">Búsqueda Semántica + Inyección de Contexto</span>
+          </div>
+
+          <!-- Stage Tracker -->
+          <div class="rag-stage-tracker" style="margin-bottom: 1.5rem;">
+            <div class="rag-stage-step completed" id="rag-step-1">1. Embedding de Consulta</div>
+            <div class="rag-stage-step completed" id="rag-step-2">2. Búsqueda Vectorial cos(θ)</div>
+            <div class="rag-stage-step active" id="rag-step-3">3. Rerank & Prompt Inyectado</div>
+            <div class="rag-stage-step active" id="rag-step-4">4. Respuesta Grounded</div>
+          </div>
+
+          <!-- Query Selection -->
+          <div class="sim-controls-grid" style="grid-template-columns: 2fr 1fr 1fr; margin-bottom: 1.25rem;">
+            <div class="sim-control-group">
+              <label>Seleccionar o Escribir Consulta:</label>
+              <select id="rag-query-select" style="background: var(--bg-surface); color: var(--text-primary); border: 1px solid var(--border-medium); padding: 6px 10px; border-radius: var(--radius-sm); width: 100%;">
+                ${RAG_PRESET_QUERIES.map((p, idx) => `<option value="${idx}">${p.query}</option>`).join('')}
+              </select>
+            </div>
+            <div class="sim-control-group">
+              <label>Top-K Chunks: <span id="rag-topk-val" style="color: var(--accent-violet); font-weight: bold;">${topK}</span></label>
+              <input type="range" id="rag-topk-slider" min="1" max="4" step="1" value="${topK}">
+            </div>
+            <div class="sim-control-group">
+              <label>Umbral Mínimo: <span id="rag-thresh-val" style="color: var(--accent-cyan); font-weight: bold;">${minThreshold.toFixed(2)}</span></label>
+              <input type="range" id="rag-thresh-slider" min="0.20" max="0.80" step="0.05" value="${minThreshold}">
+            </div>
+          </div>
+
+          <!-- 2 Columns Grid: Vector DB Chunks vs Augmented Prompt & Output -->
+          <div class="rag-grid-layout">
+            <!-- Left: Vector Knowledge Base -->
+            <div class="rag-panel">
+              <div class="rag-panel-title">
+                <span>📚 Base Vectorial (${RAG_DOCS.length} Fragmentos Indexados)</span>
+                <span style="font-size: 0.75rem; color: var(--text-muted);">Similitud Coseno cos(θ)</span>
+              </div>
+              <div class="rag-chunk-list" id="rag-chunk-list"></div>
+            </div>
+
+            <!-- Right: Prompt Augmented & Response -->
+            <div class="rag-panel">
+              <div class="rag-panel-title">
+                <span>⚡ Prompt Aumentado & Síntesis Grounded</span>
+                <span style="font-size: 0.72rem; color: var(--accent-emerald); font-weight: 600;">● Contexto Verificado</span>
+              </div>
+              <div class="rag-prompt-preview" id="rag-prompt-preview"></div>
+              <div style="background: var(--bg-card); border: 1px solid var(--border-medium); border-radius: var(--radius-sm); padding: 0.85rem;">
+                <div style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--accent-emerald); margin-bottom: 4px;">Respuesta Sintetizada por LLM:</div>
+                <div id="rag-llm-response" style="font-size: 0.85rem; color: var(--text-primary); line-height: 1.55;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      const querySelect = container.querySelector('#rag-query-select');
+      const topkSlider = container.querySelector('#rag-topk-slider');
+      const topkVal = container.querySelector('#rag-topk-val');
+      const threshSlider = container.querySelector('#rag-thresh-slider');
+      const threshVal = container.querySelector('#rag-thresh-val');
+      const chunkList = container.querySelector('#rag-chunk-list');
+      const promptPreview = container.querySelector('#rag-prompt-preview');
+      const llmResponse = container.querySelector('#rag-llm-response');
+
+      function updateRagSimulation() {
+        const selectedIdx = parseInt(querySelect.value);
+        currentQuery = RAG_PRESET_QUERIES[selectedIdx].query;
+        topK = parseInt(topkSlider.value);
+        minThreshold = parseFloat(threshSlider.value);
+
+        topkVal.textContent = topK;
+        threshVal.textContent = minThreshold.toFixed(2);
+
+        const scored = computeRagScores(currentQuery);
+        const retrievedDocs = scored.filter((d, idx) => idx < topK && d.similarity >= minThreshold);
+
+        // Render Chunks
+        chunkList.innerHTML = scored.map(doc => {
+          const isSelected = retrievedDocs.some(r => r.id === doc.id);
+          const isHigh = doc.similarity >= 0.55;
+          return `
+            <div class="rag-chunk-card ${isSelected ? 'selected' : ''}">
+              <div class="rag-chunk-header">
+                <span class="rag-chunk-title">${doc.id}: ${doc.title}</span>
+                <span class="rag-sim-score ${isHigh ? 'high' : ''}">cos(θ) = ${doc.similarity.toFixed(3)} ${isSelected ? '✓ Top-K' : ''}</span>
+              </div>
+              <div style="color: var(--text-secondary); font-size: 0.8rem; line-height: 1.45;">"${escapeHtml(doc.text)}"</div>
+              <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 2px;">Origen: ${doc.source}</div>
+            </div>
+          `;
+        }).join('');
+
+        // Build Prompt Preview
+        let contextBlock = retrievedDocs.length > 0 
+          ? retrievedDocs.map(d => `[${d.id} - ${d.source}]: ${d.text}`).join('\n\n')
+          : "NO SE ENCONTRÓ INFORMACIÓN RELEVANTE EN LA BASE DE CONOCIMIENTO QUE SUPERE EL UMBRAL.";
+
+        promptPreview.innerHTML = `<span style="color: var(--text-muted);">&lt;|system|&gt;\nEres un asistente de IA riguroso. Responde a la consulta basándote ESTRICTAMENTE en el siguiente contexto inyectado:\n\n--- INICIO DE CONTEXTO ---</span>\n<span class="context-injected">${escapeHtml(contextBlock)}</span>\n<span style="color: var(--text-muted);">--- FIN DE CONTEXTO ---\n\n&lt;|user|&gt;\n${escapeHtml(currentQuery)}\n\n&lt;|assistant|&gt;</span>`;
+
+        // Synthesize response
+        if (retrievedDocs.length === 0) {
+          llmResponse.innerHTML = `<span style="color: var(--accent-rose);">⚠️ La consulta no alcanzó el umbral mínimo de similitud semántica (${minThreshold.toFixed(2)}). El modelo evita alucinaciones al no disponer de contexto grounded.</span>`;
+        } else {
+          const citations = retrievedDocs.map(d => `<strong>[${d.id}]</strong>`).join(' y ');
+          let synthesis = "";
+          if (selectedIdx === 0) {
+            synthesis = `Basándome en ${citations}, la correlación estadística describe relaciones superficiales en el Nivel 1 de Judea Pearl, mientras que la causalidad estructural comprende los mecanismos y contrafácticos (Nivel 3). Por ello, el metaprompting resulta vital para estructurar problemas complejos sin incurrir en falacias correlacionales.`;
+          } else if (selectedIdx === 1) {
+            synthesis = `Según ${citations}, el KV Cache almacena las claves y valores en VRAM para evitar recalcular la atención de toda la secuencia en cada paso de generación, reduciendo la complejidad computacional de $O(N^2)$ a $O(N)$ por token.`;
+          } else if (selectedIdx === 2) {
+            synthesis = `De acuerdo con ${citations}, el mecanismo de autoatención resuelve la polisemia permitiendo que cada palabra atienda a todo el contexto circundante de forma global y bidireccional, proyectando el significado en espacios vectoriales latentes.`;
+          } else {
+            synthesis = `Basándome en ${citations}, RoPE aplica matrices de rotación ortogonales en pares bidimensionales en el espacio complejo, garantizando que la afinidad decaiga naturalmente con la distancia relativa y permitiendo mejor extrapolación de longitud de secuencia.`;
+          }
+          llmResponse.innerHTML = synthesis;
+        }
+      }
+
+      querySelect.addEventListener('change', updateRagSimulation);
+      topkSlider.addEventListener('input', updateRagSimulation);
+      threshSlider.addEventListener('input', updateRagSimulation);
+
+      updateRagSimulation();
+    });
+  }
+
+  // ========================================================
+  // 7. CICLO AGENCIAL REACT (REASONING + ACTING)
+  // ========================================================
+  const REACT_SCENARIOS = [
+    {
+      id: "vram_calc",
+      title: "Cálculo de Infraestructura para LLaMA 70B",
+      task: "Determinar si un modelo LLaMA 70B en INT4 con 8,192 tokens cabe en 2 GPUs RTX 4090 (48 GB VRAM total) con 10 usuarios concurrentes.",
+      steps: [
+        {
+          type: "thought",
+          title: "Thought 1 (Razonamiento)",
+          content: "Para saber si el modelo cabe en 48 GB de VRAM, primero debo calcular el peso del modelo en INT4 (4 bits = 0.5 bytes por parámetro) y luego sumar el KV Cache para 10 usuarios a 8,192 tokens."
+        },
+        {
+          type: "action",
+          title: "Action 1 (Herramienta: Python REPL)",
+          content: "<code>calc_weights(params=70e9, bits=4) -> 70e9 * 0.5 / (1024^3)</code>"
+        },
+        {
+          type: "observation",
+          title: "Observation 1 (Resultado)",
+          content: "Memoria de pesos base = 32.60 GB."
+        },
+        {
+          type: "thought",
+          title: "Thought 2 (Razonamiento)",
+          content: "Ahora calculo el KV Cache en FP16 para LLaMA 70B (80 capas, 64 cabezas GQA con 8 KV heads, head_dim 128, seq_len 8192, batch 10)."
+        },
+        {
+          type: "action",
+          title: "Action 2 (Herramienta: VRAM Calculator)",
+          content: "<code>calc_kv_cache(layers=80, kv_heads=8, head_dim=128, seq_len=8192, batch=10)</code>"
+        },
+        {
+          type: "observation",
+          title: "Observation 2 (Resultado)",
+          content: "Memoria KV Cache requerida = 10.00 GB. Total: 32.60 + 10.00 = 42.60 GB."
+        },
+        {
+          type: "final",
+          title: "Final Answer (Solución Agencial)",
+          content: "<strong>Sí, es viable.</strong> El despliegue requiere 42.60 GB de VRAM total (32.60 GB de pesos en INT4 + 10.00 GB de KV Cache). Cabe holgadamente en las 2 GPUs RTX 4090 (48 GB) dejando 5.40 GB para overhead de CUDA."
+        }
+      ]
+    },
+    {
+      id: "agent_rag",
+      title: "Verificación de Polisemia y Cita en Cuaderno 01",
+      task: "¿Quién explicó la resolución de la polisemia mediante Transformers y en qué contexto?",
+      steps: [
+        {
+          type: "thought",
+          title: "Thought 1 (Razonamiento)",
+          content: "Debo buscar en la base de conocimientos indexada del curso qué experto analizó la polisemia y los Transformers."
+        },
+        {
+          type: "action",
+          title: "Action 1 (Herramienta: Semantic Search)",
+          content: "<code>search_transcripts(query='polisemia transformers')</code>"
+        },
+        {
+          type: "observation",
+          title: "Observation 1 (Resultado)",
+          content: "Match encontrado en Cuaderno 01 — Pep Martorell (Sección 06: 'Transformers y la polisemia'): 'El Transformer calcula la atención de cada palabra con respecto a todas las demás en paralelo'."
+        },
+        {
+          type: "final",
+          title: "Final Answer (Solución Agencial)",
+          content: "Fue <strong>Pep Martorell</strong> en el <strong>Cuaderno 01 (Arpa Talks)</strong>, quien explicó que el mecanismo de atención paralela de los Transformers permitió resolver la ambigüedad y polisemia del lenguaje que limitaba a las redes recurrentes anteriores."
+        }
+      ]
+    }
+  ];
+
+  function initReactAgentVisualizer() {
+    const containers = document.querySelectorAll('.react-agent-target');
+    if (containers.length === 0) return;
+
+    containers.forEach(container => {
+      let scenarioIdx = 0;
+      let currentStep = 0;
+      let autoPlayInterval = null;
+
+      container.innerHTML = `
+        <div class="sim-container">
+          <div class="sim-header">
+            <div class="sim-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10H12V2z"></path><path d="M12 12L2.1 12.05"></path><path d="M12 12a10 10 0 0 0 7.07-7.07"></path></svg>
+              <span>Simulador de Ciclo Agencial ReAct (Reasoning + Acting)</span>
+            </div>
+            <span class="sim-badge">Ciclo Thought → Action → Observation → Answer</span>
+          </div>
+
+          <div class="sim-controls-grid" style="grid-template-columns: 2fr 1fr; margin-bottom: 1.25rem;">
+            <div class="sim-control-group">
+              <label>Seleccionar Escenario de Misión Agencial:</label>
+              <select id="react-scenario-select" style="background: var(--bg-surface); color: var(--text-primary); border: 1px solid var(--border-medium); padding: 6px 10px; border-radius: var(--radius-sm); width: 100%;">
+                ${REACT_SCENARIOS.map((s, idx) => `<option value="${idx}">${s.title}</option>`).join('')}
+              </select>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: flex-end;">
+              <button class="btn-notes-action" id="btn-react-next" style="flex: 1; height: 38px;">Paso Siguiente ⏭️</button>
+              <button class="btn-notes-action" id="btn-react-auto" style="flex: 1; height: 38px;">Auto ▶️</button>
+              <button class="btn-notes-action danger" id="btn-react-reset" style="height: 38px;">🔄</button>
+            </div>
+          </div>
+
+          <!-- Task Card -->
+          <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1rem 1.25rem; margin-bottom: 1.25rem;">
+            <span style="font-size: 0.72rem; text-transform: uppercase; font-weight: 700; color: var(--accent-violet);">🎯 Objetivo Asignado al Agente:</span>
+            <p id="react-task-text" style="margin: 4px 0 0 0; font-size: 0.95rem; font-weight: 600; color: var(--text-primary);"></p>
+          </div>
+
+          <!-- Steps Timeline -->
+          <div class="react-timeline" id="react-timeline-list"></div>
+        </div>
+      `;
+
+      const scenarioSelect = container.querySelector('#react-scenario-select');
+      const taskText = container.querySelector('#react-task-text');
+      const timelineList = container.querySelector('#react-timeline-list');
+      const btnNext = container.querySelector('#btn-react-next');
+      const btnAuto = container.querySelector('#btn-react-auto');
+      const btnReset = container.querySelector('#btn-react-reset');
+
+      function renderAgentState() {
+        const scenario = REACT_SCENARIOS[scenarioIdx];
+        taskText.textContent = scenario.task;
+
+        timelineList.innerHTML = '';
+        for (let i = 0; i <= currentStep; i++) {
+          if (i >= scenario.steps.length) break;
+          const step = scenario.steps[i];
+          const card = document.createElement('div');
+          card.className = `react-step-card ${step.type}`;
+          card.innerHTML = `
+            <div class="react-step-header">
+              <span>${step.title}</span>
+              <span>Paso ${i + 1}/${scenario.steps.length}</span>
+            </div>
+            <div class="react-step-content">${step.content}</div>
+          `;
+          timelineList.appendChild(card);
+        }
+
+        if (currentStep >= scenario.steps.length - 1) {
+          btnNext.disabled = true;
+          btnNext.textContent = 'Misión Completada ✅';
+          if (autoPlayInterval) clearInterval(autoPlayInterval);
+        } else {
+          btnNext.disabled = false;
+          btnNext.textContent = 'Paso Siguiente ⏭️';
+        }
+      }
+
+      function nextStep() {
+        const scenario = REACT_SCENARIOS[scenarioIdx];
+        if (currentStep < scenario.steps.length - 1) {
+          currentStep++;
+          renderAgentState();
+        }
+      }
+
+      function resetAgent() {
+        if (autoPlayInterval) clearInterval(autoPlayInterval);
+        currentStep = 0;
+        renderAgentState();
+      }
+
+      btnNext.addEventListener('click', nextStep);
+      btnReset.addEventListener('click', resetAgent);
+      scenarioSelect.addEventListener('change', (e) => {
+        scenarioIdx = parseInt(e.target.value);
+        resetAgent();
+      });
+
+      btnAuto.addEventListener('click', () => {
+        if (autoPlayInterval) {
+          clearInterval(autoPlayInterval);
+          autoPlayInterval = null;
+          btnAuto.textContent = 'Auto ▶️';
+        } else {
+          btnAuto.textContent = 'Pausar ⏸️';
+          autoPlayInterval = setInterval(() => {
+            const scenario = REACT_SCENARIOS[scenarioIdx];
+            if (currentStep < scenario.steps.length - 1) {
+              nextStep();
+            } else {
+              clearInterval(autoPlayInterval);
+              autoPlayInterval = null;
+              btnAuto.textContent = 'Auto ▶️';
+            }
+          }, 1200);
+        }
+      });
+
+      renderAgentState();
+    });
+  }
+
+  // ========================================================
+  // 8. RETOS PRÁCTICOS INTERACTIVOS (CHALLENGE MODE)
+  // ========================================================
+  function initChallenges() {
+    const containers = document.querySelectorAll('.challenges-target');
+    if (containers.length === 0) return;
+
+    containers.forEach(container => {
+      container.innerHTML = `
+        <div style="display: flex; flex-direction: column; gap: 2rem;">
+          
+          <!-- RETO 1: Prompting Estructurado con Guardrails -->
+          <div class="challenge-box">
+            <div class="challenge-header">
+              <h3 class="challenge-title">
+                <span>🎯 Reto 1: Metaprompting & Guardrails Estrictos</span>
+              </h3>
+              <span class="bloom-pill diff-intermediate">100 Puntos · Prompt Engineering</span>
+            </div>
+
+            <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 0; line-height: 1.5;">
+              <strong>Misión:</strong> Escribe un prompt que instruya al modelo a analizar un texto sobre IA y responder <em>estrictamente</em> con un objeto JSON válido con los campos <code>"tema_principal"</code>, <code>"confianza_score"</code> (número del 0 al 1) y <code>"terminos_clave"</code> (array).
+              <strong>Restricción:</strong> El modelo NO debe incluir ningún saludo, preámbulo ni bloque markdown de formato fuera del JSON.
+            </p>
+
+            <textarea id="challenge-prompt-input" style="width: 100%; min-height: 110px; background: var(--bg-surface); border: 1px solid var(--border-medium); border-radius: var(--radius-sm); padding: 10px; color: var(--text-primary); font-family: var(--font-mono); font-size: 0.85rem;" placeholder="Escribe aquí tu prompt de producción con restricciones y roles..."></textarea>
+
+            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+              <button class="btn-notes-action" id="btn-validate-prompt" style="background: var(--accent-violet); color: #fff; border-color: var(--accent-violet);">
+                🚀 Validar Prompt
+              </button>
+              <button class="btn-notes-action" id="btn-hint-prompt">
+                💡 Ver Pista
+              </button>
+              <span id="prompt-score-badge" style="font-weight: 700; font-size: 0.88rem; color: var(--text-muted);"></span>
+            </div>
+
+            <div class="challenge-feedback" id="prompt-feedback-box"></div>
+          </div>
+
+          <!-- RETO 2: Dimensionador de VRAM para Presupuesto de 24 GB -->
+          <div class="challenge-box">
+            <div class="challenge-header">
+              <h3 class="challenge-title">
+                <span>⚡ Reto 2: Dimensionamiento de VRAM en Hardware Límite</span>
+              </h3>
+              <span class="bloom-pill diff-advanced">100 Puntos · Arquitectura de Hardware</span>
+            </div>
+
+            <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 0; line-height: 1.5;">
+              <strong>Misión:</strong> Dispones de <strong>1 GPU RTX 4090 de 24 GB</strong>. Quieres desplegar un modelo de <strong>14 Billones de Parámetros</strong> para procesar ventanas de contexto de hasta <strong>8,192 tokens</strong>.
+              Selecciona la cuantización y configuración máxima de batch para operar con al menos un 10% de margen de seguridad (VRAM total &le; 21.6 GB).
+            </p>
+
+            <div class="sim-controls-grid" style="grid-template-columns: repeat(3, 1fr);">
+              <div class="sim-control-group">
+                <label>Precisión / Cuantización:</label>
+                <select id="vram-ch-bits" style="background: var(--bg-surface); color: var(--text-primary); border: 1px solid var(--border-medium); padding: 6px 10px; border-radius: var(--radius-sm); width: 100%;">
+                  <option value="16">FP16 (16 bits)</option>
+                  <option value="8">INT8 (8 bits)</option>
+                  <option value="4" selected>INT4 (4 bits - GPTQ/AWQ)</option>
+                </select>
+              </div>
+              <div class="sim-control-group">
+                <label>Batch Size (Usuarios): <span id="vram-ch-batch-val" style="color: var(--accent-violet); font-weight: bold;">4</span></label>
+                <input type="range" id="vram-ch-batch" min="1" max="16" step="1" value="4">
+              </div>
+              <div class="sim-control-group">
+                <label>Contexto (Tokens): <span id="vram-ch-seq-val" style="color: var(--accent-cyan); font-weight: bold;">8,192</span></label>
+                <input type="range" id="vram-ch-seq" min="2048" max="16384" step="2048" value="8192">
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+              <button class="btn-notes-action" id="btn-validate-vram" style="background: var(--accent-violet); color: #fff; border-color: var(--accent-violet);">
+                📊 Comprobar Viabilidad en 24 GB
+              </button>
+            </div>
+
+            <div class="challenge-feedback" id="vram-feedback-box"></div>
+          </div>
+
+        </div>
+      `;
+
+      // Handlers for Reto 1
+      const promptInput = container.querySelector('#challenge-prompt-input');
+      const btnValidatePrompt = container.querySelector('#btn-validate-prompt');
+      const btnHintPrompt = container.querySelector('#btn-hint-prompt');
+      const promptFeedback = container.querySelector('#prompt-feedback-box');
+      const promptScoreBadge = container.querySelector('#prompt-score-badge');
+
+      btnHintPrompt.addEventListener('click', () => {
+        alert('Pista: Usa un metaprompt definiendo el rol de analizador técnico, especifica "Devuelve ÚNICAMENTE un objeto JSON válido sin texto introductorio", e incluye un ejemplo del schema con los campos exactos.');
+      });
+
+      btnValidatePrompt.addEventListener('click', () => {
+        const text = (promptInput.value || '').toLowerCase();
+        let score = 0;
+        let checks = [];
+
+        if (text.includes('json')) { score += 25; checks.push('✓ Especifica formato JSON'); } else { checks.push('✗ Falta especificar salida en JSON'); }
+        if (text.includes('tema_principal') && text.includes('confianza_score') && text.includes('terminos_clave')) {
+          score += 35;
+          checks.push('✓ Incluye los 3 campos exactos requeridos');
+        } else {
+          checks.push('✗ Faltan uno o más campos clave ("tema_principal", "confianza_score", "terminos_clave")');
+        }
+        if (text.includes('unicamente') || text.includes('solamente') || text.includes('sin explicaciones') || text.includes('sin preambulo') || text.includes('no incluyas') || text.includes('strictly')) {
+          score += 25;
+          checks.push('✓ Añade guardrails para evitar preámbulos y texto extra');
+        } else {
+          checks.push('✗ Falta una restricción explícita de "no añadir preámbulos ni texto adicional"');
+        }
+        if (text.includes('rol') || text.includes('eres un') || text.includes('actua como') || text.includes('experto')) {
+          score += 15;
+          checks.push('✓ Asigna un rol o contexto sistémico');
+        }
+
+        promptScoreBadge.textContent = `Puntuación: ${score}/100`;
+        promptFeedback.className = `challenge-feedback ${score >= 70 ? 'success' : 'error'}`;
+        promptFeedback.innerHTML = `
+          <strong>${score >= 70 ? '🎉 ¡Excelente Metaprompt de Producción!' : '⚠️ Tu prompt necesita ajustes para ser robusto en producción:'}</strong>
+          <ul style="margin: 6px 0 0 16px; padding: 0; font-size: 0.85rem;">
+            ${checks.map(c => `<li>${c}</li>`).join('')}
+          </ul>
+        `;
+      });
+
+      // Handlers for Reto 2
+      const bitsSelect = container.querySelector('#vram-ch-bits');
+      const batchSlider = container.querySelector('#vram-ch-batch');
+      const batchVal = container.querySelector('#vram-ch-batch-val');
+      const seqSlider = container.querySelector('#vram-ch-seq');
+      const seqVal = container.querySelector('#vram-ch-seq-val');
+      const btnValidateVram = container.querySelector('#btn-validate-vram');
+      const vramFeedback = container.querySelector('#vram-feedback-box');
+
+      batchSlider.addEventListener('input', () => { batchVal.textContent = batchSlider.value; });
+      seqSlider.addEventListener('input', () => { seqVal.textContent = parseInt(seqSlider.value).toLocaleString(); });
+
+      btnValidateVram.addEventListener('click', () => {
+        const bits = parseInt(bitsSelect.value);
+        const batch = parseInt(batchSlider.value);
+        const seq = parseInt(seqSlider.value);
+
+        const weightGb = (14 * 1e9 * (bits / 8.0)) / (1024**3);
+        // 14B model approximation: 40 layers, 40 heads, head_dim 128
+        const kvGb = (2 * 40 * 40 * 128 * seq * batch * 2) / (1024**3);
+        const totalVram = (weightGb + kvGb) * 1.15; // 15% CUDA overhead
+
+        const isSafe = totalVram <= 21.6; // 90% of 24 GB
+        const fitsInGpu = totalVram <= 24.0;
+
+        vramFeedback.className = `challenge-feedback ${isSafe ? 'success' : 'error'}`;
+        vramFeedback.innerHTML = `
+          <strong>${isSafe ? '✅ ¡Configuración Óptima y Segura!' : fitsInGpu ? '⚠️ Riesgo Alto de OOM (Excede margen seguro)' : '❌ CUDA Out of Memory (OOM)'}</strong>
+          <div style="font-size: 0.85rem; margin-top: 6px; line-height: 1.5;">
+            • Pesos del Modelo (14B @ ${bits}-bit): <strong>${weightGb.toFixed(2)} GB</strong><br>
+            • KV Cache Dinámico (Batch ${batch}, S=${seq.toLocaleString()}): <strong>${kvGb.toFixed(2)} GB</strong><br>
+            • Consumo Total Estimado con Overhead CUDA: <strong>${totalVram.toFixed(2)} GB / 24.00 GB</strong>
+          </div>
+          ${!isSafe ? `<div style="font-size: 0.82rem; margin-top: 6px; color: var(--accent-amber);">💡 Sugerencia: En FP16 los pesos ocupan 26 GB (imposible en 24 GB). En INT4 ocupan ~6.5 GB, permitiendo soportar contextos largos si ajustas el batch size.</div>` : ''}
+        `;
+      });
+    });
+  }
+
   function escapeHtml(str) {
     if (!str) return '';
     return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -976,4 +1571,8 @@
   initEmbeddingVisualizer();
   initTokenizerVisualizer();
   initSamplingVisualizer();
+  initRagVisualizer();
+  initReactAgentVisualizer();
+  initChallenges();
 });
+

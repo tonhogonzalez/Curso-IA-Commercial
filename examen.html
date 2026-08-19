@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Portal de Examen de Certificación Técnica: IA Generativa Avanzada. 50 preguntas de nivel de Maestría sobre Paradigmas, Autodiff, Optimización de Gradiente, Espacios Vectoriales, Transformers, Inferencia GPT, Grounding, Evaluation Harness, Inferencia Eficiente y Agentes.">
+  <title>Examen de Certificación Técnica — IA Generativa Avanzada | Curso IA Commercial</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="css/styles.css">
+  <!-- KaTeX para renderizado de fórmulas matemáticas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js"></script>
+
+  <style>
+    /* Estilos específicos para el Portal de Exámenes y Certificación */
+    .exam-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 5rem;
+    }
+
+    .exam-hero {
+      text-align: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-medium);
+    }
+
+    .exam-controls-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-lg);
+      padding: 1rem 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .mode-toggle-group {
+      display: flex;
+      gap: 0.5rem;
+      background: var(--bg-tertiary);
+      padding: 0.35rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .mode-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .mode-btn.active {
+      background: var(--accent-blue);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+    }
+
+    .exam-timer-box {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-medium);
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-md);
+      font-family: var(--font-mono);
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .exam-timer-box .timer-icon {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .exam-layout-grid {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 1.75rem;
+      align-items: start;
+    }
+
+    @media (max-width: 992px) {
+      .exam-layout-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Tarjeta de Pregunta Activa */
+    .question-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    .question-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .q-meta-tags {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .q-badge-num {
+      background: var(--accent-blue-subtle, rgba(59, 130, 246, 0.15));
+      color: var(--accent-cyan);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      padding: 0.25rem 0.6rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.78rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+    }
+
+    .q-badge-mod {
+      background: var(--bg-tertiary);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-subtle);
+      padding: 0.25rem 0.6rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    .flag-action-btn {
+      background: transparent;
+      border: 1px solid var(--border-medium);
+      color: var(--text-secondary);
+      padding: 0.35rem 0.75rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .flag-action-btn.flagged {
+      background: rgba(245, 158, 11, 0.15);
+      border-color: #f59e0b;
+      color: #f59e0b;
+    }
+
+    .question-text {
+      font-size: 1.15rem;
+      line-height: 1.6;
+      color: var(--text-primary);
+      margin-bottom: 1.75rem;
+      font-weight: 600;
+    }
+
+    /* Opciones de Respuesta */
+    .options-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .exam-option {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      background: var(--bg-tertiary);
+      border: 1.5px solid var(--border-medium);
+      border-radius: var(--radius-md);
+      padding: 1rem 1.25rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .exam-option:hover {
+      border-color: var(--accent-blue);
+      background: rgba(59, 130, 246, 0.05);
+      transform: translateX(4px);
+    }
+
+    .exam-option.selected {
+      border-color: var(--accent-blue);
+      background: rgba(59, 130, 246, 0.12);
+      box-shadow: 0 0 12px rgba(59, 130, 246, 0.2);
+    }
+
+    .opt-letter {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-medium);
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.82rem;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+
+    .exam-option.selected .opt-letter {
+      background: var(--accent-blue);
+      color: #ffffff;
+      border-color: var(--accent-blue);
+    }
+
+    .opt-text {
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: var(--text-primary);
+    }
+
+    /* Feedback de Corrección */
+    .exam-option.opt-correct {
+      border-color: var(--accent-emerald, #10b981) !important;
+      background: rgba(16, 185, 129, 0.12) !important;
+    }
+    .exam-option.opt-correct .opt-letter {
+      background: #10b981 !important;
+      border-color: #10b981 !important;
+      color: #fff !important;
+    }
+
+    .exam-option.opt-incorrect {
+      border-color: var(--accent-rose, #ef4444) !important;
+      background: rgba(239, 68, 68, 0.12) !important;
+    }
+    .exam-option.opt-incorrect .opt-letter {
+      background: #ef4444 !important;
+      border-color: #ef4444 !important;
+      color: #fff !important;
+    }
+
+    .exam-justification-box {
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      margin-top: 1.5rem;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .exam-justification-box.correct-box {
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .exam-justification-box.incorrect-box {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .justification-header {
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 0.6rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .correct-badge {
+      font-size: 0.8rem;
+      background: var(--bg-tertiary);
+      padding: 0.2rem 0.5rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-medium);
+    }
+
+    .justification-text {
+      font-size: 0.88rem;
+      line-height: 1.6;
+      color: var(--text-secondary);
+    }
+
+    /* Barra de Navegación de Preguntas */
+    .exam-nav-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1.5rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border-medium);
+    }
+
+    .nav-btn {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-medium);
+      color: var(--text-primary);
+      padding: 0.6rem 1.25rem;
+      border-radius: var(--radius-md);
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .nav-btn:hover:not(:disabled) {
+      background: var(--accent-blue);
+      color: #fff;
+      border-color: var(--accent-blue);
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .btn-finish-main {
+      background: linear-gradient(135deg, var(--accent-emerald) 0%, var(--accent-cyan) 100%);
+      color: #0b0f19;
+      border: none;
+      font-weight: 700;
+      padding: 0.65rem 1.5rem;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+    }
+
+    .btn-finish-main:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(16, 185, 129, 0.35);
+    }
+
+    /* Columna Lateral de Navegación Rápida */
+    .exam-sidebar-panel {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      position: sticky;
+      top: 80px;
+    }
+
+    .sidebar-panel-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .exam-question-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.45rem;
+      max-height: 380px;
+      overflow-y: auto;
+      padding-right: 0.25rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .grid-num-btn {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      border-radius: var(--radius-sm);
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .grid-num-btn:hover {
+      border-color: var(--accent-blue);
+      color: var(--text-primary);
+    }
+
+    .grid-num-btn.active {
+      border: 2px solid var(--accent-cyan);
+      box-shadow: 0 0 8px rgba(6, 182, 212, 0.4);
+    }
+
+    .grid-num-btn.answered {
+      background: rgba(59, 130, 246, 0.2);
+      border-color: var(--accent-blue);
+      color: var(--accent-cyan);
+    }
+
+    .grid-num-btn.flagged {
+      border-color: #f59e0b;
+      position: relative;
+    }
+    .grid-num-btn.flagged::after {
+      content: '•';
+      position: absolute;
+      top: 0px;
+      right: 3px;
+      color: #f59e0b;
+      font-size: 1rem;
+    }
+
+    .grid-num-btn.correct {
+      background: rgba(16, 185, 129, 0.25);
+      border-color: #10b981;
+      color: #10b981;
+    }
+
+    .grid-num-btn.incorrect {
+      background: rgba(239, 68, 68, 0.25);
+      border-color: #ef4444;
+      color: #ef4444;
+    }
+
+    .grid-legend {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+    }
+
+    /* Panel de Resultados y Certificado */
+    .results-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem 2rem;
+      margin-top: 2rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+    }
+
+    .results-summary-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .score-circle-wrapper {
+      margin: 1.5rem auto;
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--bg-tertiary) 0%, var(--bg-secondary) 100%);
+      border: 4px solid var(--accent-cyan);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 24px rgba(6, 182, 212, 0.3);
+    }
+
+    .score-circle-wrapper .score-val {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: #fff;
+      font-family: var(--font-mono);
+    }
+
+    .score-circle-wrapper .score-pct {
+      font-size: 0.85rem;
+      color: var(--accent-cyan);
+      font-weight: 600;
+    }
+
+    .res-status-badge {
+      display: inline-block;
+      padding: 0.4rem 1.25rem;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-top: 0.5rem;
+    }
+
+    .res-status-badge.passed {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1.5px solid #10b981;
+      color: #10b981;
+    }
+
+    .res-status-badge.failed {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1.5px solid #ef4444;
+      color: #ef4444;
+    }
+
+    /* Desglose por Módulos */
+    .module-breakdown-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+
+    @media (max-width: 768px) {
+      .module-breakdown-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .mod-stat-row {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 0.85rem 1rem;
+    }
+
+    .mod-stat-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: var(--text-primary);
+    }
+
+    .mod-stat-bar {
+      height: 6px;
+      background: var(--bg-secondary);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .mod-stat-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 0.5s ease;
+    }
+
+    .mod-stat-fill.fill-good { background: #10b981; }
+    .mod-stat-fill.fill-mid { background: #f59e0b; }
+    .mod-stat-fill.fill-low { background: #ef4444; }
+
+    /* Certificado Oficial Imprimible */
+    .certificate-sheet {
+      border: 8px double #c4b5fd;
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 3rem 2.5rem;
+      border-radius: var(--radius-lg);
+      text-align: center;
+      margin: 2.5rem 0;
+      position: relative;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .cert-seal {
+      font-size: 2.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .cert-title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #e2e8f0;
+      margin-bottom: 0.5rem;
+    }
+
+    .cert-subtitle {
+      font-size: 0.95rem;
+      color: #94a3b8;
+      margin-bottom: 1.75rem;
+    }
+
+    .cert-granted-to {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #38bdf8;
+      margin-bottom: 0.5rem;
+    }
+
+    .cert-student-name {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #f1f5f9;
+      border-bottom: 2px solid #38bdf8;
+      display: inline-block;
+      padding-bottom: 0.25rem;
+      margin-bottom: 1.25rem;
+      min-width: 280px;
+    }
+
+    .cert-description {
+      font-size: 0.95rem;
+      color: #cbd5e1;
+      max-width: 680px;
+      margin: 0 auto 1.5rem;
+      line-height: 1.6;
+    }
+
+    .cert-meta-info {
+      display: flex;
+      justify-content: space-around;
+      border-top: 1px solid #334155;
+      padding-top: 1.25rem;
+      margin-top: 1.5rem;
+      font-size: 0.82rem;
+      color: #94a3b8;
+      font-family: var(--font-mono);
+    }
+
+    @media print {
+      body * { visibility: hidden; }
+      .certificate-sheet, .certificate-sheet * { visibility: visible; }
+      .certificate-sheet {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        border-color: #333;
+        background: #fff !important;
+        color: #000 !important;
+      }
+      .cert-title, .cert-student-name, .cert-description, .cert-meta-info {
+        color: #000 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <nav class="top-nav">
+    <button class="menu-toggle" aria-label="Abrir menú">☰</button>
+    <a href="index.html" class="nav-brand">
+      <div class="nav-brand-icon">IA</div>
+      <div class="nav-brand-text"><span>Curso IA</span> Commercial</div>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Cuadernos</a>
+      <a href="muro.html" class="nav-link">Lienzo</a>
+      <a href="recursos.html" class="nav-link">Recursos</a>
+      <a href="examen.html" class="nav-link active">Examen Oficial</a>
+      <a href="#" class="nav-link">Acerca de</a>
+    </div>
+  </nav>
+
+  <main class="exam-container" style="padding-top: 84px;">
+    
+    <!-- Hero Header -->
+    <div class="exam-hero">
+      <div class="page-meta" style="justify-content: center; margin-bottom: 0.75rem;">
+        <span class="meta-badge">EVALUACIÓN DE CERTIFICACIÓN</span>
+        <span class="meta-badge blue">50 Preguntas · 10 Módulos</span>
+        <span class="meta-info">Nivel: Maestría Técnica</span>
+      </div>
+      <h1 class="page-title" style="background: linear-gradient(135deg, #e8e6f0 0%, #c4b5fd 50%, #06b6d4 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+        Examen de Certificación Técnica: IA Generativa Avanzada
+      </h1>
+      <p class="page-subtitle" style="max-width: 860px; margin: 0.5rem auto 0;">
+        Banco oficial de evaluación cuantitativa sobre algoritmos de optimización, diferenciación automática, topología de Transformers, inferencia GPT, anclaje fáctico (Grounding), arneses de evaluación (Harness) y flujos agenciales autónomos.
+      </p>
+    </div>
+
+    <!-- Barra de Control y Modos -->
+    <div class="exam-controls-bar">
+      <div class="mode-toggle-group">
+        <button id="btn-mode-exam" class="mode-btn active">⏱️ Modo Examen Oficial</button>
+        <button id="btn-mode-study" class="mode-btn">📖 Modo Estudio Guiado</button>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+        <select id="exam-module-select" class="form-select" style="background: var(--bg-tertiary); color: var(--text-primary); border: 1px solid var(--border-medium); padding: 0.45rem 0.85rem; border-radius: var(--radius-md); font-size: 0.85rem; font-weight: 600;">
+          <option value="0">📚 Todos los Módulos (50 Preguntas)</option>
+          <option value="1">M1: Paradigmas y Computación (Q1-Q3)</option>
+          <option value="2">M2: Optimización Paramétrica del Error (Q4-Q8)</option>
+          <option value="3">M3: Algoritmos de Gradiente (Q9-Q14)</option>
+          <option value="4">M4: Arquitecturas y Representación (Q15-Q20)</option>
+          <option value="5">M5: La Revolución del Transformer (Q21-Q26)</option>
+          <option value="6">M6: El Paradigma GPT e Inferencia (Q27-Q32)</option>
+          <option value="7">M7: Grounding y Evaluation Harness (Q33-Q37)</option>
+          <option value="8">M8: Inferencia Eficiente en LLMs (Q38-Q42)</option>
+          <option value="9">M9: RAG y GraphRAG Avanzado (Q43-Q46)</option>
+          <option value="10">M10: Sistemas y Flujos Agenciales (Q47-Q50)</option>
+        </select>
+
+        <div id="exam-timer-wrapper" class="exam-timer-box">
+          <span class="timer-icon">⏳</span>
+          <span id="exam-timer-value">90:00</span>
+        </div>
+
+        <button id="btn-restart-exam" class="nav-btn" style="padding: 0.45rem 0.85rem; font-size: 0.8rem;">🔄 Reiniciar</button>
+      </div>
+    </div>
+
+    <!-- Barra de Progreso Global -->
+    <div style="margin-bottom: 1.5rem;">
+      <div style="display: flex; justify-content: space-between; font-size: 0.82rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.4rem;">
+        <span>Progreso de Evaluación</span>
+        <span id="exam-progress-text">0 de 50 Respondidas (0%)</span>
+      </div>
+      <div style="height: 6px; background: var(--bg-tertiary); border-radius: 3px; overflow: hidden;">
+        <div id="exam-progress-bar-fill" style="height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent-blue) 0%, var(--accent-cyan) 100%); transition: width 0.3s ease;"></div>
+      </div>
+    </div>
+
+    <!-- Área Principal de Examen a 2 Columnas -->
+    <div id="exam-content-area" class="exam-layout-grid exam-main-panel">
+      
+      <!-- Columna Izquierda: Tarjeta de Pregunta Activa -->
+      <div class="exam-question-column">
+        <div id="active-question-card" class="question-card">
+          <!-- Renderizado dinámico desde exam-engine.js -->
+        </div>
+
+        <!-- Controles de Navegación Inferiores -->
+        <div class="exam-nav-controls">
+          <button id="btn-prev" class="nav-btn">← Pregunta Anterior</button>
+          <button id="btn-finish-exam" class="btn-finish-main">🏁 Entregar Examen</button>
+          <button id="btn-next" class="nav-btn">Siguiente Pregunta →</button>
+        </div>
+      </div>
+
+      <!-- Columna Derecha: Panel de Navegación Rápida -->
+      <div class="exam-sidebar-panel">
+        <div class="sidebar-panel-title">
+          <span>Navegador de Preguntas</span>
+          <span style="font-size: 0.78rem; font-weight: 400; color: var(--text-muted);">Total: 50</span>
+        </div>
+
+        <div id="exam-question-grid" class="exam-question-grid">
+          <!-- 50 botones generados dinámicamente -->
+        </div>
+
+        <div class="grid-legend">
+          <div class="legend-item"><span class="legend-dot" style="background: rgba(59, 130, 246, 0.4);"></span> Respondida</div>
+          <div class="legend-item"><span class="legend-dot" style="background: var(--bg-tertiary); border: 1px solid var(--border-medium);"></span> Sin responder</div>
+          <div class="legend-item"><span class="legend-dot" style="background: #f59e0b;"></span> Marcada (🚩)</div>
+          <div class="legend-item"><span class="legend-dot" style="background: #10b981;"></span> Correcta / Fallo</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ============================================== -->
+    <!-- PANEL DE RESULTADOS, DIAGNÓSTICO Y CERTIFICADO -->
+    <!-- ============================================== -->
+    <div id="exam-results-panel" class="results-card" style="display: none;">
+      <div class="results-summary-header">
+        <h2 style="font-size: 1.85rem; font-weight: 800; color: #fff; margin-bottom: 0.5rem;">Diagnóstico y Resultados de la Evaluación</h2>
+        <p style="color: var(--text-secondary); font-size: 0.95rem;">Informe detallado de competencias y acreditación técnica.</p>
+
+        <div class="score-circle-wrapper">
+          <div id="res-score-number" class="score-val">0 / 50</div>
+          <div id="res-score-percent" class="score-pct">0%</div>
+        </div>
+
+        <div id="res-status-badge" class="res-status-badge passed">CALCULANDO...</div>
+      </div>
+
+      <!-- Desglose por Módulos -->
+      <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1rem;">
+        📊 Desglose de Dominio por Módulos Temáticos
+      </h3>
+      <div id="res-modules-breakdown" class="module-breakdown-grid">
+        <!-- Renderizado dinámico -->
+      </div>
+
+      <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap;">
+        <button id="btn-review-answers" class="nav-btn" style="background: var(--accent-blue); color: #fff; border-color: var(--accent-blue);">
+          🔍 Revisar Respuestas y Justificaciones
+        </button>
+      </div>
+
+      <!-- Sección de Certificado de Acreditación -->
+      <div id="certificate-wrapper" style="margin-top: 3rem; display: none;">
+        <div style="text-align: center; margin-bottom: 1rem;">
+          <h3 style="font-size: 1.35rem; font-weight: 700; color: #10b981;">🏆 ¡Enhorabuena! Has superado el umbral de certificación (≥ 75%)</h3>
+          <p style="color: var(--text-secondary); font-size: 0.9rem;">Introduce tu nombre para personalizar tu Certificado Digital de Acreditación:</p>
+          <input type="text" id="cert-student-name" placeholder="Tu Nombre Completo" class="form-input" style="max-width: 380px; text-align: center; font-size: 1rem; font-weight: 600; padding: 0.6rem 1rem; background: var(--bg-tertiary); color: #fff; border: 1.5px solid var(--accent-cyan); border-radius: var(--radius-md); margin-top: 0.5rem;">
+        </div>
+
+        <!-- Plantilla del Certificado Imprimible -->
+        <div class="certificate-sheet">
+          <div class="cert-seal">🎖️</div>
+          <div class="cert-title">Certificado de Acreditación Técnica</div>
+          <div class="cert-subtitle">Programa de Alta Especialización en Inteligencia Artificial Generativa y LLMs</div>
+
+          <div class="cert-granted-to">Se concede el presente diploma de honor a:</div>
+          <div id="cert-rendered-name" class="cert-student-name">Ingeniero / Investigador en IA</div>
+
+          <p class="cert-description">
+            Por haber superado con éxito la rigurosa evaluación de nivel de Maestría, demostrando dominio matemático y aplicado en epistemología conexionista, diferenciación automática, optimizadores de frontera (AdamW), teoría del Transformer ("Attention Is All You Need"), inferencia GPT estocástica, anclaje fáctico (Grounding RAG/GraphRAG), infraestructura de evaluación (Harness) y diseño de sistemas agenciales autónomos.
+          </p>
+
+          <div id="cert-rendered-grade" style="font-size: 1rem; font-weight: 700; color: #38bdf8; margin-bottom: 1rem;">
+            Calificación de Honor: 0% (Nivel de Maestría)
+          </div>
+
+          <div class="cert-meta-info">
+            <span id="cert-rendered-date">Fecha de Emisión: 19 de agosto de 2026</span>
+            <span id="cert-rendered-hash">ID de Verificación: AGY-CERT-2026-MASTER</span>
+            <span>Entidad Emisora: Curso IA Commercial</span>
+          </div>
+        </div>
+
+        <div style="text-align: center;">
+          <button id="btn-print-certificate" class="btn-finish-main" style="padding: 0.75rem 2rem; font-size: 0.95rem;">
+            🖨️ Imprimir / Descargar Certificado en PDF
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer" style="margin-top: 4rem;">
+    <p class="footer-text">
+      Curso IA Commercial — Sistema de Exámenes Online y Certificación Técnica Avanzada
+    </p>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script src="js/exam-data.js"></script>
+  <script src="js/exam-engine.js"></script>
+</body>
+</html>

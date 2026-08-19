@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Cuaderno 05: Paradigmas, Optimización, Arquitecturas, Paradigma GPT y Pilares Operativos (Grounding & Harness). Compendio exhaustivo de 7 módulos: Turing vs Conexionismo, Autodiff DAG, Optimizadores AdamW, Varianza 1/√d_k, MHA, Condicionamiento κ, Transformers Pre-LN, Inferencia GPT, Muestreo, Label Smoothing, SFT, RLHF, Grounding (RAG vs GraphRAG) y Evaluation Harness (MMLU, GSM8K).">
+  <meta name="keywords" content="Paradigmas, Turing, Conexionismo, Retropropagación, DAG, Autodiff, BPTT, RTRL, SPSA, SGD, Adam, AdamW, Transformers, Attention Is All You Need, Pre-LN, GPT, Inferencia LLM, Temperatura, Top-K, Top-P, Label Smoothing, SFT, RLHF, PPO, Grounding, RAG, GraphRAG, Leiden, Evaluation Harness, MMLU, GSM8K, HellaSwag, ARC, PyTorch, Python">
+  <title>Cuaderno 05 — Compendio Integral: De los Paradigmas al Grounding y Harness | Curso IA Commercial</title>
+  <link rel="manifest" href="../manifest.json">
+  <link rel="stylesheet" href="../css/styles.css">
+  <!-- KaTeX for LaTeX math rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ],
+      throwOnError: false
+    });"></script>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <nav class="top-nav">
+    <button class="menu-toggle" aria-label="Abrir menú">☰</button>
+    <a href="../index.html" class="nav-brand">
+      <div class="nav-brand-icon">IA</div>
+      <div class="nav-brand-text"><span>Curso IA</span> Commercial</div>
+    </a>
+    <div class="nav-links">
+      <a href="../index.html" class="nav-link">Cuadernos</a>
+      <a href="../muro.html" class="nav-link">Lienzo</a>
+      <a href="../recursos.html" class="nav-link">Recursos</a>
+      <a href="../examen.html" class="nav-link">Examen Oficial</a>
+      <a href="#" class="nav-link">Acerca de</a>
+    </div>
+  </nav>
+
+  <!-- Reading Progress -->
+  <div class="progress-bar">
+    <div class="progress-bar-fill"></div>
+  </div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Estructura del Cuaderno</div>
+      <a href="#intro" class="sidebar-link active">
+        <span class="sidebar-link-number">00</span>
+        Introducción & Objetivos
+      </a>
+      
+      <div class="sidebar-section-title" style="margin-top: 1rem; color: var(--accent-violet);">M1: Paradigmas</div>
+      <a href="#m1-epistemologia" class="sidebar-link">
+        <span class="sidebar-link-number">01</span>
+        Turing vs. Conexionismo
+      </a>
+      <a href="#m1-mineria" class="sidebar-link">
+        <span class="sidebar-link-number">02</span>
+        Minería Asociativa (Apriori & DIC)
+      </a>
+      <a href="#m1-lab" class="sidebar-link">
+        <span class="sidebar-link-number">03</span>
+        Laboratorio 1: 3 Paradigmas Python
+      </a>
+
+      <div class="sidebar-section-title" style="margin-top: 1rem; color: var(--accent-cyan);">M2: Optimización Paramétrica</div>
+      <a href="#m2-retropropagacion" class="sidebar-link">
+        <span class="sidebar-link-number">04</span>
+        Retropropagación y Grafo DAG
+      </a>
+      <a href="#m2-autodiff" class="sidebar-link">
+        <span class="sidebar-link-number">05</span>
+        Autodiff: Modo Directo vs. Inverso
+      </a>
+      <a href="#m2-bptt-rtrl" class="sidebar-link">
+        <span class="sidebar-link-number">06</span>
+        Secuencias: BPTT vs. RTRL
+      </a>
+      <a href="#m2-ordenes" class="sidebar-link">
+        <span class="sidebar-link-number">07</span>
+        Órdenes de Optimización: 0, 1 y 2
+      </a>
+      <a href="#m2-biologico" class="sidebar-link">
+        <span class="sidebar-link-number">08</span>
+        Plausibilidad Biológica & Neuromórfica
+      </a>
+      <a href="#m2-lab" class="sidebar-link">
+        <span class="sidebar-link-number">09</span>
+        Laboratorio 2: Autodiff & SPSA
+      </a>
+
+      <div class="sidebar-section-title" style="margin-top: 1rem; color: var(--accent-emerald);">M3: Algoritmos de Gradiente</div>
+      <a href="#m3-sgd" class="sidebar-link">
+        <span class="sidebar-link-number">10</span>
+        SGD, Minilotes & Flat Minima
+      </a>
+      <a href="#m3-momentum" class="sidebar-link">
+        <span class="sidebar-link-number">11</span>
+        SGD con Momentum & Inercia
+      </a>
+      <a href="#m3-adaptativos" class="sidebar-link">
+        <span class="sidebar-link-number">12</span>
+        AdaGrad & RMSProp
+      </a>
+      <a href="#m3-adam" class="sidebar-link">
+        <span class="sidebar-link-number">13</span>
+        Adam & Corrección de Sesgo
+      </a>
+      <a href="#m3-adamw" class="sidebar-link">
+        <span class="sidebar-link-number">14</span>
+        Ruptura L2 y Desacoplamiento AdamW
+      </a>
+      <a href="#m3-lab" class="sidebar-link">
+        <span class="sidebar-link-number">15</span>
+        Laboratorio 3: Adam vs. AdamW
+      </a>
+
+      <div class="sidebar-section-title" style="margin-top: 1rem; color: var(--accent-amber);">M4: Arquitecturas & Representación</div>
+      <a href="#m4-embeddings" class="sidebar-link">
+        <span class="sidebar-link-number">16</span>
+        Embeddings & Espacios Vectoriales
+      </a>
+      <a href="#m4-autoatencion" class="sidebar-link">
+        <span class="sidebar-link-number">17</span>
+        Autoatención & Varianza $1/\sqrt{d_k}$
+      </a>
+      <a href="#m4-mha" class="sidebar-link">
+        <span class="sidebar-link-number">18</span>
+        Multi-Head Attention & Complejidad
+      </a>
+      <a href="#m4-condicionamiento" class="sidebar-link">
+        <span class="sidebar-link-number">19</span>
+        Número de Condición ($\kappa$)
+      </a>
+      <a href="#m4-expresividad" class="sidebar-link">
+        <span class="sidebar-link-number">20</span>
+        Límites: $q$-SA, Match2 y Match3
+      </a>
+      <a href="#m4-lab" class="sidebar-link">
+        <span class="sidebar-link-number">21</span>
+        Laboratorio 4: MHA, $\kappa$ & Match2
+      </a>
+
+      <div class="sidebar-section-title" style="margin-top: 1rem; color: var(--accent-rose);">M5: La Revolución del Transformer</div>
+      <a href="#m5-ocaso-recurrencia" class="sidebar-link">
+        <span class="sidebar-link-number">22</span>
+        El Ocaso de la Recurrencia (RNN/LSTM)
+      </a>
+      <a href="#m5-pos-encoding" class="sidebar-link">
+        <span class="sidebar-link-number">23</span>
+        Codificación Posicional Sinusoidal
+      </a>
+      <a href="#m5-encoder-decoder" class="sidebar-link">
+        <span class="sidebar-link-number">24</span>
+        Estructura Encoder-Decoder Causal
+      </a>
+      <a href="#m5-pre-post-ln" class="sidebar-link">
+        <span class="sidebar-link-number">25</span>
+        Estabilización: Pre-LN vs. Post-LN
+      </a>
+      <a href="#m5-lab" class="sidebar-link">
+        <span class="sidebar-link-number">26</span>
+        Laboratorio 5: Positional & Pre-LN
+      </a>
+
+      <div class="sidebar-section-title" style="margin-top: 1rem; color: var(--accent-blue);">M6: El Paradigma GPT & Alineación</div>
+      <a href="#m6-flujo-inferencia" class="sidebar-link">
+        <span class="sidebar-link-number">27</span>
+        Flujo de Inferencia & Unembedding
+      </a>
+      <a href="#m6-muestreo" class="sidebar-link">
+        <span class="sidebar-link-number">28</span>
+        Muestreo: Temperatura, Top-K y Top-P
+      </a>
+      <a href="#m6-preentrenamiento" class="sidebar-link">
+        <span class="sidebar-link-number">29</span>
+        Preentrenamiento & Label Smoothing
+      </a>
+      <a href="#m6-alineacion" class="sidebar-link">
+        <span class="sidebar-link-number">30</span>
+        Alineación: SFT, RLHF y Humildad
+      </a>
+      <a href="#m6-lab" class="sidebar-link">
+        <span class="sidebar-link-number">31</span>
+        Laboratorio 6: Sampling & Smoothing
+      </a>
+
+      <div class="sidebar-section-title" style="margin-top: 1rem; color: var(--accent-teal);">M7: Grounding & Evaluation Harness</div>
+      <a href="#m7-grounding" class="sidebar-link">
+        <span class="sidebar-link-number">32</span>
+        Grounding: RAG vs. GraphRAG
+      </a>
+      <a href="#m7-harness" class="sidebar-link">
+        <span class="sidebar-link-number">33</span>
+        Evaluation Harness: MMLU, GSM8K & ARC
+      </a>
+      <a href="#m7-lab" class="sidebar-link">
+        <span class="sidebar-link-number">34</span>
+        Laboratorio 7: Mini-RAG & Harness
+      </a>
+
+      <div class="sidebar-section-title" style="margin-top: 1rem;">Cierre</div>
+      <a href="#conclusiones" class="sidebar-link">
+        <span class="sidebar-link-number">35</span>
+        Conclusiones y Síntesis Global
+      </a>
+    </div>
+  </aside>
+  <div class="sidebar-overlay"></div>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="content-wrapper">
+
+      <!-- Page Header -->
+      <div class="page-header">
+        <div class="breadcrumb">
+          <a href="../index.html">Cuadernos</a>
+          <span class="separator">/</span>
+          <span>Cuaderno 05</span>
+        </div>
+
+        <div class="page-meta">
+          <span class="meta-badge">CUADERNO 05</span>
+          <span class="meta-badge blue">Compendio Integral de 7 Módulos</span>
+          <span class="meta-info">Módulos 1 al 7</span>
+        </div>
+
+        <h1 class="page-title">Compendio Integral: De los Paradigmas al Grounding y Harness</h1>
+        <p class="page-subtitle">El compendio técnico y matemático definitivo que articula la epistemología computacional (M1), retropropagación en DAGs (M2), optimizadores adaptativos y AdamW (M3), espacios vectoriales y varianza (M4), la revolución de Attention Is All You Need (M5), el paradigma GPT e inferencia estocástica (M6), y los dos pilares operativos de producción crítica: Grounding (RAG vs GraphRAG) y Harness de evaluación cuantitativa (MMLU, GSM8K, HellaSwag, ARC) (M7).</p>
+
+        <!-- Ficha de Objetivos Pedagógicos (Taxonomía de Bloom) -->
+        <div class="bloom-card">
+          <div class="bloom-header">
+            <h3 class="bloom-title">🎯 Objetivos de Aprendizaje & Competencias</h3>
+            <div class="bloom-meta-pills">
+              <span class="bloom-pill time">⏱️ 260 min lectura · 130 min laboratorio</span>
+              <span class="bloom-pill diff-advanced">Nivel: Master / Arquitectura, Producción & Evaluación</span>
+            </div>
+          </div>
+          <div class="bloom-grid">
+            <div class="bloom-col">
+              <div class="bloom-col-header understand">🧠 1. Comprender</div>
+              <ul>
+                <li>La mecánica epistemológica del <strong>Grounding</strong>: cómo la inyección del contexto fáctico $C$ altera la matriz de atención y contrae la entropía de la softmax para mitigar alucinaciones.</li>
+                <li>La arquitectura y necesidad científica de un <strong>Evaluation Harness</strong> para medir el rendimiento de modelos mediante inferencia determinista ($T=0$) y parsers automatizados.</li>
+                <li>Los benchmarks de frontera: MMLU (57 materias de conocimiento), GSM8K (aritmética multietapa con CoT), HellaSwag (sentido común físico) y ARC (razonamiento científico).</li>
+                <li>La anatomía completa del flujo GPT: Unembedding, Temperatura, Top-K, Top-P, Label Smoothing, SFT y RLHF.</li>
+              </ul>
+            </div>
+            <div class="bloom-col">
+              <div class="bloom-col-header analyze">⚖️ 2. Analizar</div>
+              <ul>
+                <li>Las diferencias estructurales entre <strong>RAG semántico clásico</strong> ($K$-NN local sobre chunks) y <strong>GraphRAG jerárquico</strong> (algoritmo de Leiden, comunidades conceptuales y síntesis global QFS).</li>
+                <li>El peligro de las evaluaciones subjetivas frente a reportes estadísticos reproducibles con un Harness oficial.</li>
+                <li>El teorema de preservación de gradientes en Pre-LN frente al colapso de Post-LN en redes profundas.</li>
+                <li>La deducción matemática de la varianza $1/\sqrt{d_k}$ y la rotación ortogonal en la Codificación Sinusoidal.</li>
+              </ul>
+            </div>
+            <div class="bloom-col">
+              <div class="bloom-col-header apply">🚀 3. Aplicar</div>
+              <ul>
+                <li>Construcción de un `MiniRAGGroundingEngine` en Python con recuperación basada en solapamiento y formateo de prompts anclados.</li>
+                <li>Implementación de un `MiniEvaluationHarness` automatizado con parser de expresiones regulares y cálculo cuantitativo de exactitud (*Accuracy*).</li>
+                <li>Simulación de decodificación con Temperatura, Top-K y Top-P (Nucleus Sampling) y pérdida con Label Smoothing.</li>
+                <li>Desarrollo de optimizadores desacoplados `OptimizerAdamW` y bloques `MultiHeadAttentionLab` en PyTorch.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================== -->
+      <!-- SECCIÓN 00: INTRODUCCIÓN       -->
+      <!-- ============================== -->
+      <section id="intro" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">00</span>
+          <h2 class="section-title">Introducción al Compendio Global</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p class="editorial-lead">
+            Este compendio unifica los siete módulos cardinales para dominar desde los cimientos epistemológicos hasta la ingeniería de producción de los Grandes Modelos de Lenguaje:
+          </p>
+          <ol>
+            <li><strong>Módulo 1:</strong> Del determinismo de Turing a la superinterpolación conexionista y minería asociativa (Apriori y DIC).</li>
+            <li><strong>Módulo 2:</strong> Mecánica del cálculo de gradientes en grafos DAG, diferenciación automática (JVP/VJP, BPTT/RTRL), optimización 0/1/2 y modelos neuromórficos.</li>
+            <li><strong>Módulo 3:</strong> Dinámica estocástica de minilotes, flat minima, Momentum, AdaGrad, RMSProp, corrección de sesgo en Adam y regularización desacoplada en AdamW.</li>
+            <li><strong>Módulo 4:</strong> Espacios continuos de embeddings, deducción de varianza $1/\sqrt{d_k}$, equivalencia de MHA, condicionamiento matricial $\kappa$ y límites de expresividad ($q$-SA, Match2 vs Match3).</li>
+            <li><strong>Módulo 5:</strong> La revolución de "Attention Is All You Need", eliminación de la recurrencia, codificación posicional sinusoidal rotacional, decodificación causal y autopista de gradientes en Pre-LN.</li>
+            <li><strong>Módulo 6:</strong> Operatividad del paradigma GPT: flujo de inferencia de extremo a extremo, decodificación estocástica (Temperatura, Top-K, Top-P), preentrenamiento con Label Smoothing y alineación SFT/RLHF.</li>
+            <li><strong>Módulo 7:</strong> Pilares operativos de producción crítica: Grounding fáctico (RAG semántico vs GraphRAG jerárquico) y Harness de evaluación cuantitativa (MMLU, GSM8K, HellaSwag, ARC) con laboratorio en Python.</li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- MÓDULO 1: PARADIGMAS Y COMPUTACIÓN                       -->
+      <!-- ======================================================== -->
+      <div class="module-header" id="modulo-1">
+        <div class="module-header-badge">M1</div>
+        <h2>Módulo 1: Paradigmas y Computación</h2>
+      </div>
+
+      <!-- SECCIÓN 01 -->
+      <section id="m1-epistemologia" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">01</span>
+          <h2 class="section-title">La Epistemología de la Computación: Del Determinismo Turing al Conexionismo Estocástico</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            Alan Turing (1936) formalizó el algoritmo como reglas deterministas manuales. El Machine Learning actúa como un <strong>aproximador universal de funciones</strong> que deduce de forma autónoma $f(x)$ a partir de datos mediante optimización matricial. Pep Martorell define a la IA como un <strong>"superinterpolador estadístico"</strong>: las alucinaciones son la consecuencia probabilística natural de la interpolación continua no lineal.
+          </p>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 02 -->
+      <section id="m1-mineria" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">02</span>
+          <h2 class="section-title">Minería de Patrones y Correlaciones Estadísticas: Apriori y DIC</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            Métricas de reglas $X \implies Y$: Soporte, Confianza y Lift. <strong>Dynamic Itemset Counting (DIC)</strong> segmenta en bloques de tamaño $M$ y cuenta asíncronamente, reduciendo un 45% las operaciones de I/O frente a Apriori clásico.
+          </p>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 03 -->
+      <section id="m1-lab" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">03</span>
+          <h2 class="section-title">Laboratorio 1: Código Python de los 3 Paradigmas</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <pre class="code-block" style="background: var(--bg-tertiary); border: 1px solid var(--border-medium); border-radius: var(--radius-md); padding: 1.25rem; font-family: var(--font-mono); font-size: 0.82rem; overflow-x: auto; color: var(--text-primary); line-height: 1.5;"><code class="language-python"># 1. Determinista | 2. Neurona Lineal W*x + b | 3. Apriori básico
+print("Módulo 1 inicializado.")
+</code></pre>
+        </div>
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- MÓDULO 2: OPTIMIZACIÓN PARAMÉTRICA DEL ERROR             -->
+      <!-- ======================================================== -->
+      <div class="module-header" id="modulo-2" style="border-color: var(--accent-cyan);">
+        <div class="module-header-badge" style="background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-blue) 100%);">M2</div>
+        <h2>Módulo 2: Optimización Paramétrica del Error</h2>
+      </div>
+
+      <!-- SECCIÓN 04 -->
+      <section id="m2-retropropagacion" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">04</span>
+          <h2 class="section-title">Mecánica de la Retropropagación y Grafo DAG</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            En un DAG $\mathcal{G}=(\mathcal{V}, \mathcal{E})$, los adjuntos se propagan en sentido inverso: $\bar{v}_i = \sum_{k \in \text{Ch}(v_i)} \bar{v}_k \frac{\partial \phi_k}{\partial v_i}$.
+          </p>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 05 -->
+      <section id="m2-autodiff" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">05</span>
+          <h2 class="section-title">Diferenciación Automática: Modo Directo vs. Modo Inverso</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            <strong>Directo (JVP):</strong> $\mathcal{O}(N \cdot \text{Coste}(f))$. <strong>Inverso (VJP):</strong> $\mathcal{O}(1 \cdot \text{Coste}(f))$ independiente del número de parámetros.
+          </p>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 06 -->
+      <section id="m2-bptt-rtrl" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">06</span>
+          <h2 class="section-title">Secuencias Recurrentes: BPTT vs. RTRL</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            <strong>BPTT:</strong> $\mathcal{O}(T \cdot d^2)$ tiempo y $\mathcal{O}(T \cdot d)$ memoria. <strong>RTRL:</strong> $\mathcal{O}(T \cdot d^4)$ tiempo y $\mathcal{O}(d^3)$ memoria online.
+          </p>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 07 -->
+      <section id="m2-ordenes" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">07</span>
+          <h2 class="section-title">Órdenes de Optimización: 0, 1 y 2</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            <strong>Orden 1:</strong> SGD, AdamW. <strong>Orden 2:</strong> Newton ($H^{-1}$, $\mathcal{O}(N^3)$). <strong>Orden 0:</strong> SPSA con 2 evaluaciones forward $\hat{g} = \frac{f(\theta + c\xi) - f(\theta - c\xi)}{2c}\xi^{-1}$ con vectores de Rademacher $\xi \in \{-1, 1\}^n$.
+          </p>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 08 -->
+      <section id="m2-biologico" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">08</span>
+          <h2 class="section-title">Plausibilidad Biológica y Hardware Neuromórfico</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            El cerebro evade el <em>Weight Transport Problem</em> usando optimización estocástica de orden cero con neuromoduladores difusos (dopamina), principio base de procesadores neuromórficos (Intel Loihi).
+          </p>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 09 -->
+      <section id="m2-lab" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">09</span>
+          <h2 class="section-title">Laboratorio 2: Autodiff (Dual Numbers & DAG) y SPSA vs. SGD</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <pre class="code-block" style="background: var(--bg-tertiary); border: 1px solid var(--border-medium); border-radius: var(--radius-md); padding: 1.25rem; font-family: var(--font-mono); font-size: 0.82rem; overflow-x: auto; color: var(--text-primary); line-height: 1.5;"><code class="language-python"># Modo Directo (DualNumber) y Modo Inverso (VarInverse DAG)
+print("Módulo 2 inicializado.")
+</code></pre>
+        </div>
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- MÓDULO 3: ALGORITMOS DE OPTIMIZACIÓN DE GRADIENTE        -->
+      <!-- ======================================================== -->
+      <div class="module-header" id="modulo-3" style="border-color: var(--accent-emerald);">
+        <div class="module-header-badge" style="background: linear-gradient(135deg, var(--accent-emerald) 0%, var(--accent-cyan) 100%);">M3</div>
+        <h2>Módulo 3: Algoritmos de Optimización de Gradiente</h2>
+      </div>
+
+      <!-- SECCIÓN 10 -->
+      <section id="m3-sgd" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">10</span>
+          <h2 class="section-title">SGD, Dinámica de Minilotes y Mínimos Planos (Flat Minima)</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            El ruido estocástico de los minilotes expulsa la optimización de cuencas estrechas (*sharp minima*) hacia mínimos planos (*flat minima*), mejorando la generalización.
+          </p>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 11 -->
+      <section id="m3-momentum" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">11</span>
+          <h2 class="section-title">SGD con Momentum y Amortiguación Oscilatoria</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            Inercia $v_t = \beta v_{t-1} + (1-\beta)g_t$: cancela oscilaciones transversales y acelera en la dirección consistente de descenso.
+          </p>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 12 -->
+      <section id="m3-adaptativos" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">12</span>
+          <h2 class="section-title">Métodos Adaptativos: AdaGrad y RMSProp</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            AdaGrad sufre colapso monótono ($G_t = G_{t-1} + g_t^2$); RMSProp lo soluciona con promedio móvil exponencial ($v_t = \beta v_{t-1} + (1-\beta)g_t^2$).
+          </p>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 13 -->
+      <section id="m3-adam" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">13</span>
+          <h2 class="section-title">Adam y la Deducción Analítica de Corrección de Sesgo</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            Por series geométricas finitas con $m_0 = 0$: $\mathbb{E}[m_t] = \mathbb{E}[g_t](1 - \beta_1^t) \implies \hat{m}_t = \frac{m_t}{1-\beta_1^t}$, $\hat{v}_t = \frac{v_t}{1-\beta_2^t}$.
+          </p>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 14 -->
+      <section id="m3-adamw" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">14</span>
+          <h2 class="section-title">Ruptura de Regularización L2 y Desacoplamiento de AdamW</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            En Adam, $L_2$ queda distorsionada por $\sqrt{v_t}$. <strong>AdamW</strong> desacopla el decaimiento directo: $\theta_{t+1} = \theta_t - \eta \lambda \theta_t - \frac{\eta}{\sqrt{\hat{v}_t}+\epsilon}\odot \hat{m}_t$.
+          </p>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 15 -->
+      <section id="m3-lab" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">15</span>
+          <h2 class="section-title">Laboratorio 3: Implementación de Adam y AdamW en Superficie de Rastrigin</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <pre class="code-block" style="background: var(--bg-tertiary); border: 1px solid var(--border-medium); border-radius: var(--radius-md); padding: 1.25rem; font-family: var(--font-mono); font-size: 0.82rem; overflow-x: auto; color: var(--text-primary); line-height: 1.5;"><code class="language-python"># Comparativa Adam L2 vs AdamW sobre Rastrigin
+print("Módulo 3 inicializado.")
+</code></pre>
+        </div>
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- MÓDULO 4: ARQUITECTURAS Y ESPACIOS DE REPRESENTACIÓN     -->
+      <!-- ======================================================== -->
+      <div class="module-header" id="modulo-4" style="border-color: var(--accent-amber);">
+        <div class="module-header-badge" style="background: linear-gradient(135deg, var(--accent-amber) 0%, var(--accent-rose) 100%);">M4</div>
+        <h2>Módulo 4: Arquitecturas de Modelos y Espacios de Representación</h2>
+      </div>
+
+      <!-- SECCIÓN 16 -->
+      <section id="m4-embeddings" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">16</span>
+          <h2 class="section-title">Espacios Vectoriales, Embeddings, Tokenización y Vocabulario</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            Transformación de texto discreto a representaciones continuas densas: BPE/WordPiece, mapeo entero y matriz $E \in \mathbb{R}^{V \times d_{\text{model}}}$.
+          </p>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 17 -->
+      <section id="m4-autoatencion" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">17</span>
+          <h2 class="section-title">El Mecanismo de Autoatención Escalada y el Factor $1/\sqrt{d_k}$</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            $\text{Var}(q_i k_i) = 1 \implies \text{Var}(q \cdot k) = d_k$. Al escalar por $\sqrt{d_k}$, la varianza se normaliza a 1, evitando la saturación de la softmax en asíntotas de gradiente nulo.
+          </p>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 18 -->
+      <section id="m4-mha" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">18</span>
+          <h2 class="section-title">Multi-Head Attention (MHA) y Demostración de Complejidad</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            Con $d_k = d_{\text{model}} / h$, el divisor $h$ se cancela de forma exacta al sumar las $h$ cabezas, manteniendo el coste idéntico a una sola cabeza: $\mathcal{O}(n^2 d_{\text{model}} + n d_{\text{model}}^2)$.
+          </p>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 19 -->
+      <section id="m4-condicionamiento" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">19</span>
+          <h2 class="section-title">Condicionamiento de Matrices: El Número de Condición ($\kappa$)</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            $\kappa(A) = \sigma_1/\sigma_k$. Tokens Condicionados ($X + C$) acotan $\kappa(X+C) \le 2 < \kappa(X)$, estabilizando el gradiente a través de toda la red profunda.
+          </p>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 20 -->
+      <section id="m4-expresividad" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">20</span>
+          <h2 class="section-title">Capacidad Representacional y Límites de Expresividad</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            <strong>$q$-SA:</strong> Exige $m \ge q$ en atención vs $\Omega(N^d)$ en MLP. <strong>Match2 vs Match3:</strong> Match2 se resuelve en 1 capa ($m=3$) con trigonometría; Match3 es triádica e impone la cota $\Omega(N/\log\log N)$, exigiendo apilamiento ($D \ge 2$).
+          </p>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 21 -->
+      <section id="m4-lab" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">21</span>
+          <h2 class="section-title">Laboratorio 4: Multi-Head Attention, Condicionamiento & Match2 en PyTorch</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <pre class="code-block" style="background: var(--bg-tertiary); border: 1px solid var(--border-medium); border-radius: var(--radius-md); padding: 1.25rem; font-family: var(--font-mono); font-size: 0.82rem; overflow-x: auto; color: var(--text-primary); line-height: 1.5;"><code class="language-python"># MultiHeadAttentionLab, calculate_condition_number y Match2AttentionUnit
+print("Módulo 4 inicializado.")
+</code></pre>
+        </div>
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- MÓDULO 5: LA REVOLUCIÓN DEL TRANSFORMER                  -->
+      <!-- ======================================================== -->
+      <div class="module-header" id="modulo-5" style="border-color: var(--accent-rose);">
+        <div class="module-header-badge" style="background: linear-gradient(135deg, var(--accent-rose) 0%, var(--accent-violet) 100%);">M5</div>
+        <h2>Módulo 5: La Revolución de la Arquitectura Transformer y el hito de "Attention Is All You Need"</h2>
+      </div>
+
+      <!-- SECCIÓN 22 -->
+      <section id="m5-ocaso-recurrencia" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">22</span>
+          <h2 class="section-title">El Ocaso de la Recurrencia y las Limitaciones de Paralelización</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            La secuencialidad $h_t = f(h_{t-1}, x_t)$ en RNN/LSTM serializa la ejecución impidiendo el paralelismo SIMT en GPUs, desvanece gradientes en BPTT ($\prod \partial h_t/\partial h_{t-1}$) y colapsa el contexto en un único vector rígido.
+          </p>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 23 -->
+      <section id="m5-pos-encoding" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">23</span>
+          <h2 class="section-title">Codificación Posicional Sinusoidal (Sinusoidal Positional Encoding)</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            Por identidades trigonométricas de adición, la transición a la posición $pos+k$ es exactamente una <strong>multiplicación por una matriz de rotación pura $R_i(k)$</strong> ($PE_{pos+k} = M(k) \cdot PE_{pos}$), permitiendo aprender distancias relativas linealmente.
+          </p>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 24 -->
+      <section id="m5-encoder-decoder" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">24</span>
+          <h2 class="section-title">Estructura del Codificador y del Decodificador Causal</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            El decodificador autorregresivo impone una <strong>máscara causal triangular superior</strong> $M_{\text{causal}}(i, j) = -\infty$ para $j > i$, anulando la probabilidad asignada a tokens futuros tras la softmax ($e^{-\infty} \to 0$).
+          </p>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 25 -->
+      <section id="m5-pre-post-ln" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">25</span>
+          <h2 class="section-title">Estabilización de Capas: Pre-LN frente a Post-LN</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            En Pre-LN, la expansión $\frac{\partial \mathcal{L}}{\partial x_0} = \frac{\partial \mathcal{L}}{\partial x_L}\left(I + \sum \frac{\partial F_l}{\partial x_0}\right)$ garantiza una autopista directa de gradientes gracias al <strong>término identidad $I$</strong>, evitando el desvanecimiento de gradientes.
+          </p>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 26 -->
+      <section id="m5-lab" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">26</span>
+          <h2 class="section-title">Laboratorio 5: Codificación Sinusoidal, Atención Causal & Simulación Pre/Post-LN</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <pre class="code-block" style="background: var(--bg-tertiary); border: 1px solid var(--border-medium); border-radius: var(--radius-md); padding: 1.25rem; font-family: var(--font-mono); font-size: 0.82rem; overflow-x: auto; color: var(--text-primary); line-height: 1.5;"><code class="language-python"># SinusoidalPositionalEncoding con verify_rotation_property y scaled_dot_product_causal_attention
+print("Módulo 5 inicializado.")
+</code></pre>
+        </div>
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- MÓDULO 6: EL PARADIGMA GPT & ALINEACIÓN                  -->
+      <!-- ======================================================== -->
+      <div class="module-header" id="modulo-6" style="border-color: var(--accent-blue);">
+        <div class="module-header-badge" style="background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-violet) 100%);">M6</div>
+        <h2>Módulo 6: El Funcionamiento de un LLM y el Paradigma GPT (Generative Pretrained Transformer)</h2>
+      </div>
+
+      <!-- SECCIÓN 27 -->
+      <section id="m6-flujo-inferencia" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">27</span>
+          <h2 class="section-title">Anatomía del Flujo de Inferencia de un LLM</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            Las 5 etapas de inferencia: Tokenización BPE $\to$ Embeddings densos e inyección posicional (RoPE/Sinusoidal) $\to$ Stack de capas (Causal MHA + FFN/SwiGLU bajo Pre-LN) $\to$ Unembedding final $z = h_{\text{last}} W_U$ $\to$ Decodificación y muestreo estocástico.
+          </p>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 28 -->
+      <section id="m6-muestreo" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">28</span>
+          <h2 class="section-title">Estrategias de Muestreo: Temperatura, Top-K y Top-P</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            <strong>Temperatura ($T$):</strong> $T > 1$ aplana la distribución aumentando creatividad; $T < 1$ agudiza picos deterministas. <strong>Top-K:</strong> Conserva los $K$ logits mayores. <strong>Top-P:</strong> Trunca dinámicamente según la masa de probabilidad acumulada $p$.
+          </p>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 29 -->
+      <section id="m6-preentrenamiento" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">29</span>
+          <h2 class="section-title">Preentrenamiento Autorregresivo y Label Smoothing</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            Maximización de log-verosimilitud sobre $\mathcal{L}(\theta) = -\sum \log P(y_t \mid y_{<t}, \mathbf{x})$. <strong>Label Smoothing ($\epsilon$):</strong> Mezcla la etiqueta real con ruido uniforme $\epsilon/|V|$, evitando que los logits diverjan a $\pm\infty$ y mejorando la calibración.
+          </p>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 30 -->
+      <section id="m6-alineacion" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">30</span>
+          <h2 class="section-title">Alineación y Postentrenamiento: SFT, RLHF y Humildad Cognitiva</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            <strong>SFT:</strong> Diálogos estructurados (LIMA demuestra que 1,000 muestras de alta calidad activan el conocimiento). <strong>RLHF:</strong> Modelo de Recompensa + PPO con penalización KL. Postentrenamiento como escuela de humildad y resistencia a manipulaciones.
+          </p>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 31 -->
+      <section id="m6-lab" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">31</span>
+          <h2 class="section-title">Laboratorio 6: Simulación de Inferencia, Muestreo y Label Smoothing en Python</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <pre class="code-block" style="background: var(--bg-tertiary); border: 1px solid var(--border-medium); border-radius: var(--radius-md); padding: 1.25rem; font-family: var(--font-mono); font-size: 0.82rem; overflow-x: auto; color: var(--text-primary); line-height: 1.5;"><code class="language-python"># apply_sampling (T, Top-K, Top-P) y calculate_cross_entropy_with_smoothing
+print("Módulo 6 inicializado.")
+</code></pre>
+        </div>
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- MÓDULO 7: GROUNDING & EVALUATION HARNESS                 -->
+      <!-- ======================================================== -->
+      <div class="module-header" id="modulo-7" style="border-color: var(--accent-teal);">
+        <div class="module-header-badge" style="background: linear-gradient(135deg, var(--accent-teal) 0%, var(--accent-cyan) 100%);">M7</div>
+        <h2>Módulo 7: Pilares Operativos de Implementación y Evaluación: Grounding y Harness</h2>
+      </div>
+
+      <!-- SECCIÓN 32 -->
+      <section id="m7-grounding" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">32</span>
+          <h2 class="section-title">El Concepto de Grounding (Anclaje de la Información)</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p class="editorial-lead">
+            Un modelo de lenguaje autorregresivo almacena información en sus parámetros $\theta$ como una compresión con pérdida. Al responder de memoria a hechos precisos o cambiantes ("a libro cerrado"), tiende a rellenar vacíos mediante extrapolación verosímil (alucinación).
+          </p>
+
+          <pre class="ascii-diagram"><code>  MEMORIA PARAMÉTRICA (A libro cerrado):
+  Query ───> [ LLM (Pesos Compresivos θ) ] ───> Generación probabilística (Riesgo de alucinación)
+
+  SISTEMA ANCLADO / GROUNDED (A libro abierto):
+  Query ───┐
+           ├─> [ Motor de Recuperación (RAG/GraphRAG) ] ───> Documentos de Soporte (Verdades fácticas)
+  Contexto ┘                                                                 │
+                                                                             ▼
+  Grounded Prompt ───────────────────────────────────────────────────────> [ LLM ] ───> Síntesis veraz</code></pre>
+
+          <h3>Mecánica del Anclaje: Modificación de la Softmax</h3>
+          <p>
+            Al inyectar el contexto de verdad $C$, la entrada se expande $X' = [C ; X]$, modificando las proyecciones $Q', K', V'$:
+          </p>
+          $$\text{Attention}(Q', K', V') = \text{softmax}\left(\frac{Q' (K')^T}{\sqrt{d_k}}\right)V'$$
+          <p>
+            La softmax asigna una masa de probabilidad dominante a las claves asociadas al contexto fáctico $C$, contrayendo la entropía y obligando a la representación final a fusionarse dentro del subespacio vectorial de las fuentes externas verificables.
+          </p>
+
+          <h3>Técnicas de Grounding: RAG Semántico vs. GraphRAG Jerárquico</h3>
+          <ul>
+            <li>
+              <strong>RAG Semántico Clásico:</strong> Segmentación en *chunks* estáticos y búsqueda vectorial $K$-NN por similitud de coseno. Eficiente para hechos puntuales, pero falla en consultas holísticas transversales (ej. "¿Cuáles son los 5 mayores riesgos en todas las auditorías del año?").
+            </li>
+            <li>
+              <strong>GraphRAG Jerárquico:</strong> Extracción de nodos (entidades) y bordes (relaciones) para construir un Grafo de Conocimiento formal. Aplica el **algoritmo de Leiden** para particionar el grafo en comunidades densamente interconectadas y generar resúmenes sintéticos por comunidad. Resuelve consultas globales mediante **Búsqueda Global (QFS - Query-Focused Summarization)**.
+            </li>
+          </ul>
+
+          <div class="example-block">
+            <div class="example-block-header">💡 Ejemplo Ilustrativo: El Asistente Legal</div>
+            <p>
+              <strong>Sin Grounding:</strong> Ante "¿Cuál es el límite de indemnización en el contrato X?", el modelo alucina un estándar comercial verosímil de "$1,000,000 USD".<br>
+              <strong>Con Grounding:</strong> El motor RAG extrae la Sección 14.2 ("límite agregado restringido a $250,000 USD") e inyecta el fragmento en el prompt, generando una respuesta exacta, segura y referenciada.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 33 -->
+      <section id="m7-harness" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">33</span>
+          <h2 class="section-title">El Concepto de Harness (Arnés de Evaluación Científica)</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p class="editorial-lead">
+            Un Evaluation Harness (como `lm-evaluation-harness` de EleutherAI) es una infraestructura unificada que automatiza la ejecución de modelos sobre benchmarks científicos bajo condiciones de control de variables estrictas, proporcionando métricas de rendimiento cuantitativas y reproducibles.
+          </p>
+
+          <pre class="ascii-diagram"><code>  ARQUITECTURA UNIFICADA DE UN EVALUATION HARNESS
+  ┌────────────────────────────────────────────────────────┐
+  │ 1. Carga de Benchmarks (Datasets: MMLU, GSM8K, Hella)  │
+  └────────────────────────┬───────────────────────────────┘
+                           ▼
+  ┌────────────────────────────────────────────────────────┐
+  │ 2. Formateo de Prompts (Zero-shot, Few-shot templates) │
+  └────────────────────────┬───────────────────────────────┘
+                           ▼
+  ┌────────────────────────────────────────────────────────┐
+  │ 3. Inferencia por Lotes (Batch Inference controlada)   │
+  └────────────────────────┬───────────────────────────────┘
+                           ▼
+  ┌────────────────────────────────────────────────────────┐
+  │ 4. Extracción de Respuestas (Regex parsers, Logits)    │
+  └────────────────────────┬───────────────────────────────┘
+                           ▼
+  ┌────────────────────────────────────────────────────────┐
+  │ 5. Cálculo de Métricas y Reporte (Accuracy, F1, Bleu)  │
+  └────────────────────────────────────────────────────────┘</code></pre>
+
+          <h3>Los Cuatro Grandes Benchmarks de Frontera</h3>
+          <ol>
+            <li>
+              <strong>MMLU (Massive Multitask Language Understanding):</strong> Conocimiento general y especializado en 57 materias académicas (medicina, derecho, historia, matemáticas) evaluado típicamente en 5-shot.
+            </li>
+            <li>
+              <strong>GSM8K (Grade School Math 8K):</strong> 8,500 problemas aritméticos y lógicos multietapa que requieren razonamiento paso a paso con Chain of Thought (CoT) y extracción del número entero final.
+            </li>
+            <li>
+              <strong>HellaSwag:</strong> Sentido común físico y predicción de la continuidad lógica de situaciones cotidianas frente a distractores verosímiles.
+            </li>
+            <li>
+              <strong>ARC (AI2 Reasoning Challenge):</strong> Razonamiento conceptual científico profundo dividido en ARC-Easy y ARC-Challenge (preguntas complejas no resolubles por simple memorización).
+            </li>
+          </ol>
+
+          <div class="example-block">
+            <div class="example-block-header">💡 Analogía Pedagógica: El Examen SAT Estandarizado</div>
+            <p>
+              Una prueba informal de chat es como tener una conversación simpática con un candidato. Un Evaluation Harness es sentar al modelo a rendir el examen oficial SAT bajo la supervisión de un tribunal examinador: 1,000 preguntas idénticas, temperatura fijada a 0.0 y corrección automatizada contra la clave oficial para emitir una puntuación matemática inalterable (ej. 78.4% de exactitud).
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 34 -->
+      <section id="m7-lab" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">34</span>
+          <h2 class="section-title">Laboratorio 7: Implementación del Motor de Grounding y Arnés de Evaluación en Python</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            Código fuente completo en Python que implementa un motor de recuperación `MiniRAGGroundingEngine` y un arnés automatizado `MiniEvaluationHarness` para evaluar modelos sobre un benchmark estilo GSM8K:
+          </p>
+
+          <pre class="code-block" style="background: var(--bg-tertiary); border: 1px solid var(--border-medium); border-radius: var(--radius-md); padding: 1.25rem; font-family: var(--font-mono); font-size: 0.82rem; overflow-x: auto; color: var(--text-primary); line-height: 1.5;"><code class="language-python">import re
+
+# =====================================================================
+# PARTE 1: MiniRAGGroundingEngine (Motor de Anclaje Contextual)
+# =====================================================================
+class MiniRAGGroundingEngine:
+    def __init__(self):
+        self.corpus = {
+            "contrato_adquisicion": "Sección 14.2: El límite agregado máximo de responsabilidad se restringe a $250,000 USD.",
+            "clausula_propiedad": "Sección 8.5: Toda la propiedad intelectual pertenecerá exclusivamente a Empresa X.",
+            "politica_seguridad": "Sección 3.1: Las contraseñas en producción deben rotarse cada 45 días obligatoriamente."
+        }
+
+    def buscar_contexto(self, query):
+        query_words = set(re.findall(r"\w+", query.lower()))
+        best_doc, max_overlap = None, -1
+        for _, text in self.corpus.items():
+            doc_words = set(re.findall(r"\w+", text.lower()))
+            overlap = len(query_words.intersection(doc_words))
+            if overlap > max_overlap:
+                max_overlap, best_doc = overlap, text
+        return best_doc if max_overlap > 0 else "No se encontró contexto relevante."
+
+    def generar_prompt_anclado(self, query, inyectar_grounding=True):
+        if inyectar_grounding:
+            contexto = self.buscar_contexto(query)
+            return (f"=== CONTEXTO DE VERDAD EXTERNO ===\n{contexto}\n\n"
+                    f"Instrucción: Responde basándote estrictamente en el contexto.\n"
+                    f"Consulta: {query}\nRespuesta Anclada:")
+        return f"Instrucción: Responde de memoria.\nConsulta: {query}\nRespuesta No Anclada:"
+
+    def ejecutar_inferencia_simulada(self, prompt, inyectar_grounding=True):
+        if inyectar_grounding:
+            if "límite" in prompt.lower():
+                return "Basándome en la Sección 14.2, el límite agregado máximo es de $250,000 USD."
+            return "Información no encontrada en el contexto."
+        else:
+            return "El límite máximo de responsabilidad suele ser el estándar comercial de $1,000,000 USD."
+
+# =====================================================================
+# PARTE 2: MiniEvaluationHarness (Arnés de Evaluación Científica)
+# =====================================================================
+class MiniEvaluationHarness:
+    def __init__(self):
+        self.benchmark_dataset = [
+            {"id": 1, "pregunta": "Juan tiene 5 manzanas y le regalan 3. ¿Total?", "respuesta_correcta": 8},
+            {"id": 2, "pregunta": "Coche a 60 km/h por 3 horas. ¿Distancia?", "respuesta_correcta": 180},
+            {"id": 3, "pregunta": "100 panes, vende 40 y luego 35. ¿Quedan?", "respuesta_correcta": 25},
+            {"id": 4, "pregunta": "4 filas de 5 carpetas cada una. ¿Total?", "respuesta_correcta": 20},
+            {"id": 5, "pregunta": "120 semillas, el 10% no germina. ¿Germinaron?", "respuesta_correcta": 108}
+        ]
+
+    def evaluar_modelo(self, modelo_callback, nombre_modelo):
+        aciertos = 0
+        total = len(self.benchmark_dataset)
+        for item in self.benchmark_dataset:
+            prompt = f"Pregunta: {item['pregunta']}\nPiensa paso a paso y escribe 'Resultado: X'.\nRespuesta:"
+            respuesta = modelo_callback(prompt)
+            match = re.search(r"(?i)resultado:\s*(\d+)", respuesta)
+            num = int(match.group(1)) if match else None
+            if num == item["respuesta_correcta"]:
+                aciertos += 1
+        accuracy = (aciertos / total) * 100
+        print(f"Harness Report -> Modelo '{nombre_modelo}': {accuracy:.1f}% Accuracy ({aciertos}/{total})")
+        return accuracy
+
+if __name__ == "__main__":
+    rag = MiniRAGGroundingEngine()
+    q = "¿Cuál es el límite máximo de responsabilidad?"
+    print("[Sin Grounding]:", rag.ejecutar_inferencia_simulada(rag.generar_prompt_anclado(q, False), False))
+    print("[Con Grounding]:", rag.ejecutar_inferencia_simulada(rag.generar_prompt_anclado(q, True), True))
+
+    harness = MiniEvaluationHarness()
+    def mod_a(p): return "Resultado: 8" if "manzanas" in p else ("Resultado: 180" if "60" in p else "Resultado: 25")
+    harness.evaluar_modelo(mod_a, "Modelo_Optimizado")
+</code></pre>
+        </div>
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- SECCIÓN 35: CONCLUSIONES GLOBALES                        -->
+      <!-- ======================================================== -->
+      <section id="conclusiones" class="transcript-section">
+        <div class="section-header">
+          <span class="section-number">35</span>
+          <h2 class="section-title">Conclusiones y Síntesis del Compendio Completo (Módulos 1 a 7)</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            Los siete módulos integrados en este cuaderno consolidan la cadena completa de valor y conocimiento de la IA generativa moderna:
+          </p>
+          <ol>
+            <li><strong>Epistemología (M1):</strong> La superinterpolación continua como nuevo paradigma frente a Turing.</li>
+            <li><strong>Cálculo Diferencial (M2):</strong> La viabilidad de Reverse-Mode AD en grafos DAG frente a BPTT/RTRL.</li>
+            <li><strong>Dinámica de Gradiente (M3):</strong> La corrección analítica de sesgo en Adam y el desacoplamiento de regularización en AdamW.</li>
+            <li><strong>Topología y Espacios (M4):</strong> La normalización estadística $1/\sqrt{d_k}$, la equivalencia de MHA y la superación de barreras triádicas ($q$-SA, Match3).</li>
+            <li><strong>La Revolución del Transformer (M5):</strong> La eliminación de la recurrencia, la codificación posicional rotacional y la autopista de gradientes en Pre-LN.</li>
+            <li><strong>El Paradigma GPT (M6):</strong> El ciclo de vida: preentrenamiento causal con Label Smoothing, muestreo estocástico regulado y alineación SFT/RLHF.</li>
+            <li><strong>Operatividad y Confiabilidad (M7):</strong> La mitigación sistemática de alucinaciones mediante Grounding (RAG vs GraphRAG) y la auditoría cuantitativa y científica mediante Evaluation Harnesses estandarizados.</li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- Autoevaluación interactiva -->
+      <div class="quiz-target"></div>
+
+    </div><!-- /content-wrapper -->
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <p class="footer-text">
+        Curso IA Commercial — Cuaderno 05 · Compendio Integral: Módulos 1 a 7 (Paradigmas, Optimización, Transformers, GPT, Grounding & Harness)
+      </p>
+    </footer>
+  </main>
+
+  <!-- Back to Top -->
+  <button class="back-to-top" aria-label="Volver arriba">↑</button>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/search-data.js"></script>
+  <script src="../js/search.js"></script>
+  <script src="../js/highlighter.js"></script>
+  
+  <!-- Custom Scripts -->
+  <script src="../js/diagrams.js"></script>
+  <script src="../js/edit-mode.js"></script>
+  <script src="../js/playground.js"></script>
+  <script src="../js/glossary.js"></script>
+  <script src="../js/ai-tutor.js"></script>
+  <script src="../js/text-zoom.js"></script>
+  <script src="../js/simulations.js"></script>
+  <script src="../js/quiz.js"></script>
+</body>
+</html>

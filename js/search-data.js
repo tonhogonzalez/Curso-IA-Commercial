@@ -960,5 +960,545 @@
     "text": "Para consolidar los conceptos teóricos y matemáticos explicados a lo largo de este cuaderno, a continuación se presenta una implementación limpia, detallada y totalmente comentada en Python y PyTorch de las capas de Autoatención Escalada y Atención Multi-Cabeza (MHA), lista para ejecutarse: import math import torch import torch.nn as nn import torch.nn.functional as F def scaled_dot_product_attention(q, k, v, mask=None): \"\"\" Implementa la ecuación de la Autoatención Escalada por Producto Escalar: Attention(Q, K, V) = softmax( (Q K^T) / sqrt(d_k) ) V \"\"\" # Obtener la dimensión del subespacio de claves por token d_k = q.size(-1) # Paso 1: Computar el producto escalar bruto QK^T # Dimensiones: q (B, h, N, d_k) x k^T (B, h, d_k, N) -> (B, h, N, N) scores = torch.matmul(q, k.transpose(-2, -1)) # Paso 2: Aplicar el factor de escala estadística para normalizar la varianza scaled_scores = scores / math.sqrt(d_k) # Aplicar máscara en caso de decodificación causal o relleno (padding) if mask is not None: scaled_scores = scaled_scores + mask # Paso 3: Aplicar la softmax para obtener la distribución de probabilidad de pesos attention_weights = F.softmax(scaled_scores, dim=-1) # Paso 4: Multiplicar los pesos probabilísticos por la matriz de valores V # Dimensiones: weights (B, h, N, N) x v (B, h, N, d_v) -> (B, h, N, d_v) output = torch.matmul(attention_weights, v) return output, attention_weights class MultiHeadAttentionLab(nn.Module): \"\"\" Clase que implementa el bloque de Atención Multi-Cabeza (MHA) formativo. Diseñado para desglosar la división de subespacios vectoriales. \"\"\" def __init__(self, d_model, num_heads): super().__init__() assert d_model % num_heads == 0, \"d_model debe ser divisible por num_heads para el presupuesto óptimo.\" self.d_model = d_model self.num_heads = num_heads self.head_dim = d_model // num_heads # d_k = d_v = d_model / h # Proyecciones lineales conjuntas para optimizar el paso de cálculo self.q_projection = nn.Linear(d_model, d_model) self.k_projection = nn.Linear(d_model, d_model) self.v_projection = nn.Linear(d_model, d_model) # Proyección lineal final para unificar las cabezas concatenadas self.out_projection = nn.Linear(d_model, d_model) def forward(self, x, mask=None): batch_size, seq_len, d_model = x.size() print(f\"[Entrada al Bloque MHA] x shape: {x.size()} (Batch, Longitud_Secuencia, d_model)\") # Paso 1: Proyectar linealmente los embeddings de entrada q = self.q_projection(x) k = self.k_projection(x) v = self.v_projection(x) print(f\"[Proyecciones Producidas] Q, K, V shape: {q.size()} (Cada una tiene tamaño d_model)\") # Paso 2: Reshapear y permutar para dividir en múltiples cabezas de atención # Esperado: (B, N, d_model) -> (B, N, h, d_k) -> (B, h, N, d_k) q = q.view(batch_size, seq_len, self.num_heads, self.head_dim).transpose(1, 2) k = k.view(batch_size, seq_len, self.num_heads, self.head_dim).transpose(1, 2) v = v.view(batch_size, seq_len, self.num_heads, self.head_dim).transpose(1, 2) print(f\"[División de Cabezas] Q shape: {q.size()} (Batch, Cabezas, Longitud_Secuencia, head_dim)\") # Paso 3: Calcular la autoatención escalada de forma paralela en todas las cabezas attn_output, attention_weights = scaled_dot_product_attention(q, k, v, mask) print(f\"[Autoatención Escalada Completada] output shape: {attn_output.size()}\") print(f\"[Matriz de Afinidad Softmax] weights shape: {attention_weights.size()} (Batch, Cabezas, N, N)\") # Paso 4: Concatenar las cabezas permutando de vuelta las dimensiones # Esperado: (B, h, N, d_v) -> (B, N, h, d_v) -> (B, N, h * d_v = d_model) attn_output = attn_output.transpose(1, 2).contiguous() concatenated_heads = attn_output.view(batch_size, seq_len, self.d_model) print(f\"[Concatenación de Cabezas] concat shape: {concatenated_heads.size()}\") # Paso 5: Proyección lineal final para mezclar las cabezas unificadas output = self.out_projection(concatenated_heads) print(f\"[Salida del Bloque MHA] output shape: {output.size()}\") return output, attention_weights # --- Verificación Práctica en el Laboratorio --- B_size = 2 # Tamaño de Batch Seq_length = 5 # Secuencia de 5 tokens (ej. \"Atención es todo lo que\") embedding_dim = 128 heads_count = 4 # Crear entrada simulada de embeddings estáticos de tokens x_test = torch.randn(B_size, Seq_length, embedding_dim) # Inicializar nuestro bloque formativo mha_module = MultiHeadAttentionLab(d_model=embedding_dim, num_heads=heads_count) # Ejecutar la pasada hacia adelante en modo de depuración with torch.no_grad(): output, weights = mha_module(x_test) print(\"\\n¡Ejecución de MHA en PyTorch completada con éxito!\")",
     "textLower": "para consolidar los conceptos teóricos y matemáticos explicados a lo largo de este cuaderno, a continuación se presenta una implementación limpia, detallada y totalmente comentada en python y pytorch de las capas de autoatención escalada y atención multi-cabeza (mha), lista para ejecutarse: import math import torch import torch.nn as nn import torch.nn.functional as f def scaled_dot_product_attention(q, k, v, mask=none): \"\"\" implementa la ecuación de la autoatención escalada por producto escalar: attention(q, k, v) = softmax( (q k^t) / sqrt(d_k) ) v \"\"\" # obtener la dimensión del subespacio de claves por token d_k = q.size(-1) # paso 1: computar el producto escalar bruto qk^t # dimensiones: q (b, h, n, d_k) x k^t (b, h, d_k, n) -> (b, h, n, n) scores = torch.matmul(q, k.transpose(-2, -1)) # paso 2: aplicar el factor de escala estadística para normalizar la varianza scaled_scores = scores / math.sqrt(d_k) # aplicar máscara en caso de decodificación causal o relleno (padding) if mask is not none: scaled_scores = scaled_scores + mask # paso 3: aplicar la softmax para obtener la distribución de probabilidad de pesos attention_weights = f.softmax(scaled_scores, dim=-1) # paso 4: multiplicar los pesos probabilísticos por la matriz de valores v # dimensiones: weights (b, h, n, n) x v (b, h, n, d_v) -> (b, h, n, d_v) output = torch.matmul(attention_weights, v) return output, attention_weights class multiheadattentionlab(nn.module): \"\"\" clase que implementa el bloque de atención multi-cabeza (mha) formativo. diseñado para desglosar la división de subespacios vectoriales. \"\"\" def __init__(self, d_model, num_heads): super().__init__() assert d_model % num_heads == 0, \"d_model debe ser divisible por num_heads para el presupuesto óptimo.\" self.d_model = d_model self.num_heads = num_heads self.head_dim = d_model // num_heads # d_k = d_v = d_model / h # proyecciones lineales conjuntas para optimizar el paso de cálculo self.q_projection = nn.linear(d_model, d_model) self.k_projection = nn.linear(d_model, d_model) self.v_projection = nn.linear(d_model, d_model) # proyección lineal final para unificar las cabezas concatenadas self.out_projection = nn.linear(d_model, d_model) def forward(self, x, mask=none): batch_size, seq_len, d_model = x.size() print(f\"[entrada al bloque mha] x shape: {x.size()} (batch, longitud_secuencia, d_model)\") # paso 1: proyectar linealmente los embeddings de entrada q = self.q_projection(x) k = self.k_projection(x) v = self.v_projection(x) print(f\"[proyecciones producidas] q, k, v shape: {q.size()} (cada una tiene tamaño d_model)\") # paso 2: reshapear y permutar para dividir en múltiples cabezas de atención # esperado: (b, n, d_model) -> (b, n, h, d_k) -> (b, h, n, d_k) q = q.view(batch_size, seq_len, self.num_heads, self.head_dim).transpose(1, 2) k = k.view(batch_size, seq_len, self.num_heads, self.head_dim).transpose(1, 2) v = v.view(batch_size, seq_len, self.num_heads, self.head_dim).transpose(1, 2) print(f\"[división de cabezas] q shape: {q.size()} (batch, cabezas, longitud_secuencia, head_dim)\") # paso 3: calcular la autoatención escalada de forma paralela en todas las cabezas attn_output, attention_weights = scaled_dot_product_attention(q, k, v, mask) print(f\"[autoatención escalada completada] output shape: {attn_output.size()}\") print(f\"[matriz de afinidad softmax] weights shape: {attention_weights.size()} (batch, cabezas, n, n)\") # paso 4: concatenar las cabezas permutando de vuelta las dimensiones # esperado: (b, h, n, d_v) -> (b, n, h, d_v) -> (b, n, h * d_v = d_model) attn_output = attn_output.transpose(1, 2).contiguous() concatenated_heads = attn_output.view(batch_size, seq_len, self.d_model) print(f\"[concatenación de cabezas] concat shape: {concatenated_heads.size()}\") # paso 5: proyección lineal final para mezclar las cabezas unificadas output = self.out_projection(concatenated_heads) print(f\"[salida del bloque mha] output shape: {output.size()}\") return output, attention_weights # --- verificación práctica en el laboratorio --- b_size = 2 # tamaño de batch seq_length = 5 # secuencia de 5 tokens (ej. \"atención es todo lo que\") embedding_dim = 128 heads_count = 4 # crear entrada simulada de embeddings estáticos de tokens x_test = torch.randn(b_size, seq_length, embedding_dim) # inicializar nuestro bloque formativo mha_module = multiheadattentionlab(d_model=embedding_dim, num_heads=heads_count) # ejecutar la pasada hacia adelante en modo de depuración with torch.no_grad(): output, weights = mha_module(x_test) print(\"\\n¡ejecución de mha en pytorch completada con éxito!\")",
     "textNormalized": "para consolidar los conceptos teoricos y matematicos explicados a lo largo de este cuaderno, a continuacion se presenta una implementacion limpia, detallada y totalmente comentada en python y pytorch de las capas de autoatencion escalada y atencion multi-cabeza (mha), lista para ejecutarse: import math import torch import torch.nn as nn import torch.nn.functional as f def scaled_dot_product_attention(q, k, v, mask=none): \"\"\" implementa la ecuacion de la autoatencion escalada por producto escalar: attention(q, k, v) = softmax( (q k^t) / sqrt(d_k) ) v \"\"\" # obtener la dimension del subespacio de claves por token d_k = q.size(-1) # paso 1: computar el producto escalar bruto qk^t # dimensiones: q (b, h, n, d_k) x k^t (b, h, d_k, n) -> (b, h, n, n) scores = torch.matmul(q, k.transpose(-2, -1)) # paso 2: aplicar el factor de escala estadistica para normalizar la varianza scaled_scores = scores / math.sqrt(d_k) # aplicar mascara en caso de decodificacion causal o relleno (padding) if mask is not none: scaled_scores = scaled_scores + mask # paso 3: aplicar la softmax para obtener la distribucion de probabilidad de pesos attention_weights = f.softmax(scaled_scores, dim=-1) # paso 4: multiplicar los pesos probabilisticos por la matriz de valores v # dimensiones: weights (b, h, n, n) x v (b, h, n, d_v) -> (b, h, n, d_v) output = torch.matmul(attention_weights, v) return output, attention_weights class multiheadattentionlab(nn.module): \"\"\" clase que implementa el bloque de atencion multi-cabeza (mha) formativo. disenado para desglosar la division de subespacios vectoriales. \"\"\" def __init__(self, d_model, num_heads): super().__init__() assert d_model % num_heads == 0, \"d_model debe ser divisible por num_heads para el presupuesto optimo.\" self.d_model = d_model self.num_heads = num_heads self.head_dim = d_model // num_heads # d_k = d_v = d_model / h # proyecciones lineales conjuntas para optimizar el paso de calculo self.q_projection = nn.linear(d_model, d_model) self.k_projection = nn.linear(d_model, d_model) self.v_projection = nn.linear(d_model, d_model) # proyeccion lineal final para unificar las cabezas concatenadas self.out_projection = nn.linear(d_model, d_model) def forward(self, x, mask=none): batch_size, seq_len, d_model = x.size() print(f\"[entrada al bloque mha] x shape: {x.size()} (batch, longitud_secuencia, d_model)\") # paso 1: proyectar linealmente los embeddings de entrada q = self.q_projection(x) k = self.k_projection(x) v = self.v_projection(x) print(f\"[proyecciones producidas] q, k, v shape: {q.size()} (cada una tiene tamano d_model)\") # paso 2: reshapear y permutar para dividir en multiples cabezas de atencion # esperado: (b, n, d_model) -> (b, n, h, d_k) -> (b, h, n, d_k) q = q.view(batch_size, seq_len, self.num_heads, self.head_dim).transpose(1, 2) k = k.view(batch_size, seq_len, self.num_heads, self.head_dim).transpose(1, 2) v = v.view(batch_size, seq_len, self.num_heads, self.head_dim).transpose(1, 2) print(f\"[division de cabezas] q shape: {q.size()} (batch, cabezas, longitud_secuencia, head_dim)\") # paso 3: calcular la autoatencion escalada de forma paralela en todas las cabezas attn_output, attention_weights = scaled_dot_product_attention(q, k, v, mask) print(f\"[autoatencion escalada completada] output shape: {attn_output.size()}\") print(f\"[matriz de afinidad softmax] weights shape: {attention_weights.size()} (batch, cabezas, n, n)\") # paso 4: concatenar las cabezas permutando de vuelta las dimensiones # esperado: (b, h, n, d_v) -> (b, n, h, d_v) -> (b, n, h * d_v = d_model) attn_output = attn_output.transpose(1, 2).contiguous() concatenated_heads = attn_output.view(batch_size, seq_len, self.d_model) print(f\"[concatenacion de cabezas] concat shape: {concatenated_heads.size()}\") # paso 5: proyeccion lineal final para mezclar las cabezas unificadas output = self.out_projection(concatenated_heads) print(f\"[salida del bloque mha] output shape: {output.size()}\") return output, attention_weights # --- verificacion practica en el laboratorio --- b_size = 2 # tamano de batch seq_length = 5 # secuencia de 5 tokens (ej. \"atencion es todo lo que\") embedding_dim = 128 heads_count = 4 # crear entrada simulada de embeddings estaticos de tokens x_test = torch.randn(b_size, seq_length, embedding_dim) # inicializar nuestro bloque formativo mha_module = multiheadattentionlab(d_model=embedding_dim, num_heads=heads_count) # ejecutar la pasada hacia adelante en modo de depuracion with torch.no_grad(): output, weights = mha_module(x_test) print(\"\\n¡ejecucion de mha en pytorch completada con exito!\")"
+  },
+  {
+    "notebook": {
+      "id": "05-paradigmas-y-computacion",
+      "file": "cuadernos/05-paradigmas-y-computacion.html",
+      "number": "CUADERNO 05",
+      "title": "Compendio Integral: De los Paradigmas al Grounding y Harness",
+      "guest": "Compendio Integral de 7 Módulos"
+    },
+    "sectionId": "intro",
+    "sectionTitle": "Introducción al Compendio Global",
+    "sectionNumber": "00",
+    "text": "Este compendio unifica los siete módulos cardinales para dominar desde los cimientos epistemológicos hasta la ingeniería de producción de los Grandes Modelos de Lenguaje: Módulo 1: Del determinismo de Turing a la superinterpolación conexionista y minería asociativa (Apriori y DIC). Módulo 2: Mecánica del cálculo de gradientes en grafos DAG, diferenciación automática (JVP/VJP, BPTT/RTRL), optimización 0/1/2 y modelos neuromórficos. Módulo 3: Dinámica estocástica de minilotes, flat minima, Momentum, AdaGrad, RMSProp, corrección de sesgo en Adam y regularización desacoplada en AdamW. Módulo 4: Espacios continuos de embeddings, deducción de varianza $1/\\sqrt{d_k}$, equivalencia de MHA, condicionamiento matricial $\\kappa$ y límites de expresividad ($q$-SA, Match2 vs Match3). Módulo 5: La revolución de \"Attention Is All You Need\", eliminación de la recurrencia, codificación posicional sinusoidal rotacional, decodificación causal y autopista de gradientes en Pre-LN. Módulo 6: Operatividad del paradigma GPT: flujo de inferencia de extremo a extremo, decodificación estocástica (Temperatura, Top-K, Top-P), preentrenamiento con Label Smoothing y alineación SFT/RLHF. Módulo 7: Pilares operativos de producción crítica: Grounding fáctico (RAG semántico vs GraphRAG jerárquico) y Harness de evaluación cuantitativa (MMLU, GSM8K, HellaSwag, ARC) con laboratorio en Python.",
+    "textLower": "este compendio unifica los siete módulos cardinales para dominar desde los cimientos epistemológicos hasta la ingeniería de producción de los grandes modelos de lenguaje: módulo 1: del determinismo de turing a la superinterpolación conexionista y minería asociativa (apriori y dic). módulo 2: mecánica del cálculo de gradientes en grafos dag, diferenciación automática (jvp/vjp, bptt/rtrl), optimización 0/1/2 y modelos neuromórficos. módulo 3: dinámica estocástica de minilotes, flat minima, momentum, adagrad, rmsprop, corrección de sesgo en adam y regularización desacoplada en adamw. módulo 4: espacios continuos de embeddings, deducción de varianza $1/\\sqrt{d_k}$, equivalencia de mha, condicionamiento matricial $\\kappa$ y límites de expresividad ($q$-sa, match2 vs match3). módulo 5: la revolución de \"attention is all you need\", eliminación de la recurrencia, codificación posicional sinusoidal rotacional, decodificación causal y autopista de gradientes en pre-ln. módulo 6: operatividad del paradigma gpt: flujo de inferencia de extremo a extremo, decodificación estocástica (temperatura, top-k, top-p), preentrenamiento con label smoothing y alineación sft/rlhf. módulo 7: pilares operativos de producción crítica: grounding fáctico (rag semántico vs graphrag jerárquico) y harness de evaluación cuantitativa (mmlu, gsm8k, hellaswag, arc) con laboratorio en python.",
+    "textNormalized": "este compendio unifica los siete modulos cardinales para dominar desde los cimientos epistemologicos hasta la ingenieria de produccion de los grandes modelos de lenguaje: modulo 1: del determinismo de turing a la superinterpolacion conexionista y mineria asociativa (apriori y dic). modulo 2: mecanica del calculo de gradientes en grafos dag, diferenciacion automatica (jvp/vjp, bptt/rtrl), optimizacion 0/1/2 y modelos neuromorficos. modulo 3: dinamica estocastica de minilotes, flat minima, momentum, adagrad, rmsprop, correccion de sesgo en adam y regularizacion desacoplada en adamw. modulo 4: espacios continuos de embeddings, deduccion de varianza $1/\\sqrt{d_k}$, equivalencia de mha, condicionamiento matricial $\\kappa$ y limites de expresividad ($q$-sa, match2 vs match3). modulo 5: la revolucion de \"attention is all you need\", eliminacion de la recurrencia, codificacion posicional sinusoidal rotacional, decodificacion causal y autopista de gradientes en pre-ln. modulo 6: operatividad del paradigma gpt: flujo de inferencia de extremo a extremo, decodificacion estocastica (temperatura, top-k, top-p), preentrenamiento con label smoothing y alineacion sft/rlhf. modulo 7: pilares operativos de produccion critica: grounding factico (rag semantico vs graphrag jerarquico) y harness de evaluacion cuantitativa (mmlu, gsm8k, hellaswag, arc) con laboratorio en python."
+  },
+  {
+    "notebook": {
+      "id": "05-paradigmas-y-computacion",
+      "file": "cuadernos/05-paradigmas-y-computacion.html",
+      "number": "CUADERNO 05",
+      "title": "Compendio Integral: De los Paradigmas al Grounding y Harness",
+      "guest": "Compendio Integral de 7 Módulos"
+    },
+    "sectionId": "m1-epistemologia",
+    "sectionTitle": "La Epistemología de la Computación: Del Determinismo Turing al Conexionismo Estocástico",
+    "sectionNumber": "01",
+    "text": "Alan Turing (1936) formalizó el algoritmo como reglas deterministas manuales. El Machine Learning actúa como un aproximador universal de funciones que deduce de forma autónoma $f(x)$ a partir de datos mediante optimización matricial. Pep Martorell define a la IA como un \"superinterpolador estadístico\" : las alucinaciones son la consecuencia probabilística natural de la interpolación continua no lineal.",
+    "textLower": "alan turing (1936) formalizó el algoritmo como reglas deterministas manuales. el machine learning actúa como un aproximador universal de funciones que deduce de forma autónoma $f(x)$ a partir de datos mediante optimización matricial. pep martorell define a la ia como un \"superinterpolador estadístico\" : las alucinaciones son la consecuencia probabilística natural de la interpolación continua no lineal.",
+    "textNormalized": "alan turing (1936) formalizo el algoritmo como reglas deterministas manuales. el machine learning actua como un aproximador universal de funciones que deduce de forma autonoma $f(x)$ a partir de datos mediante optimizacion matricial. pep martorell define a la ia como un \"superinterpolador estadistico\" : las alucinaciones son la consecuencia probabilistica natural de la interpolacion continua no lineal."
+  },
+  {
+    "notebook": {
+      "id": "05-paradigmas-y-computacion",
+      "file": "cuadernos/05-paradigmas-y-computacion.html",
+      "number": "CUADERNO 05",
+      "title": "Compendio Integral: De los Paradigmas al Grounding y Harness",
+      "guest": "Compendio Integral de 7 Módulos"
+    },
+    "sectionId": "m1-mineria",
+    "sectionTitle": "Minería de Patrones y Correlaciones Estadísticas: Apriori y DIC",
+    "sectionNumber": "02",
+    "text": "Métricas de reglas $X \\implies Y$: Soporte, Confianza y Lift. Dynamic Itemset Counting (DIC) segmenta en bloques de tamaño $M$ y cuenta asíncronamente, reduciendo un 45% las operaciones de I/O frente a Apriori clásico.",
+    "textLower": "métricas de reglas $x \\implies y$: soporte, confianza y lift. dynamic itemset counting (dic) segmenta en bloques de tamaño $m$ y cuenta asíncronamente, reduciendo un 45% las operaciones de i/o frente a apriori clásico.",
+    "textNormalized": "metricas de reglas $x \\implies y$: soporte, confianza y lift. dynamic itemset counting (dic) segmenta en bloques de tamano $m$ y cuenta asincronamente, reduciendo un 45% las operaciones de i/o frente a apriori clasico."
+  },
+  {
+    "notebook": {
+      "id": "05-paradigmas-y-computacion",
+      "file": "cuadernos/05-paradigmas-y-computacion.html",
+      "number": "CUADERNO 05",
+      "title": "Compendio Integral: De los Paradigmas al Grounding y Harness",
+      "guest": "Compendio Integral de 7 Módulos"
+    },
+    "sectionId": "m1-lab",
+    "sectionTitle": "Laboratorio 1: Código Python de los 3 Paradigmas",
+    "sectionNumber": "03",
+    "text": "# 1. Determinista | 2. Neurona Lineal W*x + b | 3. Apriori básico print(\"Módulo 1 inicializado.\")",
+    "textLower": "# 1. determinista | 2. neurona lineal w*x + b | 3. apriori básico print(\"módulo 1 inicializado.\")",
+    "textNormalized": "# 1. determinista | 2. neurona lineal w*x + b | 3. apriori basico print(\"modulo 1 inicializado.\")"
+  },
+  {
+    "notebook": {
+      "id": "05-paradigmas-y-computacion",
+      "file": "cuadernos/05-paradigmas-y-computacion.html",
+      "number": "CUADERNO 05",
+      "title": "Compendio Integral: De los Paradigmas al Grounding y Harness",
+      "guest": "Compendio Integral de 7 Módulos"
+    },
+    "sectionId": "m2-retropropagacion",
+    "sectionTitle": "Mecánica de la Retropropagación y Grafo DAG",
+    "sectionNumber": "04",
+    "text": "En un DAG $\\mathcal{G}=(\\mathcal{V}, \\mathcal{E})$, los adjuntos se propagan en sentido inverso: $\\bar{v}_i = \\sum_{k \\in \\text{Ch}(v_i)} \\bar{v}_k \\frac{\\partial \\phi_k}{\\partial v_i}$.",
+    "textLower": "en un dag $\\mathcal{g}=(\\mathcal{v}, \\mathcal{e})$, los adjuntos se propagan en sentido inverso: $\\bar{v}_i = \\sum_{k \\in \\text{ch}(v_i)} \\bar{v}_k \\frac{\\partial \\phi_k}{\\partial v_i}$.",
+    "textNormalized": "en un dag $\\mathcal{g}=(\\mathcal{v}, \\mathcal{e})$, los adjuntos se propagan en sentido inverso: $\\bar{v}_i = \\sum_{k \\in \\text{ch}(v_i)} \\bar{v}_k \\frac{\\partial \\phi_k}{\\partial v_i}$."
+  },
+  {
+    "notebook": {
+      "id": "05-paradigmas-y-computacion",
+      "file": "cuadernos/05-paradigmas-y-computacion.html",
+      "number": "CUADERNO 05",
+      "title": "Compendio Integral: De los Paradigmas al Grounding y Harness",
+      "guest": "Compendio Integral de 7 Módulos"
+    },
+    "sectionId": "m2-autodiff",
+    "sectionTitle": "Diferenciación Automática: Modo Directo vs. Modo Inverso",
+    "sectionNumber": "05",
+    "text": "Directo (JVP): $\\mathcal{O}(N \\cdot \\text{Coste}(f))$. Inverso (VJP): $\\mathcal{O}(1 \\cdot \\text{Coste}(f))$ independiente del número de parámetros.",
+    "textLower": "directo (jvp): $\\mathcal{o}(n \\cdot \\text{coste}(f))$. inverso (vjp): $\\mathcal{o}(1 \\cdot \\text{coste}(f))$ independiente del número de parámetros.",
+    "textNormalized": "directo (jvp): $\\mathcal{o}(n \\cdot \\text{coste}(f))$. inverso (vjp): $\\mathcal{o}(1 \\cdot \\text{coste}(f))$ independiente del numero de parametros."
+  },
+  {
+    "notebook": {
+      "id": "05-paradigmas-y-computacion",
+      "file": "cuadernos/05-paradigmas-y-computacion.html",
+      "number": "CUADERNO 05",
+      "title": "Compendio Integral: De los Paradigmas al Grounding y Harness",
+      "guest": "Compendio Integral de 7 Módulos"
+    },
+    "sectionId": "m2-bptt-rtrl",
+    "sectionTitle": "Secuencias Recurrentes: BPTT vs. RTRL",
+    "sectionNumber": "06",
+    "text": "BPTT: $\\mathcal{O}(T \\cdot d^2)$ tiempo y $\\mathcal{O}(T \\cdot d)$ memoria. RTRL: $\\mathcal{O}(T \\cdot d^4)$ tiempo y $\\mathcal{O}(d^3)$ memoria online.",
+    "textLower": "bptt: $\\mathcal{o}(t \\cdot d^2)$ tiempo y $\\mathcal{o}(t \\cdot d)$ memoria. rtrl: $\\mathcal{o}(t \\cdot d^4)$ tiempo y $\\mathcal{o}(d^3)$ memoria online.",
+    "textNormalized": "bptt: $\\mathcal{o}(t \\cdot d^2)$ tiempo y $\\mathcal{o}(t \\cdot d)$ memoria. rtrl: $\\mathcal{o}(t \\cdot d^4)$ tiempo y $\\mathcal{o}(d^3)$ memoria online."
+  },
+  {
+    "notebook": {
+      "id": "05-paradigmas-y-computacion",
+      "file": "cuadernos/05-paradigmas-y-computacion.html",
+      "number": "CUADERNO 05",
+      "title": "Compendio Integral: De los Paradigmas al Grounding y Harness",
+      "guest": "Compendio Integral de 7 Módulos"
+    },
+    "sectionId": "m2-ordenes",
+    "sectionTitle": "Órdenes de Optimización: 0, 1 y 2",
+    "sectionNumber": "07",
+    "text": "Orden 1: SGD, AdamW. Orden 2: Newton ($H^{-1}$, $\\mathcal{O}(N^3)$). Orden 0: SPSA con 2 evaluaciones forward $\\hat{g} = \\frac{f(\\theta + c\\xi) - f(\\theta - c\\xi)}{2c}\\xi^{-1}$ con vectores de Rademacher $\\xi \\in \\{-1, 1\\}^n$.",
+    "textLower": "orden 1: sgd, adamw. orden 2: newton ($h^{-1}$, $\\mathcal{o}(n^3)$). orden 0: spsa con 2 evaluaciones forward $\\hat{g} = \\frac{f(\\theta + c\\xi) - f(\\theta - c\\xi)}{2c}\\xi^{-1}$ con vectores de rademacher $\\xi \\in \\{-1, 1\\}^n$.",
+    "textNormalized": "orden 1: sgd, adamw. orden 2: newton ($h^{-1}$, $\\mathcal{o}(n^3)$). orden 0: spsa con 2 evaluaciones forward $\\hat{g} = \\frac{f(\\theta + c\\xi) - f(\\theta - c\\xi)}{2c}\\xi^{-1}$ con vectores de rademacher $\\xi \\in \\{-1, 1\\}^n$."
+  },
+  {
+    "notebook": {
+      "id": "05-paradigmas-y-computacion",
+      "file": "cuadernos/05-paradigmas-y-computacion.html",
+      "number": "CUADERNO 05",
+      "title": "Compendio Integral: De los Paradigmas al Grounding y Harness",
+      "guest": "Compendio Integral de 7 Módulos"
+    },
+    "sectionId": "m2-biologico",
+    "sectionTitle": "Plausibilidad Biológica y Hardware Neuromórfico",
+    "sectionNumber": "08",
+    "text": "El cerebro evade el Weight Transport Problem usando optimización estocástica de orden cero con neuromoduladores difusos (dopamina), principio base de procesadores neuromórficos (Intel Loihi).",
+    "textLower": "el cerebro evade el weight transport problem usando optimización estocástica de orden cero con neuromoduladores difusos (dopamina), principio base de procesadores neuromórficos (intel loihi).",
+    "textNormalized": "el cerebro evade el weight transport problem usando optimizacion estocastica de orden cero con neuromoduladores difusos (dopamina), principio base de procesadores neuromorficos (intel loihi)."
+  },
+  {
+    "notebook": {
+      "id": "05-paradigmas-y-computacion",
+      "file": "cuadernos/05-paradigmas-y-computacion.html",
+      "number": "CUADERNO 05",
+      "title": "Compendio Integral: De los Paradigmas al Grounding y Harness",
+      "guest": "Compendio Integral de 7 Módulos"
+    },
+    "sectionId": "m2-lab",
+    "sectionTitle": "Laboratorio 2: Autodiff (Dual Numbers & DAG) y SPSA vs. SGD",
+    "sectionNumber": "09",
+    "text": "# Modo Directo (DualNumber) y Modo Inverso (VarInverse DAG) print(\"Módulo 2 inicializado.\")",
+    "textLower": "# modo directo (dualnumber) y modo inverso (varinverse dag) print(\"módulo 2 inicializado.\")",
+    "textNormalized": "# modo directo (dualnumber) y modo inverso (varinverse dag) print(\"modulo 2 inicializado.\")"
+  },
+  {
+    "notebook": {
+      "id": "05-paradigmas-y-computacion",
+      "file": "cuadernos/05-paradigmas-y-computacion.html",
+      "number": "CUADERNO 05",
+      "title": "Compendio Integral: De los Paradigmas al Grounding y Harness",
+      "guest": "Compendio Integral de 7 Módulos"
+    },
+    "sectionId": "m3-sgd",
+    "sectionTitle": "SGD, Dinámica de Minilotes y Mínimos Planos (Flat Minima)",
+    "sectionNumber": "10",
+    "text": "El ruido estocástico de los minilotes expulsa la optimización de cuencas estrechas (*sharp minima*) hacia mínimos planos (*flat minima*), mejorando la generalización.",
+    "textLower": "el ruido estocástico de los minilotes expulsa la optimización de cuencas estrechas (*sharp minima*) hacia mínimos planos (*flat minima*), mejorando la generalización.",
+    "textNormalized": "el ruido estocastico de los minilotes expulsa la optimizacion de cuencas estrechas (*sharp minima*) hacia minimos planos (*flat minima*), mejorando la generalizacion."
+  },
+  {
+    "notebook": {
+      "id": "05-paradigmas-y-computacion",
+      "file": "cuadernos/05-paradigmas-y-computacion.html",
+      "number": "CUADERNO 05",
+      "title": "Compendio Integral: De los Paradigmas al Grounding y Harness",
+      "guest": "Compendio Integral de 7 Módulos"
+    },
+    "sectionId": "m3-momentum",
+    "sectionTitle": "SGD con Momentum y Amortiguación Oscilatoria",
+    "sectionNumber": "11",
+    "text": "Inercia $v_t = \\beta v_{t-1} + (1-\\beta)g_t$: cancela oscilaciones transversales y acelera en la dirección consistente de descenso.",
+    "textLower": "inercia $v_t = \\beta v_{t-1} + (1-\\beta)g_t$: cancela oscilaciones transversales y acelera en la dirección consistente de descenso.",
+    "textNormalized": "inercia $v_t = \\beta v_{t-1} + (1-\\beta)g_t$: cancela oscilaciones transversales y acelera en la direccion consistente de descenso."
+  },
+  {
+    "notebook": {
+      "id": "05-paradigmas-y-computacion",
+      "file": "cuadernos/05-paradigmas-y-computacion.html",
+      "number": "CUADERNO 05",
+      "title": "Compendio Integral: De los Paradigmas al Grounding y Harness",
+      "guest": "Compendio Integral de 7 Módulos"
+    },
+    "sectionId": "m3-adaptativos",
+    "sectionTitle": "Métodos Adaptativos: AdaGrad y RMSProp",
+    "sectionNumber": "12",
+    "text": "AdaGrad sufre colapso monótono ($G_t = G_{t-1} + g_t^2$); RMSProp lo soluciona con promedio móvil exponencial ($v_t = \\beta v_{t-1} + (1-\\beta)g_t^2$).",
+    "textLower": "adagrad sufre colapso monótono ($g_t = g_{t-1} + g_t^2$); rmsprop lo soluciona con promedio móvil exponencial ($v_t = \\beta v_{t-1} + (1-\\beta)g_t^2$).",
+    "textNormalized": "adagrad sufre colapso monotono ($g_t = g_{t-1} + g_t^2$); rmsprop lo soluciona con promedio movil exponencial ($v_t = \\beta v_{t-1} + (1-\\beta)g_t^2$)."
+  },
+  {
+    "notebook": {
+      "id": "05-paradigmas-y-computacion",
+      "file": "cuadernos/05-paradigmas-y-computacion.html",
+      "number": "CUADERNO 05",
+      "title": "Compendio Integral: De los Paradigmas al Grounding y Harness",
+      "guest": "Compendio Integral de 7 Módulos"
+    },
+    "sectionId": "m3-adam",
+    "sectionTitle": "Adam y la Deducción Analítica de Corrección de Sesgo",
+    "sectionNumber": "13",
+    "text": "Por series geométricas finitas con $m_0 = 0$: $\\mathbb{E}[m_t] = \\mathbb{E}[g_t](1 - \\beta_1^t) \\implies \\hat{m}_t = \\frac{m_t}{1-\\beta_1^t}$, $\\hat{v}_t = \\frac{v_t}{1-\\beta_2^t}$.",
+    "textLower": "por series geométricas finitas con $m_0 = 0$: $\\mathbb{e}[m_t] = \\mathbb{e}[g_t](1 - \\beta_1^t) \\implies \\hat{m}_t = \\frac{m_t}{1-\\beta_1^t}$, $\\hat{v}_t = \\frac{v_t}{1-\\beta_2^t}$.",
+    "textNormalized": "por series geometricas finitas con $m_0 = 0$: $\\mathbb{e}[m_t] = \\mathbb{e}[g_t](1 - \\beta_1^t) \\implies \\hat{m}_t = \\frac{m_t}{1-\\beta_1^t}$, $\\hat{v}_t = \\frac{v_t}{1-\\beta_2^t}$."
+  },
+  {
+    "notebook": {
+      "id": "05-paradigmas-y-computacion",
+      "file": "cuadernos/05-paradigmas-y-computacion.html",
+      "number": "CUADERNO 05",
+      "title": "Compendio Integral: De los Paradigmas al Grounding y Harness",
+      "guest": "Compendio Integral de 7 Módulos"
+    },
+    "sectionId": "m3-adamw",
+    "sectionTitle": "Ruptura de Regularización L2 y Desacoplamiento de AdamW",
+    "sectionNumber": "14",
+    "text": "En Adam, $L_2$ queda distorsionada por $\\sqrt{v_t}$. AdamW desacopla el decaimiento directo: $\\theta_{t+1} = \\theta_t - \\eta \\lambda \\theta_t - \\frac{\\eta}{\\sqrt{\\hat{v}_t}+\\epsilon}\\odot \\hat{m}_t$.",
+    "textLower": "en adam, $l_2$ queda distorsionada por $\\sqrt{v_t}$. adamw desacopla el decaimiento directo: $\\theta_{t+1} = \\theta_t - \\eta \\lambda \\theta_t - \\frac{\\eta}{\\sqrt{\\hat{v}_t}+\\epsilon}\\odot \\hat{m}_t$.",
+    "textNormalized": "en adam, $l_2$ queda distorsionada por $\\sqrt{v_t}$. adamw desacopla el decaimiento directo: $\\theta_{t+1} = \\theta_t - \\eta \\lambda \\theta_t - \\frac{\\eta}{\\sqrt{\\hat{v}_t}+\\epsilon}\\odot \\hat{m}_t$."
+  },
+  {
+    "notebook": {
+      "id": "05-paradigmas-y-computacion",
+      "file": "cuadernos/05-paradigmas-y-computacion.html",
+      "number": "CUADERNO 05",
+      "title": "Compendio Integral: De los Paradigmas al Grounding y Harness",
+      "guest": "Compendio Integral de 7 Módulos"
+    },
+    "sectionId": "m3-lab",
+    "sectionTitle": "Laboratorio 3: Implementación de Adam y AdamW en Superficie de Rastrigin",
+    "sectionNumber": "15",
+    "text": "# Comparativa Adam L2 vs AdamW sobre Rastrigin print(\"Módulo 3 inicializado.\")",
+    "textLower": "# comparativa adam l2 vs adamw sobre rastrigin print(\"módulo 3 inicializado.\")",
+    "textNormalized": "# comparativa adam l2 vs adamw sobre rastrigin print(\"modulo 3 inicializado.\")"
+  },
+  {
+    "notebook": {
+      "id": "05-paradigmas-y-computacion",
+      "file": "cuadernos/05-paradigmas-y-computacion.html",
+      "number": "CUADERNO 05",
+      "title": "Compendio Integral: De los Paradigmas al Grounding y Harness",
+      "guest": "Compendio Integral de 7 Módulos"
+    },
+    "sectionId": "m4-embeddings",
+    "sectionTitle": "Espacios Vectoriales, Embeddings, Tokenización y Vocabulario",
+    "sectionNumber": "16",
+    "text": "Transformación de texto discreto a representaciones continuas densas: BPE/WordPiece, mapeo entero y matriz $E \\in \\mathbb{R}^{V \\times d_{\\text{model}}}$.",
+    "textLower": "transformación de texto discreto a representaciones continuas densas: bpe/wordpiece, mapeo entero y matriz $e \\in \\mathbb{r}^{v \\times d_{\\text{model}}}$.",
+    "textNormalized": "transformacion de texto discreto a representaciones continuas densas: bpe/wordpiece, mapeo entero y matriz $e \\in \\mathbb{r}^{v \\times d_{\\text{model}}}$."
+  },
+  {
+    "notebook": {
+      "id": "05-paradigmas-y-computacion",
+      "file": "cuadernos/05-paradigmas-y-computacion.html",
+      "number": "CUADERNO 05",
+      "title": "Compendio Integral: De los Paradigmas al Grounding y Harness",
+      "guest": "Compendio Integral de 7 Módulos"
+    },
+    "sectionId": "m4-autoatencion",
+    "sectionTitle": "El Mecanismo de Autoatención Escalada y el Factor $1/\\sqrt{d_k}$",
+    "sectionNumber": "17",
+    "text": "$\\text{Var}(q_i k_i) = 1 \\implies \\text{Var}(q \\cdot k) = d_k$. Al escalar por $\\sqrt{d_k}$, la varianza se normaliza a 1, evitando la saturación de la softmax en asíntotas de gradiente nulo.",
+    "textLower": "$\\text{var}(q_i k_i) = 1 \\implies \\text{var}(q \\cdot k) = d_k$. al escalar por $\\sqrt{d_k}$, la varianza se normaliza a 1, evitando la saturación de la softmax en asíntotas de gradiente nulo.",
+    "textNormalized": "$\\text{var}(q_i k_i) = 1 \\implies \\text{var}(q \\cdot k) = d_k$. al escalar por $\\sqrt{d_k}$, la varianza se normaliza a 1, evitando la saturacion de la softmax en asintotas de gradiente nulo."
+  },
+  {
+    "notebook": {
+      "id": "05-paradigmas-y-computacion",
+      "file": "cuadernos/05-paradigmas-y-computacion.html",
+      "number": "CUADERNO 05",
+      "title": "Compendio Integral: De los Paradigmas al Grounding y Harness",
+      "guest": "Compendio Integral de 7 Módulos"
+    },
+    "sectionId": "m4-mha",
+    "sectionTitle": "Multi-Head Attention (MHA) y Demostración de Complejidad",
+    "sectionNumber": "18",
+    "text": "Con $d_k = d_{\\text{model}} / h$, el divisor $h$ se cancela de forma exacta al sumar las $h$ cabezas, manteniendo el coste idéntico a una sola cabeza: $\\mathcal{O}(n^2 d_{\\text{model}} + n d_{\\text{model}}^2)$.",
+    "textLower": "con $d_k = d_{\\text{model}} / h$, el divisor $h$ se cancela de forma exacta al sumar las $h$ cabezas, manteniendo el coste idéntico a una sola cabeza: $\\mathcal{o}(n^2 d_{\\text{model}} + n d_{\\text{model}}^2)$.",
+    "textNormalized": "con $d_k = d_{\\text{model}} / h$, el divisor $h$ se cancela de forma exacta al sumar las $h$ cabezas, manteniendo el coste identico a una sola cabeza: $\\mathcal{o}(n^2 d_{\\text{model}} + n d_{\\text{model}}^2)$."
+  },
+  {
+    "notebook": {
+      "id": "05-paradigmas-y-computacion",
+      "file": "cuadernos/05-paradigmas-y-computacion.html",
+      "number": "CUADERNO 05",
+      "title": "Compendio Integral: De los Paradigmas al Grounding y Harness",
+      "guest": "Compendio Integral de 7 Módulos"
+    },
+    "sectionId": "m4-condicionamiento",
+    "sectionTitle": "Condicionamiento de Matrices: El Número de Condición ($\\kappa$)",
+    "sectionNumber": "19",
+    "text": "$\\kappa(A) = \\sigma_1/\\sigma_k$. Tokens Condicionados ($X + C$) acotan $\\kappa(X+C) \\le 2",
+    "textLower": "$\\kappa(a) = \\sigma_1/\\sigma_k$. tokens condicionados ($x + c$) acotan $\\kappa(x+c) \\le 2",
+    "textNormalized": "$\\kappa(a) = \\sigma_1/\\sigma_k$. tokens condicionados ($x + c$) acotan $\\kappa(x+c) \\le 2"
+  },
+  {
+    "notebook": {
+      "id": "05-paradigmas-y-computacion",
+      "file": "cuadernos/05-paradigmas-y-computacion.html",
+      "number": "CUADERNO 05",
+      "title": "Compendio Integral: De los Paradigmas al Grounding y Harness",
+      "guest": "Compendio Integral de 7 Módulos"
+    },
+    "sectionId": "m4-expresividad",
+    "sectionTitle": "Capacidad Representacional y Límites de Expresividad",
+    "sectionNumber": "20",
+    "text": "$q$-SA: Exige $m \\ge q$ en atención vs $\\Omega(N^d)$ en MLP. Match2 vs Match3: Match2 se resuelve en 1 capa ($m=3$) con trigonometría; Match3 es triádica e impone la cota $\\Omega(N/\\log\\log N)$, exigiendo apilamiento ($D \\ge 2$).",
+    "textLower": "$q$-sa: exige $m \\ge q$ en atención vs $\\omega(n^d)$ en mlp. match2 vs match3: match2 se resuelve en 1 capa ($m=3$) con trigonometría; match3 es triádica e impone la cota $\\omega(n/\\log\\log n)$, exigiendo apilamiento ($d \\ge 2$).",
+    "textNormalized": "$q$-sa: exige $m \\ge q$ en atencion vs $\\omega(n^d)$ en mlp. match2 vs match3: match2 se resuelve en 1 capa ($m=3$) con trigonometria; match3 es triadica e impone la cota $\\omega(n/\\log\\log n)$, exigiendo apilamiento ($d \\ge 2$)."
+  },
+  {
+    "notebook": {
+      "id": "05-paradigmas-y-computacion",
+      "file": "cuadernos/05-paradigmas-y-computacion.html",
+      "number": "CUADERNO 05",
+      "title": "Compendio Integral: De los Paradigmas al Grounding y Harness",
+      "guest": "Compendio Integral de 7 Módulos"
+    },
+    "sectionId": "m4-lab",
+    "sectionTitle": "Laboratorio 4: Multi-Head Attention, Condicionamiento & Match2 en PyTorch",
+    "sectionNumber": "21",
+    "text": "# MultiHeadAttentionLab, calculate_condition_number y Match2AttentionUnit print(\"Módulo 4 inicializado.\")",
+    "textLower": "# multiheadattentionlab, calculate_condition_number y match2attentionunit print(\"módulo 4 inicializado.\")",
+    "textNormalized": "# multiheadattentionlab, calculate_condition_number y match2attentionunit print(\"modulo 4 inicializado.\")"
+  },
+  {
+    "notebook": {
+      "id": "05-paradigmas-y-computacion",
+      "file": "cuadernos/05-paradigmas-y-computacion.html",
+      "number": "CUADERNO 05",
+      "title": "Compendio Integral: De los Paradigmas al Grounding y Harness",
+      "guest": "Compendio Integral de 7 Módulos"
+    },
+    "sectionId": "m5-ocaso-recurrencia",
+    "sectionTitle": "El Ocaso de la Recurrencia y las Limitaciones de Paralelización",
+    "sectionNumber": "22",
+    "text": "La secuencialidad $h_t = f(h_{t-1}, x_t)$ en RNN/LSTM serializa la ejecución impidiendo el paralelismo SIMT en GPUs, desvanece gradientes en BPTT ($\\prod \\partial h_t/\\partial h_{t-1}$) y colapsa el contexto en un único vector rígido.",
+    "textLower": "la secuencialidad $h_t = f(h_{t-1}, x_t)$ en rnn/lstm serializa la ejecución impidiendo el paralelismo simt en gpus, desvanece gradientes en bptt ($\\prod \\partial h_t/\\partial h_{t-1}$) y colapsa el contexto en un único vector rígido.",
+    "textNormalized": "la secuencialidad $h_t = f(h_{t-1}, x_t)$ en rnn/lstm serializa la ejecucion impidiendo el paralelismo simt en gpus, desvanece gradientes en bptt ($\\prod \\partial h_t/\\partial h_{t-1}$) y colapsa el contexto en un unico vector rigido."
+  },
+  {
+    "notebook": {
+      "id": "05-paradigmas-y-computacion",
+      "file": "cuadernos/05-paradigmas-y-computacion.html",
+      "number": "CUADERNO 05",
+      "title": "Compendio Integral: De los Paradigmas al Grounding y Harness",
+      "guest": "Compendio Integral de 7 Módulos"
+    },
+    "sectionId": "m5-pos-encoding",
+    "sectionTitle": "Codificación Posicional Sinusoidal (Sinusoidal Positional Encoding)",
+    "sectionNumber": "23",
+    "text": "Por identidades trigonométricas de adición, la transición a la posición $pos+k$ es exactamente una multiplicación por una matriz de rotación pura $R_i(k)$ ($PE_{pos+k} = M(k) \\cdot PE_{pos}$), permitiendo aprender distancias relativas linealmente.",
+    "textLower": "por identidades trigonométricas de adición, la transición a la posición $pos+k$ es exactamente una multiplicación por una matriz de rotación pura $r_i(k)$ ($pe_{pos+k} = m(k) \\cdot pe_{pos}$), permitiendo aprender distancias relativas linealmente.",
+    "textNormalized": "por identidades trigonometricas de adicion, la transicion a la posicion $pos+k$ es exactamente una multiplicacion por una matriz de rotacion pura $r_i(k)$ ($pe_{pos+k} = m(k) \\cdot pe_{pos}$), permitiendo aprender distancias relativas linealmente."
+  },
+  {
+    "notebook": {
+      "id": "05-paradigmas-y-computacion",
+      "file": "cuadernos/05-paradigmas-y-computacion.html",
+      "number": "CUADERNO 05",
+      "title": "Compendio Integral: De los Paradigmas al Grounding y Harness",
+      "guest": "Compendio Integral de 7 Módulos"
+    },
+    "sectionId": "m5-encoder-decoder",
+    "sectionTitle": "Estructura del Codificador y del Decodificador Causal",
+    "sectionNumber": "24",
+    "text": "El decodificador autorregresivo impone una máscara causal triangular superior $M_{\\text{causal}}(i, j) = -\\infty$ para $j > i$, anulando la probabilidad asignada a tokens futuros tras la softmax ($e^{-\\infty} \\to 0$).",
+    "textLower": "el decodificador autorregresivo impone una máscara causal triangular superior $m_{\\text{causal}}(i, j) = -\\infty$ para $j > i$, anulando la probabilidad asignada a tokens futuros tras la softmax ($e^{-\\infty} \\to 0$).",
+    "textNormalized": "el decodificador autorregresivo impone una mascara causal triangular superior $m_{\\text{causal}}(i, j) = -\\infty$ para $j > i$, anulando la probabilidad asignada a tokens futuros tras la softmax ($e^{-\\infty} \\to 0$)."
+  },
+  {
+    "notebook": {
+      "id": "05-paradigmas-y-computacion",
+      "file": "cuadernos/05-paradigmas-y-computacion.html",
+      "number": "CUADERNO 05",
+      "title": "Compendio Integral: De los Paradigmas al Grounding y Harness",
+      "guest": "Compendio Integral de 7 Módulos"
+    },
+    "sectionId": "m5-pre-post-ln",
+    "sectionTitle": "Estabilización de Capas: Pre-LN frente a Post-LN",
+    "sectionNumber": "25",
+    "text": "En Pre-LN, la expansión $\\frac{\\partial \\mathcal{L}}{\\partial x_0} = \\frac{\\partial \\mathcal{L}}{\\partial x_L}\\left(I + \\sum \\frac{\\partial F_l}{\\partial x_0}\\right)$ garantiza una autopista directa de gradientes gracias al término identidad $I$ , evitando el desvanecimiento de gradientes.",
+    "textLower": "en pre-ln, la expansión $\\frac{\\partial \\mathcal{l}}{\\partial x_0} = \\frac{\\partial \\mathcal{l}}{\\partial x_l}\\left(i + \\sum \\frac{\\partial f_l}{\\partial x_0}\\right)$ garantiza una autopista directa de gradientes gracias al término identidad $i$ , evitando el desvanecimiento de gradientes.",
+    "textNormalized": "en pre-ln, la expansion $\\frac{\\partial \\mathcal{l}}{\\partial x_0} = \\frac{\\partial \\mathcal{l}}{\\partial x_l}\\left(i + \\sum \\frac{\\partial f_l}{\\partial x_0}\\right)$ garantiza una autopista directa de gradientes gracias al termino identidad $i$ , evitando el desvanecimiento de gradientes."
+  },
+  {
+    "notebook": {
+      "id": "05-paradigmas-y-computacion",
+      "file": "cuadernos/05-paradigmas-y-computacion.html",
+      "number": "CUADERNO 05",
+      "title": "Compendio Integral: De los Paradigmas al Grounding y Harness",
+      "guest": "Compendio Integral de 7 Módulos"
+    },
+    "sectionId": "m5-lab",
+    "sectionTitle": "Laboratorio 5: Codificación Sinusoidal, Atención Causal & Simulación Pre/Post-LN",
+    "sectionNumber": "26",
+    "text": "# SinusoidalPositionalEncoding con verify_rotation_property y scaled_dot_product_causal_attention print(\"Módulo 5 inicializado.\")",
+    "textLower": "# sinusoidalpositionalencoding con verify_rotation_property y scaled_dot_product_causal_attention print(\"módulo 5 inicializado.\")",
+    "textNormalized": "# sinusoidalpositionalencoding con verify_rotation_property y scaled_dot_product_causal_attention print(\"modulo 5 inicializado.\")"
+  },
+  {
+    "notebook": {
+      "id": "05-paradigmas-y-computacion",
+      "file": "cuadernos/05-paradigmas-y-computacion.html",
+      "number": "CUADERNO 05",
+      "title": "Compendio Integral: De los Paradigmas al Grounding y Harness",
+      "guest": "Compendio Integral de 7 Módulos"
+    },
+    "sectionId": "m6-flujo-inferencia",
+    "sectionTitle": "Anatomía del Flujo de Inferencia de un LLM",
+    "sectionNumber": "27",
+    "text": "Las 5 etapas de inferencia: Tokenización BPE $\\to$ Embeddings densos e inyección posicional (RoPE/Sinusoidal) $\\to$ Stack de capas (Causal MHA + FFN/SwiGLU bajo Pre-LN) $\\to$ Unembedding final $z = h_{\\text{last}} W_U$ $\\to$ Decodificación y muestreo estocástico.",
+    "textLower": "las 5 etapas de inferencia: tokenización bpe $\\to$ embeddings densos e inyección posicional (rope/sinusoidal) $\\to$ stack de capas (causal mha + ffn/swiglu bajo pre-ln) $\\to$ unembedding final $z = h_{\\text{last}} w_u$ $\\to$ decodificación y muestreo estocástico.",
+    "textNormalized": "las 5 etapas de inferencia: tokenizacion bpe $\\to$ embeddings densos e inyeccion posicional (rope/sinusoidal) $\\to$ stack de capas (causal mha + ffn/swiglu bajo pre-ln) $\\to$ unembedding final $z = h_{\\text{last}} w_u$ $\\to$ decodificacion y muestreo estocastico."
+  },
+  {
+    "notebook": {
+      "id": "05-paradigmas-y-computacion",
+      "file": "cuadernos/05-paradigmas-y-computacion.html",
+      "number": "CUADERNO 05",
+      "title": "Compendio Integral: De los Paradigmas al Grounding y Harness",
+      "guest": "Compendio Integral de 7 Módulos"
+    },
+    "sectionId": "m6-muestreo",
+    "sectionTitle": "Estrategias de Muestreo: Temperatura, Top-K y Top-P",
+    "sectionNumber": "28",
+    "text": "Temperatura ($T$): $T > 1$ aplana la distribución aumentando creatividad; $T Top-K: Conserva los $K$ logits mayores. Top-P: Trunca dinámicamente según la masa de probabilidad acumulada $p$.",
+    "textLower": "temperatura ($t$): $t > 1$ aplana la distribución aumentando creatividad; $t top-k: conserva los $k$ logits mayores. top-p: trunca dinámicamente según la masa de probabilidad acumulada $p$.",
+    "textNormalized": "temperatura ($t$): $t > 1$ aplana la distribucion aumentando creatividad; $t top-k: conserva los $k$ logits mayores. top-p: trunca dinamicamente segun la masa de probabilidad acumulada $p$."
+  },
+  {
+    "notebook": {
+      "id": "05-paradigmas-y-computacion",
+      "file": "cuadernos/05-paradigmas-y-computacion.html",
+      "number": "CUADERNO 05",
+      "title": "Compendio Integral: De los Paradigmas al Grounding y Harness",
+      "guest": "Compendio Integral de 7 Módulos"
+    },
+    "sectionId": "m6-preentrenamiento",
+    "sectionTitle": "Preentrenamiento Autorregresivo y Label Smoothing",
+    "sectionNumber": "29",
+    "text": "Maximización de log-verosimilitud sobre $\\mathcal{L}(\\theta) = -\\sum \\log P(y_t \\mid y_{ Label Smoothing ($\\epsilon$): Mezcla la etiqueta real con ruido uniforme $\\epsilon/|V|$, evitando que los logits diverjan a $\\pm\\infty$ y mejorando la calibración.",
+    "textLower": "maximización de log-verosimilitud sobre $\\mathcal{l}(\\theta) = -\\sum \\log p(y_t \\mid y_{ label smoothing ($\\epsilon$): mezcla la etiqueta real con ruido uniforme $\\epsilon/|v|$, evitando que los logits diverjan a $\\pm\\infty$ y mejorando la calibración.",
+    "textNormalized": "maximizacion de log-verosimilitud sobre $\\mathcal{l}(\\theta) = -\\sum \\log p(y_t \\mid y_{ label smoothing ($\\epsilon$): mezcla la etiqueta real con ruido uniforme $\\epsilon/|v|$, evitando que los logits diverjan a $\\pm\\infty$ y mejorando la calibracion."
+  },
+  {
+    "notebook": {
+      "id": "05-paradigmas-y-computacion",
+      "file": "cuadernos/05-paradigmas-y-computacion.html",
+      "number": "CUADERNO 05",
+      "title": "Compendio Integral: De los Paradigmas al Grounding y Harness",
+      "guest": "Compendio Integral de 7 Módulos"
+    },
+    "sectionId": "m6-alineacion",
+    "sectionTitle": "Alineación y Postentrenamiento: SFT, RLHF y Humildad Cognitiva",
+    "sectionNumber": "30",
+    "text": "SFT: Diálogos estructurados (LIMA demuestra que 1,000 muestras de alta calidad activan el conocimiento). RLHF: Modelo de Recompensa + PPO con penalización KL. Postentrenamiento como escuela de humildad y resistencia a manipulaciones.",
+    "textLower": "sft: diálogos estructurados (lima demuestra que 1,000 muestras de alta calidad activan el conocimiento). rlhf: modelo de recompensa + ppo con penalización kl. postentrenamiento como escuela de humildad y resistencia a manipulaciones.",
+    "textNormalized": "sft: dialogos estructurados (lima demuestra que 1,000 muestras de alta calidad activan el conocimiento). rlhf: modelo de recompensa + ppo con penalizacion kl. postentrenamiento como escuela de humildad y resistencia a manipulaciones."
+  },
+  {
+    "notebook": {
+      "id": "05-paradigmas-y-computacion",
+      "file": "cuadernos/05-paradigmas-y-computacion.html",
+      "number": "CUADERNO 05",
+      "title": "Compendio Integral: De los Paradigmas al Grounding y Harness",
+      "guest": "Compendio Integral de 7 Módulos"
+    },
+    "sectionId": "m6-lab",
+    "sectionTitle": "Laboratorio 6: Simulación de Inferencia, Muestreo y Label Smoothing en Python",
+    "sectionNumber": "31",
+    "text": "# apply_sampling (T, Top-K, Top-P) y calculate_cross_entropy_with_smoothing print(\"Módulo 6 inicializado.\")",
+    "textLower": "# apply_sampling (t, top-k, top-p) y calculate_cross_entropy_with_smoothing print(\"módulo 6 inicializado.\")",
+    "textNormalized": "# apply_sampling (t, top-k, top-p) y calculate_cross_entropy_with_smoothing print(\"modulo 6 inicializado.\")"
+  },
+  {
+    "notebook": {
+      "id": "05-paradigmas-y-computacion",
+      "file": "cuadernos/05-paradigmas-y-computacion.html",
+      "number": "CUADERNO 05",
+      "title": "Compendio Integral: De los Paradigmas al Grounding y Harness",
+      "guest": "Compendio Integral de 7 Módulos"
+    },
+    "sectionId": "m7-grounding",
+    "sectionTitle": "El Concepto de Grounding (Anclaje de la Información)",
+    "sectionNumber": "32",
+    "text": "Un modelo de lenguaje autorregresivo almacena información en sus parámetros $\\theta$ como una compresión con pérdida. Al responder de memoria a hechos precisos o cambiantes (\"a libro cerrado\"), tiende a rellenar vacíos mediante extrapolación verosímil (alucinación). MEMORIA PARAMÉTRICA (A libro cerrado): Query ───> [ LLM (Pesos Compresivos θ) ] ───> Generación probabilística (Riesgo de alucinación) SISTEMA ANCLADO / GROUNDED (A libro abierto): Query ───┐ ├─> [ Motor de Recuperación (RAG/GraphRAG) ] ───> Documentos de Soporte (Verdades fácticas) Contexto ┘ │ ▼ Grounded Prompt ───────────────────────────────────────────────────────> [ LLM ] ───> Síntesis veraz Mecánica del Anclaje: Modificación de la Softmax Al inyectar el contexto de verdad $C$, la entrada se expande $X' = [C ; X]$, modificando las proyecciones $Q', K', V'$: $$\\text{Attention}(Q', K', V') = \\text{softmax}\\left(\\frac{Q' (K')^T}{\\sqrt{d_k}}\\right)V'$$ La softmax asigna una masa de probabilidad dominante a las claves asociadas al contexto fáctico $C$, contrayendo la entropía y obligando a la representación final a fusionarse dentro del subespacio vectorial de las fuentes externas verificables. Técnicas de Grounding: RAG Semántico vs. GraphRAG Jerárquico RAG Semántico Clásico: Segmentación en *chunks* estáticos y búsqueda vectorial $K$-NN por similitud de coseno. Eficiente para hechos puntuales, pero falla en consultas holísticas transversales (ej. \"¿Cuáles son los 5 mayores riesgos en todas las auditorías del año?\"). GraphRAG Jerárquico: Extracción de nodos (entidades) y bordes (relaciones) para construir un Grafo de Conocimiento formal. Aplica el **algoritmo de Leiden** para particionar el grafo en comunidades densamente interconectadas y generar resúmenes sintéticos por comunidad. Resuelve consultas globales mediante **Búsqueda Global (QFS - Query-Focused Summarization)**. 💡 Ejemplo Ilustrativo: El Asistente Legal Sin Grounding: Ante \"¿Cuál es el límite de indemnización en el contrato X?\", el modelo alucina un estándar comercial verosímil de \"$1,000,000 USD\". Con Grounding: El motor RAG extrae la Sección 14.2 (\"límite agregado restringido a $250,000 USD\") e inyecta el fragmento en el prompt, generando una respuesta exacta, segura y referenciada.",
+    "textLower": "un modelo de lenguaje autorregresivo almacena información en sus parámetros $\\theta$ como una compresión con pérdida. al responder de memoria a hechos precisos o cambiantes (\"a libro cerrado\"), tiende a rellenar vacíos mediante extrapolación verosímil (alucinación). memoria paramétrica (a libro cerrado): query ───> [ llm (pesos compresivos θ) ] ───> generación probabilística (riesgo de alucinación) sistema anclado / grounded (a libro abierto): query ───┐ ├─> [ motor de recuperación (rag/graphrag) ] ───> documentos de soporte (verdades fácticas) contexto ┘ │ ▼ grounded prompt ───────────────────────────────────────────────────────> [ llm ] ───> síntesis veraz mecánica del anclaje: modificación de la softmax al inyectar el contexto de verdad $c$, la entrada se expande $x' = [c ; x]$, modificando las proyecciones $q', k', v'$: $$\\text{attention}(q', k', v') = \\text{softmax}\\left(\\frac{q' (k')^t}{\\sqrt{d_k}}\\right)v'$$ la softmax asigna una masa de probabilidad dominante a las claves asociadas al contexto fáctico $c$, contrayendo la entropía y obligando a la representación final a fusionarse dentro del subespacio vectorial de las fuentes externas verificables. técnicas de grounding: rag semántico vs. graphrag jerárquico rag semántico clásico: segmentación en *chunks* estáticos y búsqueda vectorial $k$-nn por similitud de coseno. eficiente para hechos puntuales, pero falla en consultas holísticas transversales (ej. \"¿cuáles son los 5 mayores riesgos en todas las auditorías del año?\"). graphrag jerárquico: extracción de nodos (entidades) y bordes (relaciones) para construir un grafo de conocimiento formal. aplica el **algoritmo de leiden** para particionar el grafo en comunidades densamente interconectadas y generar resúmenes sintéticos por comunidad. resuelve consultas globales mediante **búsqueda global (qfs - query-focused summarization)**. 💡 ejemplo ilustrativo: el asistente legal sin grounding: ante \"¿cuál es el límite de indemnización en el contrato x?\", el modelo alucina un estándar comercial verosímil de \"$1,000,000 usd\". con grounding: el motor rag extrae la sección 14.2 (\"límite agregado restringido a $250,000 usd\") e inyecta el fragmento en el prompt, generando una respuesta exacta, segura y referenciada.",
+    "textNormalized": "un modelo de lenguaje autorregresivo almacena informacion en sus parametros $\\theta$ como una compresion con perdida. al responder de memoria a hechos precisos o cambiantes (\"a libro cerrado\"), tiende a rellenar vacios mediante extrapolacion verosimil (alucinacion). memoria parametrica (a libro cerrado): query ───> [ llm (pesos compresivos θ) ] ───> generacion probabilistica (riesgo de alucinacion) sistema anclado / grounded (a libro abierto): query ───┐ ├─> [ motor de recuperacion (rag/graphrag) ] ───> documentos de soporte (verdades facticas) contexto ┘ │ ▼ grounded prompt ───────────────────────────────────────────────────────> [ llm ] ───> sintesis veraz mecanica del anclaje: modificacion de la softmax al inyectar el contexto de verdad $c$, la entrada se expande $x' = [c ; x]$, modificando las proyecciones $q', k', v'$: $$\\text{attention}(q', k', v') = \\text{softmax}\\left(\\frac{q' (k')^t}{\\sqrt{d_k}}\\right)v'$$ la softmax asigna una masa de probabilidad dominante a las claves asociadas al contexto factico $c$, contrayendo la entropia y obligando a la representacion final a fusionarse dentro del subespacio vectorial de las fuentes externas verificables. tecnicas de grounding: rag semantico vs. graphrag jerarquico rag semantico clasico: segmentacion en *chunks* estaticos y busqueda vectorial $k$-nn por similitud de coseno. eficiente para hechos puntuales, pero falla en consultas holisticas transversales (ej. \"¿cuales son los 5 mayores riesgos en todas las auditorias del ano?\"). graphrag jerarquico: extraccion de nodos (entidades) y bordes (relaciones) para construir un grafo de conocimiento formal. aplica el **algoritmo de leiden** para particionar el grafo en comunidades densamente interconectadas y generar resumenes sinteticos por comunidad. resuelve consultas globales mediante **busqueda global (qfs - query-focused summarization)**. 💡 ejemplo ilustrativo: el asistente legal sin grounding: ante \"¿cual es el limite de indemnizacion en el contrato x?\", el modelo alucina un estandar comercial verosimil de \"$1,000,000 usd\". con grounding: el motor rag extrae la seccion 14.2 (\"limite agregado restringido a $250,000 usd\") e inyecta el fragmento en el prompt, generando una respuesta exacta, segura y referenciada."
+  },
+  {
+    "notebook": {
+      "id": "05-paradigmas-y-computacion",
+      "file": "cuadernos/05-paradigmas-y-computacion.html",
+      "number": "CUADERNO 05",
+      "title": "Compendio Integral: De los Paradigmas al Grounding y Harness",
+      "guest": "Compendio Integral de 7 Módulos"
+    },
+    "sectionId": "m7-harness",
+    "sectionTitle": "El Concepto de Harness (Arnés de Evaluación Científica)",
+    "sectionNumber": "33",
+    "text": "Un Evaluation Harness (como `lm-evaluation-harness` de EleutherAI) es una infraestructura unificada que automatiza la ejecución de modelos sobre benchmarks científicos bajo condiciones de control de variables estrictas, proporcionando métricas de rendimiento cuantitativas y reproducibles. ARQUITECTURA UNIFICADA DE UN EVALUATION HARNESS ┌────────────────────────────────────────────────────────┐ │ 1. Carga de Benchmarks (Datasets: MMLU, GSM8K, Hella) │ └────────────────────────┬───────────────────────────────┘ ▼ ┌────────────────────────────────────────────────────────┐ │ 2. Formateo de Prompts (Zero-shot, Few-shot templates) │ └────────────────────────┬───────────────────────────────┘ ▼ ┌────────────────────────────────────────────────────────┐ │ 3. Inferencia por Lotes (Batch Inference controlada) │ └────────────────────────┬───────────────────────────────┘ ▼ ┌────────────────────────────────────────────────────────┐ │ 4. Extracción de Respuestas (Regex parsers, Logits) │ └────────────────────────┬───────────────────────────────┘ ▼ ┌────────────────────────────────────────────────────────┐ │ 5. Cálculo de Métricas y Reporte (Accuracy, F1, Bleu) │ └────────────────────────────────────────────────────────┘ Los Cuatro Grandes Benchmarks de Frontera MMLU (Massive Multitask Language Understanding): Conocimiento general y especializado en 57 materias académicas (medicina, derecho, historia, matemáticas) evaluado típicamente en 5-shot. GSM8K (Grade School Math 8K): 8,500 problemas aritméticos y lógicos multietapa que requieren razonamiento paso a paso con Chain of Thought (CoT) y extracción del número entero final. HellaSwag: Sentido común físico y predicción de la continuidad lógica de situaciones cotidianas frente a distractores verosímiles. ARC (AI2 Reasoning Challenge): Razonamiento conceptual científico profundo dividido en ARC-Easy y ARC-Challenge (preguntas complejas no resolubles por simple memorización). 💡 Analogía Pedagógica: El Examen SAT Estandarizado Una prueba informal de chat es como tener una conversación simpática con un candidato. Un Evaluation Harness es sentar al modelo a rendir el examen oficial SAT bajo la supervisión de un tribunal examinador: 1,000 preguntas idénticas, temperatura fijada a 0.0 y corrección automatizada contra la clave oficial para emitir una puntuación matemática inalterable (ej. 78.4% de exactitud).",
+    "textLower": "un evaluation harness (como `lm-evaluation-harness` de eleutherai) es una infraestructura unificada que automatiza la ejecución de modelos sobre benchmarks científicos bajo condiciones de control de variables estrictas, proporcionando métricas de rendimiento cuantitativas y reproducibles. arquitectura unificada de un evaluation harness ┌────────────────────────────────────────────────────────┐ │ 1. carga de benchmarks (datasets: mmlu, gsm8k, hella) │ └────────────────────────┬───────────────────────────────┘ ▼ ┌────────────────────────────────────────────────────────┐ │ 2. formateo de prompts (zero-shot, few-shot templates) │ └────────────────────────┬───────────────────────────────┘ ▼ ┌────────────────────────────────────────────────────────┐ │ 3. inferencia por lotes (batch inference controlada) │ └────────────────────────┬───────────────────────────────┘ ▼ ┌────────────────────────────────────────────────────────┐ │ 4. extracción de respuestas (regex parsers, logits) │ └────────────────────────┬───────────────────────────────┘ ▼ ┌────────────────────────────────────────────────────────┐ │ 5. cálculo de métricas y reporte (accuracy, f1, bleu) │ └────────────────────────────────────────────────────────┘ los cuatro grandes benchmarks de frontera mmlu (massive multitask language understanding): conocimiento general y especializado en 57 materias académicas (medicina, derecho, historia, matemáticas) evaluado típicamente en 5-shot. gsm8k (grade school math 8k): 8,500 problemas aritméticos y lógicos multietapa que requieren razonamiento paso a paso con chain of thought (cot) y extracción del número entero final. hellaswag: sentido común físico y predicción de la continuidad lógica de situaciones cotidianas frente a distractores verosímiles. arc (ai2 reasoning challenge): razonamiento conceptual científico profundo dividido en arc-easy y arc-challenge (preguntas complejas no resolubles por simple memorización). 💡 analogía pedagógica: el examen sat estandarizado una prueba informal de chat es como tener una conversación simpática con un candidato. un evaluation harness es sentar al modelo a rendir el examen oficial sat bajo la supervisión de un tribunal examinador: 1,000 preguntas idénticas, temperatura fijada a 0.0 y corrección automatizada contra la clave oficial para emitir una puntuación matemática inalterable (ej. 78.4% de exactitud).",
+    "textNormalized": "un evaluation harness (como `lm-evaluation-harness` de eleutherai) es una infraestructura unificada que automatiza la ejecucion de modelos sobre benchmarks cientificos bajo condiciones de control de variables estrictas, proporcionando metricas de rendimiento cuantitativas y reproducibles. arquitectura unificada de un evaluation harness ┌────────────────────────────────────────────────────────┐ │ 1. carga de benchmarks (datasets: mmlu, gsm8k, hella) │ └────────────────────────┬───────────────────────────────┘ ▼ ┌────────────────────────────────────────────────────────┐ │ 2. formateo de prompts (zero-shot, few-shot templates) │ └────────────────────────┬───────────────────────────────┘ ▼ ┌────────────────────────────────────────────────────────┐ │ 3. inferencia por lotes (batch inference controlada) │ └────────────────────────┬───────────────────────────────┘ ▼ ┌────────────────────────────────────────────────────────┐ │ 4. extraccion de respuestas (regex parsers, logits) │ └────────────────────────┬───────────────────────────────┘ ▼ ┌────────────────────────────────────────────────────────┐ │ 5. calculo de metricas y reporte (accuracy, f1, bleu) │ └────────────────────────────────────────────────────────┘ los cuatro grandes benchmarks de frontera mmlu (massive multitask language understanding): conocimiento general y especializado en 57 materias academicas (medicina, derecho, historia, matematicas) evaluado tipicamente en 5-shot. gsm8k (grade school math 8k): 8,500 problemas aritmeticos y logicos multietapa que requieren razonamiento paso a paso con chain of thought (cot) y extraccion del numero entero final. hellaswag: sentido comun fisico y prediccion de la continuidad logica de situaciones cotidianas frente a distractores verosimiles. arc (ai2 reasoning challenge): razonamiento conceptual cientifico profundo dividido en arc-easy y arc-challenge (preguntas complejas no resolubles por simple memorizacion). 💡 analogia pedagogica: el examen sat estandarizado una prueba informal de chat es como tener una conversacion simpatica con un candidato. un evaluation harness es sentar al modelo a rendir el examen oficial sat bajo la supervision de un tribunal examinador: 1,000 preguntas identicas, temperatura fijada a 0.0 y correccion automatizada contra la clave oficial para emitir una puntuacion matematica inalterable (ej. 78.4% de exactitud)."
+  },
+  {
+    "notebook": {
+      "id": "05-paradigmas-y-computacion",
+      "file": "cuadernos/05-paradigmas-y-computacion.html",
+      "number": "CUADERNO 05",
+      "title": "Compendio Integral: De los Paradigmas al Grounding y Harness",
+      "guest": "Compendio Integral de 7 Módulos"
+    },
+    "sectionId": "m7-lab",
+    "sectionTitle": "Laboratorio 7: Implementación del Motor de Grounding y Arnés de Evaluación en Python",
+    "sectionNumber": "34",
+    "text": "Código fuente completo en Python que implementa un motor de recuperación `MiniRAGGroundingEngine` y un arnés automatizado `MiniEvaluationHarness` para evaluar modelos sobre un benchmark estilo GSM8K: import re # ===================================================================== # PARTE 1: MiniRAGGroundingEngine (Motor de Anclaje Contextual) # ===================================================================== class MiniRAGGroundingEngine: def __init__(self): self.corpus = { \"contrato_adquisicion\": \"Sección 14.2: El límite agregado máximo de responsabilidad se restringe a $250,000 USD.\", \"clausula_propiedad\": \"Sección 8.5: Toda la propiedad intelectual pertenecerá exclusivamente a Empresa X.\", \"politica_seguridad\": \"Sección 3.1: Las contraseñas en producción deben rotarse cada 45 días obligatoriamente.\" } def buscar_contexto(self, query): query_words = set(re.findall(r\"\\w+\", query.lower())) best_doc, max_overlap = None, -1 for _, text in self.corpus.items(): doc_words = set(re.findall(r\"\\w+\", text.lower())) overlap = len(query_words.intersection(doc_words)) if overlap > max_overlap: max_overlap, best_doc = overlap, text return best_doc if max_overlap > 0 else \"No se encontró contexto relevante.\" def generar_prompt_anclado(self, query, inyectar_grounding=True): if inyectar_grounding: contexto = self.buscar_contexto(query) return (f\"=== CONTEXTO DE VERDAD EXTERNO ===\\n{contexto}\\n\\n\" f\"Instrucción: Responde basándote estrictamente en el contexto.\\n\" f\"Consulta: {query}\\nRespuesta Anclada:\") return f\"Instrucción: Responde de memoria.\\nConsulta: {query}\\nRespuesta No Anclada:\" def ejecutar_inferencia_simulada(self, prompt, inyectar_grounding=True): if inyectar_grounding: if \"límite\" in prompt.lower(): return \"Basándome en la Sección 14.2, el límite agregado máximo es de $250,000 USD.\" return \"Información no encontrada en el contexto.\" else: return \"El límite máximo de responsabilidad suele ser el estándar comercial de $1,000,000 USD.\" # ===================================================================== # PARTE 2: MiniEvaluationHarness (Arnés de Evaluación Científica) # ===================================================================== class MiniEvaluationHarness: def __init__(self): self.benchmark_dataset = [ {\"id\": 1, \"pregunta\": \"Juan tiene 5 manzanas y le regalan 3. ¿Total?\", \"respuesta_correcta\": 8}, {\"id\": 2, \"pregunta\": \"Coche a 60 km/h por 3 horas. ¿Distancia?\", \"respuesta_correcta\": 180}, {\"id\": 3, \"pregunta\": \"100 panes, vende 40 y luego 35. ¿Quedan?\", \"respuesta_correcta\": 25}, {\"id\": 4, \"pregunta\": \"4 filas de 5 carpetas cada una. ¿Total?\", \"respuesta_correcta\": 20}, {\"id\": 5, \"pregunta\": \"120 semillas, el 10% no germina. ¿Germinaron?\", \"respuesta_correcta\": 108} ] def evaluar_modelo(self, modelo_callback, nombre_modelo): aciertos = 0 total = len(self.benchmark_dataset) for item in self.benchmark_dataset: prompt = f\"Pregunta: {item['pregunta']}\\nPiensa paso a paso y escribe 'Resultado: X'.\\nRespuesta:\" respuesta = modelo_callback(prompt) match = re.search(r\"(?i)resultado:\\s*(\\d+)\", respuesta) num = int(match.group(1)) if match else None if num == item[\"respuesta_correcta\"]: aciertos += 1 accuracy = (aciertos / total) * 100 print(f\"Harness Report -> Modelo '{nombre_modelo}': {accuracy:.1f}% Accuracy ({aciertos}/{total})\") return accuracy if __name__ == \"__main__\": rag = MiniRAGGroundingEngine() q = \"¿Cuál es el límite máximo de responsabilidad?\" print(\"[Sin Grounding]:\", rag.ejecutar_inferencia_simulada(rag.generar_prompt_anclado(q, False), False)) print(\"[Con Grounding]:\", rag.ejecutar_inferencia_simulada(rag.generar_prompt_anclado(q, True), True)) harness = MiniEvaluationHarness() def mod_a(p): return \"Resultado: 8\" if \"manzanas\" in p else (\"Resultado: 180\" if \"60\" in p else \"Resultado: 25\") harness.evaluar_modelo(mod_a, \"Modelo_Optimizado\")",
+    "textLower": "código fuente completo en python que implementa un motor de recuperación `miniraggroundingengine` y un arnés automatizado `minievaluationharness` para evaluar modelos sobre un benchmark estilo gsm8k: import re # ===================================================================== # parte 1: miniraggroundingengine (motor de anclaje contextual) # ===================================================================== class miniraggroundingengine: def __init__(self): self.corpus = { \"contrato_adquisicion\": \"sección 14.2: el límite agregado máximo de responsabilidad se restringe a $250,000 usd.\", \"clausula_propiedad\": \"sección 8.5: toda la propiedad intelectual pertenecerá exclusivamente a empresa x.\", \"politica_seguridad\": \"sección 3.1: las contraseñas en producción deben rotarse cada 45 días obligatoriamente.\" } def buscar_contexto(self, query): query_words = set(re.findall(r\"\\w+\", query.lower())) best_doc, max_overlap = none, -1 for _, text in self.corpus.items(): doc_words = set(re.findall(r\"\\w+\", text.lower())) overlap = len(query_words.intersection(doc_words)) if overlap > max_overlap: max_overlap, best_doc = overlap, text return best_doc if max_overlap > 0 else \"no se encontró contexto relevante.\" def generar_prompt_anclado(self, query, inyectar_grounding=true): if inyectar_grounding: contexto = self.buscar_contexto(query) return (f\"=== contexto de verdad externo ===\\n{contexto}\\n\\n\" f\"instrucción: responde basándote estrictamente en el contexto.\\n\" f\"consulta: {query}\\nrespuesta anclada:\") return f\"instrucción: responde de memoria.\\nconsulta: {query}\\nrespuesta no anclada:\" def ejecutar_inferencia_simulada(self, prompt, inyectar_grounding=true): if inyectar_grounding: if \"límite\" in prompt.lower(): return \"basándome en la sección 14.2, el límite agregado máximo es de $250,000 usd.\" return \"información no encontrada en el contexto.\" else: return \"el límite máximo de responsabilidad suele ser el estándar comercial de $1,000,000 usd.\" # ===================================================================== # parte 2: minievaluationharness (arnés de evaluación científica) # ===================================================================== class minievaluationharness: def __init__(self): self.benchmark_dataset = [ {\"id\": 1, \"pregunta\": \"juan tiene 5 manzanas y le regalan 3. ¿total?\", \"respuesta_correcta\": 8}, {\"id\": 2, \"pregunta\": \"coche a 60 km/h por 3 horas. ¿distancia?\", \"respuesta_correcta\": 180}, {\"id\": 3, \"pregunta\": \"100 panes, vende 40 y luego 35. ¿quedan?\", \"respuesta_correcta\": 25}, {\"id\": 4, \"pregunta\": \"4 filas de 5 carpetas cada una. ¿total?\", \"respuesta_correcta\": 20}, {\"id\": 5, \"pregunta\": \"120 semillas, el 10% no germina. ¿germinaron?\", \"respuesta_correcta\": 108} ] def evaluar_modelo(self, modelo_callback, nombre_modelo): aciertos = 0 total = len(self.benchmark_dataset) for item in self.benchmark_dataset: prompt = f\"pregunta: {item['pregunta']}\\npiensa paso a paso y escribe 'resultado: x'.\\nrespuesta:\" respuesta = modelo_callback(prompt) match = re.search(r\"(?i)resultado:\\s*(\\d+)\", respuesta) num = int(match.group(1)) if match else none if num == item[\"respuesta_correcta\"]: aciertos += 1 accuracy = (aciertos / total) * 100 print(f\"harness report -> modelo '{nombre_modelo}': {accuracy:.1f}% accuracy ({aciertos}/{total})\") return accuracy if __name__ == \"__main__\": rag = miniraggroundingengine() q = \"¿cuál es el límite máximo de responsabilidad?\" print(\"[sin grounding]:\", rag.ejecutar_inferencia_simulada(rag.generar_prompt_anclado(q, false), false)) print(\"[con grounding]:\", rag.ejecutar_inferencia_simulada(rag.generar_prompt_anclado(q, true), true)) harness = minievaluationharness() def mod_a(p): return \"resultado: 8\" if \"manzanas\" in p else (\"resultado: 180\" if \"60\" in p else \"resultado: 25\") harness.evaluar_modelo(mod_a, \"modelo_optimizado\")",
+    "textNormalized": "codigo fuente completo en python que implementa un motor de recuperacion `miniraggroundingengine` y un arnes automatizado `minievaluationharness` para evaluar modelos sobre un benchmark estilo gsm8k: import re # ===================================================================== # parte 1: miniraggroundingengine (motor de anclaje contextual) # ===================================================================== class miniraggroundingengine: def __init__(self): self.corpus = { \"contrato_adquisicion\": \"seccion 14.2: el limite agregado maximo de responsabilidad se restringe a $250,000 usd.\", \"clausula_propiedad\": \"seccion 8.5: toda la propiedad intelectual pertenecera exclusivamente a empresa x.\", \"politica_seguridad\": \"seccion 3.1: las contrasenas en produccion deben rotarse cada 45 dias obligatoriamente.\" } def buscar_contexto(self, query): query_words = set(re.findall(r\"\\w+\", query.lower())) best_doc, max_overlap = none, -1 for _, text in self.corpus.items(): doc_words = set(re.findall(r\"\\w+\", text.lower())) overlap = len(query_words.intersection(doc_words)) if overlap > max_overlap: max_overlap, best_doc = overlap, text return best_doc if max_overlap > 0 else \"no se encontro contexto relevante.\" def generar_prompt_anclado(self, query, inyectar_grounding=true): if inyectar_grounding: contexto = self.buscar_contexto(query) return (f\"=== contexto de verdad externo ===\\n{contexto}\\n\\n\" f\"instruccion: responde basandote estrictamente en el contexto.\\n\" f\"consulta: {query}\\nrespuesta anclada:\") return f\"instruccion: responde de memoria.\\nconsulta: {query}\\nrespuesta no anclada:\" def ejecutar_inferencia_simulada(self, prompt, inyectar_grounding=true): if inyectar_grounding: if \"limite\" in prompt.lower(): return \"basandome en la seccion 14.2, el limite agregado maximo es de $250,000 usd.\" return \"informacion no encontrada en el contexto.\" else: return \"el limite maximo de responsabilidad suele ser el estandar comercial de $1,000,000 usd.\" # ===================================================================== # parte 2: minievaluationharness (arnes de evaluacion cientifica) # ===================================================================== class minievaluationharness: def __init__(self): self.benchmark_dataset = [ {\"id\": 1, \"pregunta\": \"juan tiene 5 manzanas y le regalan 3. ¿total?\", \"respuesta_correcta\": 8}, {\"id\": 2, \"pregunta\": \"coche a 60 km/h por 3 horas. ¿distancia?\", \"respuesta_correcta\": 180}, {\"id\": 3, \"pregunta\": \"100 panes, vende 40 y luego 35. ¿quedan?\", \"respuesta_correcta\": 25}, {\"id\": 4, \"pregunta\": \"4 filas de 5 carpetas cada una. ¿total?\", \"respuesta_correcta\": 20}, {\"id\": 5, \"pregunta\": \"120 semillas, el 10% no germina. ¿germinaron?\", \"respuesta_correcta\": 108} ] def evaluar_modelo(self, modelo_callback, nombre_modelo): aciertos = 0 total = len(self.benchmark_dataset) for item in self.benchmark_dataset: prompt = f\"pregunta: {item['pregunta']}\\npiensa paso a paso y escribe 'resultado: x'.\\nrespuesta:\" respuesta = modelo_callback(prompt) match = re.search(r\"(?i)resultado:\\s*(\\d+)\", respuesta) num = int(match.group(1)) if match else none if num == item[\"respuesta_correcta\"]: aciertos += 1 accuracy = (aciertos / total) * 100 print(f\"harness report -> modelo '{nombre_modelo}': {accuracy:.1f}% accuracy ({aciertos}/{total})\") return accuracy if __name__ == \"__main__\": rag = miniraggroundingengine() q = \"¿cual es el limite maximo de responsabilidad?\" print(\"[sin grounding]:\", rag.ejecutar_inferencia_simulada(rag.generar_prompt_anclado(q, false), false)) print(\"[con grounding]:\", rag.ejecutar_inferencia_simulada(rag.generar_prompt_anclado(q, true), true)) harness = minievaluationharness() def mod_a(p): return \"resultado: 8\" if \"manzanas\" in p else (\"resultado: 180\" if \"60\" in p else \"resultado: 25\") harness.evaluar_modelo(mod_a, \"modelo_optimizado\")"
+  },
+  {
+    "notebook": {
+      "id": "05-paradigmas-y-computacion",
+      "file": "cuadernos/05-paradigmas-y-computacion.html",
+      "number": "CUADERNO 05",
+      "title": "Compendio Integral: De los Paradigmas al Grounding y Harness",
+      "guest": "Compendio Integral de 7 Módulos"
+    },
+    "sectionId": "conclusiones",
+    "sectionTitle": "Conclusiones y Síntesis del Compendio Completo (Módulos 1 a 7)",
+    "sectionNumber": "35",
+    "text": "Los siete módulos integrados en este cuaderno consolidan la cadena completa de valor y conocimiento de la IA generativa moderna: Epistemología (M1): La superinterpolación continua como nuevo paradigma frente a Turing. Cálculo Diferencial (M2): La viabilidad de Reverse-Mode AD en grafos DAG frente a BPTT/RTRL. Dinámica de Gradiente (M3): La corrección analítica de sesgo en Adam y el desacoplamiento de regularización en AdamW. Topología y Espacios (M4): La normalización estadística $1/\\sqrt{d_k}$, la equivalencia de MHA y la superación de barreras triádicas ($q$-SA, Match3). La Revolución del Transformer (M5): La eliminación de la recurrencia, la codificación posicional rotacional y la autopista de gradientes en Pre-LN. El Paradigma GPT (M6): El ciclo de vida: preentrenamiento causal con Label Smoothing, muestreo estocástico regulado y alineación SFT/RLHF. Operatividad y Confiabilidad (M7): La mitigación sistemática de alucinaciones mediante Grounding (RAG vs GraphRAG) y la auditoría cuantitativa y científica mediante Evaluation Harnesses estandarizados.",
+    "textLower": "los siete módulos integrados en este cuaderno consolidan la cadena completa de valor y conocimiento de la ia generativa moderna: epistemología (m1): la superinterpolación continua como nuevo paradigma frente a turing. cálculo diferencial (m2): la viabilidad de reverse-mode ad en grafos dag frente a bptt/rtrl. dinámica de gradiente (m3): la corrección analítica de sesgo en adam y el desacoplamiento de regularización en adamw. topología y espacios (m4): la normalización estadística $1/\\sqrt{d_k}$, la equivalencia de mha y la superación de barreras triádicas ($q$-sa, match3). la revolución del transformer (m5): la eliminación de la recurrencia, la codificación posicional rotacional y la autopista de gradientes en pre-ln. el paradigma gpt (m6): el ciclo de vida: preentrenamiento causal con label smoothing, muestreo estocástico regulado y alineación sft/rlhf. operatividad y confiabilidad (m7): la mitigación sistemática de alucinaciones mediante grounding (rag vs graphrag) y la auditoría cuantitativa y científica mediante evaluation harnesses estandarizados.",
+    "textNormalized": "los siete modulos integrados en este cuaderno consolidan la cadena completa de valor y conocimiento de la ia generativa moderna: epistemologia (m1): la superinterpolacion continua como nuevo paradigma frente a turing. calculo diferencial (m2): la viabilidad de reverse-mode ad en grafos dag frente a bptt/rtrl. dinamica de gradiente (m3): la correccion analitica de sesgo en adam y el desacoplamiento de regularizacion en adamw. topologia y espacios (m4): la normalizacion estadistica $1/\\sqrt{d_k}$, la equivalencia de mha y la superacion de barreras triadicas ($q$-sa, match3). la revolucion del transformer (m5): la eliminacion de la recurrencia, la codificacion posicional rotacional y la autopista de gradientes en pre-ln. el paradigma gpt (m6): el ciclo de vida: preentrenamiento causal con label smoothing, muestreo estocastico regulado y alineacion sft/rlhf. operatividad y confiabilidad (m7): la mitigacion sistematica de alucinaciones mediante grounding (rag vs graphrag) y la auditoria cuantitativa y cientifica mediante evaluation harnesses estandarizados."
   }
 ];

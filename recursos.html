@@ -89,6 +89,7 @@
       <a href="index.html" class="nav-link">Cuadernos</a>
       <a href="muro.html" class="nav-link">Lienzo</a>
       <a href="recursos.html" class="nav-link active">Recursos</a>
+      <a href="examen.html" class="nav-link">Examen Oficial</a>
     </div>
   </nav>
 
@@ -96,6 +97,9 @@
   <div class="recursos-subnav">
     <a href="#simuladores" class="subnav-pill">
       <span>🔬</span> Simuladores
+    </a>
+    <a href="#retos" class="subnav-pill">
+      <span>🎯</span> Retos Prácticos
     </a>
     <a href="#playground" class="subnav-pill">
       <span>💻</span> Python Playground
@@ -141,11 +145,11 @@
           <h2>
             <span>🔬</span> 1. Laboratorio de Simuladores Interactivos
           </h2>
-          <span class="sim-badge">5 Simuladores en Tiempo Real</span>
+          <span class="sim-badge">7 Simuladores en Tiempo Real</span>
         </div>
         
         <p style="color: var(--text-secondary); margin-bottom: 2rem; font-size: 0.95rem; line-height: 1.6;">
-          Herramientas didácticas interactivas para visualizar los fundamentos matemáticos de los Transformers, el dimensionamiento de hardware, los espacios semánticos vectoriales, la tokenización BPE y el muestreo autoregresivo.
+          Herramientas didácticas interactivas para visualizar los fundamentos matemáticos de los Transformers, dimensionamiento de hardware, espacios semánticos vectoriales, tokenización BPE, muestreo, pipelines RAG y flujos agenciales ReAct.
         </p>
 
         <!-- Simulador 1: Visualizador de Self-Attention -->
@@ -162,15 +166,39 @@
 
         <!-- Simulador 5: Simulador de Muestreo (Sampling) -->
         <div class="sampling-visualizer-target" style="margin-top: 2.5rem;"></div>
+
+        <!-- Simulador 6: Pipeline Visual RAG -->
+        <div class="rag-visualizer-target" style="margin-top: 2.5rem;"></div>
+
+        <!-- Simulador 7: Ciclo Agencial ReAct -->
+        <div class="react-agent-target" style="margin-top: 2.5rem;"></div>
+      </section>
+
+      <!-- ========================================================
+           SECCIÓN: RETOS PRÁCTICOS DE APLICACIÓN (CHALLENGE MODE)
+           ======================================================== -->
+      <section class="recursos-section" id="retos">
+        <div class="recursos-section-header">
+          <h2>
+            <span>🎯</span> 2. Retos Prácticos & Sandboxes de Evaluación
+          </h2>
+          <span class="sim-badge">Evaluación Interactiva</span>
+        </div>
+        
+        <p style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.95rem; line-height: 1.6;">
+          Pon a prueba tu comprensión y criterio de ingeniería resolviendo desafíos prácticos interactivos con retroalimentación técnica instantánea y puntuación en vivo.
+        </p>
+
+        <div class="challenges-target"></div>
       </section>
       
       <!-- ========================================================
-           SECCIÓN 2: PYTHON PLAYGROUND (WEBASSEMBLY)
+           SECCIÓN 3: PYTHON PLAYGROUND (WEBASSEMBLY)
            ======================================================== -->
       <section class="recursos-section" id="playground">
         <div class="recursos-section-header">
           <h2>
-            <span>💻</span> 2. Playground Interactivo (Python WebAssembly)
+            <span>💻</span> 3. Playground Interactivo (Python WebAssembly)
           </h2>
           <span class="sim-badge">Motor Pyodide v0.24</span>
         </div>
@@ -184,12 +212,12 @@
       </section>
 
       <!-- ========================================================
-           SECCIÓN 3: TARJETAS DE ESTUDIO & REPASO ESPACIADO
+           SECCIÓN 4: TARJETAS DE ESTUDIO & REPASO ESPACIADO
            ======================================================== -->
       <section class="recursos-section" id="flashcards">
         <div class="recursos-section-header">
           <h2>
-            <span>🗂️</span> 3. Tarjetas de Estudio & Repaso Espaciado
+            <span>🗂️</span> 4. Tarjetas de Estudio & Repaso Espaciado
           </h2>
           <span class="sim-badge">20 Conceptos Clave</span>
         </div>
@@ -203,12 +231,12 @@
       </section>
 
       <!-- ========================================================
-           SECCIÓN 4: MATRIZ DE PROMPT ENGINEERING
+           SECCIÓN 5: MATRIZ DE PROMPT ENGINEERING
            ======================================================== -->
       <section class="recursos-section" id="prompts">
         <div class="recursos-section-header">
           <h2>
-            <span>📝</span> 4. Matriz de Prompt Engineering de Producción
+            <span>📝</span> 5. Matriz de Prompt Engineering de Producción
           </h2>
           <span class="sim-badge">Patrones Probados</span>
         </div>
@@ -338,12 +366,12 @@ No incluyas markdown, saludos ni explicaciones fuera del bloque JSON.</div>
       </section>
 
       <!-- ========================================================
-           SECCIÓN 5: GLOSARIO TÉCNICO FILTRABLE
+           SECCIÓN 6: GLOSARIO TÉCNICO FILTRABLE
            ======================================================== -->
       <section class="recursos-section" id="glosario">
         <div class="recursos-section-header">
           <h2>
-            <span>📖</span> 5. Glosario Técnico de Inteligencia Artificial
+            <span>📖</span> 6. Glosario Técnico de Inteligencia Artificial
           </h2>
           <span class="sim-badge" id="glossary-counter">30 Términos</span>
         </div>
@@ -367,12 +395,12 @@ No incluyas markdown, saludos ni explicaciones fuera del bloque JSON.</div>
       </section>
 
       <!-- ========================================================
-           SECCIÓN 6: PAPERS FUNDACIONALES & HERRAMIENTAS 2026
+           SECCIÓN 7: PAPERS FUNDACIONALES & HERRAMIENTAS 2026
            ======================================================== -->
       <section class="recursos-section" id="papers-herramientas">
         <div class="recursos-section-header">
           <h2>
-            <span>📚</span> 6. Compendio de Papers Fundacionales & Herramientas
+            <span>📚</span> 7. Compendio de Papers Fundacionales & Herramientas
           </h2>
           <span class="sim-badge">Lecturas de Referencia</span>
         </div>

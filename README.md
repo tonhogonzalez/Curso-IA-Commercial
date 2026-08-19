@@ -48,12 +48,16 @@
 | **02** | **Pensamiento Crítico, Prompting y el Horizonte 2030** | Javier Ideami (*Tengo un Plan*) | *Correlación vs Causalidad, 7 Mandamientos de Dartmouth, Metaprompting, AGI.* |
 | **03** | **Compendio Técnico de IA Generativa** | Compendio Especializado | *Matemáticas, Backprop, Optimización AdamW, KV Cache, RAG, Agentes Autónomos.* |
 | **04** | **El Universo del Transformer y Operatividad de LLMs** | Compendio Docente Avanzado | *Attention Is All You Need, Softmax Saturation, MHA, RoPE/ALiBi, GPT Lifecycle, Grounding, PyTorch.* |
+| **05** | **Compendio Integral: De los Paradigmas al Grounding y Harness** | Módulos 1 a 7: Fundamentos, Optimización, Gradientes, Transformers, GPT & Producción | *Turing vs Conexionismo, Apriori/DIC, Backprop DAG, Autodiff (JVP/VJP, BPTT/RTRL), Órdenes 0/1/2 (SPSA, SGD, Newton), Dinámica SGD/Flat Minima, Momentum, AdaGrad/RMSProp, Sesgo Adam, AdamW, Embeddings, Deducción Varianza 1/√d_k, MHA Complejidad, Número de Condición κ, q-SA, Match2 vs Match3, Attention Is All You Need, Positional Encoding Rotacional, Máscara Causal, Pre-LN vs Post-LN, Inferencia LLM, Unembedding, Muestreo (Temperatura, Top-K, Top-P), Preentrenamiento Causal, Label Smoothing, SFT (LIMA), RLHF (Reward Model + PPO), Grounding (RAG vs GraphRAG/Leiden), Evaluation Harness (MMLU, GSM8K, HellaSwag, ARC), PyTorch/Python.* |
 
 ---
 
 ## 🧠 Simuladores y Herramientas
 
-* **Laboratorio de Simulaciones (5 visualizadores)**: `js/simulations.js`
+* **Sistema de Exámenes Online y Certificación Oficial**: `examen.html` (50 preguntas de nivel Master, 10 módulos técnicos, temporizador de 90 min, modo estudio con justificaciones, desglose de competencias y emisión de Certificado Digital con ID criptográfico).
+* **Laboratorio de Simulaciones (7 visualizadores en tiempo real)**: `js/simulations.js` (Self-Attention, VRAM, Embeddings 2D, BPE Tokenizer, Sampling, Pipeline RAG y Agente ReAct).
+* **Retos Prácticos Interactivos (Challenge Sandboxes)**: `recursos.html` (Prompting con Guardrails y Dimensionamiento de VRAM).
+* **Sistema de Subrayado Multi-color & Mis Notas de Estudio**: `js/highlighter.js` (Exportación a Markdown y PDF).
 * **Python Interactive Playground (Pyodide)**: `js/playground.js`
 * **Glosario Dinámico Filtrable**: `recursos.html` & `js/glossary.js`
 * **Matriz de Prompt Engineering**: `recursos.html`
@@ -72,9 +76,13 @@ Curso_IA_Commercial/
 │   ├── 01-pep-martorell.html   # Cuaderno 01: Pep Martorell
 │   ├── 02-javier-ideami.html   # Cuaderno 02: Javier Ideami
 │   ├── 03-compendio-tecnico.html # Cuaderno 03: Compendio Técnico
+│   ├── 04-el-universo-del-transformer.html # Cuaderno 04: Transformers & GPT Lifecycle
+│   ├── 05-paradigmas-y-computacion.html # Cuaderno 05: Compendio 7 Módulos
 │   └── _template.html          # Plantilla para nuevos cuadernos
 ├── js/
 │   ├── main.js                 # Control de tema, modo Zen, progreso de lectura
+│   ├── exam-data.js            # Banco de 50 preguntas del examen oficial
+│   ├── exam-engine.js          # Motor del examen, temporizador y certificado
 │   ├── simulations.js          # Simuladores de Self-Attention y VRAM/KV Cache
 │   ├── quiz.js                 # Motor de autoevaluación interactivo
 │   ├── muro.js                 # Lienzo espacial y exportador Obsidian Canvas
@@ -84,6 +92,7 @@ Curso_IA_Commercial/
 │   └── playground.js           # Entorno interactivo de Python (Pyodide)
 ├── scripts/
 │   └── build.js                # Indexador automático de cuadernos y búsqueda
+├── examen.html                 # Portal del Examen de Certificación Técnica
 ├── index.html                  # Portal principal y catálogo de cuadernos
 ├── muro.html                   # Lienzo de conocimiento interactivo
 ├── recursos.html               # Laboratorio de simuladores, glosario y playground
