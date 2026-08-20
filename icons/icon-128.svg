@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8b5cf6"/>
+      <stop offset="50%" style="stop-color:#3b82f6"/>
+      <stop offset="100%" style="stop-color:#06b6d4"/>
+    </linearGradient>
+    <linearGradient id="shine" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:rgba(255,255,255,0.25)"/>
+      <stop offset="50%" style="stop-color:rgba(255,255,255,0)"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="23" fill="url(#bg)"/>
+  <rect width="128" height="128" rx="23" fill="url(#shine)"/>
+  <text x="50%" y="48%" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif" font-size="49" font-weight="800" fill="white" text-anchor="middle" dominant-baseline="central">IA</text>
+  <text x="50%" y="78%" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif" font-size="15" font-weight="600" fill="rgba(255,255,255,0.7)" text-anchor="middle" dominant-baseline="central">CURSO</text>
+</svg>

@@ -5221,4 +5221,227 @@ body.zen-mode .content-wrapper {
 }
 
 
+/* ============================================
+   RESPONSIVE & MOBILE-FIRST ENHANCEMENTS (2026)
+   ============================================ */
+
+/* --- Skip to Content (Accessibility) --- */
+.skip-to-content {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  background: var(--accent-violet);
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  z-index: 10000;
+  font-weight: 700;
+  font-size: 0.9rem;
+  border-radius: 0 0 var(--radius-md) 0;
+  transition: top var(--transition-fast);
+}
+.skip-to-content:focus {
+  top: 0;
+}
+
+/* --- Mobile Hamburger Nav Dropdown --- */
+@media (max-width: 768px) {
+  .nav-links {
+    position: fixed;
+    top: 64px;
+    left: 0;
+    right: 0;
+    background: var(--bg-nav);
+    backdrop-filter: blur(20px) saturate(1.5);
+    -webkit-backdrop-filter: blur(20px) saturate(1.5);
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 0;
+    border-bottom: 1px solid var(--border-medium);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-110%);
+    opacity: 0;
+    transition: transform var(--transition-base), opacity var(--transition-base);
+    z-index: 999;
+    pointer-events: none;
+  }
+
+  .nav-links.mobile-open {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .nav-links .nav-link {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border-subtle);
+    font-size: 0.95rem;
+    display: block;
+  }
+
+  .nav-links .nav-link.active::after {
+    display: none;
+  }
+
+  .nav-links .nav-link.active {
+    background: var(--accent-violet-dim);
+  }
+
+  .menu-toggle {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Better touch targets */
+  .nav-actions button,
+  .back-to-top,
+  .sidebar-link {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Episode grid stacks on mobile */
+  .episode-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+    padding: 0 1rem !important;
+  }
+
+  /* Index hero padding */
+  .index-hero {
+    padding: 2rem 1rem 1.5rem !important;
+  }
+
+  .index-hero .page-title {
+    font-size: 1.6rem !important;
+  }
+
+  .index-hero .page-subtitle {
+    font-size: 0.88rem !important;
+  }
+
+  /* Simulators: touch-friendly sliders */
+  .sim-container input[type="range"] {
+    height: 32px;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .sim-container input[type="range"]::-webkit-slider-thumb {
+    width: 24px;
+    height: 24px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: var(--accent-violet);
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  /* Subnav scrollable on mobile */
+  .recursos-subnav {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap !important;
+    gap: 0.5rem !important;
+    padding: 0.5rem 1rem !important;
+    scrollbar-width: none;
+  }
+  .recursos-subnav::-webkit-scrollbar {
+    display: none;
+  }
+  .recursos-subnav .subnav-pill {
+    white-space: nowrap;
+    flex-shrink: 0;
+    font-size: 0.78rem !important;
+    padding: 0.4rem 0.75rem !important;
+  }
+
+  /* Recursos sections */
+  .recursos-section {
+    padding: 1.25rem !important;
+    border-radius: var(--radius-lg) !important;
+  }
+
+  /* Bloom card grid stacks */
+  .bloom-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Table overflow */
+  table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Extra small screens (phones < 480px) */
+@media (max-width: 480px) {
+  .top-nav {
+    padding: 0 var(--space-md);
+    height: 56px;
+  }
+
+  .nav-brand-text {
+    font-size: 0.95rem;
+  }
+
+  .nav-brand-icon {
+    width: 30px;
+    height: 30px;
+    font-size: 0.9rem;
+  }
+
+  .page-title {
+    font-size: 1.4rem !important;
+  }
+
+  .section-title {
+    font-size: 1.2rem !important;
+  }
+
+  .ep-tags {
+    display: none;
+  }
+
+  .recursos-section-header {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 0.5rem !important;
+  }
+
+  .recursos-section-header h2 {
+    font-size: 1.15rem !important;
+  }
+}
+
+/* --- Prefers Reduced Motion --- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  body::before {
+    animation: none !important;
+  }
+}
+
+/* --- Improved Focus Styles for Keyboard Nav --- */
+*:focus-visible {
+  outline: 2px solid var(--accent-violet);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+.nav-link:focus-visible,
+.episode-card:focus-visible {
+  outline-offset: 4px;
+}
+
 

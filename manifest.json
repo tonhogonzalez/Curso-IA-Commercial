@@ -1,16 +1,82 @@
 {
-  "name": "Curso IA Commercial",
+  "name": "Curso IA Commercial — Cuadernos de Inteligencia Artificial",
   "short_name": "Curso IA",
-  "description": "Cuadernos de Inteligencia Artificial basados en entrevistas.",
+  "description": "Plataforma de divulgación y profundización técnica sobre Inteligencia Artificial. Cuadernos basados en entrevistas íntegras con expertos, simuladores interactivos, examen de certificación y herramientas de estudio.",
   "start_url": "./index.html",
   "display": "standalone",
+  "orientation": "any",
   "background_color": "#0a0a0f",
   "theme_color": "#8b5cf6",
+  "categories": ["education", "technology"],
+  "lang": "es",
   "icons": [
     {
-      "src": "./icon.png",
+      "src": "./icons/icon-48.svg",
+      "sizes": "48x48",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "./icons/icon-72.svg",
+      "sizes": "72x72",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "./icons/icon-96.svg",
+      "sizes": "96x96",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "./icons/icon-128.svg",
+      "sizes": "128x128",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "./icons/icon-144.svg",
+      "sizes": "144x144",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "./icons/icon-192.svg",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-256.svg",
+      "sizes": "256x256",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "./icons/icon-384.svg",
+      "sizes": "384x384",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "./icons/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Laboratorio & Recursos",
+      "short_name": "Recursos",
+      "url": "./recursos.html",
+      "description": "Simuladores interactivos, playground Python y glosario técnico"
+    },
+    {
+      "name": "Examen de Certificación",
+      "short_name": "Examen",
+      "url": "./examen.html",
+      "description": "Examen oficial de 50 preguntas nivel Master"
+    },
+    {
+      "name": "Lienzo de Conocimiento",
+      "short_name": "Lienzo",
+      "url": "./muro.html",
+      "description": "Tablero espacial de notas y conexiones"
     }
   ]
 }

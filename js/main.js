@@ -69,6 +69,48 @@
 
   initTheme();
 
+  // --- 1b. Mobile Hamburger Menu ---
+  (function initMobileMenu() {
+    const topNav = document.querySelector('.top-nav');
+    const navLinks = document.querySelector('.nav-links');
+    if (!topNav || !navLinks) return;
+
+    // Ensure a menu-toggle button exists (cuaderno pages have it, index/muro may not)
+    let menuToggle = topNav.querySelector('.menu-toggle');
+    if (!menuToggle) {
+      menuToggle = document.createElement('button');
+      menuToggle.className = 'menu-toggle';
+      menuToggle.setAttribute('aria-label', 'Abrir menú de navegación');
+      menuToggle.setAttribute('aria-expanded', 'false');
+      menuToggle.innerHTML = '☰';
+      topNav.insertBefore(menuToggle, topNav.firstChild);
+    }
+
+    menuToggle.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('mobile-open');
+      menuToggle.setAttribute('aria-expanded', isOpen);
+      menuToggle.innerHTML = isOpen ? '✕' : '☰';
+    });
+
+    // Close mobile nav when a link is clicked
+    navLinks.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('mobile-open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+        menuToggle.innerHTML = '☰';
+      });
+    });
+
+    // Close on click outside
+    document.addEventListener('click', (e) => {
+      if (!topNav.contains(e.target) && navLinks.classList.contains('mobile-open')) {
+        navLinks.classList.remove('mobile-open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+        menuToggle.innerHTML = '☰';
+      }
+    });
+  })();
+
   // --- 2. Reading Progress Bar & Local Persistence ---
   const progressBarFill = document.querySelector('.progress-bar-fill');
   const pageId = window.location.pathname.split('/').pop() || 'index';
