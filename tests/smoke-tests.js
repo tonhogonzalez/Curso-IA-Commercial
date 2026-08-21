@@ -144,7 +144,11 @@ cuadernoFiles.forEach(file => {
   assert(content.includes('backprop-visualizer-target'), 'recursos.html: tiene backprop target div');
   assert(content.includes('gradient-descent-target'), 'recursos.html: tiene gradient-descent target div');
   assert(content.includes('model-compare-target'), 'recursos.html: tiene model-compare target div');
-  assert(content.includes('9 Simuladores'), 'recursos.html: badge muestra 9 simuladores');
+  assert(content.includes('rope-visualizer-target'), 'recursos.html: tiene rope-visualizer target div');
+  assert(content.includes('moe-router-target'), 'recursos.html: tiene moe-router target div');
+  assert(content.includes('attention-variants-target'), 'recursos.html: tiene attention-variants target div');
+  assert(content.includes('lora-visualizer-target'), 'recursos.html: tiene lora-visualizer target div');
+  assert(content.includes('13 Simuladores'), 'recursos.html: badge muestra 13 simuladores');
 }
 
 // ============================
@@ -157,7 +161,10 @@ const jsFiles = [
   'js/concept-map.js',
   'js/achievements.js',
   'js/annotations.js',
-  'js/model-compare.js'
+  'js/model-compare.js',
+  'js/ai-tutor.js',
+  'js/exam-engine.js',
+  'js/muro.js'
 ];
 
 jsFiles.forEach(file => {

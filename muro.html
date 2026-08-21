@@ -38,6 +38,8 @@
         <button class="filter-chip" data-filter="01">Pep M.</button>
         <button class="filter-chip" data-filter="02">J. Ideami</button>
         <button class="filter-chip" data-filter="03">Técnico</button>
+        <button class="filter-chip" data-filter="04">Transformers</button>
+        <button class="filter-chip" data-filter="05">Paradigmas</button>
       </div>
 
       <div style="width: 1px; background: var(--border-medium); margin: 0 4px; height: 24px;"></div>
@@ -48,9 +50,24 @@
         Nueva Nota
       </button>
 
+      <button class="btn-icon" id="btn-templates" title="Cargar Plantillas de Arquitectura Preconfiguradas">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+        Plantillas
+      </button>
+
+      <button class="btn-icon" id="btn-glossary-drawer" title="Insertar Conceptos del Glosario">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+        Glosario
+      </button>
+
       <button class="btn-icon" id="btn-connect-mode" title="Conectar notas con flechas">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
         Conectar
+      </button>
+
+      <button class="btn-icon" id="btn-export-png" title="Exportar Lienzo a Imagen PNG">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+        PNG
       </button>
 
       <button class="btn-icon" id="btn-export-obsidian" title="Exportar a Obsidian Canvas (.canvas)">
@@ -74,6 +91,53 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
         Limpiar
       </button>
+    </div>
+
+    <!-- Templates Modal Selector -->
+    <div id="muro-templates-modal" class="muro-modal" style="display: none;">
+      <div class="muro-modal-content">
+        <div class="muro-modal-header">
+          <h3>📐 Cargar Plantilla de Arquitectura</h3>
+          <button id="btn-close-templates" class="muro-modal-close">×</button>
+        </div>
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.25rem;">
+          Selecciona un esquema predefinido para estructurar tu mapa conceptual con nodos y conexiones automáticas:
+        </p>
+        <div class="muro-templates-grid">
+          <div class="muro-template-card" data-template="transformer">
+            <div class="tpl-icon">⚡</div>
+            <h4>Arquitectura Transformer Pre-LN</h4>
+            <p>6 bloques interconectados: Embeddings, RoPE, Multi-Head Attention, Add & RMSNorm, SwiGLU FFN y Unembedding Softmax.</p>
+          </div>
+          <div class="muro-template-card" data-template="rag">
+            <div class="tpl-icon">🔍</div>
+            <h4>Pipeline RAG Empresarial</h4>
+            <p>Document Ingestion, Dense Embeddings, Vector DB, Búsqueda Híbrida, Reranking con Cross-Encoder y Generación Grounded.</p>
+          </div>
+          <div class="muro-template-card" data-template="lifecycle">
+            <div class="tpl-icon">🔄</div>
+            <h4>Ciclo de Vida LLM Completo</h4>
+            <p>Preentrenamiento Causal Web-Scale, SFT Instruct (LIMA), Alineamiento RLHF/DPO, y Evaluación con Harness (MMLU/GSM8K).</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Glossary Drawer Sidebar -->
+    <div id="muro-glossary-drawer" class="muro-drawer" style="display: none;">
+      <div class="muro-drawer-header">
+        <h3>📖 Conceptos del Glosario</h3>
+        <button id="btn-close-glossary" class="muro-modal-close">×</button>
+      </div>
+      <p style="font-size: 0.8rem; color: var(--text-secondary); padding: 0 1rem;">
+        Haz clic en cualquier concepto para añadirlo como una nota al lienzo:
+      </p>
+      <div class="muro-drawer-search">
+        <input type="text" id="muro-glossary-search" placeholder="Filtrar términos...">
+      </div>
+      <div id="muro-glossary-list" class="muro-drawer-list">
+        <!-- Rendered via JS -->
+      </div>
     </div>
 
     <!-- The Infinite Board -->

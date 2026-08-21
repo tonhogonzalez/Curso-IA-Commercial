@@ -795,7 +795,10 @@
 
       <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap;">
         <button id="btn-review-answers" class="nav-btn" style="background: var(--accent-blue); color: #fff; border-color: var(--accent-blue);">
-          🔍 Revisar Respuestas y Justificaciones
+          🔍 Revisar Todas las Respuestas
+        </button>
+        <button id="btn-review-failed" class="nav-btn" style="background: #f43f5e; color: #fff; border-color: #f43f5e; display: none;">
+          🎯 Repasar Solo Preguntas Falladas
         </button>
       </div>
 
@@ -808,7 +811,7 @@
         </div>
 
         <!-- Plantilla del Certificado Imprimible -->
-        <div class="certificate-sheet">
+        <div class="certificate-sheet" id="certificate-node">
           <div class="cert-seal">🎖️</div>
           <div class="cert-title">Certificado de Acreditación Técnica</div>
           <div class="cert-subtitle">Programa de Alta Especialización en Inteligencia Artificial Generativa y LLMs</div>
@@ -831,9 +834,12 @@
           </div>
         </div>
 
-        <div style="text-align: center;">
-          <button id="btn-print-certificate" class="btn-finish-main" style="padding: 0.75rem 2rem; font-size: 0.95rem;">
-            🖨️ Imprimir / Descargar Certificado en PDF
+        <div style="text-align: center; display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem;">
+          <button id="btn-download-cert-png" class="btn-finish-main" style="background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%); padding: 0.75rem 1.75rem; font-size: 0.95rem; box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4);">
+            🖼️ Descargar Diploma en PNG (4K Ultra-HD)
+          </button>
+          <button id="btn-print-certificate" class="btn-finish-main" style="background: var(--bg-tertiary); border: 1px solid var(--border-medium); padding: 0.75rem 1.75rem; font-size: 0.95rem;">
+            🖨️ Imprimir en Papel / PDF
           </button>
         </div>
       </div>

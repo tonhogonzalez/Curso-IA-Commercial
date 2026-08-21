@@ -72,7 +72,9 @@
     document.getElementById('btn-finish-exam')?.addEventListener('click', promptFinishExam);
     document.getElementById('btn-restart-exam')?.addEventListener('click', restartExam);
     document.getElementById('btn-print-certificate')?.addEventListener('click', printCertificate);
+    document.getElementById('btn-download-cert-png')?.addEventListener('click', downloadCertificatePNG);
     document.getElementById('btn-review-answers')?.addEventListener('click', toggleReviewMode);
+    document.getElementById('btn-review-failed')?.addEventListener('click', reviewFailedQuestions);
   }
 
   function setMode(mode) {
@@ -401,6 +403,12 @@
       badgeStatus.className = `res-status-badge ${passed ? 'passed' : 'failed'}`;
     }
 
+    // Toggle Botón de Repaso de Fallos
+    const btnReviewFailed = document.getElementById('btn-review-failed');
+    if (btnReviewFailed) {
+      btnReviewFailed.style.display = (totalScore < EXAM_DATA.totalQuestions) ? 'inline-block' : 'none';
+    }
+
     // Render module breakdown bars
     const moduleListEl = document.getElementById('res-modules-breakdown');
     if (moduleListEl) {
@@ -436,7 +444,11 @@
     }
   }
 
+  let latestCertHash = '';
+  let latestCertPercent = 0;
+
   function setupCertificateData(percent) {
+    latestCertPercent = percent;
     const studentInput = document.getElementById('cert-student-name');
     const updateCertName = () => {
       const name = studentInput.value.trim() || 'Ingeniero / Investigador en IA';
@@ -452,15 +464,208 @@
     document.getElementById('cert-rendered-grade').textContent = `Calificación de Honor: ${percent}% (Nivel de Maestría)`;
     
     // Hash único de verificación
-    const hash = 'AGY-CERT-' + Math.random().toString(36).substring(2, 10).toUpperCase() + '-' + Date.now().toString(36).toUpperCase();
-    document.getElementById('cert-rendered-hash').textContent = `ID de Verificación: ${hash}`;
+    latestCertHash = 'AGY-CERT-' + Math.random().toString(36).substring(2, 10).toUpperCase() + '-' + Date.now().toString(36).toUpperCase();
+    document.getElementById('cert-rendered-hash').textContent = `ID de Verificación: ${latestCertHash}`;
   }
 
   function printCertificate() {
     window.print();
   }
 
+  function downloadCertificatePNG() {
+    const studentInput = document.getElementById('cert-student-name');
+    const studentName = studentInput ? (studentInput.value.trim() || 'Ingeniero en Inteligencia Artificial') : 'Ingeniero en Inteligencia Artificial';
+    const dateStr = new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
+    const certHash = latestCertHash || ('AGY-CERT-' + Date.now().toString(36).toUpperCase());
+    const percent = latestCertPercent || 88;
+
+    // Crear canvas offscreen de alta definición 2400 x 1600 px (3:2 format)
+    const canvas = document.createElement('canvas');
+    canvas.width = 2400;
+    canvas.height = 1600;
+    const ctx = canvas.getContext('2d');
+
+    // 1. Fondo Oscuro Premium (Gradiente Obsidian)
+    const bgGrad = ctx.createRadialGradient(1200, 800, 100, 1200, 800, 1400);
+    bgGrad.addColorStop(0, '#131b30');
+    bgGrad.addColorStop(0.7, '#0b0f19');
+    bgGrad.addColorStop(1, '#05070d');
+    ctx.fillStyle = bgGrad;
+    ctx.fillRect(0, 0, 2400, 1600);
+
+    // 2. Patrón de seguridad / Guilloche sutil
+    ctx.strokeStyle = 'rgba(59, 130, 246, 0.04)';
+    ctx.lineWidth = 1.5;
+    for (let r = 80; r < 1400; r += 60) {
+      ctx.beginPath();
+      ctx.arc(1200, 800, r, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+
+    // 3. Doble Marco Dorado Ceremonial
+    ctx.strokeStyle = '#d97706';
+    ctx.lineWidth = 14;
+    ctx.strokeRect(60, 60, 2280, 1480);
+
+    ctx.strokeStyle = '#fbbf24';
+    ctx.lineWidth = 3;
+    ctx.strokeRect(90, 90, 2220, 1420);
+
+    ctx.strokeStyle = 'rgba(251, 191, 36, 0.4)';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(105, 105, 2190, 1390);
+
+    // Ornamentos de esquinas
+    function drawCorner(x, y, flipX, flipY) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.scale(flipX, flipY);
+      ctx.strokeStyle = '#fbbf24';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(0, 50);
+      ctx.lineTo(0, 0);
+      ctx.lineTo(50, 0);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(20, 20, 10, 0, Math.PI * 2);
+      ctx.fillStyle = '#f59e0b';
+      ctx.fill();
+      ctx.restore();
+    }
+
+    drawCorner(120, 120, 1, 1);
+    drawCorner(2280, 120, -1, 1);
+    drawCorner(120, 1480, 1, -1);
+    drawCorner(2280, 1480, -1, -1);
+
+    // 4. Encabezado de la Institución
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = 'bold 30px Inter, "Segoe UI", sans-serif';
+    ctx.letterSpacing = '8px';
+    ctx.fillText('CURSO IA COMMERCIAL · CONSEJO DE CERTIFICACIÓN TÉCNICA', 1200, 220);
+
+    // 5. Título Principal Dorado
+    ctx.font = '900 68px "Cinzel", "Times New Roman", serif, sans-serif';
+    const goldGrad = ctx.createLinearGradient(600, 0, 1800, 0);
+    goldGrad.addColorStop(0, '#fef08a');
+    goldGrad.addColorStop(0.5, '#f59e0b');
+    goldGrad.addColorStop(1, '#fde047');
+    ctx.fillStyle = goldGrad;
+    ctx.letterSpacing = '2px';
+    ctx.fillText('CERTIFICADO DE ACREDITACIÓN TÉCNICA', 1200, 330);
+
+    // Subtítulo
+    ctx.font = '600 32px Inter, sans-serif';
+    ctx.fillStyle = '#38bdf8';
+    ctx.letterSpacing = '1px';
+    ctx.fillText('PROGRAMA DE ALTA ESPECIALIZACIÓN EN INTELIGENCIA ARTIFICIAL GENERATIVA Y LLMS', 1200, 400);
+
+    // Línea divisoria
+    ctx.strokeStyle = 'rgba(251, 191, 36, 0.5)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(400, 440);
+    ctx.lineTo(2000, 440);
+    ctx.stroke();
+
+    // Texto de Concesión
+    ctx.font = 'italic 34px "Georgia", serif';
+    ctx.fillStyle = '#cbd5e1';
+    ctx.letterSpacing = '0px';
+    ctx.fillText('Por cuanto se certifica y reconoce formalmente con distinción a:', 1200, 520);
+
+    // Nombre del Estudiante
+    ctx.font = 'bold 78px "Times New Roman", serif, sans-serif';
+    ctx.fillStyle = '#ffffff';
+    ctx.fillText(studentName, 1200, 640);
+
+    // Línea bajo el nombre
+    ctx.strokeStyle = '#06b6d4';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(600, 675);
+    ctx.lineTo(1800, 675);
+    ctx.stroke();
+
+    // Cuerpo Descriptivo
+    ctx.font = '28px "Georgia", serif';
+    ctx.fillStyle = '#94a3b8';
+    const lines = [
+      'Por haber superado con éxito la rigurosa evaluación técnica de nivel de Maestría, demostrando dominio matemático',
+      'y aplicado en epistemología conexionista, diferenciación automática (DAG), optimizadores de frontera (AdamW),',
+      'teoría del Transformer ("Attention Is All You Need"), inferencia GPT estocástica, anclaje fáctico (Grounding RAG/GraphRAG),',
+      'evaluación formal (Harness) y diseño de sistemas agenciales autónomos.'
+    ];
+    lines.forEach((line, i) => {
+      ctx.fillText(line, 1200, 760 + i * 46);
+    });
+
+    // Badge de Calificación de Honor
+    ctx.font = 'bold 36px Inter, sans-serif';
+    ctx.fillStyle = '#10b981';
+    ctx.fillText(`Calificación de Honor: ${percent}% (Nivel de Maestría)`, 1200, 1020);
+
+    // 6. Sello Oficial Dorado (Insignia Circular)
+    const sealX = 1200;
+    const sealY = 1200;
+    const sealR = 90;
+
+    ctx.fillStyle = 'rgba(245, 158, 11, 0.15)';
+    ctx.beginPath();
+    ctx.arc(sealX, sealY, sealR, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.strokeStyle = '#f59e0b';
+    ctx.lineWidth = 5;
+    ctx.beginPath();
+    ctx.arc(sealX, sealY, sealR, 0, Math.PI * 2);
+    ctx.stroke();
+
+    ctx.font = 'bold 44px sans-serif';
+    ctx.fillStyle = '#fbbf24';
+    ctx.fillText('🎖️', sealX, sealY + 12);
+
+    ctx.font = 'bold 16px Inter, sans-serif';
+    ctx.fillStyle = '#f59e0b';
+    ctx.fillText('VERIFIED 2026', sealX, sealY + 60);
+
+    // 7. Pie de Certificado y Firmas
+    ctx.textAlign = 'left';
+    ctx.font = '24px Inter, sans-serif';
+    ctx.fillStyle = '#64748b';
+    ctx.fillText(`Fecha de Emisión: ${dateStr}`, 180, 1380);
+    ctx.fillText(`ID de Verificación: ${certHash}`, 180, 1420);
+
+    ctx.textAlign = 'right';
+    ctx.fillText('Firma Digital: CONSEJO TÉCNICO DOCENTE', 2220, 1380);
+    ctx.fillText('Curso IA Commercial · Certificación Oficial', 2220, 1420);
+
+    // Descarga directa
+    const safeName = studentName.replace(/[^a-zA-Z0-9_-]/g, '_');
+    const link = document.createElement('a');
+    link.download = `Certificado_IA_Commercial_${safeName}.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  }
+
   function toggleReviewMode() {
+    // Reset filtered questions to all questions
+    updateFilteredQuestions();
+    setMode('study');
+    window.scrollTo({ top: document.querySelector('.exam-main-panel').offsetTop - 80, behavior: 'smooth' });
+  }
+
+  function reviewFailedQuestions() {
+    // Filter only incorrectly answered questions
+    const failedList = EXAM_DATA.questions.filter(q => userAnswers[q.id] !== q.correct);
+    if (failedList.length === 0) {
+      alert('¡Excelente! No tienes preguntas falladas.');
+      return;
+    }
+    filteredQuestions = failedList;
+    currentQuestionIndex = 0;
     setMode('study');
     window.scrollTo({ top: document.querySelector('.exam-main-panel').offsetTop - 80, behavior: 'smooth' });
   }
