@@ -78,6 +78,7 @@ Curso_IA_Commercial/
 │   ├── 03-compendio-tecnico.html # Cuaderno 03: Compendio Técnico
 │   ├── 04-el-universo-del-transformer.html # Cuaderno 04: Transformers & GPT Lifecycle
 │   ├── 05-paradigmas-y-computacion.html # Cuaderno 05: Compendio 7 Módulos
+│   ├── 06-m365-copilot-banca-comercial.html # Cuaderno 06: M365 Copilot en Banca Comercial Tier 1
 │   └── _template.html          # Plantilla para nuevos cuadernos
 ├── js/
 │   ├── main.js                 # Control de tema, modo Zen, progreso de lectura

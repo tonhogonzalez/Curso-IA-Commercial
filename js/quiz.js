@@ -366,6 +366,59 @@
         correct: 0,
         explanation: "Un Harness estandariza la batería de exámenes, el formateo de prompts y la extracción objetiva de respuestas numéricas o de opción múltiple, evitando la subjetividad de pruebas no controladas."
       }
+    ],
+
+    "06-m365-copilot-banca-comercial": [
+      {
+        question: "¿Cuáles son los cuatro componentes obligatorios del Framework OCFE para ingeniería de prompts en banca corporativa?",
+        options: [
+          "Objetivo (Goal), Contexto (Context), Fuente (Source) y Expectativas (Expectations).",
+          "Origen, Calidad, Frecuencia y Eficiencia.",
+          "Orden, Causalidad, Formato y Estilo."
+        ],
+        correct: 0,
+        explanation: "El framework OCFE garantiza instrucciones estructuradas y un anclaje inequívoco (grounding), evitando que el LLM recurra a promedios probabilísticos generales y previniendo alucinaciones en análisis de riesgos o contratos."
+      },
+      {
+        question: "¿Qué diferencia crítica aporta Copilot Notebooks (Cuadernos) frente al chat conversacional estándar de Microsoft 365 Copilot?",
+        options: [
+          "Aplica Grounding Restrictivo Absoluto: desactiva las consultas abiertas al grafo general o web y procesa inferencias exclusivamente sobre un sandbox de hasta 300 referencias explícitamente cargadas.",
+          "Solo funciona con comandos por voz y no admite texto.",
+          "No permite guardar instrucciones personalizadas de comportamiento (Custom Instructions)."
+        ],
+        correct: 0,
+        explanation: "Los Cuadernos de Copilot actúan como sandboxes aislados y curados, limitando el espacio de atención a documentos cargados explícitamente (ej. balances, tasaciones, contratos), eliminando el riesgo de contaminación informativa."
+      },
+      {
+        question: "¿En qué escenario técnico es indispensable recurrir a Copilot Studio en lugar del Agent Builder no-code?",
+        options: [
+          "Cuando se requiere modelar lógica conversacional visual compleja, integrar conectores de Power Platform / Dataverse, gestionar variables de contexto y controlar el ciclo de vida ALM.",
+          "Únicamente cuando el usuario no tiene cuenta de correo corporativo.",
+          "Cuando se desea traducir un correo simple entre inglés y español."
+        ],
+        correct: 0,
+        explanation: "Copilot Studio es la plataforma low-code empresarial para orquestación avanzada, integración con sistemas core bancarios mediante conectores de Power Platform y gobernanza estricta del ciclo de vida (ALM)."
+      },
+      {
+        question: "Al analizar riesgos crediticios con Python integrado en Microsoft Excel, ¿cuál es el beneficio de ejecutar simulaciones Monte Carlo?",
+        options: [
+          "Proyectar la distribución de Pérdida Esperada (Expected Loss) y centiles de estrés mediante miles de iteraciones estocásticas sobre parámetros de PD, LGD y EAD directamente en la hoja.",
+          "Reducir automáticamente el tipo de interés pactado con el cliente corporativo.",
+          "Eliminar la necesidad de auditar los estados financieros del deudor."
+        ],
+        correct: 0,
+        explanation: "Python en Excel permite ejecutar modelos estocásticos avanzados como Monte Carlo (ej. 10.000 iteraciones) para cuantificar la dispersión de pérdidas y evaluar la solidez del capital económico ante escenarios adversos."
+      },
+      {
+        question: "¿Qué directriz de seguridad operativa debe incluirse obligatoriamente en las System Instructions de un agente bancario (ej. CreditRisk o AML Advisor)?",
+        options: [
+          "Indicar de forma taxativa que si faltan datos financieros en las fuentes escriba 'INFORMACIÓN NO DISPONIBLE', proteger secretos y heredar etiquetas de sensibilidad Purview (Confidencial).",
+          "Permitir que el agente adivine cifras aproximadas de EBITDA basándose en empresas de la competencia.",
+          "Desactivar el cumplimiento de normativas de protección de datos (RGPD) para acelerar las respuestas."
+        ],
+        correct: 0,
+        explanation: "Las directrices de un agente corporativo deben prohibir la invención de datos financieros no verificados, aplicar el principio de menor privilegio y asegurar el etiquetado estricto de sensibilidad de la información."
+      }
     ]
   };
 
