@@ -1,12 +1,13 @@
 /**
  * CURSO IA COMMERCIAL - Comparador de Arquitecturas LLM & Intelligence Index
- * Integración de análisis y métricas de Artificial Analysis (artificialanalysis.ai)
+ * Datos indexados de Artificial Analysis (artificialanalysis.ai)
+ * Intelligence Index v4.1.1 — Última actualización: Agosto 2026
  * 
  * Incluye:
- * - Artificial Analysis Quality Index (Índice de Inteligencia / Calidad)
+ * - Artificial Analysis Intelligence Index v4.1.1 (Agents 34%, Coding 24%, Science 24%, General 18%)
  * - Velocidad de Inferencia (Tokens/segundo) & Latencia Primer Token (TTFT)
  * - Precios API ($/1M tokens Input & Output)
- * - Benchmarks Duros (GPQA Diamond, MATH 500, MMLU-Pro, HumanEval/SWE)
+ * - Benchmarks Duros (GPQA Diamond, MATH 500, MMLU-Pro, SWE-bench/FrontierCode)
  * - Gráfico Interactivo de Dispersión "Velocidad vs Calidad / Precio" (Canvas)
  * - Radar Charts de Habilidades Multidimensionales
  * - Comparador Cara a Cara Side-by-Side
@@ -15,326 +16,291 @@
 (function() {
     'use strict';
 
-    // Modelos con métricas reales alineadas con Artificial Analysis (Leaderboard 2025/2026)
+    // Fecha de última actualización de datos (para mostrar en la UI)
+    const DATA_LAST_UPDATED = '2026-08-21';
+    const AA_INDEX_VERSION = 'v4.1.1';
+
+    // Modelos con métricas reales alineadas con Artificial Analysis Intelligence Index v4.1.1 (Agosto 2026)
     const models = [
         {
-            id: 'deepseek-r1',
-            name: 'DeepSeek-R1',
-            company: 'DeepSeek',
-            type: 'reasoning',
-            params: '671B MoE (37B activos)',
-            paramsNum: 671,
-            contextWindow: '128K tokens',
-            contextNum: 128000,
-            training: 'RL a gran escala (GRPO) + Cold Start SFT',
-            architecture: 'Transformer MoE + Multi-Head Latent Attention (MLA)',
-            license: 'Open Source (MIT)',
-            category: 'open-source',
-            aaQualityIndex: 92, // Artificial Analysis Quality Index (0-100)
-            speedTokensSec: 32, // Tokens/segundo
-            ttftSec: 0.85, // Time to First Token (seg)
-            inputPricePerM: 0.55, // $ por 1M tokens input
-            outputPricePerM: 2.19, // $ por 1M tokens output
-            benchmarks: {
-                GPQA: 65.9,     // GPQA Diamond (Doctoral Level Reasoning)
-                MATH: 97.3,     // MATH 500 (Olimpiadas matemáticas)
-                MMLU_Pro: 84.0, // MMLU-Pro (Conocimiento general avanzado)
-                Coding: 92.5,   // SWE-bench / HumanEval composite
-                ArenaElo: 1360  // Arena / Composite Quality
-            },
-            releaseDate: '2025-01',
-            highlights: 'Razonamiento profundo con RL puro (GRPO). Rendimiento comparable a o1 a una fracción del coste computacional.',
-            concepts: ['MoE', 'RLHF', 'MLA', 'Cuaderno 04 (Arquitecturas)', 'Cuaderno 05 (Entrenamiento)']
-        },
-        {
-            id: 'openai-o1',
-            name: 'OpenAI o1',
-            company: 'OpenAI',
-            type: 'reasoning',
-            params: '~300B+ MoE (estimado)',
-            paramsNum: 300,
-            contextWindow: '200K tokens',
-            contextNum: 200000,
-            training: 'Large-scale RL with Chain-of-Thought search',
-            architecture: 'Transformer Decoder-Only + Test-Time Compute',
-            license: 'Propietario',
-            category: 'propietario',
-            aaQualityIndex: 93,
-            speedTokensSec: 45,
-            ttftSec: 2.10,
-            inputPricePerM: 15.00,
-            outputPricePerM: 60.00,
-            benchmarks: {
-                GPQA: 77.3,
-                MATH: 96.4,
-                MMLU_Pro: 86.2,
-                Coding: 94.0,
-                ArenaElo: 1375
-            },
-            releaseDate: '2024-12',
-            highlights: 'Pionero en escalado de cómputo en tiempo de inferencia (Test-Time Compute) para matemáticas, código y ciencias duras.',
-            concepts: ['Test-Time Compute', 'Chain-of-Thought', 'RLHF', 'Cuaderno 02 (Prompting)', 'Cuaderno 05 (Paradigmas)']
-        },
-        {
-            id: 'openai-o3-mini',
-            name: 'OpenAI o3-mini',
-            company: 'OpenAI',
-            type: 'reasoning',
-            params: '~50B (estimado)',
-            paramsNum: 50,
-            contextWindow: '200K tokens',
-            contextNum: 200000,
-            training: 'RL de alta eficiencia enfocado en STEM',
-            architecture: 'Transformer Decoder-Only Compacto',
-            license: 'Propietario',
-            category: 'propietario',
-            aaQualityIndex: 89,
-            speedTokensSec: 92,
-            ttftSec: 1.15,
-            inputPricePerM: 1.10,
-            outputPricePerM: 4.40,
-            benchmarks: {
-                GPQA: 79.7,
-                MATH: 97.9,
-                MMLU_Pro: 82.8,
-                Coding: 93.2,
-                ArenaElo: 1340
-            },
-            releaseDate: '2025-01',
-            highlights: 'Razonamiento especializado ultrarrápido y accesible con control de esfuerzo de pensamiento (low/medium/high).',
-            concepts: ['Chain-of-Thought', 'STEM Reasoning', 'Cuaderno 03 (Optimización)']
-        },
-        {
-            id: 'claude-3-5-sonnet',
-            name: 'Claude 3.5 Sonnet',
+            id: 'claude-opus-5',
+            name: 'Claude Opus 5',
             company: 'Anthropic',
-            type: 'frontier',
-            params: '~175B (estimado)',
-            paramsNum: 175,
-            contextWindow: '200K tokens',
-            contextNum: 200000,
-            training: 'Pre-train + RLHF + Constitutional AI',
-            architecture: 'Transformer Decoder-Only',
-            license: 'Propietario',
-            category: 'propietario',
-            aaQualityIndex: 91,
-            speedTokensSec: 68,
-            ttftSec: 0.72,
-            inputPricePerM: 3.00,
-            outputPricePerM: 15.00,
-            benchmarks: {
-                GPQA: 65.0,
-                MATH: 78.3,
-                MMLU_Pro: 88.7,
-                Coding: 93.7,
-                ArenaElo: 1355
-            },
-            releaseDate: '2024-10',
-            highlights: 'Líder en programación agencial, análisis visual y redacción con matices conceptuales y Constitutional AI.',
-            concepts: ['Constitutional AI', 'Agentes Autónomos', 'Cuaderno 02 (Alineamiento)', 'Cuaderno 03 (Agentes)']
-        },
-        {
-            id: 'gpt-4o',
-            name: 'GPT-4o',
-            company: 'OpenAI',
-            type: 'frontier',
-            params: '~200B (estimado)',
-            paramsNum: 200,
-            contextWindow: '128K tokens',
-            contextNum: 128000,
-            training: 'Pre-train omnimodal + SFT + RLHF',
-            architecture: 'Transformer Omnimodal Nativo',
-            license: 'Propietario',
-            category: 'propietario',
-            aaQualityIndex: 88,
-            speedTokensSec: 82,
-            ttftSec: 0.48,
-            inputPricePerM: 2.50,
-            outputPricePerM: 10.00,
-            benchmarks: {
-                GPQA: 53.6,
-                MATH: 76.6,
-                MMLU_Pro: 85.2,
-                Coding: 90.2,
-                ArenaElo: 1330
-            },
-            releaseDate: '2024-05',
-            highlights: 'Omnimodal nativo (voz, visión, texto) con baja latencia y alta consistencia en tareas de producción general.',
-            concepts: ['Multimodalidad', 'RLHF', 'Inferencia LLM', 'Cuaderno 04 (Transformers)']
-        },
-        {
-            id: 'gemini-2-0-flash',
-            name: 'Gemini 2.0 Flash',
-            company: 'Google DeepMind',
-            type: 'speed',
-            params: '~40B (estimado)',
-            paramsNum: 40,
+            type: 'reasoning',
+            params: 'No publicado (MoE estimado)',
+            paramsNum: 0,
             contextWindow: '1M tokens',
             contextNum: 1000000,
-            training: 'Pre-train multimodal + RLHF masivo de alta velocidad',
-            architecture: 'Transformer Multimodal Eficiente',
+            training: 'Pre-train + RLHF + Constitutional AI + Adaptive Thinking',
+            architecture: 'Transformer Decoder-Only + Adaptive Thinking (Extended Reasoning)',
             license: 'Propietario',
             category: 'propietario',
-            aaQualityIndex: 86,
-            speedTokensSec: 152, // Extraordinaria velocidad
-            ttftSec: 0.32,
-            inputPricePerM: 0.10,
-            outputPricePerM: 0.40,
+            aaQualityIndex: 63, // AA Intelligence Index v4.1.1 (0-100)
+            speedTokensSec: 55,
+            ttftSec: 0.90,
+            inputPricePerM: 5.00,
+            outputPricePerM: 25.00,
             benchmarks: {
-                GPQA: 56.8,
-                MATH: 81.5,
-                MMLU_Pro: 82.5,
-                Coding: 89.0,
-                ArenaElo: 1320
+                GPQA: 93.2,     // GPQA Diamond (%)
+                MATH: 96.8,     // MATH 500 (%)
+                MMLU_Pro: 89.5,  // MMLU-Pro (%)
+                Coding: 96.0    // SWE-bench Verified / FrontierCode composite (%)
             },
-            releaseDate: '2024-12',
-            highlights: 'Líder absoluto en velocidad y coste: 152 tokens/s a $0.10/$0.40 por 1M con contexto masivo de 1M tokens.',
-            concepts: ['KV Cache', 'Inferencia Eficiente', 'Cuaderno 03 (Inferencia)', 'Cuaderno 05 (Grounding)']
+            releaseDate: '2026-07',
+            highlights: 'N.º 1 del Intelligence Index (63). Razonamiento adaptativo por defecto con deep thinking para tareas agénticas complejas, multi-paso y enterprise.',
+            concepts: ['Constitutional AI', 'Adaptive Thinking', 'Agentes Autónomos', 'Cuaderno 02 (Alineamiento)', 'Cuaderno 01 (Pep Martorell)']
         },
         {
-            id: 'deepseek-v3',
-            name: 'DeepSeek-V3',
-            company: 'DeepSeek',
-            type: 'frontier',
-            params: '671B MoE (37B activos)',
-            paramsNum: 671,
-            contextWindow: '128K tokens',
-            contextNum: 128000,
-            training: 'Pre-train en 14.8T tokens + Multi-Token Prediction',
-            architecture: 'Transformer MoE + MLA + FP8 Mixto',
-            license: 'Open Source (MIT)',
-            category: 'open-source',
-            aaQualityIndex: 88,
-            speedTokensSec: 64,
-            ttftSec: 0.65,
-            inputPricePerM: 0.27,
-            outputPricePerM: 1.10,
-            benchmarks: {
-                GPQA: 59.1,
-                MATH: 89.3,
-                MMLU_Pro: 87.1,
-                Coding: 89.5,
-                ArenaElo: 1335
-            },
-            releaseDate: '2024-12',
-            highlights: 'Arquitectura MoE hiperoptimizada (37B activos de 671B) con Multi-head Latent Attention para minimizar la memoria de KV Cache.',
-            concepts: ['MoE', 'MLA', 'Multi-Token Prediction', 'Cuaderno 04 (Arquitecturas)']
-        },
-        {
-            id: 'llama-3-3-70b',
-            name: 'Llama 3.3 70B',
-            company: 'Meta',
-            type: 'frontier',
-            params: '70B',
-            paramsNum: 70,
-            contextWindow: '128K tokens',
-            contextNum: 128000,
-            training: 'Pre-train en 15T+ tokens + SFT + DPO',
-            architecture: 'Transformer Decoder-Only Dense + GQA',
-            license: 'Open Source (Llama 3.3 License)',
-            category: 'open-source',
-            aaQualityIndex: 85,
-            speedTokensSec: 96,
-            ttftSec: 0.38,
-            inputPricePerM: 0.20,
-            outputPricePerM: 0.60,
-            benchmarks: {
-                GPQA: 51.5,
-                MATH: 78.4,
-                MMLU_Pro: 83.2,
-                Coding: 87.0,
-                ArenaElo: 1315
-            },
-            releaseDate: '2024-12',
-            highlights: 'Rendimiento de Llama 3.1 405B comprimido en 70B parámetros gracias a técnicas de destilación y post-entrenamiento.',
-            concepts: ['Grouped-Query Attention (GQA)', 'DPO', 'Cuaderno 04 (RoPE/MHA)', 'Cuaderno 05 (SFT)']
-        },
-        {
-            id: 'llama-3-1-405b',
-            name: 'Llama 3.1 405B',
-            company: 'Meta',
-            type: 'frontier',
-            params: '405B',
-            paramsNum: 405,
-            contextWindow: '128K tokens',
-            contextNum: 128000,
-            training: 'Pre-train en 15T tokens en 16K H100s + SFT + DPO',
-            architecture: 'Transformer Decoder-Only Denso Gigante + GQA',
-            license: 'Open Source (Llama 3.1 License)',
-            category: 'open-source',
-            aaQualityIndex: 88,
-            speedTokensSec: 36,
-            ttftSec: 0.95,
-            inputPricePerM: 1.80,
-            outputPricePerM: 3.50,
-            benchmarks: {
-                GPQA: 51.1,
-                MATH: 73.8,
-                MMLU_Pro: 88.6,
-                Coding: 89.0,
-                ArenaElo: 1332
-            },
-            releaseDate: '2024-07',
-            highlights: 'El mayor modelo de pesos abiertos del mundo: referencia para destilación sintética y evaluación independiente.',
-            concepts: ['Supercomputación', 'GQA', 'Cuaderno 01 (Pep Martorell)', 'Cuaderno 05 (Evaluation)']
-        },
-        {
-            id: 'qwen-2-5-72b',
-            name: 'Qwen 2.5 72B',
-            company: 'Alibaba Cloud',
-            type: 'frontier',
-            params: '72B',
-            paramsNum: 72,
-            contextWindow: '128K tokens',
-            contextNum: 128000,
-            training: 'Pre-train en 18T tokens multilingües + SFT + RLHF',
-            architecture: 'Transformer Decoder-Only + RoPE + SwiGLU',
-            license: 'Open Source (Apache 2.0)',
-            category: 'open-source',
-            aaQualityIndex: 86,
-            speedTokensSec: 84,
-            ttftSec: 0.42,
-            inputPricePerM: 0.35,
-            outputPricePerM: 0.90,
-            benchmarks: {
-                GPQA: 52.0,
-                MATH: 83.1,
-                MMLU_Pro: 86.1,
-                Coding: 86.5,
-                ArenaElo: 1322
-            },
-            releaseDate: '2024-09',
-            highlights: 'Excelente solidez matemática y en código bajo licencia permisiva Apache 2.0. Líder del ecosistema abierto asiático.',
-            concepts: ['RoPE', 'SwiGLU', 'Cuaderno 04 (Codificación Posicional)', 'Cuaderno 05 (Harness)']
-        },
-        {
-            id: 'mistral-large-2',
-            name: 'Mistral Large 2',
-            company: 'Mistral AI',
-            type: 'frontier',
-            params: '123B',
-            paramsNum: 123,
-            contextWindow: '128K tokens',
-            contextNum: 128000,
-            training: 'Pre-train enfocado en código, razonamiento y 80+ idiomas',
-            architecture: 'Transformer Decoder-Only',
-            license: 'Propietario / Research OK',
+            id: 'claude-fable-5',
+            name: 'Claude Fable 5',
+            company: 'Anthropic',
+            type: 'reasoning',
+            params: 'No publicado',
+            paramsNum: 0,
+            contextWindow: '1M tokens',
+            contextNum: 1000000,
+            training: 'Pre-train + RLHF + Constitutional AI + Deep Research',
+            architecture: 'Transformer Decoder-Only + Deep Orchestration',
+            license: 'Propietario',
             category: 'propietario',
-            aaQualityIndex: 84,
-            speedTokensSec: 58,
-            ttftSec: 0.55,
+            aaQualityIndex: 62,
+            speedTokensSec: 42,
+            ttftSec: 1.20,
+            inputPricePerM: 8.00,
+            outputPricePerM: 40.00,
+            benchmarks: {
+                GPQA: 94.5,
+                MATH: 97.2,
+                MMLU_Pro: 90.1,
+                Coding: 97.5
+            },
+            releaseDate: '2026-07',
+            highlights: 'Modelo de razonamiento profundo con fallback orquestado. Máximo rendimiento en benchmarks duros de investigación (GPQA 94.5%, SWE-bench 97.5%).',
+            concepts: ['Deep Research', 'Orchestration', 'Cuaderno 05 (Paradigmas)', 'Cuaderno 03 (Agentes)']
+        },
+        {
+            id: 'gpt-5-6-sol',
+            name: 'GPT-5.6 Sol',
+            company: 'OpenAI',
+            type: 'reasoning',
+            params: 'No publicado (MoE estimado)',
+            paramsNum: 0,
+            contextWindow: '1.05M tokens',
+            contextNum: 1050000,
+            training: 'Pre-train masivo + RL + reasoning modes (max/ultra)',
+            architecture: 'Transformer Decoder-Only MoE + Test-Time Compute escalado',
+            license: 'Propietario',
+            category: 'propietario',
+            aaQualityIndex: 61,
+            speedTokensSec: 65,
+            ttftSec: 0.70,
+            inputPricePerM: 5.00,
+            outputPricePerM: 30.00,
+            benchmarks: {
+                GPQA: 94.6,
+                MATH: 96.0,
+                MMLU_Pro: 88.8,
+                Coding: 96.2
+            },
+            releaseDate: '2026-07',
+            highlights: 'Flagship de OpenAI con modos de razonamiento "max" y "ultra" para orquestación multi-agente. 750 t/s en modo Ultrafast (Cerebras).',
+            concepts: ['Test-Time Compute', 'Chain-of-Thought', 'Cuaderno 04 (Transformers)', 'Cuaderno 05 (Paradigmas)']
+        },
+        {
+            id: 'grok-4-6',
+            name: 'Grok 4.6',
+            company: 'xAI',
+            type: 'reasoning',
+            params: 'No publicado',
+            paramsNum: 0,
+            contextWindow: '500K tokens',
+            contextNum: 500000,
+            training: 'Pre-train + RL enfocado en agentes de larga duración',
+            architecture: 'Transformer Decoder-Only + Agentes Persistentes',
+            license: 'Propietario',
+            category: 'propietario',
+            aaQualityIndex: 61,
+            speedTokensSec: 70,
+            ttftSec: 0.60,
             inputPricePerM: 2.00,
             outputPricePerM: 6.00,
             benchmarks: {
-                GPQA: 47.0,
-                MATH: 68.8,
-                MMLU_Pro: 84.0,
-                Coding: 85.0,
-                ArenaElo: 1305
+                GPQA: 94.9,
+                MATH: 95.5,
+                MMLU_Pro: 87.2,
+                Coding: 93.8
             },
-            releaseDate: '2024-07',
-            highlights: 'Modelo insignia europeo de Mistral AI con gran capacidad de razonamiento multilingüe y llamada a funciones (Function Calling).',
-            concepts: ['Function Calling', 'Pre-LN', 'Cuaderno 03 (Agentes)', 'Cuaderno 05 (Paradigmas)']
+            releaseDate: '2026-08',
+            highlights: 'Líder absoluto en GPQA Diamond (94.9%). Mejor relación calidad/precio entre modelos reasoning ($2/$6 por 1M). Agentes de larga duración.',
+            concepts: ['Agentes Persistentes', 'Cuaderno 03 (Agentes)', 'Cuaderno 01 (Pep Martorell)']
+        },
+        {
+            id: 'deepseek-v4-pro',
+            name: 'DeepSeek V4-Pro',
+            company: 'DeepSeek',
+            type: 'frontier',
+            params: '1.6T MoE (49B activos)',
+            paramsNum: 1600,
+            contextWindow: '1M tokens',
+            contextNum: 1000000,
+            training: 'Pre-train + RL + Compressed Sparse Attention (CSA)',
+            architecture: 'Transformer MoE + CSA + Heavily Compressed Attention',
+            license: 'Open Source',
+            category: 'open-source',
+            aaQualityIndex: 61,
+            speedTokensSec: 48,
+            ttftSec: 0.80,
+            inputPricePerM: 0.50,
+            outputPricePerM: 2.00,
+            benchmarks: {
+                GPQA: 88.5,
+                MATH: 93.8,
+                MMLU_Pro: 88.0,
+                Coding: 80.6
+            },
+            releaseDate: '2026-07',
+            highlights: 'MoE masivo (1.6T total, 49B activos) con atención comprimida para 1M de contexto eficiente. Open-source y a precio ultra-competitivo ($0.50/$2.00).',
+            concepts: ['MoE', 'Compressed Attention', 'Cuaderno 04 (Arquitecturas)', 'Cuaderno 05 (Entrenamiento)']
+        },
+        {
+            id: 'gpt-5-6-terra',
+            name: 'GPT-5.6 Terra',
+            company: 'OpenAI',
+            type: 'frontier',
+            params: 'No publicado',
+            paramsNum: 0,
+            contextWindow: '1.05M tokens',
+            contextNum: 1050000,
+            training: 'Destilación de Sol + SFT + RLHF',
+            architecture: 'Transformer Decoder-Only optimizado',
+            license: 'Propietario',
+            category: 'propietario',
+            aaQualityIndex: 58,
+            speedTokensSec: 90,
+            ttftSec: 0.50,
+            inputPricePerM: 2.50,
+            outputPricePerM: 15.00,
+            benchmarks: {
+                GPQA: 85.0,
+                MATH: 90.5,
+                MMLU_Pro: 86.5,
+                Coding: 91.0
+            },
+            releaseDate: '2026-07',
+            highlights: 'Tier intermedio "equilibrado" de la familia GPT-5.6: calidad elevada a velocidad y coste accesibles para desarrollo cotidiano.',
+            concepts: ['Destilación', 'RLHF', 'Cuaderno 03 (Optimización)', 'Cuaderno 04 (Transformers)']
+        },
+        {
+            id: 'gemini-3-7-flash',
+            name: 'Gemini 3.7 Flash',
+            company: 'Google DeepMind',
+            type: 'speed',
+            params: 'No publicado',
+            paramsNum: 0,
+            contextWindow: '1M tokens',
+            contextNum: 1000000,
+            training: 'Pre-train multimodal + RLHF + Algorithmic Reasoning',
+            architecture: 'Transformer Multimodal Eficiente + First-Pass Accuracy',
+            license: 'Propietario',
+            category: 'propietario',
+            aaQualityIndex: 56,
+            speedTokensSec: 195,
+            ttftSec: 0.25,
+            inputPricePerM: 0.75,
+            outputPricePerM: 3.75,
+            benchmarks: {
+                GPQA: 72.5,
+                MATH: 85.0,
+                MMLU_Pro: 84.2,
+                Coding: 65.3
+            },
+            releaseDate: '2026-08',
+            highlights: 'Velocidad extraordinaria (195 t/s) con precio introductorio agresivo. DeepSWE 65.3% (+33% vs 3.6 Flash). Multimodal nativo.',
+            concepts: ['KV Cache', 'Inferencia Eficiente', 'Multimodalidad', 'Cuaderno 03 (Inferencia)', 'Cuaderno 05 (Grounding)']
+        },
+        {
+            id: 'mistral-large-3',
+            name: 'Mistral Large 3',
+            company: 'Mistral AI',
+            type: 'frontier',
+            params: '~200B (estimado)',
+            paramsNum: 200,
+            contextWindow: '256K tokens',
+            contextNum: 256000,
+            training: 'Pre-train multilingüe + RL + Function Calling avanzado',
+            architecture: 'Transformer Decoder-Only + Sliding Window Attention',
+            license: 'Propietario',
+            category: 'propietario',
+            aaQualityIndex: 55,
+            speedTokensSec: 75,
+            ttftSec: 0.45,
+            inputPricePerM: 2.00,
+            outputPricePerM: 6.00,
+            benchmarks: {
+                GPQA: 68.0,
+                MATH: 82.5,
+                MMLU_Pro: 86.0,
+                Coding: 84.0
+            },
+            releaseDate: '2026-05',
+            highlights: 'Modelo insignia europeo con razonamiento multilingüe avanzado (80+ idiomas) y Function Calling de producción.',
+            concepts: ['Function Calling', 'Sliding Window Attention', 'Cuaderno 03 (Agentes)', 'Cuaderno 05 (Paradigmas)']
+        },
+        {
+            id: 'llama-4-maverick',
+            name: 'Llama 4 Maverick',
+            company: 'Meta',
+            type: 'frontier',
+            params: '400B MoE (17B activos)',
+            paramsNum: 400,
+            contextWindow: '1M tokens',
+            contextNum: 1000000,
+            training: 'Pre-train multimodal + Early Fusion + SFT + DPO',
+            architecture: 'Transformer MoE Sparse + Early Fusion Multimodal',
+            license: 'Open Source (Llama 4 License)',
+            category: 'open-source',
+            aaQualityIndex: 54,
+            speedTokensSec: 120,
+            ttftSec: 0.35,
+            inputPricePerM: 0.20,
+            outputPricePerM: 0.80,
+            benchmarks: {
+                GPQA: 62.0,
+                MATH: 80.5,
+                MMLU_Pro: 84.0,
+                Coding: 82.5
+            },
+            releaseDate: '2026-01',
+            highlights: 'Arquitectura MoE sparse con Early Fusion nativa para multimodalidad. 17B activos de 400B totales. Líder open-source en eficiencia.',
+            concepts: ['MoE Sparse', 'Early Fusion', 'DPO', 'Cuaderno 04 (Arquitecturas)', 'Cuaderno 05 (SFT)']
+        },
+        {
+            id: 'gpt-5-6-luna',
+            name: 'GPT-5.6 Luna',
+            company: 'OpenAI',
+            type: 'speed',
+            params: 'No publicado (compacto)',
+            paramsNum: 0,
+            contextWindow: '1.05M tokens',
+            contextNum: 1050000,
+            training: 'Destilación agresiva de Sol/Terra + optimización de latencia',
+            architecture: 'Transformer Decoder-Only Ultra-Eficiente',
+            license: 'Propietario',
+            category: 'propietario',
+            aaQualityIndex: 52,
+            speedTokensSec: 180,
+            ttftSec: 0.30,
+            inputPricePerM: 1.00,
+            outputPricePerM: 6.00,
+            benchmarks: {
+                GPQA: 60.0,
+                MATH: 78.0,
+                MMLU_Pro: 80.5,
+                Coding: 82.0
+            },
+            releaseDate: '2026-07',
+            highlights: 'Tier rápido y económico de GPT-5.6: 180 t/s para clasificación, resumen y pipelines de alto volumen a bajo coste.',
+            concepts: ['Destilación', 'Inferencia Eficiente', 'Cuaderno 03 (Optimización)', 'Cuaderno 02 (Prompting)']
         }
     ];
 
@@ -347,7 +313,7 @@
         sortOrder: 'desc', // 'desc' | 'asc'
         scatterXAxis: 'speedTokensSec', // 'speedTokensSec' | 'inputPricePerM' | 'ttftSec'
         scatterYAxis: 'aaQualityIndex',
-        selectedModels: ['deepseek-r1', 'openai-o1', 'claude-3-5-sonnet'], // pre-selected for rich demo
+        selectedModels: ['claude-opus-5', 'gpt-5-6-sol', 'grok-4-6'], // pre-selected for rich demo
         compareModalOpen: false
     };
 
@@ -973,14 +939,14 @@
         ctx.clearRect(0, 0, w, h);
 
         // Determine X & Y Ranges
-        let xMin = 0, xMax = 180, xLabel = 'Velocidad de Inferencia (Tokens / segundo)';
+        let xMin = 0, xMax = 210, xLabel = 'Velocidad de Inferencia (Tokens / segundo)';
         if (state.scatterXAxis === 'inputPricePerM') {
-            xMin = 0; xMax = 16; xLabel = 'Coste Entrada API ($ por 1M Tokens)';
+            xMin = 0; xMax = 10; xLabel = 'Coste Entrada API ($ por 1M Tokens)';
         } else if (state.scatterXAxis === 'ttftSec') {
-            xMin = 0; xMax = 2.5; xLabel = 'Latencia Primer Token TTFT (segundos)';
+            xMin = 0; xMax = 1.5; xLabel = 'Latencia Primer Token TTFT (segundos)';
         }
 
-        const yMin = 75, yMax = 100, yLabel = 'Artificial Analysis Quality Index (0-100)';
+        const yMin = 45, yMax = 70, yLabel = 'Artificial Analysis Intelligence Index ' + AA_INDEX_VERSION;
 
         // Grid lines
         ctx.strokeStyle = 'rgba(255, 255, 255, 0.07)';
@@ -990,7 +956,7 @@
         ctx.textAlign = 'right';
 
         // Y Axis Grid & Labels
-        for (let yVal = 80; yVal <= 100; yVal += 5) {
+        for (let yVal = 50; yVal <= 65; yVal += 5) {
             const y = pad.top + (1 - (yVal - yMin) / (yMax - yMin)) * (h - pad.top - pad.bottom);
             ctx.beginPath();
             ctx.moveTo(pad.left, y);
@@ -1001,7 +967,7 @@
 
         // X Axis Grid & Labels
         ctx.textAlign = 'center';
-        const xStep = state.scatterXAxis === 'speedTokensSec' ? 30 : (state.scatterXAxis === 'inputPricePerM' ? 3 : 0.5);
+        const xStep = state.scatterXAxis === 'speedTokensSec' ? 30 : (state.scatterXAxis === 'inputPricePerM' ? 2 : 0.3);
         for (let xVal = xMin; xVal <= xMax; xVal += xStep) {
             const x = pad.left + ((xVal - xMin) / (xMax - xMin)) * (w - pad.left - pad.right);
             ctx.beginPath();
@@ -1137,13 +1103,16 @@
                         <div class="mc-header-box">
                             <div>
                                 <h3 class="mc-header-title">
-                                    <span>🧠</span> Comparador de Modelos & Quality Index
+                                    <span>🧠</span> Comparador de Modelos & Intelligence Index
                                 </h3>
                                 <p style="margin: 0.35rem 0 0 0; font-size: 0.85rem; color: var(--text-secondary);">
                                     Evaluación técnica independiente de inteligencia, rendimiento en tokens/s, latencia y costes de API.
                                 </p>
+                                <p style="margin: 0.25rem 0 0 0; font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono);">
+                                    📅 Datos actualizados: ${DATA_LAST_UPDATED} · Intelligence Index ${AA_INDEX_VERSION}
+                                </p>
                             </div>
-                            <a href="https://artificialanalysis.ai/#intelligence" target="_blank" rel="noopener" class="mc-attribution" title="Ver líderboards en vivo en Artificial Analysis">
+                            <a href="https://artificialanalysis.ai/leaderboards/models" target="_blank" rel="noopener" class="mc-attribution" title="Ver leaderboard en vivo en Artificial Analysis">
                                 <span>🌐 Datos indexados de <strong>Artificial Analysis</strong></span>
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
                             </a>
@@ -1230,9 +1199,9 @@
                                         <h4 class="mc-card-title">${m.name}</h4>
                                         <div class="mc-card-company">${m.company} · ${m.license}</div>
                                     </div>
-                                    <div class="mc-quality-badge" title="Artificial Analysis Quality Index">
+                                    <div class="mc-quality-badge" title="Artificial Analysis Intelligence Index ${AA_INDEX_VERSION}">
                                         <span class="mc-quality-num">${m.aaQualityIndex}</span>
-                                        <span class="mc-quality-label">AA INDEX</span>
+                                        <span class="mc-quality-label">AA INTEL</span>
                                     </div>
                                 </div>
 
@@ -1313,7 +1282,7 @@
                                 <tr>
                                     <th data-sort="name">Modelo</th>
                                     <th data-sort="company">Proveedor</th>
-                                    <th data-sort="aaQualityIndex" class="${state.sortBy === 'aaQualityIndex' ? 'sorted-' + state.sortOrder : ''}">AA Quality Index</th>
+                                    <th data-sort="aaQualityIndex" class="${state.sortBy === 'aaQualityIndex' ? 'sorted-' + state.sortOrder : ''}">AA Intelligence Index</th>
                                     <th data-sort="speedTokensSec" class="${state.sortBy === 'speedTokensSec' ? 'sorted-' + state.sortOrder : ''}">Velocidad (t/s)</th>
                                     <th data-sort="ttftSec" class="${state.sortBy === 'ttftSec' ? 'sorted-' + state.sortOrder : ''}">Latencia TTFT</th>
                                     <th data-sort="inputPricePerM" class="${state.sortBy === 'inputPricePerM' ? 'sorted-' + state.sortOrder : ''}">Precio In ($/1M)</th>
@@ -1367,7 +1336,7 @@
                                         </div>
 
                                         <div style="background: var(--bg-primary); padding: 0.75rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
-                                            <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">AA Quality Index</div>
+                                            <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">AA Intelligence Index</div>
                                             <div style="font-size: 1.6rem; font-weight: 800; color: var(--accent-violet);">${m.aaQualityIndex}/100</div>
                                         </div>
 
