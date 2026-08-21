@@ -206,6 +206,7 @@
             --cmap-c3: var(--accent-cyan, #06b6d4);
             --cmap-c4: var(--accent-emerald, #10b981);
             --cmap-c5: var(--accent-amber, #f59e0b);
+            --cmap-c6: #0078d4;
             --cmap-text: var(--text-primary, #f8fafc);
             --cmap-bg: var(--bg-surface, #1e293b);
             --cmap-edge: var(--border-medium, #475569);
@@ -226,8 +227,18 @@
         { id: 2, name: "Cuaderno 02", colorVar: "--cmap-c2", colorHex: "#3b82f6" },
         { id: 3, name: "Cuaderno 03", colorVar: "--cmap-c3", colorHex: "#06b6d4" },
         { id: 4, name: "Cuaderno 04", colorVar: "--cmap-c4", colorHex: "#10b981" },
-        { id: 5, name: "Cuaderno 05", colorVar: "--cmap-c5", colorHex: "#f59e0b" }
+        { id: 5, name: "Cuaderno 05", colorVar: "--cmap-c5", colorHex: "#f59e0b" },
+        { id: 6, name: "Cuaderno 06", colorVar: "--cmap-c6", colorHex: "#0078d4" }
     ];
+
+    const CUADERNO_LINKS = {
+        1: 'cuadernos/01-pep-martorell.html',
+        2: 'cuadernos/02-javier-ideami.html',
+        3: 'cuadernos/03-compendio-tecnico.html',
+        4: 'cuadernos/04-el-universo-del-transformer.html',
+        5: 'cuadernos/05-paradigmas-y-computacion.html',
+        6: 'cuadernos/06-m365-copilot-banca-comercial.html'
+    };
 
     const NODES = [
         // Cuaderno 01
@@ -261,7 +272,13 @@
         { id: "sgd_adam", label: "SGD / Adam", c: 5, desc: "Optimizadores fundamentales." },
         { id: "ln", label: "Pre-LN vs Post-LN", c: 5, desc: "Variantes en la ubicación de Layer Normalization." },
         { id: "eval", label: "Evaluation Harness", c: 5, desc: "Marcos estandarizados para evaluar LLMs." },
-        { id: "graphrag", label: "GraphRAG", c: 5, desc: "RAG potenciado con Grafos de Conocimiento." }
+        { id: "graphrag", label: "GraphRAG", c: 5, desc: "RAG potenciado con Grafos de Conocimiento." },
+        // Cuaderno 06
+        { id: "framework_ocfe", label: "Framework OCFE", c: 6, desc: "Estructuración de prompts corporativos: Objetivo, Contexto, Fuente y Expectativas." },
+        { id: "copilot_studio", label: "Copilot Studio / Agentes", c: 6, desc: "Desarrollo y modelado de agentes declarativos con System Instructions especializadas." },
+        { id: "copilot_notebooks", label: "Copilot Notebooks", c: 6, desc: "Espacios de inferencia acotados con Grounding restrictivo absoluto (hasta 300 archivos)." },
+        { id: "banca_tier1", label: "Banca Comercial Tier 1", c: 6, desc: "Aplicaciones avanzadas en Riesgos de Crédito, KYC/AML, Sindicaciones y Cash Management." },
+        { id: "excel_python", label: "Excel con Python", c: 6, desc: "Modelado financiero avanzado, simulaciones Monte Carlo, RAROC y ratios de solvencia." }
     ];
 
     const EDGES = [
@@ -282,7 +299,13 @@
         { source: "self_attention", target: "softmax", label: "utiliza" },
         { source: "self_attention", target: "rope", label: "posicionamiento" },
         { source: "turing_conexionismo", target: "transformers_c1", label: "paradigma" },
-        { source: "ln", target: "transformers_c1", label: "estabilidad" }
+        { source: "ln", target: "transformers_c1", label: "estabilidad" },
+        // Edges Cuaderno 06
+        { source: "framework_ocfe", target: "metaprompting", label: "ingeniería de prompts" },
+        { source: "copilot_notebooks", target: "grounding", label: "sandbox restrictivo" },
+        { source: "copilot_studio", target: "agentes", label: "plataforma de agentes" },
+        { source: "banca_tier1", target: "framework_ocfe", label: "metodología" },
+        { source: "excel_python", target: "banca_tier1", label: "análisis de riesgos" }
     ];
 
     class ConceptMap {
@@ -306,7 +329,7 @@
             this.hoveredNode = null;
             this.hoveredEdge = null;
             
-            this.activeFilters = new Set([1, 2, 3, 4, 5]);
+            this.activeFilters = new Set([1, 2, 3, 4, 5, 6]);
             this.searchQuery = "";
             this.isFullscreen = false;
 
@@ -821,7 +844,7 @@
             const cObj = CUADERNOS.find(c => c.id === node.c);
             h4.style.color = `var(${cObj.colorVar})`;
             
-            a.href = `#cuaderno-0${node.c}`;
+            a.href = CUADERNO_LINKS[node.c] || '#';
             
             this.tooltip.classList.add('visible');
         }
