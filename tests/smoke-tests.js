@@ -77,6 +77,7 @@ const requiredFiles = [
   'cuadernos/04-el-universo-del-transformer.html',
   'cuadernos/05-paradigmas-y-computacion.html',
   'cuadernos/06-m365-copilot-banca-comercial.html',
+  'cuadernos/07-migracion-chatgpt-copilot-m365.html',
   'cuadernos/_template.html'
 ];
 
@@ -93,7 +94,8 @@ const htmlFiles = [
   'index.html', 'recursos.html', 'examen.html', 'muro.html',
   'cuadernos/01-pep-martorell.html', 'cuadernos/02-javier-ideami.html',
   'cuadernos/03-compendio-tecnico.html', 'cuadernos/04-el-universo-del-transformer.html',
-  'cuadernos/05-paradigmas-y-computacion.html', 'cuadernos/06-m365-copilot-banca-comercial.html'
+  'cuadernos/05-paradigmas-y-computacion.html', 'cuadernos/06-m365-copilot-banca-comercial.html',
+  'cuadernos/07-migracion-chatgpt-copilot-m365.html'
 ];
 
 htmlFiles.forEach(file => {
@@ -117,7 +119,8 @@ console.log('\n📜 3. VERIFICACIÓN DE SCRIPT TAGS\n');
 const cuadernoFiles = [
   'cuadernos/01-pep-martorell.html', 'cuadernos/02-javier-ideami.html',
   'cuadernos/03-compendio-tecnico.html', 'cuadernos/04-el-universo-del-transformer.html',
-  'cuadernos/05-paradigmas-y-computacion.html', 'cuadernos/06-m365-copilot-banca-comercial.html'
+  'cuadernos/05-paradigmas-y-computacion.html', 'cuadernos/06-m365-copilot-banca-comercial.html',
+  'cuadernos/07-migracion-chatgpt-copilot-m365.html'
 ];
 
 cuadernoFiles.forEach(file => {

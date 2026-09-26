@@ -419,6 +419,39 @@
         correct: 0,
         explanation: "Las directrices de un agente corporativo deben prohibir la invención de datos financieros no verificados, aplicar el principio de menor privilegio y asegurar el etiquetado estricto de sensibilidad de la información."
       }
+    ],
+
+    "07-migracion-chatgpt-copilot-m365": [
+      {
+        question: "¿Por qué suele fallar la migración directa de un flujo mensual de Excel desde un ChatGPT Project hacia Microsoft 365 Copilot si solo se copia el último prompt?",
+        options: [
+          "Porque las reglas de negocio reales y las excepciones quedaron dispersas como deuda técnica conversacional (correcciones iterativas y scripts parciales de Python) a lo largo del historial del chat.",
+          "Porque Microsoft 365 Copilot no es compatible con archivos con extensión .xlsx.",
+          "Porque los modelos de lenguaje cambian automáticamente los nombres de las columnas al cambiar de mes."
+        ],
+        correct: 0,
+        explanation: "En un proyecto de ChatGPT entrenado por prueba y error durante meses, el contexto crítico está enterrado en correcciones históricas y celdas de código previas. Por ello es imprescindible extraer primero el script monolítico (Prompt 1.1) y la Especificación Técnica con reglas negativas (Prompt 1.2)."
+      },
+      {
+        question: "Al configurar el nuevo Agente en Microsoft 365 Copilot (Fase 2), ¿qué ajuste técnico es indispensable para que procese miles de filas de forma determinista y entregue un archivo .xlsx descargable?",
+        options: [
+          "Activar la capacidad 'Code Interpreter' (Intérprete de código) e incluir en las Instructions la directiva explícita de ejecutar siempre Python (pandas/openpyxl) en lugar de procesar la tabla mediante texto.",
+          "Desactivar todas las instrucciones del sistema y subir el archivo como imagen PNG.",
+          "Reducir el archivo de entrada a un máximo de 10 filas antes de subirlo."
+        ],
+        correct: 0,
+        explanation: "Sin Code Interpreter activo y una directiva explícita de ejecución en Python, el agente intenta manipular los datos lingüísticamente en el chat, truncando las filas y cometiendo errores aritméticos."
+      },
+      {
+        question: "¿Cuál es la función del 'Shadow Testing' (Fase 3) y del Checklist de Autocontrol en la migración del agente?",
+        options: [
+          "Ejecutar el agente en paralelo con los datos cerrados del mes anterior (t-1), verificar el cuadre exacto de filas e importes totales (Input vs Output) y auditar celda a celda el Archivo A (ChatGPT) frente al Archivo B (Copilot).",
+          "Ocultar los resultados al usuario final durante un año completo.",
+          "Eliminar automáticamente las filas que presenten diferencias numéricas sin avisar al usuario."
+        ],
+        correct: 0,
+        explanation: "El Shadow Testing permite validar con datos reales ya auditados del mes anterior que el nuevo agente de Copilot produce exactamente el mismo resultado que el flujo histórico de ChatGPT, identificando qué regla del System Prompt debe ajustarse si existe alguna discrepancia."
+      }
     ]
   };
 

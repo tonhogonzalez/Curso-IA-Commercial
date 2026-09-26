@@ -49,6 +49,8 @@
 | **03** | **Compendio Técnico de IA Generativa** | Compendio Especializado | *Matemáticas, Backprop, Optimización AdamW, KV Cache, RAG, Agentes Autónomos.* |
 | **04** | **El Universo del Transformer y Operatividad de LLMs** | Compendio Docente Avanzado | *Attention Is All You Need, Softmax Saturation, MHA, RoPE/ALiBi, GPT Lifecycle, Grounding, PyTorch.* |
 | **05** | **Compendio Integral: De los Paradigmas al Grounding y Harness** | Módulos 1 a 7: Fundamentos, Optimización, Gradientes, Transformers, GPT & Producción | *Turing vs Conexionismo, Apriori/DIC, Backprop DAG, Autodiff (JVP/VJP, BPTT/RTRL), Órdenes 0/1/2 (SPSA, SGD, Newton), Dinámica SGD/Flat Minima, Momentum, AdaGrad/RMSProp, Sesgo Adam, AdamW, Embeddings, Deducción Varianza 1/√d_k, MHA Complejidad, Número de Condición κ, q-SA, Match2 vs Match3, Attention Is All You Need, Positional Encoding Rotacional, Máscara Causal, Pre-LN vs Post-LN, Inferencia LLM, Unembedding, Muestreo (Temperatura, Top-K, Top-P), Preentrenamiento Causal, Label Smoothing, SFT (LIMA), RLHF (Reward Model + PPO), Grounding (RAG vs GraphRAG/Leiden), Evaluation Harness (MMLU, GSM8K, HellaSwag, ARC), PyTorch/Python.* |
+| **06** | **Guía Práctica de Ingeniería de Prompts Avanzada para Banca Comercial (Tier 1)** | Microsoft 365 Copilot | *Framework OCFE, 150 Prompts (Outlook, Teams, SharePoint, Word, Excel con Python, PowerPoint), Copilot Studio (5 System Prompts) y Copilot Notebooks.* |
+| **07** | **Guía Operativa de Prompts: Migración de ChatGPT Projects a Microsoft Copilot M365** | Guía Operativa & Shadow Testing | *Ingeniería inversa de hilos en ChatGPT (Python/Code Interpreter y Especificación Técnica), System Prompt determinista para Copilot Agents y auditoría A/B en paralelo.* |
 
 ---
 
@@ -79,6 +81,7 @@ Curso_IA_Commercial/
 │   ├── 04-el-universo-del-transformer.html # Cuaderno 04: Transformers & GPT Lifecycle
 │   ├── 05-paradigmas-y-computacion.html # Cuaderno 05: Compendio 7 Módulos
 │   ├── 06-m365-copilot-banca-comercial.html # Cuaderno 06: M365 Copilot en Banca Comercial Tier 1
+│   ├── 07-migracion-chatgpt-copilot-m365.html # Cuaderno 07: Migración de ChatGPT Projects a Copilot M365
 │   └── _template.html          # Plantilla para nuevos cuadernos
 ├── js/
 │   ├── main.js                 # Control de tema, modo Zen, progreso de lectura
