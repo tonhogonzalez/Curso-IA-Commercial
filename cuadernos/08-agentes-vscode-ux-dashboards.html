@@ -893,16 +893,14 @@ Revisar el archivo HTML indicado en `${input:targetFile}` (o el archivo HTML abi
               <span class="ocfe-tag ctx">Método 2</span>
               <span class="ocfe-desc">
                 <strong>Referencia de Contexto con `#file:` en Chat General:</strong><br>
-                En cualquier panel de chat de VS Code (Copilot o Cursor), puedes anclar manualmente los archivos locales escribiendo:<br>
-                <em>"@workspace #file:components-vault.html #file:copilot-instructions.md refactoriza las tarjetas KPI de src/dashboard.html para que usen sparklines SVG animados y el botón con shimmer."</em>
+                En cualquier panel de chat de VS Code (Copilot o Cursor), ancla los archivos locales con el símbolo <code>#file:</code> para forzar al modelo a leer los tokens y snippets locales.
               </span>
             </div>
             <div class="ocfe-item">
               <span class="ocfe-tag exp">Método 3</span>
               <span class="ocfe-desc">
                 <strong>Edición Rápida In-line (Ctrl + I / Cmd + I):</strong><br>
-                Abre tu archivo HTML en el editor de VS Code, selecciona un bloque `&lt;div&gt;` que contenga una métrica fea o anticuada, presiona <code>Ctrl + I</code> (o <code>Cmd + I</code>) y pide al agente in-line:<br>
-                <em>"Estiliza este bloque según #file:components-vault.html como una tarjeta KPI PaceUI con efecto hover y tabular-nums."</em>
+                Selecciona cualquier bloque HTML en tu editor, pulsa <code>Ctrl + I</code> (o <code>Cmd + I</code> en macOS) y pídele transformar ese bloque según el vault local.
               </span>
             </div>
             <div class="ocfe-item">
@@ -910,10 +908,67 @@ Revisar el archivo HTML indicado en `${input:targetFile}` (o el archivo HTML abi
               <span class="ocfe-desc">
                 <strong>Herramientas Agenciales Modulares (Antigravity / Claude Code / Cline):</strong><br>
                 Si utilizas extensiones basadas en agentes autónomos con soporte de skills, ejecuta en la terminal o en la barra de prompts:<br>
-                <code>/paceui-styler src/dashboard.html</code><br>
-                El asistente leerá el fichero <code>skills/paceui-styler/SKILL.md</code>, ejecutará los 4 pasos secuenciales y actualizará tu archivo de forma transparente.
+                <code>/paceui-styler src/dashboard.html</code>
               </span>
             </div>
+          </div>
+
+          <!-- PROMPTS COPIABLES PARA INVOCAR AL AGENTE -->
+          <h3>4.4. Prompts Maestros Listos para Copiar y Pegar en VS Code</h3>
+          <p>Copia y pega cualquiera de estos prompts directamente en tu ventana de <strong>Copilot Chat</strong> o editor in-line:</p>
+
+          <div class="prompt-block-wrapper pro-version">
+            <div class="prompt-block-header">
+              <h3 class="prompt-block-title">📋 Prompt 1: Invocación de Refactorización Completa del Dashboard</h3>
+              <span class="version-pill optimized">Para Copilot Chat (@workspace)</span>
+            </div>
+            <pre class="copyable-prompt-pre">@workspace #file:.github/copilot-instructions.md #file:design-system/components-vault.html #file:design-system/reference-tokens.css
+
+Actúa como Arquitecto Frontend y Diseñador UX/UI de élite en estándar PaceUI ("Alive UI"). Transforma el archivo `src/dashboard.html` en una interfaz operativa de alta fidelidad:
+
+1. Estructura y Superficies:
+   - Inyecta modo oscuro profundo (--background: #0a0a0a, --card: #171717, --border: #282828).
+   - Añade el contenedor `.bg-grid-pattern` con la cuadrícula matemática de 40px y máscara radial difuminada al centro.
+   - Aplica header pegajoso (sticky) con desenfoque de cristal esmerilado (backdrop-filter: blur(14px)) e indicador de agente en vivo con pulso esmeralda (#10b981).
+
+2. Tarjetas KPI ("Alive Metrics"):
+   - Convierte las métricas en 4 tarjetas .kpi-card con header en píldora con borde discontinuo (border: 1px dashed var(--border)).
+   - La tarjeta principal debe contar con el borde luminoso perimetral viajero (.featured-glow con animación borderGlowSweep).
+   - Tipografía "DM Sans" y valores numéricos grandes con `font-variant-numeric: tabular-nums`.
+   - Micro-gráfico Sparkline dibujado en SVG puro con stroke-dasharray y animación drawSparkline para que trace su trayectoria automáticamente al cargar.
+
+3. Cinemática y Micro-interacciones (60 FPS):
+   - Botón primario de acción con reflejo luminoso diagonal `hero-shimmer` y estado interactivo de carga (al pulsar cambia a 'Dispatching task...', actualiza el contador, redibuja los sparklines e inserta una nueva traza de log).
+   - Barra de progreso indeterminada líquida (progressIndeterminate) para tareas en segundo plano.
+   - Consola de trazas de streaming estilo terminal con timestamp, tags de estado coloreados y cursor parpadeante (.caret-blink).
+
+Genera el código autónomo completo en HTML5 + CSS3 + Vanilla JS en un único archivo sin dependencias externas ni librerías npm.</pre>
+          </div>
+
+          <div class="prompt-block-wrapper">
+            <div class="prompt-block-header">
+              <h3 class="prompt-block-title">🎯 Prompt 2: Invocación In-Line para Tarjeta KPI (Ctrl + I / Cmd + I)</h3>
+              <span class="version-pill original">Seleccionar Bloque HTML + Ctrl + I</span>
+            </div>
+            <pre class="copyable-prompt-pre">#file:design-system/components-vault.html
+Refactoriza este bloque HTML seleccionado para transformarlo en una tarjeta KPI interactiva del estándar PaceUI:
+1. Contenedor con fondo #171717, borde 1px solid #282828 y curvatura radius 10px con hover interactivo.
+2. Encabezado con etiqueta en píldora con borde dashed (#3f3f46).
+3. Métrica destacada en tabular-nums y píldora delta de variación porcentual (+12.5% verde #10b981).
+4. Micro-gráfico Sparkline SVG al pie con trayectoria suavizada (Q bezier) y animación de trazado CSS stroke-dasharray. Mantén el código autocontenido.</pre>
+          </div>
+
+          <div class="prompt-block-wrapper">
+            <div class="prompt-block-header">
+              <h3 class="prompt-block-title">⚡ Prompt 3: Invocación para Consola de Agente en Streaming</h3>
+              <span class="version-pill original">Para Copilot Chat</span>
+            </div>
+            <pre class="copyable-prompt-pre">#file:design-system/components-vault.html
+Añade a este dashboard un panel de consola de streaming en tiempo real para monitorizar las tareas del agente:
+- Superficie negra mate #0d0d0d con tipografía monospaciada 'JetBrains Mono'.
+- Altura fija de 250px con auto-scroll inferior ante nuevos eventos.
+- Trazas formateadas con hora [HH:MM:SS], badges semánticos coloreados ([INIT] azul, [OK] verde, [EXEC] celeste) y cursor de terminal parpadeante (caret-blink).
+- Incluye la función JavaScript para despachar nuevos eventos dinámicamente cuando el usuario pulse el botón de acción.</pre>
           </div>
         </div>
       </section>
