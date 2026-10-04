@@ -1,0 +1,3574 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Banca Comercial IA — Executive Command Center (Tier 1 Global Banking Standard)</title>
+  
+  <!-- Tipografía Oficial: DM Sans para UI, JetBrains Mono para cifras y telemetría -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       1. DESIGN TOKENS BI-MODALES (DARK & LIGHT THEME - TIER 1 BANKING)
+       ========================================================================== */
+    :root, html.dark {
+      --background: #09090b;            /* Fondo base mate ultra-profundo */
+      --foreground: #fafafa;            /* Tipografía principal alta fidelidad */
+      --card: #141417;                  /* Superficie principal de componentes */
+      --card-hover: #1c1c20;            /* Elevación sutil en interacción */
+      --card-subtle: #0f0f12;           /* Superficies secundarias internas */
+      --border: #27272a;                /* Borde de precisión 1px */
+      --border-light: rgba(255, 255, 255, 0.08);
+      --border-dashed: #3f3f46;
+      --primary: #f4f4f5;               /* Acción primaria destacada */
+      --primary-foreground: #09090b;
+      --muted: #27272a;
+      --muted-foreground: #a1a1aa;      /* Metadatos y etiquetas técnicas */
+      --grid-line: rgba(255, 255, 255, 0.035);
+      --glass-bg: rgba(9, 9, 11, 0.92);
+      --chart-axis: #71717a;
+      --chart-grid: #27272a;
+      --tooltip-bg: #18181b;
+      --tooltip-border: #3f3f46;
+      
+      /* Acentos cromáticos de alta calibración */
+      --accent-emerald: #10b981;        /* Aprobado, activo, delta positivo */
+      --accent-emerald-subtle: rgba(16, 185, 129, 0.14);
+      --accent-blue: #3b82f6;           /* Foco, selecciones, flujos agenciales */
+      --accent-blue-subtle: rgba(59, 130, 246, 0.14);
+      --accent-amber: #f59e0b;          /* Alertas de riesgo, revisión comités */
+      --accent-amber-subtle: rgba(245, 158, 11, 0.14);
+      --accent-rose: #f43f5e;           /* Mora, caídas, alertas críticas */
+      --accent-rose-subtle: rgba(244, 63, 94, 0.14);
+      --accent-purple: #a855f7;         /* Scoring M365 Copilot, modelos IA */
+      --accent-cyan: #06b6d4;           /* Métricas de latencia y telemetría */
+      
+      --radius: 0.625rem;               /* 10px */
+      --radius-sm: 0.375rem;            /* 6px */
+      --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Consolas, monospace;
+    }
+
+    /* MODO CLARO (LIGHT THEME EXECUTIVE) */
+    html.light {
+      --background: #f8fafc;            /* Gris pizarra ultra-claro */
+      --foreground: #0f172a;            /* Texto casi negro de alto contraste */
+      --card: #ffffff;                  /* Tarjetas blancas puras */
+      --card-hover: #f1f5f9;            /* Elevación en gris muy suave */
+      --card-subtle: #f8fafc;
+      --border: #e2e8f0;                /* Bordes nítidos de 1px */
+      --border-light: rgba(0, 0, 0, 0.06);
+      --border-dashed: #cbd5e1;
+      --primary: #0f172a;               /* Botones primarios en azul noche */
+      --primary-foreground: #ffffff;
+      --muted: #f1f5f9;
+      --muted-foreground: #64748b;      /* Metadatos en gris slate */
+      --grid-line: rgba(0, 0, 0, 0.04);
+      --glass-bg: rgba(255, 255, 255, 0.94);
+      --chart-axis: #64748b;
+      --chart-grid: #e2e8f0;
+      --tooltip-bg: #ffffff;
+      --tooltip-border: #cbd5e1;
+      
+      --accent-emerald: #059669;
+      --accent-emerald-subtle: rgba(5, 150, 105, 0.12);
+      --accent-blue: #2563eb;
+      --accent-blue-subtle: rgba(37, 99, 235, 0.12);
+      --accent-amber: #d97706;
+      --accent-amber-subtle: rgba(217, 119, 6, 0.12);
+      --accent-rose: #e11d48;
+      --accent-rose-subtle: rgba(225, 29, 72, 0.12);
+      --accent-purple: #9333ea;
+      --accent-cyan: #0891b2;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--background);
+      color: var(--foreground);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    /* ==========================================================================
+       2. RETÍCULA MATEMÁTICA CON MÁSCARA RADIAL
+       ========================================================================== */
+    .bg-grid-pattern {
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+      background-size: 36px 36px;
+      mask-image: radial-gradient(ellipse at center, black 35%, transparent 75%);
+      -webkit-mask-image: radial-gradient(ellipse at center, black 35%, transparent 75%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ==========================================================================
+       3. MOTOR DE MICRO-ANIMACIONES A 60 FPS
+       ========================================================================== */
+    @keyframes heroShimmer {
+      0% { transform: translateX(-180%); }
+      60% { transform: translateX(180%); }
+      100% { transform: translateX(180%); }
+    }
+
+    @keyframes borderGlowSweep {
+      0% { opacity: 0.3; }
+      50% { opacity: 0.95; }
+      100% { opacity: 0.3; }
+    }
+
+    @keyframes progressIndeterminate {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(350%); }
+    }
+
+    @keyframes drawSparkline {
+      to { stroke-dashoffset: 0; }
+    }
+
+    @keyframes livePulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.35; transform: scale(0.85); }
+    }
+
+    @keyframes caretBlink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
+
+    @keyframes rowSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-8px);
+        background-color: var(--accent-blue-subtle);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+        background-color: transparent;
+      }
+    }
+
+    /* ==========================================================================
+       4. SISTEMA GLOBAL DE TOOLTIPS FLOTANTES ESTILO PACEUI
+       ========================================================================== */
+    #globalTooltip {
+      position: fixed;
+      z-index: 9999;
+      pointer-events: none;
+      background: var(--tooltip-bg);
+      border: 1px solid var(--tooltip-border);
+      border-radius: var(--radius-sm);
+      padding: 0.55rem 0.85rem;
+      font-size: 0.72rem;
+      color: var(--foreground);
+      line-height: 1.45;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.35);
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 0.15s ease, transform 0.15s ease;
+      max-width: 300px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    #globalTooltip.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    #globalTooltip .tt-title {
+      font-weight: 700;
+      color: var(--accent-blue);
+      margin-bottom: 0.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-family: var(--font-sans);
+    }
+    #globalTooltip .tt-body {
+      color: var(--muted-foreground);
+    }
+
+    /* ==========================================================================
+       5. TOP BAR, COMMAND BAR & SELECTORES DE TEMA
+       ========================================================================== */
+    .top-telemetry-bar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--glass-bg);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px dashed var(--border);
+      padding: 0 1.75rem;
+      height: 4.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.25rem;
+      transition: background 0.25s ease;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      flex-shrink: 0;
+    }
+
+    .brand-icon-box {
+      width: 2.2rem;
+      height: 2.2rem;
+      background: linear-gradient(135deg, var(--primary) 0%, #a1a1aa 100%);
+      color: var(--primary-foreground);
+      border-radius: 7px;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 0.95rem;
+      letter-spacing: -0.05em;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .brand-meta {
+      display: flex;
+      flex-direction: column;
+    }
+    .brand-title {
+      font-size: 0.98rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .brand-subtitle {
+      font-size: 0.7rem;
+      color: var(--muted-foreground);
+      font-family: var(--font-mono);
+    }
+
+    /* Quick Search Bar */
+    .command-search-box {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.35rem 0.75rem;
+      width: 300px;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      position: relative;
+    }
+    .command-search-box:focus-within {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 1px var(--accent-blue);
+    }
+    .command-search-box input {
+      background: transparent;
+      border: none;
+      color: var(--foreground);
+      font-size: 0.78rem;
+      width: 100%;
+      outline: none;
+      font-family: var(--font-sans);
+    }
+    .command-search-box input::placeholder {
+      color: var(--muted-foreground);
+    }
+    .clear-search-btn {
+      background: transparent;
+      border: none;
+      color: var(--muted-foreground);
+      cursor: pointer;
+      font-size: 0.75rem;
+      display: none;
+    }
+    .clear-search-btn:hover { color: var(--foreground); }
+    .kbd-shortcut {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      background: var(--muted);
+      padding: 1px 5px;
+      border-radius: 3px;
+      color: var(--muted-foreground);
+      border: 1px solid var(--border);
+    }
+
+    /* Top Telemetry & Controls */
+    .telemetry-group {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      flex-shrink: 0;
+    }
+
+    /* Toggle Modo en Vivo / Auto-refresh */
+    .live-stream-btn {
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--foreground);
+      font-size: 0.74rem;
+      font-weight: 600;
+      padding: 0.35rem 0.7rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      transition: all 0.2s ease;
+    }
+    .live-stream-btn.active {
+      border-color: var(--accent-emerald);
+      color: var(--accent-emerald);
+      background: var(--accent-emerald-subtle);
+    }
+
+    .telemetry-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+      color: var(--muted-foreground);
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 0.25rem 0.6rem;
+      border-radius: 9999px;
+      cursor: help;
+    }
+    .telemetry-chip b {
+      color: var(--foreground);
+    }
+
+    .pill-dashed {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      border: 1px dashed var(--border-dashed);
+      background: var(--card);
+      padding: 0.22rem 0.7rem;
+      border-radius: 9999px;
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--muted-foreground);
+      transition: all 0.2s ease;
+      cursor: help;
+    }
+    .pill-dashed:hover {
+      border-color: var(--foreground);
+      color: var(--foreground);
+    }
+
+    .dot-live {
+      width: 0.45rem;
+      height: 0.45rem;
+      border-radius: 50%;
+      background-color: var(--accent-emerald);
+      box-shadow: 0 0 8px var(--accent-emerald);
+      animation: livePulse 2s infinite ease-in-out;
+    }
+
+    /* Switcher Tema Claro / Oscuro */
+    .theme-toggle-btn {
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--foreground);
+      font-size: 0.76rem;
+      font-weight: 600;
+      padding: 0.35rem 0.75rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s ease;
+    }
+    .theme-toggle-btn:hover {
+      background: var(--card-hover);
+      border-color: var(--accent-blue);
+    }
+
+    /* Botón Primario Hero Shimmer */
+    .btn-shimmer {
+      position: relative;
+      overflow: hidden;
+      background: var(--primary);
+      color: var(--primary-foreground);
+      font-weight: 600;
+      font-size: 0.8rem;
+      padding: 0.45rem 1.15rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+      white-space: nowrap;
+    }
+    .btn-shimmer:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    }
+    .btn-shimmer:active { transform: translateY(0); }
+    .btn-shimmer::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+      transform: translateX(-180%);
+      animation: heroShimmer 4s infinite cubic-bezier(0.4, 0, 0.2, 1);
+      pointer-events: none;
+    }
+
+    .btn-secondary-action {
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--foreground);
+      font-size: 0.78rem;
+      font-weight: 500;
+      padding: 0.45rem 0.85rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+    .btn-secondary-action:hover {
+      background: var(--card-hover);
+      border-color: var(--border-dashed);
+    }
+
+    /* Barra de Progreso Líquido */
+    .pace-progress-bar {
+      position: relative;
+      height: 2px;
+      width: 100%;
+      background: var(--border-light);
+      overflow: hidden;
+    }
+    .pace-progress-bar::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 25%;
+      background: linear-gradient(90deg, var(--accent-blue), #60a5fa);
+      animation: progressIndeterminate 2.2s infinite ease-in-out;
+    }
+
+    /* Quick KPI Ribbon */
+    .quick-kpi-ribbon {
+      background: var(--card-subtle);
+      border-bottom: 1px solid var(--border);
+      padding: 0.55rem 1.75rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      overflow-x: auto;
+      font-size: 0.74rem;
+      font-family: var(--font-mono);
+      color: var(--muted-foreground);
+    }
+    .ribbon-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      white-space: nowrap;
+      cursor: help;
+    }
+    .ribbon-item b {
+      color: var(--foreground);
+    }
+    .ribbon-sep {
+      color: var(--border);
+    }
+
+    /* ==========================================================================
+       6. CONTENEDOR PRINCIPAL
+       ========================================================================== */
+    .container {
+      position: relative;
+      z-index: 10;
+      max-width: 1540px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 1.5rem 1.75rem 4rem 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .dashboard-lead-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .lead-title-box h1 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+    }
+    .lead-title-box p {
+      font-size: 0.82rem;
+      color: var(--muted-foreground);
+    }
+
+    .time-horizon-selector {
+      display: flex;
+      align-items: center;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.2rem;
+      gap: 0.2rem;
+    }
+    .time-btn {
+      background: transparent;
+      border: none;
+      color: var(--muted-foreground);
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.25rem 0.65rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .time-btn.active {
+      background: var(--muted);
+      color: var(--foreground);
+    }
+
+    /* ==========================================================================
+       7. RETÍCULA DE 6 CARDS KPI (CLIC PARA DRILL-DOWN EN DETALLE)
+       ========================================================================== */
+    .kpi-grid-6 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+
+    .kpi-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.15rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      position: relative;
+      cursor: pointer;
+      transition: border-color 0.2s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+    }
+    .kpi-card:hover {
+      border-color: var(--accent-blue);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px -6px rgba(0, 0, 0, 0.15);
+    }
+
+    .kpi-card.featured-glow {
+      border-color: var(--accent-blue);
+      box-shadow: inset 0 0 20px rgba(59, 130, 246, 0.05);
+    }
+    .kpi-card.featured-glow::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: var(--radius);
+      padding: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent-blue), transparent);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      animation: borderGlowSweep 4s infinite linear;
+    }
+
+    .kpi-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--muted-foreground);
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .kpi-value-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .kpi-value {
+      font-size: 1.75rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      font-variant-numeric: tabular-nums;
+      display: flex;
+      align-items: baseline;
+      gap: 0.2rem;
+    }
+
+    .kpi-unit {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--muted-foreground);
+    }
+
+    .delta-badge {
+      font-size: 0.68rem;
+      font-weight: 600;
+      padding: 0.15rem 0.45rem;
+      border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.2rem;
+      white-space: nowrap;
+    }
+    .delta-badge.positive {
+      background: var(--accent-emerald-subtle);
+      color: var(--accent-emerald);
+      border: 1px solid var(--accent-emerald-subtle);
+    }
+    .delta-badge.neutral {
+      background: var(--accent-blue-subtle);
+      color: var(--accent-blue);
+      border: 1px solid var(--accent-blue-subtle);
+    }
+    .delta-badge.warning {
+      background: var(--accent-amber-subtle);
+      color: var(--accent-amber);
+      border: 1px solid var(--accent-amber-subtle);
+    }
+
+    .sparkline-svg {
+      width: 100%;
+      height: 32px;
+      stroke-width: 2;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      margin-top: 0.25rem;
+    }
+    .sparkline-path {
+      stroke-dasharray: 240;
+      stroke-dashoffset: 240;
+      animation: drawSparkline 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* ==========================================================================
+       8. SECCIÓN GRÁFICA MULTI-DIMENSIONAL
+       ========================================================================== */
+    .visual-analytics-row {
+      display: grid;
+      grid-template-columns: 1.9fr 1.1fr;
+      gap: 1.25rem;
+    }
+    @media (max-width: 1100px) {
+      .visual-analytics-row { grid-template-columns: 1fr; }
+    }
+
+    .analytics-panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .panel-header-compact {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .panel-title-text {
+      font-size: 0.88rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Gráfico SVG Mensual Interactivo */
+    .chart-container-svg {
+      width: 100%;
+      height: 200px;
+      position: relative;
+    }
+
+    .bar-group-svg rect {
+      transition: fill 0.2s ease, opacity 0.2s ease;
+      cursor: pointer;
+    }
+    .bar-group-svg:hover rect {
+      opacity: 0.85;
+      filter: brightness(1.2);
+    }
+
+    /* Radar Chart & Sector Donut */
+    .radar-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      gap: 1rem;
+      flex-wrap: wrap;
+      height: 100%;
+    }
+
+    .radar-svg {
+      width: 180px;
+      height: 180px;
+    }
+
+    .health-stats-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      flex: 1;
+      min-width: 160px;
+    }
+
+    .stat-row-mini {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      cursor: pointer;
+      padding: 3px 6px;
+      border-radius: 4px;
+      transition: background 0.15s ease;
+    }
+    .stat-row-mini:hover {
+      background: var(--card-hover);
+    }
+    .stat-row-mini span.label {
+      color: var(--muted-foreground);
+    }
+    .stat-row-mini span.val {
+      font-family: var(--font-mono);
+      font-weight: 600;
+    }
+
+    /* ==========================================================================
+       9. SECCIÓN TIER 1: MATRIZ DE RIESGO VS RETORNO & DISTRIBUCIÓN TERRITORIAL
+       ========================================================================== */
+    .tier1-visuals-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 1.25rem;
+    }
+    @media (max-width: 1100px) {
+      .tier1-visuals-grid { grid-template-columns: 1fr; }
+    }
+
+    .scatter-svg-wrap {
+      width: 100%;
+      height: 220px;
+      position: relative;
+    }
+    .scatter-point {
+      cursor: pointer;
+      transition: transform 0.2s ease, filter 0.2s ease;
+    }
+    .scatter-point:hover {
+      transform: scale(1.4);
+      filter: brightness(1.3);
+    }
+
+    .territory-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .territory-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      cursor: pointer;
+      padding: 0.35rem 0.5rem;
+      border-radius: var(--radius-sm);
+      transition: background 0.15s ease;
+    }
+    .territory-item:hover {
+      background: var(--card-hover);
+    }
+    .territory-top {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .territory-bar-track {
+      height: 6px;
+      background: var(--muted);
+      border-radius: 9999px;
+      overflow: hidden;
+    }
+    .territory-bar-fill {
+      height: 100%;
+      border-radius: 9999px;
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-emerald));
+    }
+
+    /* ==========================================================================
+       10. SECCIÓN OPERATIVA: TABLA CON ORDENACIÓN, CHECKBOXES & ACCIONES MASIVAS
+       ========================================================================== */
+    .operational-split {
+      display: grid;
+      grid-template-columns: 2.1fr 1.1fr;
+      gap: 1.25rem;
+      position: relative;
+    }
+    @media (max-width: 1100px) {
+      .operational-split { grid-template-columns: 1fr; }
+    }
+
+    .table-tabs-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      padding: 0 1.25rem;
+      background: var(--card-subtle);
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .tabs-nav {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .tab-item-btn {
+      background: transparent;
+      border: none;
+      color: var(--muted-foreground);
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 0.95rem 0.2rem;
+      cursor: pointer;
+      position: relative;
+      transition: color 0.15s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .tab-item-btn:hover { color: var(--foreground); }
+    .tab-item-btn.active {
+      color: var(--foreground);
+    }
+    .tab-item-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--accent-blue);
+      border-radius: 9999px;
+    }
+
+    .tab-badge {
+      font-size: 0.65rem;
+      font-family: var(--font-mono);
+      background: var(--muted);
+      padding: 1px 6px;
+      border-radius: 9999px;
+      color: var(--foreground);
+    }
+
+    .table-filter-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      padding: 0.65rem 1.25rem;
+      background: var(--card-subtle);
+      border-bottom: 1px solid var(--border);
+      font-size: 0.75rem;
+    }
+
+    .filter-pills-row {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .pill-filter-tag {
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--muted-foreground);
+      font-size: 0.7rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .pill-filter-tag:hover {
+      color: var(--foreground);
+      border-color: var(--border-dashed);
+    }
+    .pill-filter-tag.active {
+      background: var(--muted);
+      color: var(--foreground);
+      border-color: var(--accent-blue);
+      font-weight: 600;
+    }
+
+    /* Tabla de Datos con Ordenación */
+    .table-responsive {
+      overflow-x: auto;
+      width: 100%;
+      min-height: 240px;
+    }
+
+    .data-table-rich {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+      text-align: left;
+    }
+    .data-table-rich th {
+      padding: 0.75rem 0.95rem;
+      color: var(--muted-foreground);
+      font-weight: 600;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      background: var(--card-subtle);
+      white-space: nowrap;
+      user-select: none;
+    }
+    .data-table-rich th.sortable {
+      cursor: pointer;
+    }
+    .data-table-rich th.sortable:hover {
+      color: var(--foreground);
+    }
+    .data-table-rich td {
+      padding: 0.8rem 0.95rem;
+      border-bottom: 1px solid var(--border-light);
+      vertical-align: middle;
+      transition: background-color 0.15s ease;
+    }
+    .data-table-rich tr:hover td {
+      background-color: var(--card-hover);
+    }
+    .data-table-rich tr.new-row {
+      animation: rowSlideIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* Barra Flotante de Acciones Masivas (Batch Dock) */
+    .batch-actions-dock {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 9999px;
+      padding: 0.6rem 1.4rem;
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.45);
+      z-index: 80;
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+    }
+    .batch-actions-dock.active {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .client-title-block {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+    .client-name-text {
+      font-weight: 600;
+      color: var(--foreground);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .client-name-text:hover {
+      color: var(--accent-blue);
+      text-decoration: underline;
+    }
+    .client-cif-text {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--muted-foreground);
+    }
+
+    .rating-badge {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      letter-spacing: 0.03em;
+      cursor: help;
+    }
+    .rating-aaa { background: var(--accent-emerald-subtle); color: var(--accent-emerald); border: 1px solid var(--accent-emerald-subtle); }
+    .rating-aa { background: var(--accent-blue-subtle); color: var(--accent-blue); border: 1px solid var(--accent-blue-subtle); }
+    .rating-bbb { background: var(--accent-amber-subtle); color: var(--accent-amber); border: 1px solid var(--accent-amber-subtle); }
+    .rating-bb { background: var(--accent-rose-subtle); color: var(--accent-rose); border: 1px solid var(--accent-rose-subtle); }
+
+    .propensity-mini-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      min-width: 90px;
+      cursor: help;
+    }
+    .bar-track {
+      flex: 1;
+      height: 5px;
+      background: var(--muted);
+      border-radius: 9999px;
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      border-radius: 9999px;
+    }
+    .fill-green { background: linear-gradient(90deg, var(--accent-emerald), #34d399); }
+    .fill-blue { background: linear-gradient(90deg, var(--accent-blue), #60a5fa); }
+    .fill-amber { background: linear-gradient(90deg, var(--accent-amber), #fbbf24); }
+
+    .prop-pct {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      width: 28px;
+      text-align: right;
+    }
+
+    .status-badge-dot {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.15rem 0.5rem;
+      border-radius: 9999px;
+      cursor: help;
+    }
+    .status-approved { background: var(--accent-emerald-subtle); color: var(--accent-emerald); }
+    .status-negotiating { background: var(--accent-blue-subtle); color: var(--accent-blue); }
+    .status-review { background: var(--accent-amber-subtle); color: var(--accent-amber); }
+
+    .action-icon-pill {
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--foreground);
+      padding: 0.25rem 0.55rem;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.7rem;
+      font-weight: 500;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+    .action-icon-pill:hover {
+      background: var(--card-hover);
+      border-color: var(--accent-blue);
+    }
+
+    .empty-state-row {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--muted-foreground);
+    }
+    .empty-state-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      opacity: 0.6;
+    }
+
+    /* ==========================================================================
+       11. COPILOT MULTI-AGENT CLUSTER & STREAMING CONSOLE
+       ========================================================================== */
+    .agent-cluster-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .cluster-header {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--card-subtle);
+    }
+
+    .subagent-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.6rem;
+      padding: 1rem 1.25rem;
+      border-bottom: 1px dashed var(--border);
+      background: var(--card-subtle);
+    }
+
+    .subagent-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.55rem 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      cursor: help;
+    }
+    .subagent-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      font-weight: 600;
+    }
+    .subagent-name {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .subagent-status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+    .subagent-status-dot.active { background: var(--accent-emerald); box-shadow: 0 0 6px var(--accent-emerald); }
+    .subagent-status-dot.working { background: var(--accent-blue); box-shadow: 0 0 6px var(--accent-blue); animation: livePulse 1.5s infinite; }
+    .subagent-desc {
+      font-size: 0.68rem;
+      color: var(--muted-foreground);
+      font-family: var(--font-mono);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .console-nav-bar {
+      padding: 0.4rem 1.25rem;
+      background: var(--card-subtle);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+    }
+    .console-filter-chips {
+      display: flex;
+      gap: 0.4rem;
+    }
+    .console-chip {
+      background: transparent;
+      border: none;
+      color: var(--muted-foreground);
+      font-size: 0.68rem;
+      padding: 2px 6px;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    .console-chip.active {
+      background: var(--muted);
+      color: var(--foreground);
+    }
+
+    .agent-console-box {
+      padding: 1.15rem;
+      background: var(--card-subtle);
+      font-family: var(--font-mono);
+      font-size: 0.73rem;
+      height: 280px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+
+    .console-line {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      line-height: 1.45;
+      word-break: break-word;
+    }
+    .log-time { color: var(--muted-foreground); flex-shrink: 0; }
+    
+    .log-tag {
+      font-size: 0.62rem;
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      flex-shrink: 0;
+    }
+    .tag-scoring { background: var(--accent-blue-subtle); color: var(--accent-blue); border: 1px solid var(--accent-blue-subtle); }
+    .tag-copilot { background: rgba(168, 85, 247, 0.18); color: var(--accent-purple); border: 1px solid rgba(168, 85, 247, 0.35); }
+    .tag-risk { background: var(--accent-amber-subtle); color: var(--accent-amber); border: 1px solid var(--accent-amber-subtle); }
+    .tag-ok { background: var(--accent-emerald-subtle); color: var(--accent-emerald); border: 1px solid var(--accent-emerald-subtle); }
+    .tag-exec { background: var(--accent-rose-subtle); color: var(--accent-rose); border: 1px solid var(--accent-rose-subtle); }
+
+    .caret-blink {
+      display: inline-block;
+      width: 6px;
+      height: 12px;
+      background: var(--foreground);
+      vertical-align: middle;
+      animation: caretBlink 1s infinite;
+      margin-left: 2px;
+    }
+
+    .copilot-prompt-dock {
+      padding: 0.75rem 1.15rem;
+      background: var(--card-subtle);
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .copilot-prompt-dock input {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--foreground);
+      font-family: var(--font-sans);
+      font-size: 0.76rem;
+      padding: 0.4rem 0.75rem;
+      flex: 1;
+      outline: none;
+    }
+    .copilot-prompt-dock input:focus {
+      border-color: var(--accent-purple);
+    }
+    .copilot-send-btn {
+      background: var(--accent-purple);
+      color: #ffffff;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 0.4rem 0.8rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.15s ease;
+    }
+    .copilot-send-btn:hover { opacity: 0.9; }
+
+    /* ==========================================================================
+       12. MODAL DE DRILL-DOWN / DETALLE PROFUNDO (AUDITORÍA & INSPECCIÓN)
+       ========================================================================== */
+    .drilldown-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(6px);
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .drilldown-modal-overlay.open {
+      display: flex;
+    }
+
+    .drilldown-modal-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      width: 720px;
+      max-width: 95vw;
+      max-height: 88vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      animation: modalFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: scale(0.96); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .modal-head {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--card-subtle);
+    }
+    .modal-head-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .modal-close-x {
+      background: transparent;
+      border: none;
+      font-size: 1.25rem;
+      color: var(--muted-foreground);
+      cursor: pointer;
+    }
+    .modal-close-x:hover { color: var(--foreground); }
+
+    .modal-body-content {
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      font-size: 0.82rem;
+    }
+
+    .drill-metric-highlight {
+      display: flex;
+      align-items: baseline;
+      gap: 0.6rem;
+      background: var(--card-subtle);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 1rem 1.25rem;
+    }
+    .drill-big-num {
+      font-size: 2.2rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      color: var(--foreground);
+    }
+
+    .drill-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.78rem;
+      margin-top: 0.5rem;
+    }
+    .drill-table th {
+      text-align: left;
+      padding: 0.6rem 0.8rem;
+      background: var(--card-subtle);
+      color: var(--muted-foreground);
+      border-bottom: 1px solid var(--border);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+    }
+    .drill-table td {
+      padding: 0.65rem 0.8rem;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    /* ==========================================================================
+       13. MODAL DE SIMULACIÓN DE ESTRÉS FINANCIERO (PARAMETRIC STRESS LAB)
+       ========================================================================== */
+    .stress-slider-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      background: var(--card-subtle);
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+    }
+    .stress-slider-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+    .stress-slider-input {
+      width: 100%;
+      accent-color: var(--accent-blue);
+      cursor: pointer;
+    }
+
+    /* ==========================================================================
+       14. DRAWER LATERAL: FICHA 360° DE CLIENTE
+       ========================================================================== */
+    .drawer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    .drawer-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .client-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 480px;
+      max-width: 90vw;
+      background: var(--card);
+      border-left: 1px solid var(--border);
+      z-index: 101;
+      transform: translateX(100%);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+    }
+    .client-drawer.open {
+      transform: translateX(0);
+    }
+
+    .drawer-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px dashed var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--card-subtle);
+    }
+    .drawer-close-btn {
+      background: transparent;
+      border: none;
+      color: var(--muted-foreground);
+      font-size: 1.25rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .drawer-close-btn:hover { color: var(--foreground); }
+
+    .drawer-body {
+      padding: 1.5rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      font-size: 0.82rem;
+    }
+
+    .drawer-section-card {
+      background: var(--card-subtle);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .drawer-section-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted-foreground);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .cirbe-exposure-bar {
+      display: flex;
+      height: 8px;
+      border-radius: 9999px;
+      overflow: hidden;
+      background: var(--muted);
+      margin: 0.35rem 0;
+    }
+
+    /* ==========================================================================
+       15. MEDIA PRINT STYLES (IMPRESIÓN / REPORTE PDF LIMPIO)
+       ========================================================================== */
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+      }
+      .bg-grid-pattern, .top-telemetry-bar, .pace-progress-bar, .quick-kpi-ribbon,
+      .copilot-prompt-dock, .batch-actions-dock, .theme-toggle-btn, .time-horizon-selector,
+      #actionBtn, .action-icon-pill, .btn-secondary-action {
+        display: none !important;
+      }
+      .container {
+        padding: 0 !important;
+        max-width: 100% !important;
+      }
+      .kpi-card, .analytics-panel, .agent-cluster-card {
+        border: 1px solid #ccc !important;
+        box-shadow: none !important;
+        break-inside: avoid;
+      }
+    }
+
+    /* Footer */
+    .dashboard-footer {
+      border-top: 1px dashed var(--border);
+      padding: 1.5rem 0;
+      color: var(--muted-foreground);
+      font-size: 0.75rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Elemento Universal de Tooltip Flotante PaceUI -->
+  <div id="globalTooltip">
+    <div class="tt-title" id="ttTitle">Info</div>
+    <div class="tt-body" id="ttBody">Contenido del tooltip.</div>
+  </div>
+
+  <!-- Retícula de Fondo con Máscara Radial Oficial PaceUI -->
+  <div class="bg-grid-pattern"></div>
+
+  <!-- 1. TOP BAR DE TELEMETRÍA Y COMANDO -->
+  <header class="top-telemetry-bar">
+    <div class="brand-group">
+      <div class="brand-icon-box">BC</div>
+      <div class="brand-meta">
+        <div class="brand-title">
+          BANCA COMERCIAL IA
+          <span style="font-size: 0.7rem; color: var(--muted-foreground); font-weight: 400; padding-left: 0.4rem; border-left: 1px solid var(--border);">Tier 1 CIB Global</span>
+        </div>
+        <span class="brand-subtitle">Autonomous Decision Engine · Bi-Modal Theme</span>
+      </div>
+    </div>
+
+    <!-- Buscador Universal Rápido (Funcional en tiempo real con oninput) -->
+    <div class="command-search-box" data-tooltip-title="Buscador Universal en Tiempo Real" data-tooltip="Filtra simultáneamente por Razón Social, CIF, Sector, Producto o Gestor. Usa el atajo Ctrl+K para activarlo.">
+      <span style="color: var(--muted-foreground); font-size: 0.85rem;">🔍</span>
+      <input type="text" id="globalSearchInput" placeholder="Buscar empresa, CIF, sector o producto..." oninput="handleSearchInput(this.value)">
+      <button class="clear-search-btn" id="clearSearchBtn" onclick="clearSearch()">✕</button>
+      <span class="kbd-shortcut">Ctrl+K</span>
+    </div>
+
+    <!-- Telemetría del Sistema, Selector de Tema y Botones de Acción -->
+    <div class="telemetry-group">
+      
+      <!-- BOTÓN SWITCHER DE TEMA CLARO / OSCURO -->
+      <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()" data-tooltip-title="Selector de Tema (T)" data-tooltip="Alterna instantáneamente entre Modo Oscuro (PaceUI Mate) y Modo Claro (Executive Slate). Atajo: Tecla T.">
+        <span id="themeIcon">☀️</span>
+        <span id="themeText">Modo Claro</span>
+      </button>
+
+      <!-- BOTÓN MODO STREAM EN VIVO -->
+      <button class="live-stream-btn" id="liveStreamBtn" onclick="toggleLiveStream()" data-tooltip-title="Streaming en Tiempo Real (L)" data-tooltip="Activa o pausa las actualizaciones automáticas por segundo de la cartera comercial. Atajo: Tecla L.">
+        <span class="dot-live" id="streamDot"></span>
+        <span id="streamLabel">En Vivo: OFF</span>
+      </button>
+
+      <div class="telemetry-chip" data-tooltip-title="Telemetría de Red Local" data-tooltip="Latencia P99 de inferencia en modelo GPU local (12.4ms). Velocidad de streaming: 4.800 tokens por segundo.">
+        <span>LAT: <b>12.4ms</b></span>
+        <span style="color: var(--border);">|</span>
+        <span>THR: <b>4.8k tok/s</b></span>
+      </div>
+
+      <!-- BOTÓN EXPORTAR CSV / PDF -->
+      <button class="btn-secondary-action" onclick="exportTableToCSV()" data-tooltip-title="Descargar Datos en CSV" data-tooltip="Exporta la tabla activa con todos sus campos calculados y propensión a un archivo .csv descargable.">
+        <span>📥 CSV</span>
+      </button>
+
+      <button class="btn-secondary-action" onclick="window.print()" data-tooltip-title="Imprimir / Exportar PDF" data-tooltip="Abre el formato de impresión ejecutiva limpio sin navegación para guardar como PDF.">
+        <span>🖨️ PDF</span>
+      </button>
+
+      <button class="btn-shimmer" id="actionBtn" onclick="simulateNewCommercialEvent()" data-tooltip-title="Disparador Agencial" data-tooltip="Simula el ingreso de un nuevo lead corporativo, ejecuta el scoring de riesgo en tiempo real, incrementa contadores y actualiza la consola a 60 FPS.">
+        <span id="btnIcon">⚡</span>
+        <span id="btnText">Simular Lead IA</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Barra de progreso indeterminada líquida -->
+  <div class="pace-progress-bar"></div>
+
+  <!-- 2. CINTA DE CHIPS DE TELEMETRÍA RÁPIDA (QUICK RIBBON) -->
+  <div class="quick-kpi-ribbon">
+    <div class="ribbon-item" data-tooltip-title="Clúster de Sub-agentes" data-tooltip="4 sub-agentes autónomos operando en paralelo: Scoring, Auditor de Riesgo, Redactor M365 y Cumplimiento AML.">
+      <span>Sub-agentes Activos:</span>
+      <b style="color: var(--accent-emerald);">4/4 Conectados</b>
+    </div>
+    <span class="ribbon-sep">•</span>
+    <div class="ribbon-item" data-tooltip-title="Ratio de Cobertura de Liquidez (LCR)" data-tooltip="Excedente de activos líquidos de alta calidad para responder a 30 días de estrés financiero regulatorio (Mínimo exigido: 100%).">
+      <span>Liquidity Coverage Ratio (LCR):</span>
+      <b>168.4%</b>
+    </div>
+    <span class="ribbon-sep">•</span>
+    <div class="ribbon-item" data-tooltip-title="Financiación Sostenible (ESG)" data-tooltip="Volumen de activo calificado bajo la Taxonomía Verde Europea (préstamos ligados a sostenibilidad y reducción de huella de carbono).">
+      <span>Cartera ESG / Financiación Verde:</span>
+      <b>€ 68.2M (27.4%)</b>
+    </div>
+    <span class="ribbon-sep">•</span>
+    <div class="ribbon-item" data-tooltip-title="Ratio de Morosidad (NPL)" data-tooltip="Porcentaje de préstamos dudosos sobre el total de la cartera activa. Reducción de 35 puntos básicos en el último semestre.">
+      <span>Mora Bancaria (NPL):</span>
+      <b style="color: var(--accent-emerald);">1.18% (↓ 0.35%)</b>
+    </div>
+    <span class="ribbon-sep">•</span>
+    <div class="ribbon-item" data-tooltip-title="Atajos de Teclado" onclick="openShortcutsModal()" style="cursor: pointer;">
+      <span>Atajos:</span>
+      <b style="color: var(--accent-blue);">Pulsa '?'</b>
+    </div>
+  </div>
+
+  <!-- 3. CONTENEDOR PRINCIPAL -->
+  <main class="container">
+    
+    <!-- Encabezado de Sección y Filtros Temporales -->
+    <div class="dashboard-lead-row">
+      <div class="lead-title-box">
+        <h1>Consola Integral de Supervisión Crediticia & Cartera</h1>
+        <p>Monitorización en alta densidad de colocación de activo, detección de fuga y scoring automatizado.</p>
+      </div>
+
+      <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+        <!-- Selector de Horizonte Temporal -->
+        <div class="time-horizon-selector" data-tooltip-title="Ventana Temporal Deslizante" data-tooltip="Ajusta el rango de agregación para todos los KPIs, gráficos mensuales y tasas de conversión.">
+          <button class="time-btn" onclick="setTimeHorizon('1D', this)">1D</button>
+          <button class="time-btn" onclick="setTimeHorizon('7D', this)">7D</button>
+          <button class="time-btn active" onclick="setTimeHorizon('30D', this)">30D</button>
+          <button class="time-btn" onclick="setTimeHorizon('YTD', this)">YTD</button>
+          <button class="time-btn" onclick="setTimeHorizon('ALL', this)">TODO</button>
+        </div>
+
+        <!-- SIMULADOR PARAMÉTRICO DE ESTRÉS -->
+        <button class="btn-secondary-action" onclick="openStressModal()" data-tooltip-title="Laboratorio de Estrés Paramétrico (S)" data-tooltip="Abre el panel interactivo con sliders de tipos de interés, shock de mora y PIB para recalcular la cartera. Atajo: Tecla S.">
+          <span>📊 Simular Estrés Paramétrico</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 4. RETÍCULA DE 6 TARJETAS KPI (CLIC PARA DRILL-DOWN EN DETALLE) -->
+    <section class="kpi-grid-6">
+      
+      <!-- KPI 1: Featured Glow Card con Border-Travel -->
+      <div class="kpi-card featured-glow" onclick="openDrilldownModal('AUM')" data-tooltip-title="Volumen Cartera Activa (AUM) — Clic para Detalle" data-tooltip="Haz clic para ver el desglose por tipo de colateral, vencimientos y auditoría IFRS 9.">
+        <div class="kpi-header">
+          <span>Volumen Cartera Activa</span>
+          <span class="pill-dashed" style="padding: 1px 6px;">AUM 🔍</span>
+        </div>
+        <div class="kpi-value-row">
+          <div class="kpi-value">
+            <span id="kpiVol" class="counter-num" data-target="248.6">248.6</span>
+            <span class="kpi-unit">M €</span>
+          </div>
+          <span class="delta-badge positive">↑ 8.4%</span>
+        </div>
+        <svg class="sparkline-svg" viewBox="0 0 100 25" style="stroke: var(--accent-blue);">
+          <path class="sparkline-path" d="M0 21 Q 25 15, 50 12 T 75 8 T 100 4" />
+        </svg>
+      </div>
+
+      <!-- KPI 2: Margen de Intermediación Neto -->
+      <div class="kpi-card" onclick="openDrilldownModal('NII')" data-tooltip-title="Margen Intermediación (NII) — Clic para Detalle" data-tooltip="Diferencia entre ingresos por activo y coste de pasivo. Haz clic para ver el margen por tipo de producto.">
+        <div class="kpi-header">
+          <span>Margen Intermediación</span>
+          <span class="pill-dashed" style="padding: 1px 6px;">NET NII 🔍</span>
+        </div>
+        <div class="kpi-value-row">
+          <div class="kpi-value">
+            <span id="kpiNii" class="counter-num" data-target="8.42">8.42</span>
+            <span class="kpi-unit">M €</span>
+          </div>
+          <span class="delta-badge positive">↑ 12.1%</span>
+        </div>
+        <svg class="sparkline-svg" viewBox="0 0 100 25" style="stroke: var(--accent-emerald);">
+          <path class="sparkline-path" d="M0 23 Q 30 18, 55 10 T 80 12 T 100 3" />
+        </svg>
+      </div>
+
+      <!-- KPI 3: Oportunidades de Alta Propensión -->
+      <div class="kpi-card" onclick="openDrilldownModal('LEADS')" data-tooltip-title="Leads de Alta Propensión — Clic para Detalle" data-tooltip="Empresas con probabilidad de contratación > 75%. Haz clic para ver la segmentación por algoritmo Copilot.">
+        <div class="kpi-header">
+          <span>Leads Alta Propensión</span>
+          <span class="pill-dashed" style="padding: 1px 6px;">COPILOT 🔍</span>
+        </div>
+        <div class="kpi-value-row">
+          <div class="kpi-value">
+            <span id="kpiLeads" class="counter-num" data-target="1420">1420</span>
+            <span class="kpi-unit">leads</span>
+          </div>
+          <span class="delta-badge positive">↑ 19.2%</span>
+        </div>
+        <svg class="sparkline-svg" viewBox="0 0 100 25" style="stroke: var(--accent-purple);">
+          <path class="sparkline-path" d="M0 24 Q 20 18, 40 8 T 70 14 T 100 3" />
+        </svg>
+      </div>
+
+      <!-- KPI 4: Coste del Riesgo (CoR) -->
+      <div class="kpi-card" onclick="openDrilldownModal('COR')" data-tooltip-title="Cost of Risk (CoR) — Clic para Detalle" data-tooltip="Dotaciones a provisiones por riesgo de crédito. Haz clic para auditar la pérdida esperada (ECL).">
+        <div class="kpi-header">
+          <span>Coste del Riesgo (CoR)</span>
+          <span class="pill-dashed" style="padding: 1px 6px;">RISK 🔍</span>
+        </div>
+        <div class="kpi-value-row">
+          <div class="kpi-value">
+            <span id="kpiCor" class="counter-num" data-target="0.28">0.28</span>
+            <span class="kpi-unit">%</span>
+          </div>
+          <span class="delta-badge positive">↓ 9 bps</span>
+        </div>
+        <svg class="sparkline-svg" viewBox="0 0 100 25" style="stroke: var(--accent-amber);">
+          <path class="sparkline-path" d="M0 8 Q 30 18, 60 14 T 100 19" />
+        </svg>
+      </div>
+
+      <!-- KPI 5: Tasa de Conversión IA -->
+      <div class="kpi-card" onclick="openDrilldownModal('WINRATE')" data-tooltip-title="Conversión con Copilot — Clic para Detalle" data-tooltip="Porcentaje de éxito en ofertas comerciales formalizadas. Haz clic para ver el histórico de conversión.">
+        <div class="kpi-header">
+          <span>Conversión con Copilot</span>
+          <span class="pill-dashed" style="padding: 1px 6px;">WIN RATE 🔍</span>
+        </div>
+        <div class="kpi-value-row">
+          <div class="kpi-value">
+            <span id="kpiWinRate" class="counter-num" data-target="38.4">38.4</span>
+            <span class="kpi-unit">%</span>
+          </div>
+          <span class="delta-badge positive">↑ 7.6%</span>
+        </div>
+        <svg class="sparkline-svg" viewBox="0 0 100 25" style="stroke: var(--accent-cyan);">
+          <path class="sparkline-path" d="M0 20 Q 25 18, 50 10 T 80 8 T 100 2" />
+        </svg>
+      </div>
+
+      <!-- KPI 6: Tiempo Medio de Concesión SLA -->
+      <div class="kpi-card" onclick="openDrilldownModal('SLA')" data-tooltip-title="SLA de Resolución — Clic para Detalle" data-tooltip="Tiempo medio de emisión de póliza y scoring. Haz clic para ver el desglose por fase operativa.">
+        <div class="kpi-header">
+          <span>Tiempo Resolución SLA</span>
+          <span class="pill-dashed" style="padding: 1px 6px;">HOURS 🔍</span>
+        </div>
+        <div class="kpi-value-row">
+          <div class="kpi-value">
+            <span id="kpiTime" class="counter-num" data-target="3.2">3.2</span>
+            <span class="kpi-unit">h</span>
+          </div>
+          <span class="delta-badge neutral">↓ 86% vs Trad.</span>
+        </div>
+        <svg class="sparkline-svg" viewBox="0 0 100 25" style="stroke: var(--accent-rose);">
+          <path class="sparkline-path" d="M0 6 Q 25 8, 50 14 T 80 18 T 100 22" />
+        </svg>
+      </div>
+
+    </section>
+
+    <!-- 5. SECCIÓN GRÁFICA MULTI-DIMENSIONAL (EVOLUCIÓN MENSUAL + RADAR DE SALUD) -->
+    <section class="visual-analytics-row">
+      
+      <!-- Panel Izquierdo: Evolución Mensual y Objetivos (SVG Bar + Area) -->
+      <div class="analytics-panel">
+        <div class="panel-header-compact">
+          <div class="panel-title-text" data-tooltip-title="Nueva Financiación Formalizada" data-tooltip="Comparativa mensual de crédito formalizado frente al objetivo presupuestario. Clic en cualquier barra para ver el desglose del mes.">
+            <span>📈 Evolución de Nueva Financiación & Cumplimiento Trimestral (€ Millones)</span>
+          </div>
+          <div style="display: flex; gap: 0.5rem; align-items: center;">
+            <span class="pill-dashed" style="font-size: 0.68rem;">🟢 Realizado</span>
+            <span class="pill-dashed" style="font-size: 0.68rem; border-color: var(--accent-blue);">🔵 Objetivo IA</span>
+          </div>
+        </div>
+
+        <!-- Gráfico SVG Interactivo con Hover Tooltips y Clic para Drill-down -->
+        <div class="chart-container-svg" id="monthlyChartWrapper">
+          <svg viewBox="0 0 650 180" style="width: 100%; height: 100%; overflow: visible;">
+            <defs>
+              <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.35" />
+                <stop offset="100%" stop-color="#3b82f6" stop-opacity="0.0" />
+              </linearGradient>
+            </defs>
+
+            <line x1="40" y1="20" x2="630" y2="20" stroke="var(--chart-grid)" stroke-dasharray="3 3" />
+            <text x="30" y="24" fill="var(--chart-axis)" font-size="10" font-family="'JetBrains Mono'" text-anchor="end">35M</text>
+            <line x1="40" y1="65" x2="630" y2="65" stroke="var(--chart-grid)" stroke-dasharray="3 3" />
+            <text x="30" y="69" fill="var(--chart-axis)" font-size="10" font-family="'JetBrains Mono'" text-anchor="end">25M</text>
+            <line x1="40" y1="110" x2="630" y2="110" stroke="var(--chart-grid)" stroke-dasharray="3 3" />
+            <text x="30" y="114" fill="var(--chart-axis)" font-size="10" font-family="'JetBrains Mono'" text-anchor="end">15M</text>
+            <line x1="40" y1="150" x2="630" y2="150" stroke="var(--border-dashed)" />
+            <text x="30" y="154" fill="var(--chart-axis)" font-size="10" font-family="'JetBrains Mono'" text-anchor="end">0M</text>
+
+            <path d="M 65 150 L 65 105 L 125 95 L 185 80 L 245 75 L 305 60 L 365 70 L 425 45 L 485 40 L 545 35 L 605 25 L 605 150 Z" fill="url(#areaGradient)" />
+
+            <!-- Barras Mensuales -->
+            <g class="bar-group-svg" onclick="openDrilldownMonth('Enero', '14.2M €', 24)" data-tooltip-title="Enero 2026 (Clic para detalle)" data-tooltip="Financiación: € 14.2M (+6.2% vs budget). 24 operaciones cerradas.">
+              <rect x="55" y="105" width="20" height="45" rx="3" fill="var(--muted)" />
+              <rect x="55" y="110" width="20" height="40" rx="3" fill="var(--accent-emerald)" />
+              <text x="65" y="166" fill="var(--chart-axis)" font-size="10" font-family="'JetBrains Mono'" text-anchor="middle">ENE</text>
+            </g>
+            <g class="bar-group-svg" onclick="openDrilldownMonth('Febrero', '16.8M €', 28)" data-tooltip-title="Febrero 2026 (Clic para detalle)" data-tooltip="Financiación: € 16.8M (+8.4% vs budget). Impulso en confirming.">
+              <rect x="115" y="95" width="20" height="55" rx="3" fill="var(--muted)" />
+              <rect x="115" y="100" width="20" height="50" rx="3" fill="var(--accent-emerald)" />
+              <text x="125" y="166" fill="var(--chart-axis)" font-size="10" font-family="'JetBrains Mono'" text-anchor="middle">FEB</text>
+            </g>
+            <g class="bar-group-svg" onclick="openDrilldownMonth('Marzo', '19.4M €', 31)" data-tooltip-title="Marzo 2026 (Clic para detalle)" data-tooltip="Financiación: € 19.4M (+11.2% vs budget). Campaña agraria.">
+              <rect x="175" y="80" width="20" height="70" rx="3" fill="var(--muted)" />
+              <rect x="175" y="85" width="20" height="65" rx="3" fill="var(--accent-emerald)" />
+              <text x="185" y="166" fill="var(--chart-axis)" font-size="10" font-family="'JetBrains Mono'" text-anchor="middle">MAR</text>
+            </g>
+            <g class="bar-group-svg" onclick="openDrilldownMonth('Abril', '21.0M €', 35)" data-tooltip-title="Abril 2026 (Clic para detalle)" data-tooltip="Financiación: € 21.0M (+9.1% vs budget). Operaciones NextGen.">
+              <rect x="235" y="75" width="20" height="75" rx="3" fill="var(--muted)" />
+              <rect x="235" y="80" width="20" height="70" rx="3" fill="var(--accent-emerald)" />
+              <text x="245" y="166" fill="var(--chart-axis)" font-size="10" font-family="'JetBrains Mono'" text-anchor="middle">ABR</text>
+            </g>
+            <g class="bar-group-svg" onclick="openDrilldownMonth('Mayo', '24.5M €', 42)" data-tooltip-title="Mayo 2026 (Clic para detalle)" data-tooltip="Financiación: € 24.5M (+14.5% vs budget). Máximo semestral.">
+              <rect x="295" y="60" width="20" height="90" rx="3" fill="var(--muted)" />
+              <rect x="295" y="65" width="20" height="85" rx="3" fill="var(--accent-emerald)" />
+              <text x="305" y="166" fill="var(--chart-axis)" font-size="10" font-family="'JetBrains Mono'" text-anchor="middle">MAY</text>
+            </g>
+            <g class="bar-group-svg" onclick="openDrilldownMonth('Junio', '22.8M €', 38)" data-tooltip-title="Junio 2026 (Clic para detalle)" data-tooltip="Financiación: € 22.8M (-2.4% por expedientes en comité).">
+              <rect x="355" y="70" width="20" height="80" rx="3" fill="var(--muted)" />
+              <rect x="355" y="75" width="20" height="75" rx="3" fill="var(--accent-blue)" />
+              <text x="365" y="166" fill="var(--chart-axis)" font-size="10" font-family="'JetBrains Mono'" text-anchor="middle">JUN</text>
+            </g>
+            <g class="bar-group-svg" onclick="openDrilldownMonth('Julio', '27.2M €', 45)" data-tooltip-title="Julio 2026 (Clic para detalle)" data-tooltip="Financiación: € 27.2M (+18.1% vs budget). Factoring sanitario.">
+              <rect x="415" y="45" width="20" height="105" rx="3" fill="var(--muted)" />
+              <rect x="415" y="50" width="20" height="100" rx="3" fill="var(--accent-emerald)" />
+              <text x="425" y="166" fill="var(--chart-axis)" font-size="10" font-family="'JetBrains Mono'" text-anchor="middle">JUL</text>
+            </g>
+            <g class="bar-group-svg" onclick="openDrilldownMonth('Agosto', '28.9M €', 47)" data-tooltip-title="Agosto 2026 (Clic para detalle)" data-tooltip="Financiación: € 28.9M (+12.0% vs budget). Continuidad operativa.">
+              <rect x="475" y="40" width="20" height="110" rx="3" fill="var(--muted)" />
+              <rect x="475" y="45" width="20" height="105" rx="3" fill="var(--accent-emerald)" />
+              <text x="485" y="166" fill="var(--chart-axis)" font-size="10" font-family="'JetBrains Mono'" text-anchor="middle">AGO</text>
+            </g>
+            <g class="bar-group-svg" onclick="openDrilldownMonth('Septiembre', '30.5M €', 52)" data-tooltip-title="Septiembre 2026 (Clic para detalle)" data-tooltip="Financiación: € 30.5M (+15.2% vs budget). Préstamos verdes FEI.">
+              <rect x="535" y="35" width="20" height="115" rx="3" fill="var(--muted)" />
+              <rect x="535" y="38" width="20" height="112" rx="3" fill="var(--accent-emerald)" />
+              <text x="545" y="166" fill="var(--chart-axis)" font-size="10" font-family="'JetBrains Mono'" text-anchor="middle">SEP</text>
+            </g>
+            <g class="bar-group-svg" onclick="openDrilldownMonth('Octubre', '33.8M €', 58)" data-tooltip-title="Octubre 2026 (En Curso)" data-tooltip="Financiación Proyectada: € 33.8M (+22.4%). 48 operaciones en pipeline.">
+              <rect x="595" y="25" width="20" height="125" rx="3" fill="var(--accent-blue)" fill-opacity="0.25" stroke="var(--accent-blue)" stroke-dasharray="2 2" />
+              <rect x="595" y="30" width="20" height="120" rx="3" fill="url(#areaGradient)" stroke="var(--accent-blue)" />
+              <text x="605" y="166" fill="var(--accent-blue)" font-weight="700" font-size="10" font-family="'JetBrains Mono'" text-anchor="middle">OCT*</text>
+            </g>
+
+            <path d="M 65 105 Q 125 95, 185 80 T 305 60 T 425 45 T 545 35 T 605 25" fill="none" stroke="var(--accent-blue)" stroke-width="2.5" stroke-linecap="round" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- Panel Derecho: Radar de Salud de Cartera & Ratios Prudenciales -->
+      <div class="analytics-panel">
+        <div class="panel-header-compact">
+          <div class="panel-title-text" data-tooltip-title="Matriz Hexagonal de Solvencia" data-tooltip="Diagnóstico multidimensional de los 6 pilares de Basilea III / IV: Solvencia CET1, Liquidez LCR, Calidad de Activo, Diversificación, Cumplimiento ESG y Cobertura.">
+            <span>🕸️ Matriz de Salud de Cartera (Puntuación 0-100)</span>
+          </div>
+          <span class="pill-dashed" style="color: var(--accent-emerald);" onclick="openDrilldownModal('HEALTH')" data-tooltip-title="Health Score" data-tooltip="Clic para ver la auditoría de Basilea III/IV.">Global: 91/100 🔍</span>
+        </div>
+
+        <div class="radar-container">
+          <svg class="radar-svg" viewBox="0 0 200 200">
+            <polygon points="100,20 170,60 170,140 100,180 30,140 30,60" fill="none" stroke="var(--border)" stroke-width="1" />
+            <polygon points="100,50 145,75 145,125 100,150 55,125 55,75" fill="none" stroke="var(--border)" stroke-width="1" />
+            <polygon points="100,80 120,90 120,110 100,120 80,110 80,90" fill="none" stroke="var(--border)" stroke-width="1" />
+
+            <line x1="100" y1="100" x2="100" y2="20" stroke="var(--border)" />
+            <line x1="100" y1="100" x2="170" y2="60" stroke="var(--border)" />
+            <line x1="100" y1="100" x2="170" y2="140" stroke="var(--border)" />
+            <line x1="100" y1="100" x2="100" y2="180" stroke="var(--border)" />
+            <line x1="100" y1="100" x2="30" y2="140" stroke="var(--border)" />
+            <line x1="100" y1="100" x2="30" y2="60" stroke="var(--border)" />
+
+            <polygon id="radarPolygon" points="100,32 160,70 155,135 100,165 42,130 40,68" 
+                     fill="var(--accent-blue-subtle)" stroke="var(--accent-blue)" stroke-width="2" />
+
+            <circle cx="100" cy="32" r="3.5" fill="var(--accent-blue)" />
+            <circle cx="160" cy="70" r="3.5" fill="var(--accent-blue)" />
+            <circle cx="155" cy="135" r="3.5" fill="var(--accent-blue)" />
+            <circle cx="100" cy="165" r="3.5" fill="var(--accent-blue)" />
+            <circle cx="42" cy="130" r="3.5" fill="var(--accent-blue)" />
+            <circle cx="40" cy="68" r="3.5" fill="var(--accent-blue)" />
+          </svg>
+
+          <!-- Desglose de Ratios Clave con Tooltips y Clic para Drill-down -->
+          <div class="health-stats-list">
+            <div class="stat-row-mini" onclick="openDrilldownModal('CET1')" data-tooltip-title="Capital de Máxima Calidad (CET1)" data-tooltip="Recursos propios de primer nivel. Haz clic para ver el desglose regulatorio.">
+              <span class="label">Solvencia (CET1):</span>
+              <span class="val" id="radarStatCet1" style="color: var(--accent-emerald);">14.8% ↗</span>
+            </div>
+            <div class="stat-row-mini" onclick="openDrilldownModal('SECTOR')" data-tooltip-title="Diversificación Sectorial" data-tooltip="Índice HHI normalizado. Haz clic para ver la concentración por CNAE.">
+              <span class="label">Diversificación Sector:</span>
+              <span class="val" style="color: var(--accent-blue);">88 / 100 ↗</span>
+            </div>
+            <div class="stat-row-mini" onclick="openDrilldownModal('COVERAGE')" data-tooltip-title="Cobertura de Activos Dudosos" data-tooltip="Provisiones constituidas sobre crédito en mora. Haz clic para ver detalle.">
+              <span class="label">Cobertura de Mora:</span>
+              <span class="val" style="color: var(--accent-emerald);">76.4% ↗</span>
+            </div>
+            <div class="stat-row-mini" onclick="openDrilldownModal('GREEN')" data-tooltip-title="Alineación Taxonomía UE" data-tooltip="Proporción de préstamos con verificación verde ESG. Clic para ver certificaciones.">
+              <span class="label">Alineación Green Tax.:</span>
+              <span class="val" style="color: var(--accent-purple);">92% ↗</span>
+            </div>
+            <div class="stat-row-mini" onclick="openDrilldownModal('TOP10')" data-tooltip-title="Exposición Top 10 Clientes" data-tooltip="Concentración de los diez mayores deudores. Clic para ver los límites de riesgo.">
+              <span class="label">Concentración Top 10:</span>
+              <span class="val" style="color: var(--accent-amber);">18.2% ↗</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- 6. SECCIÓN TIER 1: MATRIZ DE RIESGO VS RETORNO & DISTRIBUCIÓN TERRITORIAL -->
+    <section class="tier1-visuals-grid">
+      
+      <!-- Matriz de Riesgo vs Rentabilidad (Scatter Plot Interactivo) -->
+      <div class="analytics-panel">
+        <div class="panel-header-compact">
+          <div class="panel-title-text" data-tooltip-title="Matriz de Riesgo vs. Retorno" data-tooltip="Posicionamiento de las carteras comerciales: Eje X = Probabilidad de Mora (PD %), Eje Y = Rentabilidad ROE estimada (%). Clic en cualquier burbuja para abrir su Ficha 360°.">
+            <span>🎯 Matriz de Eficiencia Riesgo vs. Rentabilidad (Risk-Adjusted Return)</span>
+          </div>
+          <span class="pill-dashed">Burbujas = Volumen Dispuesto</span>
+        </div>
+
+        <div class="scatter-svg-wrap">
+          <svg viewBox="0 0 540 200" style="width: 100%; height: 100%; overflow: visible;">
+            <rect x="50" y="20" width="220" height="75" fill="rgba(16, 185, 129, 0.05)" />
+            <text x="55" y="35" fill="var(--accent-emerald)" font-size="9" font-family="'JetBrains Mono'" font-weight="700">ZONA ÓPTIMA (Alto ROE / Bajo Riesgo)</text>
+
+            <rect x="270" y="95" width="230" height="75" fill="rgba(244, 63, 94, 0.05)" />
+            <text x="495" y="165" fill="var(--accent-rose)" font-size="9" font-family="'JetBrains Mono'" font-weight="700" text-anchor="end">ZONA VIGILANCIA</text>
+
+            <line x1="50" y1="20" x2="50" y2="170" stroke="var(--chart-axis)" />
+            <line x1="50" y1="170" x2="500" y2="170" stroke="var(--chart-axis)" />
+            <line x1="270" y1="20" x2="270" y2="170" stroke="var(--chart-grid)" stroke-dasharray="2 2" />
+            <line x1="50" y1="95" x2="500" y2="95" stroke="var(--chart-grid)" stroke-dasharray="2 2" />
+
+            <text x="40" y="30" fill="var(--chart-axis)" font-size="9" font-family="'JetBrains Mono'" text-anchor="end">ROE 24%</text>
+            <text x="40" y="100" fill="var(--chart-axis)" font-size="9" font-family="'JetBrains Mono'" text-anchor="end">ROE 14%</text>
+            <text x="40" y="165" fill="var(--chart-axis)" font-size="9" font-family="'JetBrains Mono'" text-anchor="end">ROE 4%</text>
+
+            <text x="60" y="186" fill="var(--chart-axis)" font-size="9" font-family="'JetBrains Mono'">0.5% (PD)</text>
+            <text x="270" y="186" fill="var(--chart-axis)" font-size="9" font-family="'JetBrains Mono'" text-anchor="middle">2.5% (PD Media)</text>
+            <text x="490" y="186" fill="var(--chart-axis)" font-size="9" font-family="'JetBrains Mono'" text-anchor="end">5.0% (Alto Riesgo)</text>
+
+            <!-- Puntos / Burbujas de Clientes Interactivos -->
+            <circle class="scatter-point" cx="120" cy="50" r="16" fill="rgba(16, 185, 129, 0.45)" stroke="var(--accent-emerald)" stroke-width="2" 
+                    onclick="openDrawer('Logística Ibérica del Norte S.A.', 'A-84920194', 'Logística', 'AA', '€ 1.8M', '94%', 'Póliza Verde', 'Cliente cuadrante óptimo: ROE 22.4%, PD 0.42%.')" 
+                    data-tooltip-title="Logística Ibérica S.A. (Clic para Ficha)" data-tooltip="Volumen: € 1.8M · ROE: 22.4% · Riesgo PD: 0.42% (Óptimo)">
+            </circle>
+
+            <circle class="scatter-point" cx="95" cy="70" r="11" fill="rgba(59, 130, 246, 0.45)" stroke="var(--accent-blue)" stroke-width="2" 
+                    onclick="openDrawer('TecnoComponentes Levante S.L.', 'B-91028472', 'Industria', 'AAA', '€ 450k', '89%', 'Confirming', 'Margen neto 18.1%, PD 0.12%.')" 
+                    data-tooltip-title="TecnoComponentes Levante (Clic para Ficha)" data-tooltip="Volumen: € 450k · ROE: 18.1% · Riesgo PD: 0.12% (AAA)">
+            </circle>
+
+            <circle class="scatter-point" cx="180" cy="85" r="14" fill="rgba(168, 85, 247, 0.45)" stroke="var(--accent-purple)" stroke-width="2" 
+                    onclick="openDrawer('Distribuciones Farma Sur', 'B-41839201', 'Salud', 'AA+', '€ 1.2M', '91%', 'Factoring', 'ROE 15.8%, PD 0.65%.')" 
+                    data-tooltip-title="Distribuciones Farma Sur (Clic para Ficha)" data-tooltip="Volumen: € 1.2M · ROE: 15.8% · Riesgo PD: 0.65%">
+            </circle>
+
+            <circle class="scatter-point" cx="240" cy="115" r="13" fill="rgba(245, 158, 11, 0.45)" stroke="var(--accent-amber)" stroke-width="2" 
+                    onclick="openDrawer('Cooperativa Agraria Duero', 'F-47182901', 'Agro', 'BBB+', '€ 800k', '78%', 'Leasing', 'ROE 12.2%, PD 1.84%.')" 
+                    data-tooltip-title="Coop. Agraria Duero (Clic para Ficha)" data-tooltip="Volumen: € 800k · ROE: 12.2% · Riesgo PD: 1.84%">
+            </circle>
+
+            <circle class="scatter-point" cx="390" cy="140" r="15" fill="rgba(244, 63, 94, 0.45)" stroke="var(--accent-rose)" stroke-width="2" 
+                    onclick="openDrawer('Cerámicas Mediterráneo', 'A-12849102', 'Construcción', 'BB+', '€ 950k', '82% Fuga', 'Retención', 'ROE 6.4%, PD 3.85%.')" 
+                    data-tooltip-title="Cerámicas Mediterráneo (Clic para Ficha)" data-tooltip="Volumen: € 950k · ROE: 6.4% · Riesgo PD: 3.85% (Vigilancia)">
+            </circle>
+
+            <circle class="scatter-point" cx="320" cy="110" r="20" fill="rgba(245, 158, 11, 0.35)" stroke="var(--accent-amber)" stroke-width="2" 
+                    onclick="openDrawer('Grupo Cantábrico', 'A-39019284', 'Metalurgia', 'BBB-', '€ 4.5M', '65%', 'Sindicado', 'ROE 13.5%, PD 2.45%.')" 
+                    data-tooltip-title="Grupo Cantábrico (Clic para Ficha)" data-tooltip="Volumen: € 4.5M · ROE: 13.5% · Riesgo PD: 2.45%">
+            </circle>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Desglose por Direcciones Territoriales -->
+      <div class="analytics-panel">
+        <div class="panel-header-compact">
+          <div class="panel-title-text" data-tooltip-title="Red de Direcciones Territoriales" data-tooltip="Volumen y porcentaje de cumplimiento del presupuesto comercial en cada dirección territorial. Haz clic en cualquier territorio para ver su desglose de oficinas.">
+            <span>🏛️ Red Territorial & Cumplimiento de Presupuesto</span>
+          </div>
+          <span class="pill-dashed" style="color: var(--accent-emerald);">Media Red: 101.4%</span>
+        </div>
+
+        <div class="territory-list">
+          <div class="territory-item" onclick="openDrilldownTerritory('DT Madrid & Centro', '€ 88.4M', '106.2%', '142 Gestores')" data-tooltip-title="DT Madrid & Centro" data-tooltip="Clic para ver las 42 oficinas comerciales adscritas.">
+            <div class="territory-top">
+              <span>DT Madrid & Centro</span>
+              <span style="font-family: var(--font-mono); color: var(--accent-emerald);">€ 88.4M (106.2%)</span>
+            </div>
+            <div class="territory-bar-track"><div class="territory-bar-fill" style="width: 92%;"></div></div>
+          </div>
+
+          <div class="territory-item" onclick="openDrilldownTerritory('DT Cataluña & Baleares', '€ 72.0M', '98.5%', '118 Gestores')" data-tooltip-title="DT Cataluña & Baleares" data-tooltip="Clic para ver las 34 oficinas comerciales adscritas.">
+            <div class="territory-top">
+              <span>DT Cataluña & Baleares</span>
+              <span style="font-family: var(--font-mono); color: var(--accent-blue);">€ 72.0M (98.5%)</span>
+            </div>
+            <div class="territory-bar-track"><div class="territory-bar-fill" style="width: 78%;"></div></div>
+          </div>
+
+          <div class="territory-item" onclick="openDrilldownTerritory('DT Norte & Cantábrico', '€ 44.2M', '103.4%', '64 Gestores')" data-tooltip-title="DT Norte & Cantábrico" data-tooltip="Clic para ver las 22 oficinas comerciales adscritas.">
+            <div class="territory-top">
+              <span>DT Norte & Cantábrico</span>
+              <span style="font-family: var(--font-mono); color: var(--accent-emerald);">€ 44.2M (103.4%)</span>
+            </div>
+            <div class="territory-bar-track"><div class="territory-bar-fill" style="width: 58%;"></div></div>
+          </div>
+
+          <div class="territory-item" onclick="openDrilldownTerritory('DT Levante & Murcia', '€ 32.5M', '96.2%', '52 Gestores')" data-tooltip-title="DT Levante & Murcia" data-tooltip="Clic para ver las 18 oficinas comerciales adscritas.">
+            <div class="territory-top">
+              <span>DT Levante & Murcia</span>
+              <span style="font-family: var(--font-mono); color: var(--accent-amber);">€ 32.5M (96.2%)</span>
+            </div>
+            <div class="territory-bar-track"><div class="territory-bar-fill" style="width: 44%;"></div></div>
+          </div>
+
+          <div class="territory-item" onclick="openDrilldownTerritory('DT Andalucía & Extremadura', '€ 26.5M', '94.8%', '48 Gestores')" data-tooltip-title="DT Andalucía & Extremadura" data-tooltip="Clic para ver las 16 oficinas comerciales adscritas.">
+            <div class="territory-top">
+              <span>DT Andalucía & Extremadura</span>
+              <span style="font-family: var(--font-mono); color: var(--accent-amber);">€ 26.5M (94.8%)</span>
+            </div>
+            <div class="territory-bar-track"><div class="territory-bar-fill" style="width: 38%;"></div></div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- 7. SECCIÓN OPERATIVA: TABLA CON ORDENACIÓN, CHECKBOXES & ACCIONES MASIVAS -->
+    <section class="operational-split">
+      
+      <!-- Panel Izquierdo: Data Grid Multi-Pestaña de Cartera -->
+      <div style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column;">
+        
+        <!-- Cabecera de Pestañas Operativas -->
+        <div class="table-tabs-header">
+          <div class="tabs-nav">
+            <button class="tab-item-btn active" onclick="switchTableTab('OPORTUNIDADES', this)" data-tooltip-title="Pestaña Oportunidades" data-tooltip="Expedientes de crédito aprobados por IA o en curso de formalización.">
+              <span>Oportunidades de Financiación</span>
+              <span class="tab-badge" id="tabCountOps">7</span>
+            </button>
+            <button class="tab-item-btn" onclick="switchTableTab('CHURN', this)" data-tooltip-title="Pestaña Alertas de Fuga" data-tooltip="Empresas detectadas con desviación de fondos a otras entidades competidoras.">
+              <span>Alertas de Fuga (Churn)</span>
+              <span class="tab-badge" style="background: var(--accent-rose-subtle); color: var(--accent-rose);">3</span>
+            </button>
+            <button class="tab-item-btn" onclick="switchTableTab('VENCIMIENTOS', this)" data-tooltip-title="Pestaña Vencimientos" data-tooltip="Pólizas y líneas de circulante que expiran en los próximos 30 días.">
+              <span>Vencimientos Próximos</span>
+              <span class="tab-badge">4</span>
+            </button>
+          </div>
+
+          <div style="display: flex; gap: 0.5rem; align-items: center; padding: 0.5rem 0;">
+            <span class="pill-dashed" id="tableFilterCount">7 Empresas en Vista</span>
+          </div>
+        </div>
+
+        <!-- Filtros Rápidos Dinámicos por Sector y Calificación -->
+        <div class="table-filter-bar">
+          <div class="filter-pills-row">
+            <span style="color: var(--muted-foreground); font-weight: 600; margin-right: 0.2rem;">Sector:</span>
+            <button class="pill-filter-tag active" onclick="setSectorFilter('ALL', this)">Todos</button>
+            <button class="pill-filter-tag" onclick="setSectorFilter('Logística', this)">Logística</button>
+            <button class="pill-filter-tag" onclick="setSectorFilter('Industria', this)">Industria</button>
+            <button class="pill-filter-tag" onclick="setSectorFilter('Agro', this)">Agro</button>
+            <button class="pill-filter-tag" onclick="setSectorFilter('Salud', this)">Salud</button>
+            <button class="pill-filter-tag" onclick="setSectorFilter('Construcción', this)">Construcción</button>
+          </div>
+
+          <div class="filter-pills-row">
+            <span style="color: var(--muted-foreground); font-weight: 600; margin-right: 0.2rem;">Rating:</span>
+            <button class="pill-filter-tag active" onclick="setRatingFilter('ALL', this)">Todos</button>
+            <button class="pill-filter-tag" onclick="setRatingFilter('AAA', this)">AAA</button>
+            <button class="pill-filter-tag" onclick="setRatingFilter('AA', this)">AA</button>
+            <button class="pill-filter-tag" onclick="setRatingFilter('BBB', this)">BBB</button>
+          </div>
+        </div>
+
+        <!-- Tabla de Datos con Ordenación y Checkboxes -->
+        <div class="table-responsive">
+          <table class="data-table-rich" id="mainDataTable">
+            <thead>
+              <tr>
+                <th style="width: 38px; text-align: center;">
+                  <input type="checkbox" id="masterCheckbox" onchange="toggleSelectAllRows(this.checked)">
+                </th>
+                <th class="sortable" onclick="sortTableBy(1)">Empresa / NIF <span id="sortCol1">↕</span></th>
+                <th class="sortable" onclick="sortTableBy(2)">Sector <span id="sortCol2">↕</span></th>
+                <th class="sortable" onclick="sortTableBy(3)">Rating <span id="sortCol3">↕</span></th>
+                <th>Producto Propuesto</th>
+                <th class="sortable" onclick="sortTableBy(5)">Importe <span id="sortCol5">↕</span></th>
+                <th class="sortable" onclick="sortTableBy(6)" style="min-width: 125px;">Propensión IA <span id="sortCol6">↕</span></th>
+                <th>Estado</th>
+                <th style="text-align: right;">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="clientTableBody">
+              
+              <!-- Fila 1 -->
+              <tr data-tab="OPORTUNIDADES" data-sector="Logística" data-rating="AA" data-client="Logística Ibérica del Norte S.A." data-amount="1800000" data-pct="94">
+                <td style="text-align: center;"><input type="checkbox" class="row-checkbox" onchange="handleRowCheckChange()"></td>
+                <td>
+                  <div class="client-title-block">
+                    <span class="client-name-text" onclick="openDrawer('Logística Ibérica del Norte S.A.', 'A-84920194', 'Transporte & Logística', 'AA', '€ 1.800.000', '94%', 'Póliza Crédito Verde', 'M365 Copilot ha cruzado los contratos marco de 2026 y detecta una necesidad inminente de circulante por apertura de nave logística en Valencia.')" data-tooltip-title="Ficha 360°" data-tooltip="Haz clic para ver el desglose CIRBE y recomendación Copilot.">
+                      Logística Ibérica del Norte S.A. ↗
+                    </span>
+                    <span class="client-cif-text">A-84920194 · Fact. €34.2M</span>
+                  </div>
+                </td>
+                <td><span class="pill-dashed" style="font-size: 0.65rem;">Logística</span></td>
+                <td><span class="rating-badge rating-aa" data-tooltip-title="Rating Crediticio AA" data-tooltip="Capacidad muy fuerte de cumplir obligaciones financieras. Probabilidad de default a 1 año: 0.08%.">AA</span></td>
+                <td style="font-weight: 500;">Póliza Crédito Verde</td>
+                <td style="font-family: var(--font-mono); font-weight: 600;">€ 1.8M</td>
+                <td>
+                  <div class="propensity-mini-bar" data-tooltip-title="Propensión Copilot 94%" data-tooltip="Score óptimo. 100% puntualidad de pago de cuotas en los últimos 48 meses.">
+                    <div class="bar-track"><div class="bar-fill fill-green" style="width: 94%;"></div></div>
+                    <span class="prop-pct" style="color: var(--accent-emerald);">94%</span>
+                  </div>
+                </td>
+                <td><span class="status-badge-dot status-approved" data-tooltip-title="Estado Aprobado IA" data-tooltip="Dictamen favorable automático sin necesidad de intervención manual de riesgos.">● Aprobado IA</span></td>
+                <td style="text-align: right;">
+                  <button class="action-icon-pill" onclick="openDrawer('Logística Ibérica del Norte S.A.', 'A-84920194', 'Transporte & Logística', 'AA', '€ 1.800.000', '94%', 'Póliza Crédito Verde', 'M365 Copilot ha cruzado los contratos marco de 2026 y detecta una necesidad inminente de circulante por apertura de nave logística en Valencia.')">Ficha 360°</button>
+                </td>
+              </tr>
+
+              <!-- Fila 2 -->
+              <tr data-tab="OPORTUNIDADES" data-sector="Industria" data-rating="AAA" data-client="TecnoComponentes Levante S.L." data-amount="450000" data-pct="89">
+                <td style="text-align: center;"><input type="checkbox" class="row-checkbox" onchange="handleRowCheckChange()"></td>
+                <td>
+                  <div class="client-title-block">
+                    <span class="client-name-text" onclick="openDrawer('TecnoComponentes Levante S.L.', 'B-91028472', 'Manufactura & Tech', 'AAA', '€ 450.000', '89%', 'Confirming Internacional', 'Crecimiento de compras a proveedores en Alemania e Italia. Oportunidad óptima para fijar tipos y asegurar cobros con confirming.')" data-tooltip-title="Ficha 360°" data-tooltip="Haz clic para ver el balance y la póliza sugerida.">
+                      TecnoComponentes Levante S.L. ↗
+                    </span>
+                    <span class="client-cif-text">B-91028472 · Fact. €6.2M</span>
+                  </div>
+                </td>
+                <td><span class="pill-dashed" style="font-size: 0.65rem;">Industria</span></td>
+                <td><span class="rating-badge rating-aaa" data-tooltip-title="Rating Crediticio AAA" data-tooltip="Máxima solvencia crediticia. Cobertura de deuda neta superior a 6x EBITDA.">AAA</span></td>
+                <td style="font-weight: 500;">Confirming Internacional</td>
+                <td style="font-family: var(--font-mono); font-weight: 600;">€ 450k</td>
+                <td>
+                  <div class="propensity-mini-bar" data-tooltip-title="Propensión Copilot 89%" data-tooltip="Aceleración de facturación exterior (+44% interanual).">
+                    <div class="bar-track"><div class="bar-fill fill-green" style="width: 89%;"></div></div>
+                    <span class="prop-pct" style="color: var(--accent-emerald);">89%</span>
+                  </div>
+                </td>
+                <td><span class="status-badge-dot status-negotiating" data-tooltip-title="En Negociación" data-tooltip="Propuesta enviada al director financiero. Esperando firma digital.">● Negociación</span></td>
+                <td style="text-align: right;">
+                  <button class="action-icon-pill" onclick="openDrawer('TecnoComponentes Levante S.L.', 'B-91028472', 'Manufactura & Tech', 'AAA', '€ 450.000', '89%', 'Confirming Internacional', 'Crecimiento de compras a proveedores en Alemania e Italia. Oportunidad óptima para fijar tipos y asegurar cobros con confirming.')">Ficha 360°</button>
+                </td>
+              </tr>
+
+              <!-- Fila 3 -->
+              <tr data-tab="OPORTUNIDADES" data-sector="Agro" data-rating="BBB" data-client="Cooperativa Agraria del Duero" data-amount="800000" data-pct="78">
+                <td style="text-align: center;"><input type="checkbox" class="row-checkbox" onchange="handleRowCheckChange()"></td>
+                <td>
+                  <div class="client-title-block">
+                    <span class="client-name-text" onclick="openDrawer('Cooperativa Agraria del Duero', 'F-47182901', 'Agroalimentario', 'BBB+', '€ 800.000', '78%', 'Leasing Sostenible', 'Renovación de maquinaria de riego de precisión. Encaja con fondos de ayuda europea NextGen y garantía parcial FEI.')">
+                      Cooperativa Agraria del Duero ↗
+                    </span>
+                    <span class="client-cif-text">F-47182901 · Fact. €14.8M</span>
+                  </div>
+                </td>
+                <td><span class="pill-dashed" style="font-size: 0.65rem;">Agro</span></td>
+                <td><span class="rating-badge rating-bbb" data-tooltip-title="Rating Crediticio BBB+" data-tooltip="Solvencia adecuada con vulnerabilidad moderada a ciclos climatológicos adversos.">BBB+</span></td>
+                <td style="font-weight: 500;">Leasing Sostenible</td>
+                <td style="font-family: var(--font-mono); font-weight: 600;">€ 800k</td>
+                <td>
+                  <div class="propensity-mini-bar" data-tooltip-title="Propensión Copilot 78%" data-tooltip="Subvenciones PAC pre-aprobadas que actuarán como colateral pignorado.">
+                    <div class="bar-track"><div class="bar-fill fill-blue" style="width: 78%;"></div></div>
+                    <span class="prop-pct" style="color: var(--accent-blue);">78%</span>
+                  </div>
+                </td>
+                <td><span class="status-badge-dot status-review" data-tooltip-title="Comité de Riesgos" data-tooltip="Requiere validación de seguros agrarios contratados.">● Riesgos</span></td>
+                <td style="text-align: right;">
+                  <button class="action-icon-pill" onclick="openDrawer('Cooperativa Agraria del Duero', 'F-47182901', 'Agroalimentario', 'BBB+', '€ 800.000', '78%', 'Leasing Sostenible', 'Renovación de maquinaria de riego de precisión. Encaja con fondos de ayuda europea NextGen y garantía parcial FEI.')">Ficha 360°</button>
+                </td>
+              </tr>
+
+              <!-- Fila 4 -->
+              <tr data-tab="OPORTUNIDADES" data-sector="Salud" data-rating="AA" data-client="Distribuciones Farmacéuticas Sur" data-amount="1200000" data-pct="91">
+                <td style="text-align: center;"><input type="checkbox" class="row-checkbox" onchange="handleRowCheckChange()"></td>
+                <td>
+                  <div class="client-title-block">
+                    <span class="client-name-text" onclick="openDrawer('Distribuciones Farmacéuticas Sur', 'B-41839201', 'Salud & Farma', 'AA+', '€ 1.200.000', '91%', 'Factoring Sin Recurso', 'Ventas a hospitales públicos con cobro medio a 140 días. Factoring sin recurso permite limpiar balance antes de cierre de año.')">
+                      Distribuciones Farmacéuticas Sur ↗
+                    </span>
+                    <span class="client-cif-text">B-41839201 · Fact. €8.9M</span>
+                  </div>
+                </td>
+                <td><span class="pill-dashed" style="font-size: 0.65rem;">Salud</span></td>
+                <td><span class="rating-badge rating-aa" data-tooltip-title="Rating Crediticio AA+" data-tooltip="Cliente de bajo riesgo. Facturas garantizadas por la Administración Pública Sanitaria.">AA+</span></td>
+                <td style="font-weight: 500;">Factoring Sin Recurso</td>
+                <td style="font-family: var(--font-mono); font-weight: 600;">€ 1.2M</td>
+                <td>
+                  <div class="propensity-mini-bar" data-tooltip-title="Propensión Copilot 91%" data-tooltip="Margen comercial recurrente. Flujos garantizados por el Servicio Andaluz de Salud.">
+                    <div class="bar-track"><div class="bar-fill fill-green" style="width: 91%;"></div></div>
+                    <span class="prop-pct" style="color: var(--accent-emerald);">91%</span>
+                  </div>
+                </td>
+                <td><span class="status-badge-dot status-approved">● Aprobado IA</span></td>
+                <td style="text-align: right;">
+                  <button class="action-icon-pill" onclick="openDrawer('Distribuciones Farmacéuticas Sur', 'B-41839201', 'Salud & Farma', 'AA+', '€ 1.200.000', '91%', 'Factoring Sin Recurso', 'Ventas a hospitales públicos con cobro medio a 140 días. Factoring sin recurso permite limpiar balance antes de cierre de año.')">Ficha 360°</button>
+                </td>
+              </tr>
+
+              <!-- Fila 5 -->
+              <tr data-tab="OPORTUNIDADES" data-sector="Industria" data-rating="BBB" data-client="Grupo Metalúrgico Cantábrico" data-amount="4500000" data-pct="65">
+                <td style="text-align: center;"><input type="checkbox" class="row-checkbox" onchange="handleRowCheckChange()"></td>
+                <td>
+                  <div class="client-title-block">
+                    <span class="client-name-text" onclick="openDrawer('Grupo Metalúrgico Cantábrico', 'A-39019284', 'Siderurgia & Energía', 'BBB-', '€ 4.500.000', '65%', 'Préstamo Sindicado Capex', 'Inversión en horno de arco eléctrico bajo en carbono. Requiere sindicación con 2 entidades aliadas y seguro CESCE.')">
+                      Grupo Metalúrgico Cantábrico ↗
+                    </span>
+                    <span class="client-cif-text">A-39019284 · Fact. €52.4M</span>
+                  </div>
+                </td>
+                <td><span class="pill-dashed" style="font-size: 0.65rem;">Industria</span></td>
+                <td><span class="rating-badge rating-bbb" data-tooltip-title="Rating Crediticio BBB-" data-tooltip="Grado de inversión aceptable. Alta sensibilidad a los precios de la energía eléctrica.">BBB-</span></td>
+                <td style="font-weight: 500;">Sindicado Capex</td>
+                <td style="font-family: var(--font-mono); font-weight: 600;">€ 4.5M</td>
+                <td>
+                  <div class="propensity-mini-bar" data-tooltip-title="Propensión Copilot 65%" data-tooltip="Complejidad elevada por sindicación con otras entidades financieras.">
+                    <div class="bar-track"><div class="bar-fill fill-amber" style="width: 65%;"></div></div>
+                    <span class="prop-pct" style="color: var(--accent-amber);">65%</span>
+                  </div>
+                </td>
+                <td><span class="status-badge-dot status-review">● Comité Senior</span></td>
+                <td style="text-align: right;">
+                  <button class="action-icon-pill" onclick="openDrawer('Grupo Metalúrgico Cantábrico', 'A-39019284', 'Siderurgia & Energía', 'BBB-', '€ 4.500.000', '65%', 'Préstamo Sindicado Capex', 'Inversión en horno de arco eléctrico bajo en carbono. Requiere sindicación con 2 entidades aliadas y seguro CESCE.')">Ficha 360°</button>
+                </td>
+              </tr>
+
+              <!-- Fila 6 (Pestaña Churn) -->
+              <tr data-tab="CHURN" data-sector="Construcción" data-rating="BB" style="display: none;" data-client="Cerámicas del Mediterráneo S.A." data-amount="950000" data-pct="82">
+                <td style="text-align: center;"><input type="checkbox" class="row-checkbox" onchange="handleRowCheckChange()"></td>
+                <td>
+                  <div class="client-title-block">
+                    <span class="client-name-text" onclick="openDrawer('Cerámicas del Mediterráneo S.A.', 'A-12849102', 'Construcción', 'BB+', '€ 950.000', '82% Riesgo Fuga', 'Retención / Refinanciación', 'La empresa ha solicitado CIRBE a Santander y BBVA simultáneamente. Reducción de saldo a la vista del 40% este mes.')">
+                      Cerámicas del Mediterráneo S.A. ⚠️
+                    </span>
+                    <span class="client-cif-text">A-12849102 · Saldo a la vista: €180k</span>
+                  </div>
+                </td>
+                <td><span class="pill-dashed" style="font-size: 0.65rem;">Construcción</span></td>
+                <td><span class="rating-badge rating-bb" data-tooltip-title="Rating Crediticio BB+" data-tooltip="Grado especulativo con riesgo de concentración en promotores locales.">BB+</span></td>
+                <td style="font-weight: 500; color: var(--accent-rose);">Alerta: Consulta CIRBE Externa</td>
+                <td style="font-family: var(--font-mono); font-weight: 600;">€ 950k</td>
+                <td>
+                  <div class="propensity-mini-bar" data-tooltip-title="Riesgo de Fuga 82%" data-tooltip="Detección de ofertas competidoras con diferencial rebajado 20 bps.">
+                    <div class="bar-track"><div class="bar-fill" style="width: 82%; background: var(--accent-rose);"></div></div>
+                    <span class="prop-pct" style="color: var(--accent-rose);">82%</span>
+                  </div>
+                </td>
+                <td><span class="status-badge-dot" style="background: var(--accent-rose-subtle); color: var(--accent-rose);">● En Riesgo Fuga</span></td>
+                <td style="text-align: right;">
+                  <button class="action-icon-pill" onclick="openDrawer('Cerámicas del Mediterráneo S.A.', 'A-12849102', 'Construcción', 'BB+', '€ 950.000', '82% Riesgo Fuga', 'Retención / Refinanciación', 'La empresa ha solicitado CIRBE a Santander y BBVA simultáneamente. Reducción de saldo a la vista del 40% este mes.')">Llamar Gestor</button>
+                </td>
+              </tr>
+
+              <!-- Fila 7 (Pestaña Churn) -->
+              <tr data-tab="CHURN" data-sector="Industria" data-rating="BBB" style="display: none;" data-client="Textiles del Vallès S.L." data-amount="620000" data-pct="74">
+                <td style="text-align: center;"><input type="checkbox" class="row-checkbox" onchange="handleRowCheckChange()"></td>
+                <td>
+                  <div class="client-title-block">
+                    <span class="client-name-text" onclick="openDrawer('Textiles del Vallès S.L.', 'B-08291048', 'Textil & Moda', 'BBB', '€ 620.000', '74% Riesgo Fuga', 'Rebaja Comisión TPV', 'Desvío de facturación de TPV físico a pasarelas fintech alternativas (Stripe/Adyen). Proponer integración TPV Virtual con Copilot.')">
+                      Textiles del Vallès S.L. ⚠️
+                    </span>
+                    <span class="client-cif-text">B-08291048 · Facturación TPV: -35%</span>
+                  </div>
+                </td>
+                <td><span class="pill-dashed" style="font-size: 0.65rem;">Industria</span></td>
+                <td><span class="rating-badge rating-bbb">BBB</span></td>
+                <td style="font-weight: 500; color: var(--accent-rose);">Desvío Facturación TPV</td>
+                <td style="font-family: var(--font-mono); font-weight: 600;">€ 620k</td>
+                <td>
+                  <div class="propensity-mini-bar" data-tooltip-title="Propensión Copilot 74%" data-tooltip="Reducción en operativa de cobros.">
+                    <div class="bar-track"><div class="bar-fill" style="width: 74%; background: var(--accent-rose);"></div></div>
+                    <span class="prop-pct" style="color: var(--accent-rose);">74%</span>
+                  </div>
+                </td>
+                <td><span class="status-badge-dot" style="background: var(--accent-rose-subtle); color: var(--accent-rose);">● Fuga Inminente</span></td>
+                <td style="text-align: right;">
+                  <button class="action-icon-pill" onclick="openDrawer('Textiles del Vallès S.L.', 'B-08291048', 'Textil & Moda', 'BBB', '€ 620.000', '74% Riesgo Fuga', 'Rebaja Comisión TPV', 'Desvío de facturación de TPV físico a pasarelas fintech alternativas (Stripe/Adyen). Proponer integración TPV Virtual con Copilot.')">Ficha Retención</button>
+                </td>
+              </tr>
+
+              <!-- Fila 8 (Pestaña Vencimientos) -->
+              <tr data-tab="VENCIMIENTOS" data-sector="Industria" data-rating="AA" style="display: none;" data-client="Automoción & Matricería Alavesa" data-amount="2400000" data-pct="98">
+                <td style="text-align: center;"><input type="checkbox" class="row-checkbox" onchange="handleRowCheckChange()"></td>
+                <td>
+                  <div class="client-title-block">
+                    <span class="client-name-text" onclick="openDrawer('Automoción & Matricería Alavesa', 'A-01928472', 'Automoción', 'AA', '€ 2.400.000', '98%', 'Renovación Póliza Crédito', 'Póliza de 2.4M vence el 15 de Noviembre. Ratios de solvencia impecables, renovación automática recomendada por IA con reducción de diferencial de 15 bps.')">
+                      Automoción & Matricería Alavesa ⏰
+                    </span>
+                    <span class="client-cif-text">A-01928472 · Vence en 18 días</span>
+                  </div>
+                </td>
+                <td><span class="pill-dashed" style="font-size: 0.65rem;">Industria</span></td>
+                <td><span class="rating-badge rating-aa">AA</span></td>
+                <td style="font-weight: 500;">Renovación Póliza Multilínea</td>
+                <td style="font-family: var(--font-mono); font-weight: 600;">€ 2.4M</td>
+                <td>
+                  <div class="propensity-mini-bar" data-tooltip-title="Propensión Copilot 98%" data-tooltip="Historial intachable. Renovación formalizada por IA lista para notario.">
+                    <div class="bar-track"><div class="bar-fill fill-green" style="width: 98%;"></div></div>
+                    <span class="prop-pct" style="color: var(--accent-emerald);">98%</span>
+                  </div>
+                </td>
+                <td><span class="status-badge-dot status-approved">● Listo para Firma</span></td>
+                <td style="text-align: right;">
+                  <button class="action-icon-pill" onclick="openDrawer('Automoción & Matricería Alavesa', 'A-01928472', 'Automoción', 'AA', '€ 2.400.000', '98%', 'Renovación Póliza Crédito', 'Póliza de 2.4M vence el 15 de Noviembre. Ratios de solvencia impecables, renovación automática recomendada por IA con reducción de diferencial de 15 bps.')">Renovar</button>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+
+          <div id="tableEmptyState" style="display: none;" class="empty-state-row">
+            <div class="empty-state-icon">🔍</div>
+            <div style="font-weight: 600; color: var(--foreground); font-size: 0.9rem;">No se encontraron empresas</div>
+            <div style="font-size: 0.75rem; margin-top: 0.25rem;">Prueba con otros términos de búsqueda o restablece los filtros.</div>
+            <button class="btn-secondary-action" style="margin-top: 0.75rem;" onclick="resetAllFilters()">Restablecer Filtros</button>
+          </div>
+        </div>
+
+        <!-- BARRA FLOTANTE DE ACCIONES MASIVAS (BATCH ACTIONS) -->
+        <div class="batch-actions-dock" id="batchDock">
+          <div style="font-weight: 700; font-size: 0.78rem;">
+            <span id="selectedCountText">0</span> empresas seleccionadas
+          </div>
+          <button class="btn-shimmer" onclick="executeBatchAction('Generar Borradores en Lote')">
+            <span>⚡ Emitir Ofertas en Lote M365</span>
+          </button>
+          <button class="btn-secondary-action" onclick="executeBatchAction('Exportar CIRBE Consolidado')">
+            <span>🏦 Descargar CIRBE Masivo</span>
+          </button>
+          <button class="btn-secondary-action" onclick="deselectAllRows()">
+            <span>Desmarcar</span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Panel Derecho: Clúster de 4 Sub-agentes & Consola de Trazas Streaming -->
+      <div class="agent-cluster-card">
+        
+        <div class="cluster-header">
+          <div style="font-size: 0.825rem; font-weight: 700; display: flex; align-items: center; gap: 0.45rem;">
+            <span>🤖 Clúster Agencial VS Code & Copilot</span>
+          </div>
+          <span style="font-size: 0.68rem; color: var(--accent-emerald); font-family: var(--font-mono); font-weight: 600;">ACTIVE PIPELINE</span>
+        </div>
+
+        <div class="subagent-grid">
+          <div class="subagent-item" data-tooltip-title="Sub-agente Scoring-Agent" data-tooltip="Especializado en análisis estocástico de balances contables, cuentas de pérdidas y ganancias y flujo de tesorería libre (Free Cash Flow).">
+            <div class="subagent-top">
+              <span class="subagent-name"><span class="subagent-status-dot active"></span> Scoring-Agent</span>
+              <span style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent-emerald);">IDLE</span>
+            </div>
+            <span class="subagent-desc">Balance & P&L Analysis</span>
+          </div>
+
+          <div class="subagent-item" data-tooltip-title="Sub-agente Risk-Auditor" data-tooltip="Escanea en tiempo real los límites autorizados en CIRBE, umbrales de pérdida esperada (VaR) y concentración en sectores sensibles.">
+            <div class="subagent-top">
+              <span class="subagent-name"><span class="subagent-status-dot working"></span> Risk-Auditor</span>
+              <span style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent-blue);">SCANNING</span>
+            </div>
+            <span class="subagent-desc">CIRBE & VaR Thresholds</span>
+          </div>
+
+          <div class="subagent-item" data-tooltip-title="Sub-agente M365-Drafter" data-tooltip="Redacta automáticamente borradores de póliza y ofertas personalizadas en Word y correos en Outlook para los gestores.">
+            <div class="subagent-top">
+              <span class="subagent-name"><span class="subagent-status-dot active"></span> M365-Drafter</span>
+              <span style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent-emerald);">IDLE</span>
+            </div>
+            <span class="subagent-desc">Word & Email Generator</span>
+          </div>
+
+          <div class="subagent-item" data-tooltip-title="Sub-agente AML-Compliance" data-tooltip="Audita beneficiarios finales (UBO), listas de personas con responsabilidad pública (PEP) y sanciones internacionales.">
+            <div class="subagent-top">
+              <span class="subagent-name"><span class="subagent-status-dot active"></span> AML-Compliance</span>
+              <span style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent-emerald);">SYNCED</span>
+            </div>
+            <span class="subagent-desc">KYC Sanctions Screening</span>
+          </div>
+        </div>
+
+        <div class="console-nav-bar">
+          <span>EVENT TRAIL [60 FPS]</span>
+          <div class="console-filter-chips">
+            <button class="console-chip active" onclick="filterLogs('ALL', this)">TODOS</button>
+            <button class="console-chip" onclick="filterLogs('SCORING', this)">SCORING</button>
+            <button class="console-chip" onclick="filterLogs('RISK', this)">RIESGO</button>
+            <button class="console-chip" onclick="filterLogs('COPILOT', this)">COPILOT</button>
+          </div>
+        </div>
+
+        <div class="agent-console-box" id="consoleLog">
+          <div class="console-line" data-cat="SCORING">
+            <span class="log-time">[18:00:01]</span>
+            <span class="log-tag tag-ok">INIT</span>
+            <span>Estándar PaceUI inicializado con CSS Grid y tokens monocromo.</span>
+          </div>
+          <div class="console-line" data-cat="SCORING">
+            <span class="log-time">[18:00:04]</span>
+            <span class="log-tag tag-scoring">SCORING</span>
+            <span>Evaluado cruce de balances 2025-2026. 48 clientes analizados.</span>
+          </div>
+          <div class="console-line" data-cat="RISK">
+            <span class="log-time">[18:00:09]</span>
+            <span class="log-tag tag-risk">RISK</span>
+            <span>CIRBE verificada: 0 impagos en cartera prioritaria. VaR = 1.18%.</span>
+          </div>
+          <div class="console-line" data-cat="COPILOT">
+            <span class="log-time">[18:00:14]</span>
+            <span class="log-tag tag-copilot">COPILOT</span>
+            <span>Sub-agente M365-Drafter redactó 4 propuestas comerciales listas para gestor.</span>
+          </div>
+          <div class="console-line" id="streamAnchor">
+            <span class="log-time">[18:00:20]</span>
+            <span class="log-tag tag-ok">READY</span>
+            <span>Escuchando eventos comerciales y peticiones de usuario...<span class="caret-blink"></span></span>
+          </div>
+        </div>
+
+        <div class="copilot-prompt-dock">
+          <span style="font-size: 0.9rem;">✨</span>
+          <input type="text" id="copilotQueryInput" placeholder="Pregunta a Copilot (ej: '¿cuál es el riesgo en agro?') o pulsa Enter..." onkeydown="if(event.key==='Enter') sendCopilotQuery()">
+          <button class="copilot-send-btn" onclick="sendCopilotQuery()">Consultar</button>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- 8. PIE DE PÁGINA TÉCNICO -->
+    <footer class="dashboard-footer">
+      <div>
+        Estándar de Diseño <strong>PaceUI ("Alive UI")</strong> · Nivel Banca Tier 1 Global · Soporte Bi-modal (Dark/Light)
+      </div>
+      <div style="font-family: var(--font-mono); font-size: 0.72rem;">
+        Render Engine: <span style="color: var(--accent-emerald);">Hardware Accelerated 60 FPS</span> · Zero External Bundlers
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- ==========================================================================
+       16. MODAL DE SIMULACIÓN DE ESTRÉS PARAMÉTRICO (SLIDERS INTERACTIVOS)
+       ========================================================================== -->
+  <div class="drilldown-modal-overlay" id="stressModal" onclick="closeStressModal(event)">
+    <div class="drilldown-modal-card" onclick="event.stopPropagation()">
+      <div class="modal-head">
+        <div class="modal-head-title">
+          <span>📊</span>
+          <span>Laboratorio Paramétrico de Estrés Financiero (Stress Testing)</span>
+        </div>
+        <button class="modal-close-x" onclick="closeStressModal()">✕</button>
+      </div>
+
+      <div class="modal-body-content">
+        <p style="font-size: 0.8rem; color: var(--muted-foreground);">
+          Ajusta los parámetros macroeconómicos para modelar en tiempo real la resiliencia del capital, el coste del riesgo (CoR) y el margen de intermediación:
+        </p>
+
+        <!-- Slider Euríbor -->
+        <div class="stress-slider-group">
+          <div class="stress-slider-header">
+            <span>Shock en Tipos de Interés (Euríbor):</span>
+            <span style="font-family: var(--font-mono); color: var(--accent-blue);" id="valEuribor">+150 bps</span>
+          </div>
+          <input type="range" min="0" max="300" step="25" value="150" class="stress-slider-input" oninput="updateStressEuribor(this.value)">
+          <div style="display: flex; justify-content: space-between; font-size: 0.68rem; color: var(--muted-foreground);">
+            <span>0 bps (Base)</span>
+            <span>+150 bps</span>
+            <span>+300 bps (Shock Severo)</span>
+          </div>
+        </div>
+
+        <!-- Slider Morosidad -->
+        <div class="stress-slider-group">
+          <div class="stress-slider-header">
+            <span>Incremento de Morosidad (NPL Shock):</span>
+            <span style="font-family: var(--font-mono); color: var(--accent-amber);" id="valNpl">+0.80%</span>
+          </div>
+          <input type="range" min="0" max="2.5" step="0.1" value="0.8" class="stress-slider-input" oninput="updateStressNpl(this.value)">
+          <div style="display: flex; justify-content: space-between; font-size: 0.68rem; color: var(--muted-foreground);">
+            <span>+0.0% (Normal)</span>
+            <span>+1.0%</span>
+            <span>+2.5% (Crisis)</span>
+          </div>
+        </div>
+
+        <!-- Resultados Recalculados -->
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-top: 0.5rem;">
+          <div style="background: var(--card-subtle); padding: 0.75rem; border-radius: 6px; border: 1px solid var(--border);">
+            <div style="font-size: 0.7rem; color: var(--muted-foreground);">Margen NII Simulado:</div>
+            <div style="font-size: 1.25rem; font-weight: 700; color: var(--accent-emerald);" id="simNii">€ 9.68M</div>
+          </div>
+          <div style="background: var(--card-subtle); padding: 0.75rem; border-radius: 6px; border: 1px solid var(--border);">
+            <div style="font-size: 0.7rem; color: var(--muted-foreground);">Coste del Riesgo (CoR):</div>
+            <div style="font-size: 1.25rem; font-weight: 700; color: var(--accent-amber);" id="simCor">0.44%</div>
+          </div>
+          <div style="background: var(--card-subtle); padding: 0.75rem; border-radius: 6px; border: 1px solid var(--border);">
+            <div style="font-size: 0.7rem; color: var(--muted-foreground);">Solvencia CET1 Proy.:</div>
+            <div style="font-size: 1.25rem; font-weight: 700; color: var(--accent-blue);" id="simCet1">14.1%</div>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 0.5rem;">
+          <button class="btn-secondary-action" onclick="resetStressParams()">Restablecer Base</button>
+          <button class="btn-shimmer" onclick="applyStressToDashboard()">Aplicar Escenario a Consola</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       17. MODAL DE DRILL-DOWN / DETALLE PROFUNDO (AUDITORÍA & INSPECCIÓN)
+       ========================================================================== -->
+  <div class="drilldown-modal-overlay" id="drilldownModal" onclick="closeDrilldownModal(event)">
+    <div class="drilldown-modal-card" onclick="event.stopPropagation()">
+      <div class="modal-head">
+        <div class="modal-head-title">
+          <span id="drillIcon">🔍</span>
+          <span id="drillTitle">Auditoría en Detalle de Métrica</span>
+        </div>
+        <button class="modal-close-x" onclick="closeDrilldownModal()">✕</button>
+      </div>
+
+      <div class="modal-body-content">
+        <div class="drill-metric-highlight">
+          <div>
+            <div style="font-size: 0.72rem; color: var(--muted-foreground);" id="drillSubtitle">MÉTRICA REGULATORIA</div>
+            <div class="drill-big-num" id="drillValue">€ 248.6 M</div>
+          </div>
+          <div style="margin-left: auto; text-align: right;">
+            <div style="font-size: 0.72rem; color: var(--accent-emerald);" id="drillStatus">● Cumplimiento Basilea III OK</div>
+            <div style="font-size: 0.68rem; color: var(--muted-foreground);" id="drillTimestamp">Calculado hace 2 minutos</div>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-weight: 700; font-size: 0.82rem; margin-bottom: 0.25rem;">Desglose y Composición de la Cifra:</div>
+          <p style="font-size: 0.78rem; color: var(--muted-foreground); line-height: 1.5;" id="drillDescription">
+            Esta cifra representa la suma de los activos ponderados por riesgo y la exposición de crédito comercial auditada bajo la normativa IFRS 9.
+          </p>
+        </div>
+
+        <table class="drill-table">
+          <thead>
+            <tr>
+              <th>Sub-componente / Cartera</th>
+              <th>Volumen</th>
+              <th>Ponderación</th>
+              <th>Estado Regulatorio</th>
+            </tr>
+          </thead>
+          <tbody id="drillTableBody">
+            <tr>
+              <td>Pólizas de Crédito & Financiación Verde</td>
+              <td style="font-family: var(--font-mono); font-weight: 600;">€ 114.2M</td>
+              <td>46.0%</td>
+              <td><span style="color: var(--accent-emerald);">Aprobado BCE</span></td>
+            </tr>
+            <tr>
+              <td>Confirming & Factoring Internacional</td>
+              <td style="font-family: var(--font-mono); font-weight: 600;">€ 82.4M</td>
+              <td>33.1%</td>
+              <td><span style="color: var(--accent-emerald);">Riesgo Bajo</span></td>
+            </tr>
+            <tr>
+              <td>Préstamos Sindicados & Capex Estructurado</td>
+              <td style="font-family: var(--font-mono); font-weight: 600;">€ 52.0M</td>
+              <td>20.9%</td>
+              <td><span style="color: var(--accent-blue);">En Vigilancia</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 0.5rem;">
+          <button class="btn-secondary-action" onclick="closeDrilldownModal()">Cerrar</button>
+          <button class="btn-shimmer" onclick="downloadDrillReport()">📥 Descargar Certificado PDF</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       18. MODAL DE ATAJOS DE TECLADO (?)
+       ========================================================================== */
+  <div class="drilldown-modal-overlay" id="shortcutsModal" onclick="closeShortcutsModal(event)">
+    <div class="drilldown-modal-card" style="width: 520px;" onclick="event.stopPropagation()">
+      <div class="modal-head">
+        <div class="modal-head-title">
+          <span>⌨️</span>
+          <span>Atajos de Teclado del Executive Command Center</span>
+        </div>
+        <button class="modal-close-x" onclick="closeShortcutsModal()">✕</button>
+      </div>
+      <div class="modal-body-content">
+        <div style="display: flex; flex-direction: column; gap: 0.65rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-light); padding-bottom: 0.4rem;">
+            <span>Buscar empresa, CIF o producto</span>
+            <span class="kbd-shortcut">Ctrl + K</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-light); padding-bottom: 0.4rem;">
+            <span>Alternar Tema Claro / Oscuro</span>
+            <span class="kbd-shortcut">T</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-light); padding-bottom: 0.4rem;">
+            <span>Abrir Laboratorio de Estrés Paramétrico</span>
+            <span class="kbd-shortcut">S</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-light); padding-bottom: 0.4rem;">
+            <span>Alternar Streaming en Tiempo Real (Live)</span>
+            <span class="kbd-shortcut">L</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-light); padding-bottom: 0.4rem;">
+            <span>Cerrar cualquier Modal o Ficha Drawer</span>
+            <span class="kbd-shortcut">Esc</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span>Ver esta ayuda de atajos</span>
+            <span class="kbd-shortcut">?</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       19. DRAWER LATERAL: FICHA 360° DE CLIENTE
+       ========================================================================== -->
+  <div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+  <aside class="client-drawer" id="clientDrawer">
+    <div class="drawer-header">
+      <div style="display: flex; flex-direction: column;">
+        <span style="font-size: 0.72rem; color: var(--muted-foreground); font-family: var(--font-mono);" id="drawerCif">A-84920194</span>
+        <h3 style="font-size: 1.05rem; font-weight: 700;" id="drawerName">Logística Ibérica del Norte S.A.</h3>
+      </div>
+      <button class="drawer-close-btn" onclick="closeDrawer()">✕</button>
+    </div>
+
+    <div class="drawer-body">
+      <div class="drawer-section-card">
+        <div class="drawer-section-title">📊 Ratios de Solvencia y Rating</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 0.25rem;">
+          <div>
+            <div style="font-size: 0.7rem; color: var(--muted-foreground);">Rating Crediticio:</div>
+            <div style="font-size: 1.15rem; font-weight: 700; color: var(--accent-blue);" id="drawerRating">AA</div>
+          </div>
+          <div>
+            <div style="font-size: 0.7rem; color: var(--muted-foreground);">Propensión IA:</div>
+            <div style="font-size: 1.15rem; font-weight: 700; color: var(--accent-emerald);" id="drawerPropensity">94%</div>
+          </div>
+          <div>
+            <div style="font-size: 0.7rem; color: var(--muted-foreground);">Producto Sugerido:</div>
+            <div style="font-weight: 600;" id="drawerProduct">Póliza Crédito Verde</div>
+          </div>
+          <div>
+            <div style="font-size: 0.7rem; color: var(--muted-foreground);">Límite Solicitado:</div>
+            <div style="font-weight: 600; font-family: var(--font-mono);" id="drawerAmount">€ 1.800.000</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="drawer-section-card">
+        <div class="drawer-section-title">🏦 Endeudamiento CIRBE Declarado (€ 4.2M Total)</div>
+        <div class="cirbe-exposure-bar">
+          <div style="width: 55%; background: var(--accent-blue);" title="Nuestra Entidad: 55%"></div>
+          <div style="width: 30%; background: var(--accent-emerald);" title="Santander / BBVA: 30%"></div>
+          <div style="width: 15%; background: var(--accent-amber);" title="Otras Entidades: 15%"></div>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--muted-foreground);">
+          <span>Nuestra Entidad: €2.3M</span>
+          <span>Otros Bancos: €1.9M</span>
+        </div>
+      </div>
+
+      <div class="drawer-section-card" style="border-color: rgba(168, 85, 247, 0.4); background: var(--card-subtle);">
+        <div class="drawer-section-title" style="color: var(--accent-purple);">✨ Recomendación M365 Copilot</div>
+        <p style="font-size: 0.8rem; line-height: 1.5; color: var(--foreground);" id="drawerNotes">
+          M365 Copilot ha cruzado los contratos marco de 2026 y detecta una necesidad inminente de circulante por apertura de nave logística en Valencia.
+        </p>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: auto;">
+        <button class="btn-shimmer" style="justify-content: center; width: 100%;" onclick="executeCommercialAction('Aprobar con Firma Digital')">
+          <span>✍️ Generar Borrador de Póliza en M365</span>
+        </button>
+        <button class="btn-secondary-action" style="justify-content: center; width: 100%;" onclick="executeCommercialAction('Solicitar Documentación Adicional')">
+          <span>📑 Solicitar Balance Auditado 2025</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ==========================================================================
+       20. LÓGICA INTERACTIVA EN JAVASCRIPT VANILLA
+       ========================================================================== -->
+  <script>
+    /* ==========================================================================
+       A. MOTOR DE TEMA CLARO / OSCURO (BI-MODAL TIER 1 THEME ENGINE)
+       ========================================================================== */
+    function toggleTheme() {
+      const htmlEl = document.documentElement;
+      const isDark = htmlEl.classList.contains('dark');
+      const themeIcon = document.getElementById('themeIcon');
+      const themeText = document.getElementById('themeText');
+
+      if (isDark) {
+        htmlEl.classList.remove('dark');
+        htmlEl.classList.add('light');
+        themeIcon.textContent = '🌙';
+        themeText.textContent = 'Modo Oscuro';
+        localStorage.setItem('paceui_theme', 'light');
+        addConsoleLog('THEME', 'Activado Modo Claro Ejecutivo (Light Slate Palette).', 'tag-scoring');
+      } else {
+        htmlEl.classList.remove('light');
+        htmlEl.classList.add('dark');
+        themeIcon.textContent = '☀️';
+        themeText.textContent = 'Modo Claro';
+        localStorage.setItem('paceui_theme', 'dark');
+        addConsoleLog('THEME', 'Activado Modo Oscuro PaceUI (Dark Matte Core).', 'tag-scoring');
+      }
+    }
+
+    function loadSavedTheme() {
+      const saved = localStorage.getItem('paceui_theme');
+      if (saved === 'light') {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
+        document.getElementById('themeIcon').textContent = '🌙';
+        document.getElementById('themeText').textContent = 'Modo Oscuro';
+      }
+    }
+
+    /* ==========================================================================
+       B. MODO STREAMING EN TIEMPO REAL (AUTO-REFRESH TOGGLE)
+       ========================================================================== */
+    let liveStreamInterval = null;
+
+    function toggleLiveStream() {
+      const btn = document.getElementById('liveStreamBtn');
+      const label = document.getElementById('streamLabel');
+
+      if (liveStreamInterval) {
+        clearInterval(liveStreamInterval);
+        liveStreamInterval = null;
+        btn.classList.remove('active');
+        label.textContent = 'En Vivo: OFF';
+        addConsoleLog('STREAM', 'Pausada sincronización en tiempo real.', 'tag-risk');
+      } else {
+        btn.classList.add('active');
+        label.textContent = 'En Vivo: ON (5s)';
+        addConsoleLog('STREAM', 'Conectado WebSocket de mercado. Actualizaciones cada 5 seg.', 'tag-ok');
+
+        liveStreamInterval = setInterval(() => {
+          // Micro-tick aleatorio en contadores
+          const volEl = document.getElementById('kpiVol');
+          let currentVol = parseFloat(volEl.getAttribute('data-target')) || 248.6;
+          currentVol += (Math.random() * 0.4 - 0.15);
+          volEl.setAttribute('data-target', currentVol.toFixed(1));
+
+          animateCounters();
+
+          const time = new Date().toTimeString().split(' ')[0];
+          addConsoleLog('FEED', `[${time}] Tick de liquidación recibido: CIRBE auditado.`, 'tag-scoring');
+        }, 5000);
+      }
+    }
+
+    /* ==========================================================================
+       C. MOTOR DE TOOLTIPS FLOTANTES ESTILO PACEUI (CERO DEPENDENCIAS)
+       ========================================================================== */
+    const globalTooltip = document.getElementById('globalTooltip');
+    const ttTitle = document.getElementById('ttTitle');
+    const ttBody = document.getElementById('ttBody');
+
+    function initTooltipEngine() {
+      document.addEventListener('mouseover', (e) => {
+        const target = e.target.closest('[data-tooltip]');
+        if (target) {
+          const title = target.getAttribute('data-tooltip-title') || 'Información';
+          const content = target.getAttribute('data-tooltip');
+          ttTitle.innerHTML = title;
+          ttBody.innerHTML = content;
+          positionTooltip(e);
+          globalTooltip.classList.add('visible');
+        }
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        if (globalTooltip.classList.contains('visible')) {
+          positionTooltip(e);
+        }
+      });
+
+      document.addEventListener('mouseout', (e) => {
+        const target = e.target.closest('[data-tooltip]');
+        if (target) {
+          globalTooltip.classList.remove('visible');
+        }
+      });
+    }
+
+    function positionTooltip(e) {
+      const pad = 14;
+      const ttWidth = globalTooltip.offsetWidth || 220;
+      const ttHeight = globalTooltip.offsetHeight || 60;
+      
+      let x = e.clientX + pad;
+      let y = e.clientY + pad;
+
+      if (x + ttWidth > window.innerWidth - 10) {
+        x = e.clientX - ttWidth - pad;
+      }
+      if (y + ttHeight > window.innerHeight - 10) {
+        y = e.clientY - ttHeight - pad;
+      }
+
+      globalTooltip.style.left = `${Math.max(10, x)}px`;
+      globalTooltip.style.top = `${Math.max(10, y)}px`;
+    }
+
+    /* ==========================================================================
+       D. CONTADOR TICKER SUAVE A 60 FPS
+       ========================================================================== */
+    function animateCounters() {
+      const counters = document.querySelectorAll('.counter-num');
+      counters.forEach(counter => {
+        const target = parseFloat(counter.getAttribute('data-target'));
+        if (isNaN(target)) return;
+        const isDecimal = target % 1 !== 0;
+        const duration = 1200;
+        const startTime = performance.now();
+
+        function update(currentTime) {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const easeOut = 1 - Math.pow(1 - progress, 3);
+          const currentVal = target * easeOut;
+
+          counter.textContent = isDecimal ? currentVal.toFixed(target > 10 ? 1 : 2) : Math.round(currentVal);
+
+          if (progress < 1) {
+            requestAnimationFrame(update);
+          } else {
+            counter.textContent = isDecimal ? (target > 10 ? target.toFixed(1) : target.toFixed(2)) : target;
+          }
+        }
+        requestAnimationFrame(update);
+      });
+    }
+
+    /* ==========================================================================
+       E. MOTOR DE FILTRADO MULTI-VARIABLE Y ORDENACIÓN DE COLUMNAS
+       ========================================================================== */
+    const tableState = {
+      searchQuery: '',
+      activeTab: 'OPORTUNIDADES',
+      sector: 'ALL',
+      rating: 'ALL',
+      sortCol: null,
+      sortAsc: true
+    };
+
+    function applyTableFilters() {
+      const rows = document.querySelectorAll('#clientTableBody tr');
+      const emptyState = document.getElementById('tableEmptyState');
+      let visibleCount = 0;
+      const query = tableState.searchQuery.toLowerCase().trim();
+
+      rows.forEach(row => {
+        const rowTab = row.getAttribute('data-tab');
+        const rowSector = row.getAttribute('data-sector') || '';
+        const rowRating = row.getAttribute('data-rating') || '';
+        const rowText = row.textContent.toLowerCase();
+
+        const matchesTab = (rowTab === tableState.activeTab);
+        const matchesSector = (tableState.sector === 'ALL' || rowSector === tableState.sector);
+        const matchesRating = (tableState.rating === 'ALL' || rowRating.startsWith(tableState.rating));
+        const matchesQuery = (query === '' || rowText.includes(query));
+
+        if (matchesTab && matchesSector && matchesRating && matchesQuery) {
+          row.style.display = '';
+          visibleCount++;
+        } else {
+          row.style.display = 'none';
+        }
+      });
+
+      if (emptyState) {
+        emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+      }
+
+      const badge = document.getElementById('tableFilterCount');
+      if (badge) {
+        badge.textContent = `${visibleCount} Empresas en Vista`;
+      }
+
+      handleRowCheckChange();
+    }
+
+    function handleSearchInput(val) {
+      tableState.searchQuery = val;
+      const clearBtn = document.getElementById('clearSearchBtn');
+      if (clearBtn) {
+        clearBtn.style.display = val.length > 0 ? 'block' : 'none';
+      }
+      applyTableFilters();
+    }
+
+    function clearSearch() {
+      const input = document.getElementById('globalSearchInput');
+      input.value = '';
+      tableState.searchQuery = '';
+      document.getElementById('clearSearchBtn').style.display = 'none';
+      applyTableFilters();
+    }
+
+    function switchTableTab(tabName, btnEl) {
+      document.querySelectorAll('.tab-item-btn').forEach(b => b.classList.remove('active'));
+      btnEl.classList.add('active');
+      tableState.activeTab = tabName;
+      applyTableFilters();
+      addConsoleLog('NAV', `Pestaña de operaciones cambiada a: ${tabName}.`, 'tag-scoring');
+    }
+
+    function setSectorFilter(sec, btn) {
+      btn.parentElement.querySelectorAll('.pill-filter-tag').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      tableState.sector = sec;
+      applyTableFilters();
+      addConsoleLog('FILTER', `Filtro de sector: ${sec}.`, 'tag-scoring');
+    }
+
+    function setRatingFilter(rat, btn) {
+      btn.parentElement.querySelectorAll('.pill-filter-tag').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      tableState.rating = rat;
+      applyTableFilters();
+      addConsoleLog('FILTER', `Filtro de rating crediticio: ${rat}.`, 'tag-scoring');
+    }
+
+    function resetAllFilters() {
+      clearSearch();
+      tableState.sector = 'ALL';
+      tableState.rating = 'ALL';
+      document.querySelectorAll('.filter-pills-row').forEach(row => {
+        row.querySelectorAll('.pill-filter-tag').forEach((b, idx) => {
+          if (idx === 0) b.classList.add('active');
+          else b.classList.remove('active');
+        });
+      });
+      applyTableFilters();
+    }
+
+    /* ORDENACIÓN POR COLUMNAS */
+    function sortTableBy(colIndex) {
+      const tbody = document.getElementById('clientTableBody');
+      const rows = Array.from(tbody.querySelectorAll('tr'));
+
+      if (tableState.sortCol === colIndex) {
+        tableState.sortAsc = !tableState.sortAsc;
+      } else {
+        tableState.sortCol = colIndex;
+        tableState.sortAsc = true;
+      }
+
+      // Actualizar indicadores visuales
+      [1, 2, 3, 5, 6].forEach(idx => {
+        const span = document.getElementById(`sortCol${idx}`);
+        if (span) span.textContent = '↕';
+      });
+      const activeSpan = document.getElementById(`sortCol${colIndex}`);
+      if (activeSpan) activeSpan.textContent = tableState.sortAsc ? '▲' : '▼';
+
+      rows.sort((a, b) => {
+        let valA, valB;
+        if (colIndex === 1) { // Empresa
+          valA = a.getAttribute('data-client') || '';
+          valB = b.getAttribute('data-client') || '';
+          return tableState.sortAsc ? valA.localeCompare(valB) : valB.localeCompare(valA);
+        } else if (colIndex === 2) { // Sector
+          valA = a.getAttribute('data-sector') || '';
+          valB = b.getAttribute('data-sector') || '';
+          return tableState.sortAsc ? valA.localeCompare(valB) : valB.localeCompare(valA);
+        } else if (colIndex === 3) { // Rating
+          valA = a.getAttribute('data-rating') || '';
+          valB = b.getAttribute('data-rating') || '';
+          return tableState.sortAsc ? valA.localeCompare(valB) : valB.localeCompare(valA);
+        } else if (colIndex === 5) { // Importe
+          valA = parseFloat(a.getAttribute('data-amount')) || 0;
+          valB = parseFloat(b.getAttribute('data-amount')) || 0;
+          return tableState.sortAsc ? valA - valB : valB - valA;
+        } else if (colIndex === 6) { // Propensión
+          valA = parseFloat(a.getAttribute('data-pct')) || 0;
+          valB = parseFloat(b.getAttribute('data-pct')) || 0;
+          return tableState.sortAsc ? valA - valB : valB - valA;
+        }
+        return 0;
+      });
+
+      rows.forEach(r => tbody.appendChild(r));
+      addConsoleLog('SORT', `Tabla ordenada por columna ${colIndex} (${tableState.sortAsc ? 'Ascendente' : 'Descendente'}).`, 'tag-scoring');
+    }
+
+    /* MULTI-SELECCIÓN Y ACCIONES EN LOTE */
+    function toggleSelectAllRows(checked) {
+      document.querySelectorAll('.row-checkbox').forEach(cb => {
+        const row = cb.closest('tr');
+        if (row && row.style.display !== 'none') {
+          cb.checked = checked;
+        }
+      });
+      handleRowCheckChange();
+    }
+
+    function handleRowCheckChange() {
+      const checkedBoxes = document.querySelectorAll('.row-checkbox:checked');
+      const count = checkedBoxes.length;
+      const dock = document.getElementById('batchDock');
+      const countText = document.getElementById('selectedCountText');
+
+      if (countText) countText.textContent = count;
+      if (dock) {
+        if (count > 0) dock.classList.add('active');
+        else dock.classList.remove('active');
+      }
+    }
+
+    function deselectAllRows() {
+      document.querySelectorAll('.row-checkbox').forEach(cb => cb.checked = false);
+      const master = document.getElementById('masterCheckbox');
+      if (master) master.checked = false;
+      handleRowCheckChange();
+    }
+
+    function executeBatchAction(actionName) {
+      const count = document.querySelectorAll('.row-checkbox:checked').length;
+      addConsoleLog('BATCH', `Ejecutada acción masiva '${actionName}' para ${count} empresas.`, 'tag-exec');
+      alert(`Acción en lote procesada con éxito: ${actionName} para ${count} empresas.`);
+      deselectAllRows();
+    }
+
+    /* EXPORTACIÓN REAL A CSV */
+    function exportTableToCSV() {
+      const rows = document.querySelectorAll('#clientTableBody tr');
+      let csvContent = "data:text/csv;charset=utf-8,";
+      csvContent += "Empresa,CIF,Sector,Rating,Producto,Importe,Propension_IA,Estado\n";
+
+      rows.forEach(row => {
+        if (row.style.display !== 'none') {
+          const client = row.getAttribute('data-client') || '';
+          const sector = row.getAttribute('data-sector') || '';
+          const rating = row.getAttribute('data-rating') || '';
+          const amount = row.getAttribute('data-amount') || '';
+          const pct = row.getAttribute('data-pct') || '';
+          csvContent += `"${client}","CIF-Audit","${sector}","${rating}","Financiacion","€ ${amount}","${pct}%","Formalizado"\n`;
+        }
+      });
+
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", `cartera_comercial_${new Date().toISOString().slice(0,10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      addConsoleLog('EXPORT', 'Descargado archivo CSV con las empresas activas en filtro.', 'tag-ok');
+    }
+
+    /* ==========================================================================
+       F. MODAL DE DRILL-DOWN / DETALLE PROFUNDO (AUDITORÍA & INSPECCIÓN)
+       ========================================================================== */
+    const drilldownData = {
+      'AUM': {
+        icon: '💼',
+        title: 'Auditoría de Activo Gestionado (AUM)',
+        subtitle: 'CARTERA CORPORATIVA & MID-MARKET',
+        value: '€ 248.6 M',
+        status: '● Cumplimiento Basilea III OK',
+        desc: 'Desglose consolidado del total de crédito vivo dispuesto en pólizas, préstamos corporativos, confirming y factoring avalado bajo IFRS 9.',
+        rows: [
+          { name: 'Pólizas de Crédito Verde & Circulante', val: '€ 114.2M', pct: '46.0%', st: 'Stage 1 (Sin Mora)' },
+          { name: 'Confirming & Factoring Internacional', val: '€ 82.4M', pct: '33.1%', st: 'Stage 1 (Sin Mora)' },
+          { name: 'Préstamos Sindicados & Capex Largo Plazo', val: '€ 52.0M', pct: '20.9%', st: 'Stage 2 (Vigilancia)' }
+        ]
+      },
+      'NII': {
+        icon: '📈',
+        title: 'Margen de Intermediación Neto (NII)',
+        subtitle: 'RENTABILIDAD FINANCIERA NETA',
+        value: '€ 8.42 M',
+        status: '● Margen Resiliente (+12.1%)',
+        desc: 'Rendimiento financiero neto derivado de los diferenciales aplicados sobre Euríbor frente al coste ponderado de captación de pasivo mayorista.',
+        rows: [
+          { name: 'Diferencial Líneas Circulante Pymes (Spread +240 bps)', val: '€ 4.12M', pct: '48.9%', st: 'Margen Máximo' },
+          { name: 'Comisiones de Estructuración y Notaría', val: '€ 2.65M', pct: '31.5%', st: 'Cobrado' },
+          { name: 'Confirming Proveedores (Spread +165 bps)', val: '€ 1.65M', pct: '19.6%', st: 'Recurrente' }
+        ]
+      },
+      'LEADS': {
+        icon: '🤖',
+        title: 'Leads de Alta Propensión M365 Copilot',
+        subtitle: 'ORIGINACIÓN PREDICTIVA CON IA',
+        value: '1.420 Leads',
+        status: '● Scoring > 75% Calificado',
+        desc: 'Empresas analizadas automáticamente por el modelo que presentan una probabilidad de conversión superior al 75% cruzando movimientos bancarios.',
+        rows: [
+          { name: 'Pymes con Crecimiento de Facturación > 20%', val: '640 leads', pct: '45.1%', st: 'Prioridad Alta' },
+          { name: 'Empresas con Contratos Exportación Nuevos', val: '480 leads', pct: '33.8%', st: 'Oferta Confirming' },
+          { name: 'Subvenciones NextGen Detectadas en BOE', val: '300 leads', pct: '21.1%', st: 'Leasing Verde' }
+        ]
+      },
+      'COR': {
+        icon: '🛡️',
+        title: 'Coste del Riesgo (Cost of Risk - CoR)',
+        subtitle: 'PROVISIONES Y PÉRDIDA ESPERADA',
+        value: '0.28%',
+        status: '● Presupuesto Máximo: 0.45%',
+        desc: 'Dotación a provisiones por riesgo de crédito sobre saldo medio vivo. Situación óptima con 17 bps de colchón frente al objetivo presupuestario.',
+        rows: [
+          { name: 'Provisiones Genéricas Modelo IFRS 9', val: '0.18%', pct: '64.3%', st: 'Colchón Cíclico' },
+          { name: 'Provisiones Específicas Subjetivas', val: '0.07%', pct: '25.0%', st: '2 Expedientes' },
+          { name: 'Pérdidas Netas Definitivas por Fallidos', val: '0.03%', pct: '10.7%', st: 'Mínimo Histórico' }
+        ]
+      },
+      'WINRATE': {
+        icon: '⚡',
+        title: 'Tasa de Conversión Asistida por Copilot',
+        subtitle: 'EFICIENCIA COMERCIAL EN CIERRES',
+        value: '38.4%',
+        status: '● Benchmark Mercado: 22.0%',
+        desc: 'Ratio de propuestas aceptadas por clientes frente al total de borradores generados automáticamente y enviados con firma digital cualificada.',
+        rows: [
+          { name: 'Propuestas Cerradas en < 24 Horas', val: '284 firmas', pct: '52.1%', st: 'Firma Inmediata' },
+          { name: 'Propuestas Cerradas tras Negociación', val: '198 firmas', pct: '36.3%', st: 'Diferencial Ajustado' },
+          { name: 'Operaciones Desestimadas por Precio', val: '63 casos', pct: '11.6%', st: 'Rechazo Cliente' }
+        ]
+      },
+      'SLA': {
+        icon: '⏱️',
+        title: 'SLA Medio de Resolución y Póliza',
+        subtitle: 'VELOCIDAD END-TO-END',
+        value: '3.2 Horas',
+        status: '● Reducción del 86% con Agentes',
+        desc: 'Tiempo cronometrado desde que el apoderado solicita financiación hasta la emisión del contrato redactado por M365-Drafter.',
+        rows: [
+          { name: 'Scoring Automatizado & CIRBE (GPU Local)', val: '12 seg', pct: '0.1%', st: 'Instantáneo' },
+          { name: 'Revisión y Aprobación de Gestor Comercial', val: '1.4 horas', pct: '43.8%', st: 'Validación' },
+          { name: 'Comité de Riesgos y Emisión Notarial', val: '1.8 horas', pct: '56.1%', st: 'Firma Digital' }
+        ]
+      }
+    };
+
+    function openDrilldownModal(metricKey) {
+      const data = drilldownData[metricKey];
+      if (!data) return;
+
+      document.getElementById('drillIcon').textContent = data.icon;
+      document.getElementById('drillTitle').textContent = data.title;
+      document.getElementById('drillSubtitle').textContent = data.subtitle;
+      document.getElementById('drillValue').textContent = data.value;
+      document.getElementById('drillStatus').textContent = data.status;
+      document.getElementById('drillDescription').textContent = data.desc;
+
+      const tbody = document.getElementById('drillTableBody');
+      tbody.innerHTML = '';
+      data.rows.forEach(r => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td style="font-weight: 500;">${r.name}</td>
+          <td style="font-family: var(--font-mono); font-weight: 600;">${r.val}</td>
+          <td>${r.pct}</td>
+          <td><span style="color: var(--accent-emerald); font-weight: 600;">${r.st}</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('drilldownModal').classList.add('open');
+      addConsoleLog('DRILLDOWN', `Abierto análisis profundo de métrica: ${data.title}.`, 'tag-scoring');
+    }
+
+    function openDrilldownMonth(monthName, volume, opsCount) {
+      document.getElementById('drillIcon').textContent = '📅';
+      document.getElementById('drillTitle').textContent = `Auditoría Detallada: Mes de ${monthName}`;
+      document.getElementById('drillSubtitle').textContent = 'FORMALIZACIÓN MENSUAL DE CRÉDITO';
+      document.getElementById('drillValue').textContent = volume;
+      document.getElementById('drillStatus').textContent = `● ${opsCount} Operaciones Cerradas`;
+      document.getElementById('drillDescription').textContent = `Desglose de contratos formalizados durante ${monthName} de 2026. Todos los expedientes cuentan con validación de riesgo favorable.`;
+
+      const tbody = document.getElementById('drillTableBody');
+      tbody.innerHTML = `
+        <tr><td>Líneas de Circulante Pymes</td><td style="font-family: var(--font-mono); font-weight: 600;">€ ${(parseFloat(volume)*0.45).toFixed(1)}M</td><td>45%</td><td><span style="color: var(--accent-emerald);">Completado</span></td></tr>
+        <tr><td>Confirming y Crédito Documentario</td><td style="font-family: var(--font-mono); font-weight: 600;">€ ${(parseFloat(volume)*0.35).toFixed(1)}M</td><td>35%</td><td><span style="color: var(--accent-emerald);">Completado</span></td></tr>
+        <tr><td>Financiación Verde y Préstamos ICO</td><td style="font-family: var(--font-mono); font-weight: 600;">€ ${(parseFloat(volume)*0.20).toFixed(1)}M</td><td>20%</td><td><span style="color: var(--accent-blue);">Auditado</span></td></tr>
+      `;
+
+      document.getElementById('drilldownModal').classList.add('open');
+      addConsoleLog('DRILLDOWN', `Inspección del mes de ${monthName} (${volume}).`, 'tag-scoring');
+    }
+
+    function openDrilldownTerritory(territoryName, vol, pct, managers) {
+      document.getElementById('drillIcon').textContent = '🏛️';
+      document.getElementById('drillTitle').textContent = `Dirección Territorial: ${territoryName}`;
+      document.getElementById('drillSubtitle').textContent = `RED COMERCIAL (${managers})`;
+      document.getElementById('drillValue').textContent = vol;
+      document.getElementById('drillStatus').textContent = `● Cumplimiento Presupuesto: ${pct}`;
+      document.getElementById('drillDescription').textContent = `Rendimiento de colocación de crédito comercial y ratio de mora en las oficinas adscritas a ${territoryName}.`;
+
+      const tbody = document.getElementById('drillTableBody');
+      tbody.innerHTML = `
+        <tr><td>Oficinas Principales de Empresas</td><td style="font-family: var(--font-mono); font-weight: 600;">65% del volumen</td><td>104.2% Obj.</td><td><span style="color: var(--accent-emerald);">Sobrecumplimiento</span></td></tr>
+        <tr><td>Red de Oficinas Retail / Pymes</td><td style="font-family: var(--font-mono); font-weight: 600;">35% del volumen</td><td>98.1% Obj.</td><td><span style="color: var(--accent-blue);">En Objetivo</span></td></tr>
+      `;
+
+      document.getElementById('drilldownModal').classList.add('open');
+      addConsoleLog('DRILLDOWN', `Inspección de ${territoryName}.`, 'tag-scoring');
+    }
+
+    function closeDrilldownModal(e) {
+      if (e && e.target !== e.currentTarget && !e.target.classList.contains('modal-close-x') && !e.target.classList.contains('btn-secondary-action')) return;
+      document.getElementById('drilldownModal').classList.remove('open');
+    }
+
+    function downloadDrillReport() {
+      alert('Certificado de Auditoría IFRS 9 descargado con éxito en formato PDF/A firmado digitalmente.');
+      closeDrilldownModal();
+    }
+
+    /* ==========================================================================
+       G. SIMULADOR DE ESTRÉS PARAMÉTRICO
+       ========================================================================== */
+    function openStressModal() {
+      document.getElementById('stressModal').classList.add('open');
+    }
+    function closeStressModal(e) {
+      if (e && e.target !== e.currentTarget && !e.target.classList.contains('modal-close-x') && !e.target.classList.contains('btn-secondary-action')) return;
+      document.getElementById('stressModal').classList.remove('open');
+    }
+
+    let stressState = { euribor: 150, npl: 0.8 };
+
+    function updateStressEuribor(val) {
+      stressState.euribor = parseInt(val);
+      document.getElementById('valEuribor').textContent = `+${val} bps`;
+      recalculateStressMetrics();
+    }
+
+    function updateStressNpl(val) {
+      stressState.npl = parseFloat(val);
+      document.getElementById('valNpl').textContent = `+${parseFloat(val).toFixed(2)}%`;
+      recalculateStressMetrics();
+    }
+
+    function recalculateStressMetrics() {
+      // NII sube con tipos pero provisiones suben con mora
+      const baseNii = 8.42;
+      const simNii = baseNii + (stressState.euribor / 100) * 0.85;
+      const baseCor = 0.28;
+      const simCor = baseCor + (stressState.npl * 0.20);
+      const simCet1 = 14.8 - (stressState.npl * 0.85);
+
+      document.getElementById('simNii').textContent = `€ ${simNii.toFixed(2)}M`;
+      document.getElementById('simCor').textContent = `${simCor.toFixed(2)}%`;
+      document.getElementById('simCet1').textContent = `${simCet1.toFixed(1)}%`;
+    }
+
+    function resetStressParams() {
+      document.querySelectorAll('.stress-slider-input')[0].value = 0;
+      document.querySelectorAll('.stress-slider-input')[1].value = 0;
+      updateStressEuribor(0);
+      updateStressNpl(0);
+    }
+
+    function applyStressToDashboard() {
+      const corSim = document.getElementById('simCor').textContent;
+      const niiSim = document.getElementById('simNii').textContent.replace('€ ', '').replace('M', '');
+
+      document.getElementById('kpiCor').setAttribute('data-target', corSim.replace('%', ''));
+      document.getElementById('kpiNii').setAttribute('data-target', niiSim);
+      document.getElementById('radarStatCet1').textContent = document.getElementById('simCet1').textContent + ' ↗';
+
+      animateCounters();
+      closeStressModal();
+      addConsoleLog('STRESS', `Escenario de estrés aplicado: Euríbor +${stressState.euribor} bps, Mora +${stressState.npl}%.`, 'tag-risk');
+    }
+
+    /* MODAL DE ATAJOS */
+    function openShortcutsModal() {
+      document.getElementById('shortcutsModal').classList.add('open');
+    }
+    function closeShortcutsModal(e) {
+      if (e && e.target !== e.currentTarget && !e.target.classList.contains('modal-close-x')) return;
+      document.getElementById('shortcutsModal').classList.remove('open');
+    }
+
+    /* ==========================================================================
+       H. DRAWER LATERAL (FICHA 360°)
+       ========================================================================== */
+    function openDrawer(name, cif, sector, rating, amount, prop, product, notes) {
+      document.getElementById('drawerName').textContent = name;
+      document.getElementById('drawerCif').textContent = cif + ' · ' + sector;
+      document.getElementById('drawerRating').textContent = rating;
+      document.getElementById('drawerPropensity').textContent = prop;
+      document.getElementById('drawerAmount').textContent = amount;
+      document.getElementById('drawerProduct').textContent = product;
+      document.getElementById('drawerNotes').textContent = notes;
+
+      document.getElementById('drawerOverlay').classList.add('open');
+      document.getElementById('clientDrawer').classList.add('open');
+
+      addConsoleLog('AUDIT', `Acceso a Ficha 360° para: ${name} (Rating: ${rating}).`, 'tag-copilot');
+    }
+
+    function closeDrawer() {
+      document.getElementById('drawerOverlay').classList.remove('open');
+      document.getElementById('clientDrawer').classList.remove('open');
+    }
+
+    function executeCommercialAction(action) {
+      const name = document.getElementById('drawerName').textContent;
+      closeDrawer();
+      addConsoleLog('ACTION', `Ejecutando '${action}' para '${name}'. Generando documento en M365...`, 'tag-exec');
+    }
+
+    /* ==========================================================================
+       I. SIMULACIÓN DE NUEVOS LEADS Y SCORING IA
+       ========================================================================== */
+    const extraOpportunities = [
+      { name: "IberEnergy Renovables S.A.", cif: "A-28941029", fact: "€41.0M", sector: "Industria", rat: "AAA", prod: "Financiación Proyecto Solar", imp: "€ 3.2M", rawImp: 3200000, pct: 96, notes: "Proyecto fotovoltaico con PPA cerrado a 10 años. Flujos de caja garantizados." },
+      { name: "Alimentos Artesanos del Ebro", cif: "B-50192837", fact: "€5.1M", sector: "Agro", rat: "BBB+", prod: "Línea Circulante Pyme", imp: "€ 350k", rawImp: 350000, pct: 88, notes: "Campaña de exportación a Francia. Cobertura de divisa no requerida." },
+      { name: "InnovaData Cloud Solutions", cif: "B-88192039", fact: "€9.4M", sector: "Industria", rat: "AA", prod: "Factoring Digital SaaS", imp: "€ 750k", rawImp: 750000, pct: 92, notes: "Crecimiento MRR del 65% anual. Cobros recurrentes de clientes Fortune 500." }
+    ];
+    let extraIndex = 0;
+
+    function simulateNewCommercialEvent() {
+      const btn = document.getElementById('actionBtn');
+      const btnIcon = document.getElementById('btnIcon');
+      const btnText = document.getElementById('btnText');
+
+      btn.style.pointerEvents = 'none';
+      btnIcon.textContent = '⏳';
+      btnText.textContent = 'Evaluando Balance & CIRBE...';
+
+      addConsoleLog('EXEC', 'Iniciando escaneo estocástico de cartera en clúster GPU local...', 'tag-exec');
+
+      setTimeout(() => {
+        const item = extraOpportunities[extraIndex % extraOpportunities.length];
+        extraIndex++;
+
+        const tbody = document.getElementById('clientTableBody');
+        const newRow = document.createElement('tr');
+        newRow.className = 'new-row';
+        newRow.setAttribute('data-tab', 'OPORTUNIDADES');
+        newRow.setAttribute('data-sector', item.sector);
+        newRow.setAttribute('data-rating', item.rat);
+        newRow.setAttribute('data-client', item.name);
+        newRow.setAttribute('data-amount', item.rawImp);
+        newRow.setAttribute('data-pct', item.pct);
+        newRow.innerHTML = `
+          <td style="text-align: center;"><input type="checkbox" class="row-checkbox" onchange="handleRowCheckChange()"></td>
+          <td>
+            <div class="client-title-block">
+              <span class="client-name-text" onclick="openDrawer('${item.name}', '${item.cif}', '${item.sector}', '${item.rat}', '${item.imp}', '${item.pct}%', '${item.prod}', '${item.notes}')">
+                ${item.name} ↗
+              </span>
+              <span class="client-cif-text">${item.cif} · Fact. ${item.fact}</span>
+            </div>
+          </td>
+          <td><span class="pill-dashed" style="font-size: 0.65rem;">${item.sector}</span></td>
+          <td><span class="rating-badge rating-aaa">${item.rat}</span></td>
+          <td style="font-weight: 500;">${item.prod}</td>
+          <td style="font-family: var(--font-mono); font-weight: 600;">${item.imp}</td>
+          <td>
+            <div class="propensity-mini-bar" data-tooltip-title="Propensión Copilot ${item.pct}%" data-tooltip="Score excelente. Modelo XGBoost confirma viabilidad de balance.">
+              <div class="bar-track"><div class="bar-fill fill-green" style="width: ${item.pct}%;"></div></div>
+              <span class="prop-pct" style="color: var(--accent-emerald);">${item.pct}%</span>
+            </div>
+          </td>
+          <td><span class="status-badge-dot status-approved">● Aprobado IA</span></td>
+          <td style="text-align: right;">
+            <button class="action-icon-pill" onclick="openDrawer('${item.name}', '${item.cif}', '${item.sector}', '${item.rat}', '${item.imp}', '${item.pct}%', '${item.prod}', '${item.notes}')">Ficha 360°</button>
+          </td>
+        `;
+        tbody.insertBefore(newRow, tbody.firstChild);
+
+        const volEl = document.getElementById('kpiVol');
+        let currentVol = parseFloat(volEl.getAttribute('data-target')) || 248.6;
+        volEl.setAttribute('data-target', (currentVol + 3.2).toFixed(1));
+
+        const leadsEl = document.getElementById('kpiLeads');
+        let currentLeads = parseInt(leadsEl.getAttribute('data-target')) || 1420;
+        leadsEl.setAttribute('data-target', currentLeads + 1);
+
+        animateCounters();
+        applyTableFilters();
+
+        document.querySelectorAll('.sparkline-path').forEach(p => {
+          p.style.animation = 'none';
+          p.offsetHeight;
+          p.style.animation = 'drawSparkline 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards';
+        });
+
+        addConsoleLog('COPILOT', `Nueva oportunidad inyectada: ${item.name} (${item.prod} ${item.imp}) con scoring ${item.pct}%.`, 'tag-copilot');
+
+        btn.style.pointerEvents = 'auto';
+        btnIcon.textContent = '⚡';
+        btnText.textContent = 'Simular Lead IA';
+      }, 700);
+    }
+
+    /* ==========================================================================
+       J. CONSULTAS COPILOT & LOGS
+       ========================================================================== */
+    function sendCopilotQuery() {
+      const input = document.getElementById('copilotQueryInput');
+      const val = input.value.trim();
+      if (!val) return;
+
+      addConsoleLog('USER', `"${val}"`, 'tag-scoring');
+      input.value = '';
+
+      setTimeout(() => {
+        let answer = "Análisis completado: Cartera en equilibrio con ratio de cobertura óptimo (168% LCR) y 0 incidencias en CIRBE.";
+        if (val.toLowerCase().includes('agro')) {
+          answer = "Sector Agro: 12 clientes activos (€18.4M). Propensión alta en líneas sostenibles por fondos NextGen.";
+        } else if (val.toLowerCase().includes('riesgo') || val.toLowerCase().includes('mora')) {
+          answer = "Alerta de Riesgo: 2 clientes presentan consultas externas recientes en CIRBE. Revisar pestaña 'Alertas Churn'.";
+        }
+        addConsoleLog('COPILOT', answer, 'tag-copilot');
+      }, 500);
+    }
+
+    function filterLogs(category, btn) {
+      document.querySelectorAll('.console-chip').forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+
+      const lines = document.querySelectorAll('.agent-console-box .console-line');
+      lines.forEach(l => {
+        if (l.id === 'streamAnchor') return;
+        const cat = l.getAttribute('data-cat');
+        if (category === 'ALL' || cat === category) {
+          l.style.display = '';
+        } else {
+          l.style.display = 'none';
+        }
+      });
+    }
+
+    function addConsoleLog(tagText, message, tagClass) {
+      const consoleBox = document.getElementById('consoleLog');
+      const streamAnchor = document.getElementById('streamAnchor');
+      const time = new Date().toTimeString().split(' ')[0];
+
+      const line = document.createElement('div');
+      line.className = 'console-line';
+      const cat = tagText.toUpperCase().includes('RISK') ? 'RISK' : (tagText.toUpperCase().includes('COPILOT') ? 'COPILOT' : 'SCORING');
+      line.setAttribute('data-cat', cat);
+      line.innerHTML = `
+        <span class="log-time">[${time}]</span>
+        <span class="log-tag ${tagClass}">${tagText}</span>
+        <span>${message}</span>
+      `;
+      consoleBox.insertBefore(line, streamAnchor);
+      consoleBox.scrollTop = consoleBox.scrollHeight;
+    }
+
+    function setTimeHorizon(range, btn) {
+      document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      addConsoleLog('SYSTEM', `Horizonte temporal recalculado: ${range}. Ajustando ventana deslizante de scoring.`, 'tag-scoring');
+      animateCounters();
+    }
+
+    /* ATAJOS DE TECLADO GLOBALES */
+    window.addEventListener('keydown', (e) => {
+      // Ignorar si el usuario está escribiendo en un input
+      const isInput = ['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName);
+
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        const input = document.getElementById('globalSearchInput');
+        if (input) { input.focus(); input.select(); }
+      } else if (!isInput && e.key.toLowerCase() === 't') {
+        toggleTheme();
+      } else if (!isInput && e.key.toLowerCase() === 's') {
+        openStressModal();
+      } else if (!isInput && e.key.toLowerCase() === 'l') {
+        toggleLiveStream();
+      } else if (!isInput && e.key === '?') {
+        openShortcutsModal();
+      } else if (e.key === 'Escape') {
+        closeDrawer();
+        closeDrilldownModal();
+        closeStressModal();
+        closeShortcutsModal();
+      }
+    });
+
+    /* ==========================================================================
+       K. INICIALIZACIÓN ROBUSTA
+       ========================================================================== */
+    function initDashboard() {
+      loadSavedTheme();
+      initTooltipEngine();
+      animateCounters();
+      applyTableFilters();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initDashboard);
+    } else {
+      initDashboard();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,375 @@
+<!-- =====================================================================
+     BÓVEDA DE COMPONENTES TIER 1 — ESTÁNDAR PACEUI & BANCA CORPORATIVA
+     Ruta: design-system/components-vault.html
+     Uso en VS Code: Referencia este archivo con #file:components-vault.html
+     ===================================================================== -->
+
+<!-- =====================================================================
+     1. SELECTOR BI-MODAL (TEMA CLARO / OSCURO) + STREAM TICKER EN VIVO
+     ===================================================================== -->
+<div class="header-actions">
+  <button id="liveStreamBtn" class="pill-btn live-active" onclick="toggleLiveStream()" title="Simulación de ticks de mercado en tiempo real">
+    <span class="live-dot"></span>
+    <span id="liveStreamText">En Vivo: ON (5s)</span>
+  </button>
+  <button id="themeToggleBtn" class="pill-btn" onclick="toggleTheme()" title="Alternar entre Dark Mode y Light Mode (Ctrl+T)">
+    <span id="themeToggleIcon">☀️</span>
+    <span id="themeToggleText">Modo Claro</span>
+  </button>
+</div>
+<style>
+.pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: 9999px;
+  border: 1px dashed var(--border-dashed);
+  background: var(--card);
+  color: var(--foreground);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.pill-btn:hover {
+  background: var(--card-hover);
+  border-color: var(--accent-blue);
+  transform: translateY(-1px);
+}
+.live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent-emerald);
+  box-shadow: 0 0 8px var(--accent-emerald);
+  animation: pulse-emerald 2s infinite;
+}
+@keyframes pulse-emerald {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(0.85); }
+}
+</style>
+
+<!-- =====================================================================
+     2. TARJETA KPI DE ALTA DENSIDAD CON SPARKLINE Y DRILL-DOWN AUDITABLE
+     ===================================================================== -->
+<div class="kpi-card" onclick="openDrilldown('kpi-ead')" title="Haz clic para inspeccionar el desglose IFRS 9 y subcomponentes">
+  <div class="kpi-header">
+    <span class="kpi-title">Exposición Total (EAD)</span>
+    <span class="kpi-badge-dashed">IFRS 9</span>
+  </div>
+  <div class="kpi-value-row">
+    <div class="kpi-number" id="kpi-ead-val">€1.428,5M</div>
+    <span class="badge-delta positive">↑ 14.8%</span>
+  </div>
+  <div class="kpi-sub">Stage 1: 89.4% · Stage 2: 8.8% · Stage 3: 1.8%</div>
+  <svg class="sparkline-svg" viewBox="0 0 100 24">
+    <path class="sparkline-path" d="M0 20 Q 25 8, 50 14 T 100 6" />
+  </svg>
+  <div class="kpi-drill-hint">🔍 Clic para auditoría detallada &gt;</div>
+</div>
+<style>
+.kpi-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.kpi-card:hover {
+  border-color: var(--accent-blue);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+.kpi-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.kpi-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--muted-foreground);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.kpi-badge-dashed {
+  font-size: 0.68rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 9999px;
+  border: 1px dashed var(--border-dashed);
+  background: var(--secondary);
+  color: var(--muted-foreground);
+}
+.kpi-value-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.kpi-number {
+  font-size: 1.85rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+.badge-delta {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  border-radius: 9999px;
+}
+.badge-delta.positive {
+  background: var(--accent-emerald-subtle);
+  color: var(--accent-emerald);
+}
+.badge-delta.negative {
+  background: var(--accent-rose-subtle);
+  color: var(--accent-rose);
+}
+.kpi-sub {
+  font-size: 0.72rem;
+  color: var(--muted-foreground);
+}
+.sparkline-svg {
+  width: 100%;
+  height: 28px;
+  stroke: var(--accent-blue);
+  stroke-width: 2;
+  fill: none;
+  stroke-linecap: round;
+}
+.kpi-drill-hint {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--accent-blue);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  margin-top: 0.25rem;
+}
+.kpi-card:hover .kpi-drill-hint {
+  opacity: 1;
+}
+</style>
+
+<!-- =====================================================================
+     3. MATRIZ DE RIESGO VS RETORNO (RAROC VS PD) EN SVG INTERACTIVO
+     ===================================================================== -->
+<div class="chart-panel">
+  <div class="chart-panel-header">
+    <div>
+      <h3 class="panel-title">Matriz de Riesgo vs Retorno de la Cartera</h3>
+      <p class="panel-subtitle">Posicionamiento RAROC (%) vs Probabilidad de Incumplimiento PD (%)</p>
+    </div>
+    <div class="matrix-legend">
+      <span class="legend-badge optimal">Zona Óptima (Alto RAROC, Bajo PD)</span>
+      <span class="legend-badge alert">Zona Vigilancia</span>
+    </div>
+  </div>
+  <div class="matrix-svg-wrapper">
+    <svg id="riskMatrixSvg" viewBox="0 0 500 240" class="risk-matrix-svg">
+      <!-- Cuadrantes de fondo -->
+      <rect x="35" y="15" width="225" height="100" fill="var(--accent-emerald-subtle)" opacity="0.4" rx="4"/>
+      <text x="45" y="32" font-size="10" font-weight="700" fill="var(--accent-emerald)">ZONA ÓPTIMA (RAROC &gt; 18%, PD &lt; 1%)</text>
+      
+      <rect x="260" y="115" width="225" height="100" fill="var(--accent-rose-subtle)" opacity="0.4" rx="4"/>
+      <text x="270" y="205" font-size="10" font-weight="700" fill="var(--accent-rose)">ZONA VIGILANCIA (PD &gt; 1%, RAROC &lt; 12%)</text>
+      
+      <!-- Ejes -->
+      <line x1="35" y1="215" x2="485" y2="215" stroke="var(--border)" stroke-width="1.5"/>
+      <line x1="35" y1="15" x2="35" y2="215" stroke="var(--border)" stroke-width="1.5"/>
+      
+      <!-- Etiquetas de ejes -->
+      <text x="260" y="235" font-size="10" fill="var(--muted-foreground)" text-anchor="middle">Probabilidad de Incumplimiento — PD (%)</text>
+      <text x="12" y="115" font-size="10" fill="var(--muted-foreground)" text-anchor="middle" transform="rotate(-90 12 115)">RAROC (%)</text>
+      
+      <!-- Burbujas Interactivas de Empresas (Click para Ficha 360) -->
+      <circle cx="95" cy="55" r="14" fill="#3b82f6" opacity="0.85" class="matrix-bubble"
+              onclick="openCompanyDrawer('IBER-01')"
+              data-tooltip="Iberdrola Renovable | RAROC: 24.2% | PD: 0.12% | Exp: €42M"/>
+      <circle cx="160" cy="75" r="18" fill="#10b981" opacity="0.85" class="matrix-bubble"
+              onclick="openCompanyDrawer('IND-02')"
+              data-tooltip="Inditex Logística | RAROC: 21.5% | PD: 0.35% | Exp: €65M"/>
+      <circle cx="340" cy="165" r="12" fill="#f43f5e" opacity="0.85" class="matrix-bubble"
+              onclick="openCompanyDrawer('CEL-04')"
+              data-tooltip="Cellnex Towers | RAROC: 11.2% | PD: 1.45% | Exp: €28M"/>
+      <circle cx="210" cy="105" r="15" fill="#f59e0b" opacity="0.85" class="matrix-bubble"
+              onclick="openCompanyDrawer('GRI-03')"
+              data-tooltip="Grifols Pharma | RAROC: 16.8% | PD: 0.88% | Exp: €35M"/>
+    </svg>
+  </div>
+</div>
+<style>
+.chart-panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+}
+.matrix-bubble {
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), stroke 0.2s ease;
+  transform-origin: center;
+}
+.matrix-bubble:hover {
+  transform: scale(1.25);
+  stroke: #ffffff;
+  stroke-width: 2.5;
+}
+</style>
+
+<!-- =====================================================================
+     4. BARRA DE FILTROS MULTIDIMENSIONALES REACTIVOS Y BÚSQUEDA INSTANTÁNEA
+     ===================================================================== -->
+<div class="filters-bar">
+  <div class="tabs-group">
+    <button class="tab-btn active" onclick="setBusinessTab('all')">Todos (45)</button>
+    <button class="tab-btn" onclick="setBusinessTab('factoring')">Factoring (18)</button>
+    <button class="tab-btn" onclick="setBusinessTab('confirming')">Confirming (14)</button>
+    <button class="tab-btn" onclick="setBusinessTab('ico')">ICO Verde (8)</button>
+  </div>
+  <div class="search-and-selects">
+    <div class="search-input-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="tableSearchInput" placeholder="Buscar por CIF, Empresa, CNAE o Gestor..."
+             oninput="handleSearchInput(this.value)">
+    </div>
+    <select id="sectorSelect" onchange="handleSectorFilter(this.value)" class="filter-select">
+      <option value="">Todos los Sectores</option>
+      <option value="Energía & Renovables">Energía & Renovables</option>
+      <option value="Retail & Distribución">Retail & Distribución</option>
+      <option value="Telecomunicaciones">Telecomunicaciones</option>
+      <option value="Salud & Biotecnología">Salud & Biotecnología</option>
+    </select>
+    <select id="ratingSelect" onchange="handleRatingFilter(this.value)" class="filter-select">
+      <option value="">Todos los Ratings</option>
+      <option value="AAA">AAA / AA</option>
+      <option value="A">A / BBB</option>
+      <option value="BB">BB o Inferior</option>
+    </select>
+  </div>
+</div>
+
+<!-- =====================================================================
+     5. TABLA ORDENABLE CON CHECKBOXES Y MUELLE DE ACCIONES EN LOTE
+     ===================================================================== -->
+<div class="table-container">
+  <table class="tier1-table" id="proposalsTable">
+    <thead>
+      <tr>
+        <th width="40"><input type="checkbox" id="masterCheckbox" onclick="toggleSelectAllRows(this)"></th>
+        <th onclick="sortTableBy('empresa')">Empresa / CIF <span class="sort-indicator">▲▼</span></th>
+        <th onclick="sortTableBy('sector')">Sector <span class="sort-indicator">▲▼</span></th>
+        <th onclick="sortTableBy('rating')">Rating <span class="sort-indicator">▲▼</span></th>
+        <th onclick="sortTableBy('importe')">Límite Propuesto <span class="sort-indicator">▲▼</span></th>
+        <th onclick="sortTableBy('propension')">Propensión IA <span class="sort-indicator">▲▼</span></th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody">
+      <!-- Generado dinámicamente o pre-renderizado con data-attributes -->
+    </tbody>
+  </table>
+</div>
+
+<!-- MUELLE FLOTANTE DE ACCIONES EN LOTE -->
+<div id="batchDock" class="batch-floating-dock hidden">
+  <span id="batchCountText">3 empresas seleccionadas</span>
+  <div class="batch-buttons">
+    <button class="btn-batch-primary" onclick="batchApproveProposals()">🚀 Emitir Ofertas en Lote</button>
+    <button class="btn-batch-secondary" onclick="batchDownloadCIRBE()">📄 Descargar CIRBE Masivo</button>
+    <button class="btn-batch-close" onclick="clearRowSelection()">✕ Descartar</button>
+  </div>
+</div>
+<style>
+.batch-floating-dock {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--surface-elevated);
+  border: 1px solid var(--accent-blue);
+  box-shadow: var(--shadow-lg);
+  padding: 0.85rem 1.5rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  z-index: 90;
+  animation: slide-up-dock 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.batch-floating-dock.hidden {
+  display: none;
+}
+@keyframes slide-up-dock {
+  from { transform: translate(-50%, 20px); opacity: 0; }
+  to { transform: translate(-50%, 0); opacity: 1; }
+}
+</style>
+
+<!-- =====================================================================
+     6. MODAL DE AUDITORÍA Y DRILL-DOWN PARAMÉTRICO
+     ===================================================================== -->
+<div id="drilldownModal" class="modal-backdrop hidden" onclick="if(event.target===this) closeDrilldown()">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <div>
+        <h3 id="drillTitle" class="modal-title">Desglose de Auditoría Financiera</h3>
+        <p id="drillSubtitle" class="modal-subtitle">Inspección de subcomponentes, normativas IFRS 9 y conciliación contable</p>
+      </div>
+      <button class="modal-close" onclick="closeDrilldown()">✕</button>
+    </div>
+    <div class="modal-body" id="drillContent">
+      <!-- Tablas dinámicas de subcuentas, ratios y cálculo actuarial -->
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="exportDrilldownPDF()">📄 Descargar Informe Certificado (PDF)</button>
+      <button class="btn-primary" onclick="closeDrilldown()">Cerrar Auditoría</button>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================================
+     7. LABORATORIO DE STRESS TESTING PARAMÉTRICO (WHAT-IF SCENARIOS)
+     ===================================================================== -->
+<div id="stressModal" class="modal-backdrop hidden" onclick="if(event.target===this) closeStressModal()">
+  <div class="modal-dialog stress-dialog">
+    <div class="modal-header">
+      <div>
+        <h3 class="modal-title">🧪 Simulador Paramétrico de Stress Testing (BCE / EBA)</h3>
+        <p class="modal-subtitle">Ajuste de choques macroeconómicos para recalcular solvencia y provisiones en tiempo real</p>
+      </div>
+      <button class="modal-close" onclick="closeStressModal()">✕</button>
+    </div>
+    <div class="stress-grid">
+      <div class="stress-control-col">
+        <div class="slider-group">
+          <label>Choque Euríbor: <span id="euriborShockVal">+150 bps</span></label>
+          <input type="range" min="0" max="300" step="25" value="150" oninput="updateStressSimulation(this.value, null)">
+        </div>
+        <div class="slider-group">
+          <label>Incremento Mora (NPL): <span id="nplShockVal">+1.0%</span></label>
+          <input type="range" min="0" max="25" step="1" value="10" oninput="updateStressSimulation(null, this.value)">
+        </div>
+      </div>
+      <div class="stress-impact-col">
+        <div class="impact-card">
+          <span>Ratio CET1 Post-Estrés</span>
+          <strong id="stressedCet1">12.18%</strong>
+          <small class="text-amber">Colchón regulatorio +418 bps vs mínimo</small>
+        </div>
+        <div class="impact-card">
+          <span>Margen de Intereses (NII)</span>
+          <strong id="stressedNii">+€48,2M</strong>
+          <small class="text-emerald">Expansión por reprecio de activos</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,139 @@
+{
+  "PaceUI Tier 1 HTML Skeleton": {
+    "prefix": "pace-skeleton-tier1",
+    "body": [
+      "<!DOCTYPE html>",
+      "<html lang=\"es\">",
+      "<head>",
+      "  <meta charset=\"UTF-8\">",
+      "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">",
+      "  <title>${1:Dashboard Tier 1 — Banca Corporativa}</title>",
+      "  <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">",
+      "  <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>",
+      "  <link href=\"https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap\" rel=\"stylesheet\">",
+      "  <link rel=\"stylesheet\" href=\"../design-system/reference-tokens.css\">",
+      "  <style>",
+      "    * { box-sizing: border-box; margin: 0; padding: 0; }",
+      "    body { background: var(--background); color: var(--foreground); font-family: var(--font-sans); }",
+      "  </style>",
+      "</head>",
+      "<body>",
+      "  <div class=\"bg-grid-pattern\"></div>",
+      "  <header class=\"header\">",
+      "    <h1>${1:Dashboard Tier 1}</h1>",
+      "    <button onclick=\"toggleTheme()\">☀️/🌙</button>",
+      "  </header>",
+      "  <main class=\"main-content\">",
+      "    $0",
+      "  </main>",
+      "</body>",
+      "</html>"
+    ],
+    "description": "Inserta el esqueleto HTML5 completo con tokens bi-modales para un dashboard Tier 1"
+  },
+  "PaceUI KPI Card with Drilldown": {
+    "prefix": "pace-kpi-drilldown",
+    "body": [
+      "<div class=\"kpi-card\" onclick=\"openDrilldown('${1:kpi-metric}')\" title=\"Inspeccionar desglose IFRS 9\">",
+      "  <div class=\"kpi-header\">",
+      "    <span class=\"kpi-title\">${2:Exposición Total EAD}</span>",
+      "    <span class=\"kpi-badge-dashed\">${3:IFRS 9}</span>",
+      "  </div>",
+      "  <div class=\"kpi-value-row\">",
+      "    <div class=\"kpi-number\">${4:€1.428,5M}</div>",
+      "    <span class=\"badge-delta positive\">↑ ${5:14.8%}</span>",
+      "  </div>",
+      "  <div class=\"kpi-sub\">${6:Stage 1: 89.4% · Stage 2: 8.8% · Stage 3: 1.8%}</div>",
+      "  <svg class=\"sparkline-svg\" viewBox=\"0 0 100 24\">",
+      "    <path class=\"sparkline-path\" d=\"M0 20 Q 25 8, 50 14 T 100 6\" />",
+      "  </svg>",
+      "  <div class=\"kpi-drill-hint\">🔍 Clic para auditoría detallada &gt;</div>",
+      "</div>"
+    ],
+    "description": "Inserta tarjeta KPI interactiva con sparkline SVG y evento de drill-down"
+  },
+  "PaceUI Risk vs Return Scatter Matrix": {
+    "prefix": "pace-scatter-matrix",
+    "body": [
+      "<div class=\"chart-panel\">",
+      "  <div class=\"chart-panel-header\">",
+      "    <h3>${1:Matriz Riesgo vs Retorno (RAROC vs PD)}</h3>",
+      "  </div>",
+      "  <svg viewBox=\"0 0 500 240\" class=\"risk-matrix-svg\">",
+      "    <rect x=\"35\" y=\"15\" width=\"225\" height=\"100\" fill=\"var(--accent-emerald-subtle)\" rx=\"4\"/>",
+      "    <rect x=\"260\" y=\"115\" width=\"225\" height=\"100\" fill=\"var(--accent-rose-subtle)\" rx=\"4\"/>",
+      "    <line x1=\"35\" y1=\"215\" x2=\"485\" y2=\"215\" stroke=\"var(--border)\"/>",
+      "    <line x1=\"35\" y1=\"15\" x2=\"35\" y2=\"215\" stroke=\"var(--border)\"/>",
+      "    <circle cx=\"120\" cy=\"60\" r=\"14\" fill=\"#3b82f6\" class=\"matrix-bubble\" onclick=\"openCompanyDrawer('${2:EMP-01}')\" data-tooltip=\"${3:Empresa A | RAROC 22%}\"/>",
+      "  </svg>",
+      "</div>"
+    ],
+    "description": "Inserta la matriz interactiva SVG de Riesgo vs Retorno con cuadrantes y burbujas clicables"
+  },
+  "PaceUI Sortable Table with Master Checkbox": {
+    "prefix": "pace-table-sortable",
+    "body": [
+      "<div class=\"table-container\">",
+      "  <table class=\"tier1-table\">",
+      "    <thead>",
+      "      <tr>",
+      "        <th width=\"40\"><input type=\"checkbox\" onclick=\"toggleSelectAllRows(this)\"></th>",
+      "        <th onclick=\"sortTableBy('empresa')\">Empresa / CIF <span>▲▼</span></th>",
+      "        <th onclick=\"sortTableBy('sector')\">Sector <span>▲▼</span></th>",
+      "        <th onclick=\"sortTableBy('rating')\">Rating <span>▲▼</span></th>",
+      "        <th onclick=\"sortTableBy('importe')\">Límite <span>▲▼</span></th>",
+      "        <th onclick=\"sortTableBy('propension')\">Propensión <span>▲▼</span></th>",
+      "        <th>Acciones</th>",
+      "      </tr>",
+      "    </thead>",
+      "    <tbody id=\"tableBody\">",
+      "      $0",
+      "    </tbody>",
+      "  </table>",
+      "</div>"
+    ],
+    "description": "Inserta tabla con cabeceras ordenables y selección por checkboxes para muelle en lote"
+  },
+  "PaceUI Drilldown Modal Window": {
+    "prefix": "pace-drilldown-modal",
+    "body": [
+      "<div id=\"drilldownModal\" class=\"modal-backdrop hidden\" onclick=\"if(event.target===this) closeDrilldown()\">",
+      "  <div class=\"modal-dialog\">",
+      "    <div class=\"modal-header\">",
+      "      <h3 id=\"drillTitle\">${1:Desglose de Auditoría Financiera}</h3>",
+      "      <button onclick=\"closeDrilldown()\">✕</button>",
+      "    </div>",
+      "    <div class=\"modal-body\" id=\"drillContent\"></div>",
+      "    <div class=\"modal-footer\">",
+      "      <button onclick=\"exportDrilldownPDF()\">📄 Descargar PDF</button>",
+      "      <button onclick=\"closeDrilldown()\">Cerrar</button>",
+      "    </div>",
+      "  </div>",
+      "</div>"
+    ],
+    "description": "Inserta el modal de auditoría financiera con inspección de subcuentas y descarga de informe"
+  },
+  "PaceUI Stress Testing Simulator Modal": {
+    "prefix": "pace-stress-lab",
+    "body": [
+      "<div id=\"stressModal\" class=\"modal-backdrop hidden\" onclick=\"if(event.target===this) closeStressModal()\">",
+      "  <div class=\"modal-dialog stress-dialog\">",
+      "    <div class=\"modal-header\">",
+      "      <h3>🧪 Simulador Paramétrico de Stress Testing</h3>",
+      "      <button onclick=\"closeStressModal()\">✕</button>",
+      "    </div>",
+      "    <div class=\"stress-grid\">",
+      "      <div class=\"slider-group\">",
+      "        <label>Choque Euríbor: <span id=\"euriborShockVal\">+150 bps</span></label>",
+      "        <input type=\"range\" min=\"0\" max=\"300\" step=\"25\" value=\"150\" oninput=\"updateStressSimulation(this.value, null)\">",
+      "      </div>",
+      "      <div class=\"impact-card\">",
+      "        <span>Ratio CET1 Post-Estrés: <strong id=\"stressedCet1\">12.18%</strong></span>",
+      "      </div>",
+      "    </div>",
+      "  </div>",
+      "</div>"
+    ],
+    "description": "Inserta el simulador de escenarios What-If de estrés de capital CET1 y tipos de interés"
+  }
+}

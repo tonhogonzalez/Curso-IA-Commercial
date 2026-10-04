@@ -1,0 +1,118 @@
+/* ==========================================================================
+   SISTEMA DE TOKENS BI-MODAL TIER 1 — PACEUI & EXECUTIVE SLATE
+   Ruta: design-system/reference-tokens.css
+   Estándar: Banca Corporativa, CIB & Gestión de Activos
+   ========================================================================== */
+
+/* 1. MODO OSCURO (Default / PaceUI Core Obsidian) */
+:root {
+  --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+  --radius: 0.625rem; /* 10px */
+  --radius-sm: 0.375rem; /* 6px */
+  --radius-lg: 0.875rem; /* 14px */
+
+  /* Paleta Base Oscura */
+  --background: #0a0a0a;
+  --foreground: #fafafa;
+  --card: #171717;
+  --card-hover: #1f1f1f;
+  --surface-elevated: #222222;
+  --border: #282828;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-dashed: #3f3f46;
+
+  /* Colores de Marca y Acción */
+  --primary: #e5e5e5;
+  --primary-foreground: #0a0a0a;
+  --primary-hover: #ffffff;
+  --secondary: #262626;
+  --secondary-foreground: #fafafa;
+  --muted: #262626;
+  --muted-foreground: #a1a1a1;
+
+  /* Semántica de Riesgo y Finanzas */
+  --accent-emerald: #10b981;
+  --accent-emerald-subtle: rgba(16, 185, 129, 0.12);
+  --accent-rose: #f43f5e;
+  --accent-rose-subtle: rgba(244, 63, 94, 0.12);
+  --accent-blue: #3b82f6;
+  --accent-blue-subtle: rgba(59, 130, 246, 0.12);
+  --accent-amber: #f59e0b;
+  --accent-amber-subtle: rgba(245, 158, 11, 0.12);
+  --accent-purple: #8b5cf6;
+  --accent-purple-subtle: rgba(139, 92, 246, 0.12);
+
+  /* Sombras y Elevaciones */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.75);
+  --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.25);
+
+  /* Grid Matemático y Overlays */
+  --grid-line-color: rgba(255, 255, 255, 0.04);
+  --glass-bg: rgba(10, 10, 10, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.08);
+}
+
+/* 2. MODO CLARO (Executive Slate / Bloomberg Boardroom) */
+html.light {
+  --background: #f8fafc;            /* Pizarra clara ejecutiva */
+  --foreground: #0f172a;            /* Azul marino medianoche profundo */
+  --card: #ffffff;                  /* Superficie blanca inmaculada */
+  --card-hover: #f1f5f9;            /* Tinte slate sutil al pasar cursor */
+  --surface-elevated: #ffffff;
+  --border: #e2e8f0;                /* Borde nítido slate-200 */
+  --border-subtle: rgba(15, 23, 42, 0.08);
+  --border-dashed: #cbd5e1;
+
+  --primary: #0f172a;               /* Acción oscura de máximo contraste */
+  --primary-foreground: #ffffff;
+  --primary-hover: #1e293b;
+  --secondary: #f1f5f9;
+  --secondary-foreground: #0f172a;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;      /* Slate-500 accesible */
+
+  --accent-emerald: #059669;
+  --accent-emerald-subtle: rgba(5, 150, 105, 0.1);
+  --accent-rose: #e11d48;
+  --accent-rose-subtle: rgba(225, 29, 72, 0.1);
+  --accent-blue: #2563eb;
+  --accent-blue-subtle: rgba(37, 99, 235, 0.1);
+  --accent-amber: #d97706;
+  --accent-amber-subtle: rgba(217, 119, 6, 0.1);
+  --accent-purple: #7c3aed;
+  --accent-purple-subtle: rgba(124, 58, 237, 0.1);
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.12);
+  --shadow-glow: 0 0 20px rgba(37, 99, 235, 0.15);
+
+  --grid-line-color: rgba(15, 23, 42, 0.04);
+  --glass-bg: rgba(248, 250, 252, 0.88);
+  --glass-border: rgba(15, 23, 42, 0.08);
+}
+
+/* Transición suave global de tema */
+body, .kpi-card, .chart-panel, .header, .table-container, .modal-content, .drawer-content {
+  transition: background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Retícula Matemática Técnica */
+.bg-grid-pattern {
+  position: fixed;
+  inset: 0;
+  background-image: 
+    linear-gradient(to right, var(--grid-line-color) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line-color) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+  pointer-events: none;
+  z-index: 0;
+}

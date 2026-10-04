@@ -526,64 +526,99 @@
         <div class="section-divider"></div>
         <div class="transcript-text">
           <p>
-            El aspecto "tecnológico y limpio" de PaceUI no se basa en decoraciones recargadas, sino en la exactitud milimétrica de sus variables. A continuación tienes los tokens extraídos directamente del núcleo CSS de PaceUI:
+            El aspecto de grado institucional Tier 1 en Banca Corporativa y CIB requiere una arquitectura visual <strong>Bi-Modal nativa</strong>: un modo oscuro mate profundo inspirado en <em>PaceUI Obsidian</em> para entornos de monitorización continua, y un modo claro <em>Executive Slate / Boardroom</em> para comités de dirección y auditoría.
           </p>
 
-          <div class="prompt-block-wrapper">
+          <div class="prompt-block-wrapper pro-version">
             <div class="prompt-block-header">
-              <h3 class="prompt-block-title">🎨 Tokens Fundamentales: Tema Oscuro y Superficies</h3>
-              <span class="version-pill original">CSS Variables Oficiales</span>
+              <h3 class="prompt-block-title">🎨 Tokens Bi-Modales Oficiales: Dark Mode (`:root`) & Light Mode (`html.light`)</h3>
+              <span class="version-pill optimized">Estándar Tier 1 Banca Corporativa</span>
             </div>
-            <pre class="copyable-prompt-pre">/* Inyectar en :root o en la clase .dark de tu hoja de estilos */
+            <pre class="copyable-prompt-pre">/* ==========================================================================
+   SISTEMA DE TOKENS BI-MODAL TIER 1 — PACEUI & EXECUTIVE SLATE
+   ========================================================================== */
+
+/* 1. MODO OSCURO (Default / PaceUI Core Obsidian) */
 :root {
-  --font-sans: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  --radius: 0.625rem; /* 10px: curvatura precisa para tarjetas modernas */
+  --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+  --radius: 0.625rem; /* 10px */
 
-  /* Paleta Dark Mode Primaria (PaceUI Core) */
-  --background: #0a0a0a;            /* Fondo base oscuro mate profundo */
+  /* Paleta Base Oscura */
+  --background: #0a0a0a;            /* Fondo base mate profundo */
   --foreground: #fafafa;            /* Texto principal de alto contraste */
-  --card: #171717;                  /* Superficie elevada (primer plano) */
-  --card-foreground: #fafafa;
-  --primary: #e5e5e5;               /* Elementos de acción destacados */
-  --primary-foreground: #171717;    /* Texto dentro de botones primarios */
-  --secondary: #262626;             /* Contenedores secundarios */
-  --secondary-foreground: #fafafa;
-  --muted: #262626;                 /* Fondos atenuados */
-  --muted-foreground: #a1a1a1;      /* Etiquetas, subtítulos y metadatos */
-  --border: #282828;                /* Borde de alta fidelidad (1px no invasivo) */
-  --input: #343434;
+  --card: #171717;                  /* Superficie de tarjeta elevada */
+  --card-hover: #1f1f1f;            /* Resalte táctil al posar ratón */
+  --surface-elevated: #222222;
+  --border: #282828;                /* Borde nítido no invasivo de 1px */
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-dashed: #3f3f46;
 
-  /* Semántica de Métricas y Estados */
-  --accent-emerald: #10b981;        /* Variaciones positivas, agentes activos */
-  --accent-rose: #f43f5e;           /* Errores, latencias elevadas, alertas */
-  --accent-blue: #3b82f6;           /* Trazas activas, enlaces, foco */
+  /* Acciones y Estados */
+  --primary: #e5e5e5;
+  --primary-foreground: #0a0a0a;
+  --secondary: #262626;
+  --secondary-foreground: #fafafa;
+  --muted: #262626;
+  --muted-foreground: #a1a1a1;
+
+  /* Semántica Financiera y Riesgos */
+  --accent-emerald: #10b981;        /* Variación positiva, stage 1, solvencia */
+  --accent-rose: #f43f5e;           /* Variación negativa, alertas, stage 3 */
+  --accent-blue: #3b82f6;           /* Trazas activas, drill-downs, selección */
+  --accent-amber: #f59e0b;          /* Vigilancia especial, stage 2 */
+  --grid-line-color: rgba(255, 255, 255, 0.04);
+}
+
+/* 2. MODO CLARO (Executive Slate / Bloomberg Boardroom) */
+html.light {
+  --background: #f8fafc;            /* Pizarra clara ejecutiva */
+  --foreground: #0f172a;            /* Azul marino medianoche profundo */
+  --card: #ffffff;                  /* Superficie blanca inmaculada */
+  --card-hover: #f1f5f9;            /* Tinte slate sutil al pasar cursor */
+  --surface-elevated: #ffffff;
+  --border: #e2e8f0;                /* Borde nítido slate-200 */
+  --border-subtle: rgba(15, 23, 42, 0.08);
+  --border-dashed: #cbd5e1;
+
+  --primary: #0f172a;               /* Acción oscura de máximo contraste */
+  --primary-foreground: #ffffff;
+  --secondary: #f1f5f9;
+  --secondary-foreground: #0f172a;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+
+  --accent-emerald: #059669;
+  --accent-rose: #e11d48;
+  --accent-blue: #2563eb;
+  --accent-amber: #d97706;
+  --grid-line-color: rgba(15, 23, 42, 0.04);
 }</pre>
           </div>
 
-          <h3>La Técnica de la Cuadrícula Matemática con Máscara Radial</h3>
+          <h3>La Técnica de la Cuadrícula Matemática Reactiva con Máscara Radial</h3>
           <p>
-            Uno de los sellos distintivos de PaceUI es evitar los fondos lisos y planos. Se añade una retícula geométrica sutil mediante CSS puro que se desvanece suavemente hacia los bordes:
+            En lugar de usar fondos planos, la retícula matemática se adapta al color de la variable <code>--grid-line-color</code>, garantizando una textura milimétrica tanto en modo oscuro como en modo claro:
           </p>
 
-          <pre class="copyable-prompt-pre">.pace-grid-background {
+          <pre class="copyable-prompt-pre">.bg-grid-pattern {
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 0;
   background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    linear-gradient(to right, var(--grid-line-color) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line-color) 1px, transparent 1px);
   background-size: 40px 40px;
-  /* Máscara radial para atenuar los extremos */
-  mask-image: radial-gradient(ellipse at center, black 25%, transparent 75%);
-  -webkit-mask-image: radial-gradient(ellipse at center, black 25%, transparent 75%);
+  /* Máscara radial para atenuar suavemente los extremos */
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
 }</pre>
 
           <div class="tech-note-box">
-            <div class="tech-note-title">💡 Regla de Tipografía: `tabular-nums`</div>
+            <div class="tech-note-title">💡 Regla de Oro: Transición Fluida entre Temas y `tabular-nums`</div>
             <p>
-              En cualquier dashboard donde los números se actualicen en tiempo real (relojes, contadores de tokens, latencias), debes aplicar obligatoriamente la regla CSS: <code>font-variant-numeric: tabular-nums;</code>. Esto asegura que todos los dígitos ocupen idéntico ancho horizontal, eliminando el temblor o salto visual en la pantalla durante las actualizaciones.
+              Para evitar parpadeos visuales al alternar entre modo claro y oscuro, aplica una transición CSS de <code>background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1)</code> en tarjetas y contenedores. Asimismo, aplica obligatoriamente <code>font-variant-numeric: tabular-nums;</code> a todas las cifras, importes y porcentajes para que las cifras mantengan exactamente el mismo ancho de columna.
             </p>
           </div>
         </div>
@@ -705,8 +740,41 @@
   background: #10b981;
   box-shadow: 0 0 10px rgba(16, 185, 129, 0.7);
   animation: live-pulse 2s infinite ease-in-out;
+}
+
+/* 6. MUELLE FLOTANTE DE ACCIONES EN LOTE (SLIDE-UP ENTRANCE) */
+@keyframes slide-up-dock {
+  from { transform: translate(-50%, 28px); opacity: 0; }
+  to { transform: translate(-50%, 0); opacity: 1; }
+}
+
+.batch-floating-dock {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--surface-elevated);
+  border: 1px solid var(--accent-blue);
+  box-shadow: var(--shadow-lg);
+  padding: 0.85rem 1.6rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  z-index: 90;
+  animation: slide-up-dock 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }</pre>
           </div>
+
+          <h3>Componentes Cinemáticos Avanzados de Grado Tier 1</h3>
+          <p>
+            En banca de inversión y comités de riesgo, un dashboard no solo debe animar números: debe responder a tres patrones visuales críticos:
+          </p>
+          <ul style="margin-left: 1.5rem; font-size: 0.9rem; line-height: 1.7; color: var(--text-secondary);">
+            <li><strong>Tooltips Universales Dinámicos (`#globalTooltip`)</strong>: Una única capa flotante que calcula <code>clientX</code> y <code>clientY</code> con márgenes de seguridad para no salirse del viewport al posar el cursor sobre cualquier métrica o barra.</li>
+            <li><strong>Matriz SVG de Riesgo vs Retorno</strong>: Diagrama de dispersión matemática (RAROC vs PD) con cuadrantes coloreados (Zona Óptima vs Vigilancia) y burbujas con <code>transform-origin: center</code> que escalan al 125% con borde blanco iluminado al pasar el ratón.</li>
+            <li><strong>Muelle Flotante de Acciones en Lote</strong>: Aparece automáticamente en el margen inferior de la pantalla cuando el usuario activa uno o varios checkboxes en las filas de la tabla de propuestas.</li>
+          </ul>
         </div>
       </section>
 
@@ -895,24 +963,24 @@
               <h3 class="prompt-block-title">📄 Contenido de `.github/copilot-instructions.md`</h3>
               <span class="version-pill original">Copiar en tu proyecto local</span>
             </div>
-            <pre class="copyable-prompt-pre"># Rol y Especialidad: Arquitecto UX/UI y Frontend de Alta Fidelidad (Estándar PaceUI)
+            <pre class="copyable-prompt-pre"># Rol y Especialidad: Arquitecto UX/UI Frontend (Estándar Tier 1 Global Banking & PaceUI)
 
 Siempre que el usuario solicite crear, mejorar, estilizar o refactorizar un dashboard HTML:
-1. **Estética Obligatoria**:
-   - Usa Dark Mode por defecto: fondo `#0a0a0a`, tarjetas `#171717`, bordes sutiles `1px solid #282828`, texto `#fafafa` y muted `#a1a1a1`.
-   - Incorpora la retícula técnica con máscara radial (`linear-gradient` con `mask-image`).
-   - Todos los badges secundarios y tags de categoría deben tener `border: 1px dashed #3f3f46` y forma redondeada en píldora (`rounded-full`).
-2. **Tipografía y Métricas**:
-   - Fuente base: "DM Sans" o system fonts de alta legibilidad.
-   - Aplica SIEMPRE `font-variant-numeric: tabular-nums` a los números y contadores.
-3. **Micro-interacciones ("Alive UI")**:
-   - Botones principales con efecto `hero-shimmer`.
-   - Tarjetas destacadas con borde luminoso perimetral `border-travel`.
-   - Indicadores de agentes activos con pulso verde esmeralda (`#10b981`).
-   - Consolas de agente con cursor de streaming parpadeante (`caret-blink`).
-4. **Composición de Componentes**:
-   - Las KPI cards deben incluir: categoría en píldora dashed, cifra grande tabular, delta porcentual con badge semántico y sparkline SVG embebido al pie.
-   - Tablas densas con cabeceras en mayúsculas tenues y filas con hover sutil (`rgba(255,255,255,0.02)`).</pre>
+1. **Línea Base Mínima Obligatoria (Tier 1 Banking)**:
+   - Todo dashboard debe poseer: Modo Oscuro/Claro nativo, Búsqueda instantánea reactiva, Tabs, Ordenación de columnas (▲▼), Selección múltiple con muelle flotante de acciones en lote (#batchDock), Drill-Down modal (#drilldownModal) al hacer clic en cualquier KPI/gráfico, Matriz interactiva de Riesgo vs Retorno (RAROC vs PD) y Simulador paramétrico de Stress Testing (#stressModal).
+2. **Tokens Bi-Modales**:
+   - Modo Oscuro por defecto (:root, #0a0a0a, #171717, #282828).
+   - Modo Claro con clase html.light (#f8fafc, #ffffff, #e2e8f0).
+   - Botón de alternancia en header y atajo de teclado tecla 'T'.
+3. **Tipografía y Métricas**:
+   - Fuente base: "DM Sans" y monospaciada "JetBrains Mono".
+   - Aplica SIEMPRE `font-variant-numeric: tabular-nums` a contadores, deltas e importes.
+4. **Micro-interacciones y Animaciones (60 FPS)**:
+   - Botones primarios con reflejo diagonal hero-shimmer.
+   - Puntos de streaming en vivo con micro-pulso esmeralda (#10b981).
+   - Tooltip universal reactivo (#globalTooltip).
+5. **Autonomía 100%**:
+   - Único archivo HTML5 + CSS3 + Vanilla JS ejecutable directamente con doble clic en navegador.</pre>
           </div>
 
           <h3>3.3. Fichero 2: `skills/paceui-styler/SKILL.md`</h3>
@@ -923,32 +991,38 @@ Siempre que el usuario solicite crear, mejorar, estilizar o refactorizar un dash
           <div class="prompt-block-wrapper pro-version">
             <div class="prompt-block-header">
               <h3 class="prompt-block-title">📦 Contenido de `skills/paceui-styler/SKILL.md`</h3>
-              <span class="version-pill optimized">Skill Agencial Reutilizable</span>
+              <span class="version-pill optimized">Skill Agencial Tier 1</span>
             </div>
             <pre class="copyable-prompt-pre">---
 name: paceui-styler
-description: Transforma cualquier dashboard HTML rudimentario en una interfaz interactiva de alta fidelidad con el estándar PaceUI ("Alive UI"), integrando retículas matemáticas, tarjetas KPI densas, consolas de agentes en streaming y micro-animaciones CSS.
+description: Transforma cualquier dashboard HTML en una aplicación analítica de alta fidelidad con estándar Tier 1 Global Banking (Bi-modal Dark/Light, Drill-down Modals, Matriz Riesgo-Retorno, Stress Testing paramétrico, Ordenación y Filtros reactivos).
 ---
 
 # Procedimiento de Ejecución de la Skill
 
 Cuando esta skill sea invocada sobre un archivo HTML de dashboard:
 
-## Paso 1: Inyección de Tokens y Estilos Base
-Verifica si el documento tiene definidos los tokens CSS de PaceUI. Si no los tiene, inyecta en el `<head>` las variables `:root` con la paleta de modo oscuro (`#0a0a0a`, `#171717`, `#282828`) y la fuente "DM Sans".
+## Paso 1: Inyección de Tokens Bi-Modales
+Inyecta en el `<head>` las variables `:root` (Modo Oscuro PaceUI) y `html.light` (Modo Claro Executive Slate), junto con la función `toggleTheme()` y el botón conmutador.
 
-## Paso 2: Reestructuración de Métricas (KPI Cards)
-Transforma los bloques numéricos simples en tarjetas de alta densidad con:
-1. Encabezado con etiqueta en píldora con borde punteado (`dashed`).
-2. Cifra principal en tamaño grande (2rem+) con `tabular-nums`.
-3. Píldora de variación porcentual (verde `#10b981` para subida, rojo `#f43f5e` para bajada).
-4. Micro-gráfico de tendencia Sparkline dibujado en SVG embebido sin dependencias externas.
+## Paso 2: Reestructuración de Métricas con Drill-Down
+Convierte las métricas en tarjetas `.kpi-card` con:
+1. Píldora dashed de categoría regulatoria (IFRS 9, Solvencia, etc.).
+2. Cifra principal en `tabular-nums` con delta porcentual coloreado.
+3. Sparkline SVG de tendencia embebido.
+4. Evento `onclick="openDrilldown('id')"` que abre el modal `#drilldownModal` con desglose de subcuentas y descarga de informe.
 
-## Paso 3: Activación del Motor Cinemático
-Agrega al archivo las reglas `@keyframes hero-shimmer`, `border-travel`, `caret-blink` y `live-pulse`.
+## Paso 3: Gráficos de Grado Institucional
+1. Gráfico de evolución temporal con tooltips y clic en meses para auditoría.
+2. Matriz de dispersión SVG de Riesgo vs Retorno (RAROC vs PD) con cuadrantes analíticos (Zona Óptima vs Vigilancia) y burbujas clicables que abren la Ficha 360°.
 
-## Paso 4: Consola de Trazas del Agente
-Si el dashboard interactúa con agentes o tareas en segundo plano, añade una consola monospaciada con timestamp, etiquetas coloreadas y el cursor de streaming activo.</pre>
+## Paso 4: Filtros Reactivos, Ordenación y Acciones en Lote
+1. Buscador en tiempo real por CIF, Empresa y Gestor.
+2. Cabeceras con ordenación interactiva `▲▼`.
+3. Checkboxes por fila y checkbox maestro con muelle flotante inferior `#batchDock`.
+
+## Paso 5: Simulador Paramétrico de Stress Testing
+Modal `#stressModal` con sliders de choque macroeconómico (Euríbor y NPL) que recalculan CET1, Margen NII y Coste de Riesgo CoR en tiempo real.</pre>
           </div>
 
           <h3>3.4. Fichero 3: `.vscode/paceui.code-snippets` (Autocompletado Express sin Esperar a la IA)</h3>
@@ -963,40 +1037,76 @@ Si el dashboard interactúa con agentes o tareas en segundo plano, añade una co
               <span class="version-pill optimized">JSON de Autocompletado (Tab)</span>
             </div>
             <pre class="copyable-prompt-pre">{
-  "PaceUI KPI Card with Animated Sparkline": {
-    "prefix": "pace-kpi",
+  "PaceUI Tier 1 HTML Skeleton": {
+    "prefix": "pace-skeleton-tier1",
     "body": [
-      "&lt;div class=\"kpi-card\"&gt;",
+      "&lt;!DOCTYPE html&gt;",
+      "&lt;html lang=\"es\"&gt;",
+      "&lt;head&gt;",
+      "  &lt;meta charset=\"UTF-8\"&gt;",
+      "  &lt;meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"&gt;",
+      "  &lt;title&gt;${1:Dashboard Tier 1 — Banca Corporativa}&lt;/title&gt;",
+      "  &lt;link rel=\"preconnect\" href=\"https://fonts.googleapis.com\"&gt;",
+      "  &lt;link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin&gt;",
+      "  &lt;link href=\"https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap\" rel=\"stylesheet\"&gt;",
+      "  &lt;link rel=\"stylesheet\" href=\"../design-system/reference-tokens.css\"&gt;",
+      "  &lt;style&gt;",
+      "    * { box-sizing: border-box; margin: 0; padding: 0; }",
+      "    body { background: var(--background); color: var(--foreground); font-family: var(--font-sans); }",
+      "  &lt;/style&gt;",
+      "&lt;/head&gt;",
+      "&lt;body&gt;",
+      "  &lt;div class=\"bg-grid-pattern\"&gt;&lt;/div&gt;",
+      "  &lt;header class=\"header\"&gt;",
+      "    &lt;h1&gt;${1:Dashboard Tier 1}&lt;/h1&gt;",
+      "    &lt;button onclick=\"toggleTheme()\"&gt;☀️/🌙&lt;/button&gt;",
+      "  &lt;/header&gt;",
+      "  &lt;main class=\"main-content\"&gt;",
+      "    $0",
+      "  &lt;/main&gt;",
+      "&lt;/body&gt;",
+      "&lt;/html&gt;"
+    ],
+    "description": "Esqueleto HTML5 completo con tokens bi-modales para un dashboard Tier 1"
+  },
+  "PaceUI KPI Card with Drilldown": {
+    "prefix": "pace-kpi-drilldown",
+    "body": [
+      "&lt;div class=\"kpi-card\" onclick=\"openDrilldown('${1:kpi-metric}')\" title=\"Inspeccionar desglose IFRS 9\"&gt;",
       "  &lt;div class=\"kpi-header\"&gt;",
-      "    &lt;span&gt;${1:Métrica Activa}&lt;/span&gt;",
-      "    &lt;span class=\"pill-dashed\"&gt;${2:LOCAL}&lt;/span&gt;",
+      "    &lt;span class=\"kpi-title\"&gt;${2:Exposición Total EAD}&lt;/span&gt;",
+      "    &lt;span class=\"kpi-badge-dashed\"&gt;${3:IFRS 9}&lt;/span&gt;",
       "  &lt;/div&gt;",
       "  &lt;div class=\"kpi-value-row\"&gt;",
-      "    &lt;div class=\"kpi-value\"&gt;${3:0}&lt;span style=\"font-size: 1rem; color: var(--muted-foreground);\"&gt;${4:/100}&lt;/span&gt;&lt;/div&gt;",
-      "    &lt;span class=\"delta-badge\"&gt;↑ ${5:12.5%}&lt;/span&gt;",
+      "    &lt;div class=\"kpi-number\"&gt;${4:€1.428,5M}&lt;/div&gt;",
+      "    &lt;span class=\"badge-delta positive\"&gt;↑ ${5:14.8%}&lt;/span&gt;",
       "  &lt;/div&gt;",
-      "  &lt;svg class=\"sparkline-svg\" viewBox=\"0 0 100 25\" style=\"stroke: ${6:#3b82f6};\"&gt;",
-      "    &lt;path class=\"sparkline-path\" d=\"M0 20 Q 25 5, 50 15 T 100 8\" /&gt;",
+      "  &lt;div class=\"kpi-sub\"&gt;${6:Stage 1: 89.4% · Stage 2: 8.8% · Stage 3: 1.8%}&lt;/div&gt;",
+      "  &lt;svg class=\"sparkline-svg\" viewBox=\"0 0 100 24\"&gt;",
+      "    &lt;path class=\"sparkline-path\" d=\"M0 20 Q 25 8, 50 14 T 100 6\" /&gt;",
+      "  &lt;/svg&gt;",
+      "  &lt;div class=\"kpi-drill-hint\"&gt;🔍 Clic para auditoría detallada &gt;&lt;/div&gt;",
+      "&lt;/div&gt;"
+    ],
+    "description": "Inserta tarjeta KPI interactiva con sparkline SVG y evento de drill-down"
+  },
+  "PaceUI Risk vs Return Scatter Matrix": {
+    "prefix": "pace-scatter-matrix",
+    "body": [
+      "&lt;div class=\"chart-panel\"&gt;",
+      "  &lt;div class=\"chart-panel-header\"&gt;",
+      "    &lt;h3&gt;${1:Matriz Riesgo vs Retorno (RAROC vs PD)}&lt;/h3&gt;",
+      "  &lt;/div&gt;",
+      "  &lt;svg viewBox=\"0 0 500 240\" class=\"risk-matrix-svg\"&gt;",
+      "    &lt;rect x=\"35\" y=\"15\" width=\"225\" height=\"100\" fill=\"var(--accent-emerald-subtle)\" rx=\"4\"/&gt;",
+      "    &lt;rect x=\"260\" y=\"115\" width=\"225\" height=\"100\" fill=\"var(--accent-rose-subtle)\" rx=\"4\"/&gt;",
+      "    &lt;line x1=\"35\" y1=\"215\" x2=\"485\" y2=\"215\" stroke=\"var(--border)\"/&gt;",
+      "    &lt;line x1=\"35\" y1=\"15\" x2=\"35\" y2=\"215\" stroke=\"var(--border)\"/&gt;",
+      "    &lt;circle cx=\"120\" cy=\"60\" r=\"14\" fill=\"#3b82f6\" class=\"matrix-bubble\" onclick=\"openCompanyDrawer('${2:EMP-01}')\" data-tooltip=\"${3:Empresa A | RAROC 22%}\"/&gt;",
       "  &lt;/svg&gt;",
       "&lt;/div&gt;"
     ],
-    "description": "Inserta una tarjeta KPI PaceUI con sparkline animado y tabular-nums"
-  },
-  "PaceUI Hero-Shimmer Button": {
-    "prefix": "pace-btn",
-    "body": [
-      "&lt;button class=\"btn-shimmer\" onclick=\"${1:triggerAgentTask()}\"&gt;",
-      "  &lt;span&gt;✨ ${2:Ejecutar Acción}&lt;/span&gt;",
-      "&lt;/button&gt;"
-    ],
-    "description": "Inserta un botón de acción primario con reflejo diagonal hero-shimmer"
-  },
-  "PaceUI Indeterminate Progress Bar": {
-    "prefix": "pace-progress",
-    "body": [
-      "&lt;div class=\"pace-progress-bar\"&gt;&lt;/div&gt;"
-    ],
-    "description": "Barra de progreso líquida indeterminada para actividad de fondo"
+    "description": "Inserta la matriz interactiva SVG de Riesgo vs Retorno con cuadrantes y burbujas clicables"
   }
 }</pre>
           </div>
@@ -1018,26 +1128,31 @@ Si el dashboard interactúa con agentes o tareas en segundo plano, añade una co
   "editor.fontLigatures": true,
   "files.associations": {
     "*.prompt.md": "markdown",
-    "*.css": "css"
+    "*.css": "css",
+    "*.html": "html"
   },
+  "emmet.includeLanguages": {
+    "markdown": "html"
+  },
+  "html.format.wrapLineLength": 160,
   "github.copilot.chat.welcomeMessage": "always",
   "liveServer.settings.donotShowInfoMsg": true,
-  "livePreview.defaultPreviewPath": "/src/dashboard.html"
+  "livePreview.defaultPreviewPath": "/dashboard-comercial-paceui.html"
 }</pre>
           </div>
 
-          <h3>3.6. Fichero 5: `design-system/reference-tokens.css` (Tokens Oficiales Desacoplados)</h3>
+          <h3>3.6. Fichero 5: `design-system/reference-tokens.css` (Tokens Oficiales Bi-Modales)</h3>
           <p>
-            Almacena los tokens en una hoja CSS externa para poder importarla en cualquier dashboard o referenciarla mediante <code>#file:reference-tokens.css</code> en tus prompts:
+            Almacena los tokens desacoplados en una hoja CSS externa con soporte nativo para <strong>Modo Oscuro (`:root`)</strong> y <strong>Modo Claro (`html.light`)</strong>:
           </p>
 
           <div class="prompt-block-wrapper">
             <div class="prompt-block-header">
-              <h3 class="prompt-block-title">🎨 Tokens Oficiales: `design-system/reference-tokens.css`</h3>
-              <span class="version-pill original">Variables CSS PaceUI</span>
+              <h3 class="prompt-block-title">🎨 Tokens Bi-Modales: `design-system/reference-tokens.css`</h3>
+              <span class="version-pill original">Variables CSS PaceUI & Executive Slate</span>
             </div>
             <pre class="copyable-prompt-pre">/* ==========================================================================
-   PALETA Y TOKENS DEL ESTÁNDAR PACEUI
+   PALETA Y TOKENS DEL ESTÁNDAR BI-MODAL TIER 1
    ========================================================================== */
 :root {
   --background: #0a0a0a;
@@ -1053,17 +1168,32 @@ Si el dashboard interactúa con agentes o tareas en segundo plano, añade una co
   --accent-blue: #3b82f6;
   --accent-amber: #f59e0b;
   --accent-rose: #f43f5e;
-  --radius: 0.625rem;
-  --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --grid-line-color: rgba(255, 255, 255, 0.04);
+}
+
+html.light {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-hover: #f1f5f9;
+  --border: #e2e8f0;
+  --primary: #0f172a;
+  --primary-foreground: #ffffff;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --accent-emerald: #059669;
+  --accent-blue: #2563eb;
+  --accent-amber: #d97706;
+  --accent-rose: #e11d48;
+  --grid-line-color: rgba(15, 23, 42, 0.04);
 }
 
 .bg-grid-pattern {
   position: fixed;
   inset: 0;
   background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    linear-gradient(to right, var(--grid-line-color) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line-color) 1px, transparent 1px);
   background-size: 40px 40px;
   mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
   -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
@@ -1111,164 +1241,110 @@ Si el dashboard interactúa con agentes o tareas en segundo plano, añade una co
             </div>
             <pre class="copyable-prompt-pre">---
 name: paceui-dashboard
-description: Transforma o genera dashboards HTML con el estandar PaceUI ("Alive UI"), integrando reticulas matematicas, tarjetas KPI densas, micro-animaciones CSS y sparklines fluidos sin librerias externas.
+description: Genera o transforma dashboards HTML en aplicaciones analíticas autónomas con estándar Tier 1 Global Banking (Bi-modal Dark/Light, Drill-down Modals, Matriz Riesgo vs Retorno, Stress Testing, Ordenación y Filtros Reactivos).
 argument: targetFile
 ---
 
-Eres un Arquitecto Frontend y Disenador UX/UI de elite especializado en el estandar de diseno de PaceUI ("Alive UI").
+Eres un Ingeniero Frontend Principal y Diseñador UX/UI especializado en Arquitecturas Analíticas de Banca Corporativa (CIB Tier 1) y en el sistema de diseño PaceUI ("Alive UI").
 
-# Archivos de Referencia del Espacio de Trabajo
-- Directivas Globales: #file:.github/copilot-instructions.md
-- Boveda de Componentes: #file:design-system/components-vault.html
-- Tokens de Diseno: #file:design-system/reference-tokens.css
+# Archivos de Referencia Obligatoria en el Workspace
+- Directivas Maestras: #file:.github/copilot-instructions.md
+- Tokens Bi-modal (Dark/Light): #file:design-system/reference-tokens.css
+- Bóveda de Componentes y Modales: #file:design-system/components-vault.html
 
-# Objetivo de la Tarea
-Revisar el archivo HTML indicado en `${input:targetFile}` (o el archivo HTML abierto en el editor) y transformarlo en una interfaz de alta fidelidad con micro-animaciones fluidas a 60 FPS.
+# Objetivo
+Transformar el archivo indicado en `${input:targetFile}` (o el archivo HTML abierto en el editor) en un Dashboard de Grado Institucional Tier 1 que cumpla rigurosamente con la línea base mínima sin omitir ninguna funcionalidad:
 
-# Reglas de Transformacion Obligatorias
-1. **Tokens y Paleta Base**:
-   - Aplica modo oscuro por defecto: fondo `--background: #0a0a0a`, tarjetas `--card: #171717`, bordes `--border: #282828`, texto primario `--foreground: #fafafa` y atenuado `--muted-foreground: #a1a1a1`.
-   - Inyecta la fuente "DM Sans" para textos de interfaz y "JetBrains Mono" para datos tecnicos.
-2. **Reticula Matematica de Fondo**:
-   - Agrega `.bg-grid-pattern` con lineas de 1px cada 40px y mascara radial difuminada al centro.
-3. **Tarjetas KPI ("Alive Metrics")**:
-   - Sustituye cualquier tarjeta estatica por la estructura de `.kpi-card` del vault:
-     * Header con etiqueta en pildora punteada (`border: 1px dashed var(--border)`).
-     * Numero grande con `font-variant-numeric: tabular-nums` y recuento suave con requestAnimationFrame.
-     * Badge semantico de variacion (verde `#10b981` con pulso suave).
-     * Sparkline SVG autocontenido con animacion de trazado (`stroke-dasharray` y `stroke-dashoffset`).
-4. **Cinematica y Micro-animaciones CSS**:
-   - Botones primarios con reflejo diagonal `hero-shimmer` activo y transicion hover.
-   - La tarjeta KPI principal debe tener el borde brillante perimetral `border-travel` o resplandor de acento.
-   - Consola de logs de agentes con cursor parpadeante `caret-blink` y scroll automatico.
-   - Barra de progreso indeterminada liquida para subprocesos.
-5. **Autonomia**:
-   - Todo el codigo debe ser HTML5 + CSS3 + Vanilla JS en un unico archivo sin dependencias pesadas ni frameworks de empaquetado.</pre>
+1. **Autonomía Single-File**: HTML5 + CSS3 + Vanilla JS en un único archivo ejecutable offline.
+2. **Motor Bi-modal**: Alternancia Dark Mode (:root) y Light Mode (html.light) con persistencia y tecla 'T'.
+3. **Métricas con Drill-down**: Tarjetas KPI con sparkline y clic que despliega el modal #drilldownModal.
+4. **Matriz Riesgo vs Retorno**: Diagrama de dispersión SVG interactivo (RAROC vs PD) con cuadrantes y fichas 360°.
+5. **Filtros Reactivos y Acciones en Lote**: Buscador instantáneo, columnas ordenables (▲▼), selección múltiple y muelle flotante #batchDock.
+6. **Simulador de Stress Testing**: Modal #stressModal con sliders macroeconómicos de tipos e impagos recalculando solvencia.</pre>
           </div>
 
-          <h3>4.2. Fichero 2: `design-system/components-vault.html` (Bóveda Local de Componentes)</h3>
+          <h3>4.2. Fichero 2: `design-system/components-vault.html` (Bóveda Local de Componentes Tier 1)</h3>
           <p>
-            En lugar de solicitar componentes a un servidor MCP remoto, almacenamos los componentes y snippets preprobados de PaceUI directamente en tu proyecto local dentro de <code>design-system/components-vault.html</code>. El modelo de IA en VS Code consultará este archivo mediante la etiqueta de contexto <code>#file:components-vault.html</code>:
+            Almacenamos los componentes y snippets preprobados de grado bancario directamente en tu proyecto local dentro de <code>design-system/components-vault.html</code>. El modelo de IA en VS Code consultará este archivo mediante la etiqueta de contexto <code>#file:components-vault.html</code>:
           </p>
 
           <div class="prompt-block-wrapper">
             <div class="prompt-block-header">
               <h3 class="prompt-block-title">🏛️ Bóveda Local: `design-system/components-vault.html`</h3>
-              <span class="version-pill original">Snippets Autónomos Reutilizables</span>
+              <span class="version-pill original">Componentes de Grado Institucional</span>
             </div>
             <pre class="copyable-prompt-pre">&lt;!-- =====================================================================
-     BOVEDA LOCAL DE COMPONENTES PACEUI (DESIGN SYSTEM VAULT)
+     BOVEDA LOCAL DE COMPONENTES TIER 1 (DESIGN SYSTEM VAULT)
      Uso en VS Code: Referencia este archivo con #file:components-vault.html
      ===================================================================== --&gt;
 
-&lt;!-- SNIPPET 1: BOTON CON EFECTO HERO-SHIMMER --&gt;
-&lt;button class="btn-shimmer" onclick="handleAction(this)"&gt;
-  &lt;span&gt;✨ Ejecutar Tarea de Agente&lt;/span&gt;
-&lt;/button&gt;
-&lt;style&gt;
-.btn-shimmer {
-  position: relative;
-  overflow: hidden;
-  background: #e5e5e5;
-  color: #171717;
-  font-weight: 600;
-  font-size: 0.825rem;
-  padding: 0.55rem 1.25rem;
-  border-radius: 0.625rem;
-  border: 1px solid transparent;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
-}
-.btn-shimmer:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(255,255,255,0.15); }
-.btn-shimmer::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
-  transform: translateX(-180%);
-  animation: hero-shimmer 4.5s infinite cubic-bezier(0.4, 0, 0.2, 1);
-}
-@keyframes hero-shimmer {
-  0% { transform: translateX(-180%); }
-  65% { transform: translateX(180%); }
-  100% { transform: translateX(180%); }
-}
-&lt;/style&gt;
+&lt;!-- 1. SELECTOR BI-MODAL (TEMA CLARO / OSCURO) + STREAM TICKER --&gt;
+&lt;div class="header-actions"&gt;
+  &lt;button id="liveStreamBtn" class="pill-btn live-active" onclick="toggleLiveStream()"&gt;
+    &lt;span class="live-dot"&gt;&lt;/span&gt;
+    &lt;span id="liveStreamText"&gt;En Vivo: ON (5s)&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button id="themeToggleBtn" class="pill-btn" onclick="toggleTheme()"&gt;
+    &lt;span id="themeToggleIcon"&gt;☀️&lt;/span&gt;
+    &lt;span id="themeToggleText"&gt;Modo Claro&lt;/span&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
 
-&lt;!-- SNIPPET 2: TARJETA KPI CON SPARKLINE SVG AUTODIBUJABLE --&gt;
-&lt;div class="kpi-card pace-glow-card"&gt;
-  &lt;div class="kpi-top"&gt;
-    &lt;span class="kpi-label"&gt;Active Subagents&lt;/span&gt;
-    &lt;span class="pill-dashed"&gt;VS CODE CLUSTER&lt;/span&gt;
+&lt;!-- 2. TARJETA KPI CON DRILL-DOWN IFRS 9 Y SPARKLINE --&gt;
+&lt;div class="kpi-card" onclick="openDrilldown('kpi-ead')"&gt;
+  &lt;div class="kpi-header"&gt;
+    &lt;span class="kpi-title"&gt;Exposición Total (EAD)&lt;/span&gt;
+    &lt;span class="kpi-badge-dashed"&gt;IFRS 9&lt;/span&gt;
   &lt;/div&gt;
   &lt;div class="kpi-value-row"&gt;
-    &lt;div class="kpi-number" data-target="14"&gt;14&lt;span class="kpi-sub"&gt;/16&lt;/span&gt;&lt;/div&gt;
-    &lt;span class="badge-delta positive"&gt;↑ 12.5%&lt;/span&gt;
+    &lt;div class="kpi-number"&gt;€1.428,5M&lt;/div&gt;
+    &lt;span class="badge-delta positive"&gt;↑ 14.8%&lt;/span&gt;
   &lt;/div&gt;
-  &lt;svg class="sparkline-draw" viewBox="0 0 100 24"&gt;
-    &lt;path d="M0 20 Q 25 4, 50 14 T 100 6" /&gt;
+  &lt;div class="kpi-sub"&gt;Stage 1: 89.4% · Stage 2: 8.8% · Stage 3: 1.8%&lt;/div&gt;
+  &lt;svg class="sparkline-svg" viewBox="0 0 100 24"&gt;
+    &lt;path class="sparkline-path" d="M0 20 Q 25 8, 50 14 T 100 6" /&gt;
+  &lt;/svg&gt;
+  &lt;div class="kpi-drill-hint"&gt;🔍 Clic para auditoría detallada &gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- 3. MATRIZ DE RIESGO VS RETORNO (RAROC VS PD) EN SVG --&gt;
+&lt;div class="chart-panel"&gt;
+  &lt;h3&gt;Matriz de Riesgo vs Retorno (RAROC vs PD)&lt;/h3&gt;
+  &lt;svg viewBox="0 0 500 240" class="risk-matrix-svg"&gt;
+    &lt;rect x="35" y="15" width="225" height="100" fill="var(--accent-emerald-subtle)" rx="4"/&gt;
+    &lt;rect x="260" y="115" width="225" height="100" fill="var(--accent-rose-subtle)" rx="4"/&gt;
+    &lt;line x1="35" y1="215" x2="485" y2="215" stroke="var(--border)"/&gt;
+    &lt;line x1="35" y1="15" x2="35" y2="215" stroke="var(--border)"/&gt;
+    &lt;circle cx="95" cy="55" r="14" fill="#3b82f6" class="matrix-bubble"
+            onclick="openCompanyDrawer('IBER-01')" data-tooltip="Iberdrola | RAROC: 24.2%"/&gt;
   &lt;/svg&gt;
 &lt;/div&gt;
-&lt;style&gt;
-.kpi-card {
-  background: #171717;
-  border: 1px solid #282828;
-  border-radius: 0.625rem;
-  padding: 1.25rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.kpi-card:hover { border-color: rgba(255,255,255,0.22); transform: translateY(-2px); }
-.sparkline-draw {
-  width: 100%;
-  height: 36px;
-  stroke: #3b82f6;
-  stroke-width: 2;
-  fill: none;
-  stroke-linecap: round;
-  stroke-dasharray: 200;
-  stroke-dashoffset: 200;
-  animation: drawSparkline 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-@keyframes drawSparkline {
-  to { stroke-dashoffset: 0; }
-}
-&lt;/style&gt;
 
-&lt;!-- SNIPPET 3: BARRA DE PROGRESO INDETERMINADA (SUBAGENT SCAN) --&gt;
-&lt;div class="pace-progress-bar"&gt;&lt;/div&gt;
-&lt;style&gt;
-.pace-progress-bar {
-  position: relative;
-  height: 4px;
-  width: 100%;
-  background: #262626;
-  border-radius: 9999px;
-  overflow: hidden;
-}
-.pace-progress-bar::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 35%;
-  background: linear-gradient(90deg, #3b82f6, #60a5fa);
-  border-radius: 9999px;
-  animation: progress-indeterminate 1.6s infinite ease-in-out;
-}
-@keyframes progress-indeterminate {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(300%); }
-}
-&lt;/style&gt;</pre>
+&lt;!-- 4. MUELLE FLOTANTE DE ACCIONES EN LOTE --&gt;
+&lt;div id="batchDock" class="batch-floating-dock hidden"&gt;
+  &lt;span id="batchCountText"&gt;3 empresas seleccionadas&lt;/span&gt;
+  &lt;button onclick="batchApproveProposals()"&gt;🚀 Emitir Ofertas en Lote&lt;/button&gt;
+  &lt;button onclick="batchDownloadCIRBE()"&gt;📄 Descargar CIRBE Masivo&lt;/button&gt;
+&lt;/div&gt;
+
+&lt;!-- 5. MODAL DE AUDITORIA Y DRILL-DOWN --&gt;
+&lt;div id="drilldownModal" class="modal-backdrop hidden" onclick="if(event.target===this) closeDrilldown()"&gt;
+  &lt;div class="modal-dialog"&gt;
+    &lt;h3 id="drillTitle"&gt;Auditoría de Subcuentas IFRS 9&lt;/h3&gt;
+    &lt;div id="drillContent"&gt;&lt;/div&gt;
+    &lt;button onclick="exportDrilldownPDF()"&gt;📄 Descargar PDF Certificado&lt;/button&gt;
+    &lt;button onclick="closeDrilldown()"&gt;Cerrar&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- 6. SIMULADOR DE STRESS TESTING PARAMÉTRICO --&gt;
+&lt;div id="stressModal" class="modal-backdrop hidden" onclick="if(event.target===this) closeStressModal()"&gt;
+  &lt;div class="modal-dialog stress-dialog"&gt;
+    &lt;h3&gt;🧪 Simulador Paramétrico de Stress Testing&lt;/h3&gt;
+    &lt;input type="range" min="0" max="300" step="25" value="150" oninput="updateStressSimulation(this.value, null)"&gt;
+    &lt;div&gt;CET1 Post-Estrés: &lt;strong id="stressedCet1"&gt;12.18%&lt;/strong&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
           </div>
 
           <h3>4.3. Guía Paso a Paso: Cómo Invocar al Agente en VS Code SIN MCP</h3>
@@ -1314,56 +1390,64 @@ Revisar el archivo HTML indicado en `${input:targetFile}` (o el archivo HTML abi
 
           <div class="prompt-block-wrapper pro-version">
             <div class="prompt-block-header">
-              <h3 class="prompt-block-title">📋 Prompt 1: Invocación de Refactorización Completa del Dashboard</h3>
+              <h3 class="prompt-block-title">📋 Prompt 1: Invocación de Refactorización Completa a Grado Tier 1</h3>
               <span class="version-pill optimized">Para Copilot Chat (@workspace)</span>
             </div>
             <pre class="copyable-prompt-pre">@workspace #file:.github/copilot-instructions.md #file:design-system/components-vault.html #file:design-system/reference-tokens.css
 
-Actúa como Arquitecto Frontend y Diseñador UX/UI de élite en estándar PaceUI ("Alive UI"). Transforma el archivo `src/dashboard.html` en una interfaz operativa de alta fidelidad:
+Actúa como Arquitecto Frontend y Diseñador UX/UI de élite en Banca Corporativa y estándar PaceUI ("Alive UI"). Transforma el archivo `src/dashboard.html` en una consola analítica de grado institucional Tier 1:
 
-1. Estructura y Superficies:
-   - Inyecta modo oscuro profundo (--background: #0a0a0a, --card: #171717, --border: #282828).
-   - Añade el contenedor `.bg-grid-pattern` con la cuadrícula matemática de 40px y máscara radial difuminada al centro.
-   - Aplica header pegajoso (sticky) con desenfoque de cristal esmerilado (backdrop-filter: blur(14px)) e indicador de agente en vivo con pulso esmeralda (#10b981).
+1. Arquitectura Bi-Modal y Superficies:
+   - Inyecta tokens en :root (Obsidian #0a0a0a) y html.light (Executive Slate #f8fafc) con persistencia en localStorage y tecla 'T'.
+   - Retícula matemática .bg-grid-pattern con máscara radial difuminada al centro.
+   - Header flotante con desenfoque de cristal (backdrop-filter: blur(14px)), selector de tema y botón de ticker en vivo (5s).
 
-2. Tarjetas KPI ("Alive Metrics"):
-   - Convierte las métricas en 4 tarjetas .kpi-card con header en píldora con borde discontinuo (border: 1px dashed var(--border)).
-   - La tarjeta principal debe contar con el borde luminoso perimetral viajero (.featured-glow con animación borderGlowSweep).
-   - Tipografía "DM Sans" y valores numéricos grandes con `font-variant-numeric: tabular-nums`.
-   - Micro-gráfico Sparkline dibujado en SVG puro con stroke-dasharray y animación drawSparkline para que trace su trayectoria automáticamente al cargar.
+2. Métricas y Drill-Downs Regulatorios:
+   - 6 tarjetas KPI con badges dashed (IFRS 9, Solvencia, Liquidez), números grandes en tabular-nums, deltas coloreadas y sparklines SVG animados.
+   - Todo KPI debe abrir el modal #drilldownModal al hacer clic con desglose de subcuentas y descarga de informe.
 
-3. Cinemática y Micro-interacciones (60 FPS):
-   - Botón primario de acción con reflejo luminoso diagonal `hero-shimmer` y estado interactivo de carga (al pulsar cambia a 'Dispatching task...', actualiza el contador, redibuja los sparklines e inserta una nueva traza de log).
-   - Barra de progreso indeterminada líquida (progressIndeterminate) para tareas en segundo plano.
-   - Consola de trazas de streaming estilo terminal con timestamp, tags de estado coloreados y cursor parpadeante (.caret-blink).
+3. Visualizaciones Institucionales:
+   - Gráfico de evolución temporal con tooltips y clic por mes para auditoría.
+   - Matriz interactiva de Riesgo vs Retorno (RAROC vs PD) en SVG con cuadrantes (Zona Óptima y Zona Vigilancia) y burbujas que abren la Ficha 360° del cliente.
+   - Desglose por Direcciones Territoriales con barras de progreso.
 
-Genera el código autónomo completo en HTML5 + CSS3 + Vanilla JS en un único archivo sin dependencias externas ni librerías npm.</pre>
+4. Motor de Tablas, Filtros y Acciones en Lote:
+   - Buscador universal instantáneo por CIF, Empresa, CNAE o Gestor.
+   - Pestañas de líneas de negocio y selectores combinados de Sector y Rating.
+   - Cabeceras de tabla con ordenación interactiva ▲▼ (Empresa, Rating, Límite, Propensión).
+   - Checkboxes de fila y checkbox maestro que activan el muelle flotante inferior #batchDock para emisión de ofertas o CIRBE masivo.
+
+5. Simulador Paramétrico de Stress Testing (What-If):
+   - Modal #stressModal con sliders para choque de tipos Euríbor (+0 a +300 bps) y mora (+0 a +2.5%) recalculando CET1, NII y CoR.
+
+Genera el código autónomo completo en HTML5 + CSS3 + Vanilla JS en un único archivo sin dependencias externas.</pre>
           </div>
 
           <div class="prompt-block-wrapper">
             <div class="prompt-block-header">
-              <h3 class="prompt-block-title">🎯 Prompt 2: Invocación In-Line para Tarjeta KPI (Ctrl + I / Cmd + I)</h3>
+              <h3 class="prompt-block-title">🎯 Prompt 2: Invocación In-Line para Tarjeta KPI con Drill-Down (Ctrl + I)</h3>
               <span class="version-pill original">Seleccionar Bloque HTML + Ctrl + I</span>
             </div>
             <pre class="copyable-prompt-pre">#file:design-system/components-vault.html
-Refactoriza este bloque HTML seleccionado para transformarlo en una tarjeta KPI interactiva del estándar PaceUI:
-1. Contenedor con fondo #171717, borde 1px solid #282828 y curvatura radius 10px con hover interactivo.
+Refactoriza este bloque numérico para transformarlo en una tarjeta KPI de estándar Tier 1:
+1. Contenedor con fondo var(--card), borde var(--border) y hover táctil con elevación suave.
 2. Encabezado con etiqueta en píldora con borde dashed (#3f3f46).
-3. Métrica destacada en tabular-nums y píldora delta de variación porcentual (+12.5% verde #10b981).
-4. Micro-gráfico Sparkline SVG al pie con trayectoria suavizada (Q bezier) y animación de trazado CSS stroke-dasharray. Mantén el código autocontenido.</pre>
+3. Métrica destacada en tabular-nums y píldora delta de variación porcentual.
+4. Micro-gráfico Sparkline SVG con animación drawSparkline.
+5. Agrega el atributo onclick="openDrilldown('metric-id')" para disparar el modal de desglose IFRS 9.</pre>
           </div>
 
           <div class="prompt-block-wrapper">
             <div class="prompt-block-header">
-              <h3 class="prompt-block-title">⚡ Prompt 3: Invocación para Consola de Agente en Streaming</h3>
+              <h3 class="prompt-block-title">⚡ Prompt 3: Invocación para Matriz de Riesgo vs Retorno SVG</h3>
               <span class="version-pill original">Para Copilot Chat</span>
             </div>
             <pre class="copyable-prompt-pre">#file:design-system/components-vault.html
-Añade a este dashboard un panel de consola de streaming en tiempo real para monitorizar las tareas del agente:
-- Superficie negra mate #0d0d0d con tipografía monospaciada 'JetBrains Mono'.
-- Altura fija de 250px con auto-scroll inferior ante nuevos eventos.
-- Trazas formateadas con hora [HH:MM:SS], badges semánticos coloreados ([INIT] azul, [OK] verde, [EXEC] celeste) y cursor de terminal parpadeante (caret-blink).
-- Incluye la función JavaScript para despachar nuevos eventos dinámicamente cuando el usuario pulse el botón de acción.</pre>
+Genera un panel interactivo con la Matriz de Riesgo vs Retorno en SVG nativo para este dashboard:
+- Eje X: Probabilidad de Incumplimiento PD (0% a 3%).
+- Eje Y: Rentabilidad Ajustada al Riesgo RAROC (0% a 30%).
+- Cuadrantes analíticos coloreados con opacidad sutil: Zona Óptima (esmeralda) y Zona de Vigilancia (rosa).
+- Burbujas interactivas con tooltip al posar el ratón y evento onclick para abrir la Ficha 360° del cliente.</pre>
           </div>
         </div>
       </section>
@@ -1377,626 +1461,394 @@ Añade a este dashboard un panel de consola de streaming en tiempo real para mon
         <div class="section-divider"></div>
         <div class="transcript-text">
           <p class="editorial-lead">
-            Este es el código fuente definitivo de un dashboard 100% funcional y autónomo. No requiere Node.js ni bundlers para visualizarse: puedes guardarlo como <code>dashboard.html</code> y abrirlo directamente en tu navegador.
+            Este es el código fuente de referencia del <strong>Estándar Tier 1 Global Banking & CIB</strong>. Es 100% autónomo, modular y ejecutable sin bundlers ni frameworks. Puedes probar la versión física interactiva desplegada en tu proyecto haciendo clic en el siguiente acceso directo o copiando el código a tu propio fichero:
           </p>
+
+          <div style="margin: 1.5rem 0 2rem 0; display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
+            <a href="../dashboard-comercial-paceui.html" target="_blank" class="pace-btn-shimmer" style="text-decoration: none; padding: 0.75rem 1.4rem; font-size: 0.88rem; display: inline-flex; align-items: center; gap: 0.6rem;">
+              <span>🚀 Abrir Dashboard Comercial Tier 1 Completo en Vivo</span>
+            </a>
+            <span style="font-size: 0.82rem; color: var(--text-muted); font-family: var(--font-mono);">dashboard-comercial-paceui.html (100% Funcional & Autónomo)</span>
+          </div>
 
           <div class="prompt-block-wrapper pro-version">
             <div class="prompt-block-header">
-              <h3 class="prompt-block-title">🚀 Dashboard Autónomo "Estilo PaceUI" (Copiar y Pegar en Local)</h3>
-              <span class="version-pill optimized">HTML5 + CSS3 + Vanilla JS</span>
+              <h3 class="prompt-block-title">🏛️ Plantilla Maestra Tier 1: Bi-Modal, Drill-Downs, Matriz de Riesgo y Stress Lab</h3>
+              <span class="version-pill optimized">HTML5 + CSS3 + Vanilla JS (Zero-MCP)</span>
             </div>
             <pre class="copyable-prompt-pre">&lt;!DOCTYPE html&gt;
-&lt;html lang="es" class="dark"&gt;
+&lt;html lang="es"&gt;
 &lt;head&gt;
   &lt;meta charset="UTF-8"&gt;
   &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
-  &lt;title&gt;Autonomous UX Dashboard — PaceUI Standard (Zero-MCP Local)&lt;/title&gt;
+  &lt;title&gt;Dashboard Tier 1 — Banca Corporativa &amp; CIB&lt;/title&gt;
   &lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;
   &lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin&gt;
-  &lt;link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"&gt;
+  &lt;link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"&gt;
   
   &lt;style&gt;
-    /* ==========================================================================
-       TOKENS DE DISENO OFICIALES PACEUI
-       ========================================================================== */
+    /* 1. TOKENS BI-MODALES (DARK OBSIDIAN / EXECUTIVE SLATE) */
     :root {
+      --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+      --radius: 0.625rem;
       --background: #0a0a0a;
       --foreground: #fafafa;
       --card: #171717;
       --card-hover: #1f1f1f;
+      --surface-elevated: #222222;
       --border: #282828;
       --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-dashed: #3f3f46;
       --primary: #e5e5e5;
       --primary-foreground: #0a0a0a;
+      --secondary: #262626;
       --muted: #262626;
       --muted-foreground: #a1a1a1;
       --accent-emerald: #10b981;
-      --accent-blue: #3b82f6;
-      --accent-amber: #f59e0b;
+      --accent-emerald-subtle: rgba(16, 185, 129, 0.12);
       --accent-rose: #f43f5e;
-      --radius: 0.625rem;
-      --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+      --accent-rose-subtle: rgba(244, 63, 94, 0.12);
+      --accent-blue: #3b82f6;
+      --accent-blue-subtle: rgba(59, 130, 246, 0.12);
+      --accent-amber: #f59e0b;
+      --accent-amber-subtle: rgba(245, 158, 11, 0.12);
+      --grid-line-color: rgba(255, 255, 255, 0.04);
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.6);
+      --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.75);
     }
-
+    html.light {
+      --background: #f8fafc;
+      --foreground: #0f172a;
+      --card: #ffffff;
+      --card-hover: #f1f5f9;
+      --surface-elevated: #ffffff;
+      --border: #e2e8f0;
+      --border-subtle: rgba(15, 23, 42, 0.08);
+      --border-dashed: #cbd5e1;
+      --primary: #0f172a;
+      --primary-foreground: #ffffff;
+      --secondary: #f1f5f9;
+      --muted: #f1f5f9;
+      --muted-foreground: #64748b;
+      --accent-emerald: #059669;
+      --accent-emerald-subtle: rgba(5, 150, 105, 0.1);
+      --accent-rose: #e11d48;
+      --accent-rose-subtle: rgba(225, 29, 72, 0.1);
+      --accent-blue: #2563eb;
+      --accent-blue-subtle: rgba(37, 99, 235, 0.1);
+      --accent-amber: #d97706;
+      --accent-amber-subtle: rgba(217, 119, 6, 0.1);
+      --grid-line-color: rgba(15, 23, 42, 0.04);
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+      --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.12);
+    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
-      background-color: var(--background);
+      background: var(--background);
       color: var(--foreground);
       font-family: var(--font-sans);
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      overflow-x: hidden;
       line-height: 1.5;
-      -webkit-font-smoothing: antialiased;
+      transition: background 0.25s cubic-bezier(0.16, 1, 0.3, 1), color 0.25s ease;
     }
-
-    /* 1. RETICULA MATEMATICA CON MASCARA RADIAL */
     .bg-grid-pattern {
-      position: fixed;
-      inset: 0;
-      background-image: 
-        linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background-image: linear-gradient(to right, var(--grid-line-color) 1px, transparent 1px),
+                        linear-gradient(to bottom, var(--grid-line-color) 1px, transparent 1px);
       background-size: 40px 40px;
       mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
       -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
-      pointer-events: none;
-      z-index: 0;
     }
-
-    /* 2. HEADER CON BLUR FROSTED GLASS */
+    /* HEADER FLOTANTE FROSTED */
     .header {
-      position: sticky;
-      top: 0;
-      z-index: 40;
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      background-color: rgba(10, 10, 10, 0.82);
+      position: sticky; top: 0; z-index: 40;
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      background: rgba(10, 10, 10, 0.85);
       border-bottom: 1px dashed var(--border);
-      height: 4.25rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 2rem;
+      padding: 0.85rem 2rem;
+      display: flex; justify-content: space-between; align-items: center;
     }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      font-weight: 700;
-      font-size: 1.15rem;
-      letter-spacing: -0.02em;
+    html.light .header { background: rgba(248, 250, 252, 0.88); }
+    .header-actions { display: flex; align-items: center; gap: 0.75rem; }
+    .pill-btn {
+      display: inline-flex; align-items: center; gap: 0.45rem;
+      padding: 0.4rem 0.85rem; border-radius: 9999px;
+      border: 1px dashed var(--border-dashed); background: var(--card);
+      color: var(--foreground); font-size: 0.78rem; font-weight: 600; cursor: pointer;
     }
-
-    .brand-icon {
-      width: 1.9rem;
-      height: 1.9rem;
-      background: var(--foreground);
-      color: var(--background);
-      border-radius: 6px;
-      display: grid;
-      place-items: center;
-      font-weight: 800;
-      font-size: 0.85rem;
-    }
-
-    .pill-dashed {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.45rem;
-      border: 1px dashed var(--border);
-      background: var(--card);
-      padding: 0.25rem 0.75rem;
-      border-radius: 9999px;
-      font-size: 0.75rem;
-      font-weight: 500;
-      color: var(--muted-foreground);
-      transition: border-color 0.2s ease;
-    }
-    .pill-dashed:hover { border-color: rgba(255, 255, 255, 0.25); }
-
-    .dot-live {
-      width: 0.5rem;
-      height: 0.5rem;
-      border-radius: 50%;
-      background-color: var(--accent-emerald);
-      box-shadow: 0 0 10px var(--accent-emerald);
-      animation: livePulse 2s infinite ease-in-out;
-    }
-    @keyframes livePulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.35; transform: scale(0.85); }
-    }
-
-    /* 3. BOTON PRIMARIO MULTI-ESTADO CON HERO-SHIMMER */
-    .btn-shimmer {
-      position: relative;
-      overflow: hidden;
-      background: var(--primary);
-      color: var(--primary-foreground);
-      font-weight: 600;
-      font-size: 0.825rem;
-      padding: 0.55rem 1.25rem;
-      border-radius: var(--radius);
-      border: 1px solid transparent;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .btn-shimmer:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 14px rgba(255, 255, 255, 0.15);
-    }
-    .btn-shimmer:active { transform: translateY(0); }
-    .btn-shimmer::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
-      transform: translateX(-180%);
-      animation: heroShimmer 4.5s infinite cubic-bezier(0.4, 0, 0.2, 1);
-      pointer-events: none;
-    }
-    @keyframes heroShimmer {
-      0% { transform: translateX(-180%); }
-      65% { transform: translateX(180%); }
-      100% { transform: translateX(180%); }
-    }
-
-    /* 4. BARRA DE PROGRESO INDETERMINADA (ACTIVIDAD EN SEGUNDO PLANO) */
-    .pace-progress-bar {
-      position: relative;
-      height: 3px;
-      width: 100%;
-      background: rgba(255, 255, 255, 0.05);
-      overflow: hidden;
-    }
-    .pace-progress-bar::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 100%;
-      width: 30%;
-      background: linear-gradient(90deg, #3b82f6, #60a5fa);
-      animation: progressIndeterminate 2s infinite ease-in-out;
-    }
-    @keyframes progressIndeterminate {
-      0% { transform: translateX(-100%); }
-      100% { transform: translateX(350%); }
-    }
-
-    /* 5. LAYOUT PRINCIPAL Y TARJETAS KPI */
-    .container {
-      position: relative;
-      z-index: 10;
-      max-width: 1300px;
-      width: 100%;
-      margin: 0 auto;
-      padding: 2rem 1.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-    }
-
-    .kpi-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.25rem;
-    }
-
+    .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent-emerald); box-shadow: 0 0 8px var(--accent-emerald); }
+    
+    /* LAYOUT Y KPI CARDS */
+    .main-container { max-width: 1400px; margin: 0 auto; padding: 2rem; position: relative; z-index: 10; display: flex; flex-direction: column; gap: 2rem; }
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; }
     .kpi-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.35rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.85rem;
-      position: relative;
-      transition: border-color 0.2s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .kpi-card:hover {
-      border-color: rgba(255, 255, 255, 0.25);
-      transform: translateY(-2px);
-      box-shadow: 0 10px 24px -6px rgba(0, 0, 0, 0.5);
-    }
+    .kpi-card:hover { border-color: var(--accent-blue); transform: translateY(-3px); box-shadow: var(--shadow-md); }
+    .kpi-header { display: flex; justify-content: space-between; align-items: center; }
+    .kpi-title { font-size: 0.8rem; font-weight: 600; color: var(--muted-foreground); text-transform: uppercase; }
+    .kpi-badge { font-size: 0.68rem; padding: 0.15rem 0.5rem; border-radius: 9999px; border: 1px dashed var(--border-dashed); }
+    .kpi-value-row { display: flex; justify-content: space-between; align-items: baseline; }
+    .kpi-number { font-size: 1.85rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+    .badge-delta { font-size: 0.72rem; font-weight: 700; padding: 0.2rem 0.55rem; border-radius: 9999px; }
+    .badge-delta.pos { background: var(--accent-emerald-subtle); color: var(--accent-emerald); }
+    .badge-delta.neg { background: var(--accent-rose-subtle); color: var(--accent-rose); }
+    .kpi-sub { font-size: 0.72rem; color: var(--muted-foreground); }
+    .sparkline-svg { width: 100%; height: 26px; stroke: var(--accent-blue); stroke-width: 2; fill: none; }
+    .kpi-drill-hint { font-size: 0.68rem; font-weight: 600; color: var(--accent-blue); opacity: 0; transition: opacity 0.2s; }
+    .kpi-card:hover .kpi-drill-hint { opacity: 1; }
 
-    /* Borde Luminoso Viajero (Border Travel) */
-    .kpi-card.featured-glow {
-      border-color: rgba(59, 130, 246, 0.4);
-      box-shadow: inset 0 0 20px rgba(59, 130, 246, 0.05);
-    }
-    .kpi-card.featured-glow::before {
-      content: '';
-      position: absolute;
-      inset: -1px;
-      border-radius: var(--radius);
-      padding: 1px;
-      background: linear-gradient(90deg, transparent, #3b82f6, transparent);
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      pointer-events: none;
-      animation: borderGlowSweep 4s infinite linear;
-    }
-    @keyframes borderGlowSweep {
-      0% { opacity: 0.3; }
-      50% { opacity: 0.9; }
-      100% { opacity: 0.3; }
-    }
+    /* MATRIZ DE RIESGO Y GRÁFICOS */
+    .charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    @media(max-width: 960px) { .charts-row { grid-template-columns: 1fr; } }
+    .chart-panel { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; }
+    .matrix-bubble { cursor: pointer; transition: transform 0.2s ease, stroke 0.2s ease; transform-origin: center; }
+    .matrix-bubble:hover { transform: scale(1.25); stroke: #ffffff; stroke-width: 2.5; }
 
-    .kpi-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      color: var(--muted-foreground);
-      font-size: 0.78rem;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
+    /* FILTROS Y TABLA */
+    .filter-panel { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; display: flex; flex-direction: column; gap: 1rem; }
+    .filter-row { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .tabs-wrap { display: flex; gap: 0.5rem; }
+    .tab-btn { padding: 0.4rem 0.85rem; border-radius: var(--radius); border: 1px solid var(--border); background: var(--secondary); color: var(--muted-foreground); font-size: 0.8rem; cursor: pointer; }
+    .tab-btn.active { background: var(--primary); color: var(--primary-foreground); font-weight: 600; border-color: transparent; }
+    .search-box { position: relative; flex: 1; min-width: 260px; }
+    .search-box input { width: 100%; padding: 0.45rem 0.85rem 0.45rem 2rem; border-radius: var(--radius); border: 1px solid var(--border); background: var(--background); color: var(--foreground); font-size: 0.85rem; }
+    .table-container { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    th { padding: 0.85rem 1rem; text-align: left; font-size: 0.72rem; color: var(--muted-foreground); text-transform: uppercase; border-bottom: 1px solid var(--border); cursor: pointer; }
+    td { padding: 0.85rem 1rem; border-bottom: 1px solid var(--border-subtle); font-variant-numeric: tabular-nums; }
+    tr:hover td { background: var(--card-hover); }
 
-    .kpi-value-row {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
+    /* MUELLE FLOTANTE EN LOTE */
+    .batch-floating-dock {
+      position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
+      background: var(--surface-elevated); border: 1px solid var(--accent-blue);
+      box-shadow: var(--shadow-lg); padding: 0.85rem 1.6rem; border-radius: 9999px;
+      display: flex; align-items: center; gap: 1.5rem; z-index: 90;
     }
+    .batch-floating-dock.hidden { display: none; }
 
-    .kpi-value {
-      font-size: 2.15rem;
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .delta-badge {
-      font-size: 0.75rem;
-      font-weight: 600;
-      padding: 0.2rem 0.55rem;
-      border-radius: 9999px;
-      background: rgba(16, 185, 129, 0.15);
-      color: #34d399;
-      border: 1px solid rgba(16, 185, 129, 0.3);
-    }
-
-    /* 6. SPARKLINE SVG AUTODIBUJABLE (KEYFRAME PATH DRAW) */
-    .sparkline-svg {
-      width: 100%;
-      height: 38px;
-      stroke-width: 2.2;
-      fill: none;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-    .sparkline-path {
-      stroke-dasharray: 220;
-      stroke-dashoffset: 220;
-      animation: drawSparkline 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-    @keyframes drawSparkline {
-      to { stroke-dashoffset: 0; }
-    }
-
-    /* 7. LAYOUT SPLIT: TABLA Y CONSOLA DE AGENTE */
-    .dashboard-split {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 1.5rem;
-    }
-    @media (max-width: 960px) { .dashboard-split { grid-template-columns: 1fr; } }
-
-    .panel {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .panel-header {
-      padding: 1rem 1.25rem;
-      border-bottom: 1px dashed var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 0.95rem;
-      font-weight: 600;
-    }
-
-    .data-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.825rem;
-      text-align: left;
-    }
-    .data-table th {
-      padding: 0.75rem 1.25rem;
-      color: var(--muted-foreground);
-      font-weight: 500;
-      border-bottom: 1px solid var(--border);
-      font-size: 0.72rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-    .data-table td {
-      padding: 0.85rem 1.25rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-      transition: background-color 0.15s ease;
-    }
-    .data-table tr:hover td { background-color: rgba(255, 255, 255, 0.025); }
-
-    .agent-console {
-      padding: 1.25rem;
-      background: #0d0d0d;
-      font-family: var(--font-mono);
-      font-size: 0.78rem;
-      height: 250px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 0.55rem;
-      scrollbar-width: thin;
-      scrollbar-color: #262626 transparent;
-    }
-
-    .caret-blink {
-      display: inline-block;
-      width: 7px;
-      height: 13px;
-      background: #fafafa;
-      vertical-align: middle;
-      animation: caretBlink 1s infinite;
-      margin-left: 2px;
-    }
-    @keyframes caretBlink {
-      0%, 50% { opacity: 1; }
-      51%, 100% { opacity: 0; }
-    }
+    /* MODAL DE DRILLDOWN Y STRESS LAB */
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 1.5rem; }
+    .modal-backdrop.hidden { display: none; }
+    .modal-dialog { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); max-width: 680px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 1.75rem; display: flex; flex-direction: column; gap: 1.25rem; box-shadow: var(--shadow-lg); }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 0.75rem; }
+    .modal-close { background: transparent; border: none; font-size: 1.2rem; color: var(--muted-foreground); cursor: pointer; }
   &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
-
   &lt;div class="bg-grid-pattern"&gt;&lt;/div&gt;
 
   &lt;header class="header"&gt;
-    &lt;div class="brand"&gt;
-      &lt;div class="brand-icon"&gt;P&lt;/div&gt;
-      &lt;span&gt;PACEDASH &lt;span style="font-weight: 300; opacity: 0.7;"&gt;LOCAL-AGENT&lt;/span&gt;&lt;/span&gt;
+    &lt;div&gt;
+      &lt;h1 style="font-size: 1.15rem; font-weight: 700;"&gt;Global Corporate Banking · CIB Tier 1&lt;/h1&gt;
+      &lt;p style="font-size: 0.75rem; color: var(--muted-foreground);"&gt;Sistema de Gestión de Riesgos &amp; Carteras Sindicadas&lt;/p&gt;
     &lt;/div&gt;
-    &lt;div style="display: flex; align-items: center; gap: 1rem;"&gt;
-      &lt;div class="pill-dashed"&gt;
-        &lt;span class="dot-live"&gt;&lt;/span&gt;
-        &lt;span&gt;VS Code Local Vault: Sync&lt;/span&gt;
-      &lt;/div&gt;
-      &lt;button class="btn-shimmer" id="actionBtn" onclick="triggerAgentTask()"&gt;
-        &lt;span id="btnIcon"&gt;⚡&lt;/span&gt;
-        &lt;span id="btnText"&gt;Trigger Agent Task&lt;/span&gt;
-      &lt;/button&gt;
+    &lt;div class="header-actions"&gt;
+      &lt;button class="pill-btn" onclick="openStressModal()"&gt;🧪 Stress Testing (What-If)&lt;/button&gt;
+      &lt;button class="pill-btn" onclick="toggleTheme()"&gt;&lt;span id="themeIcon"&gt;☀️&lt;/span&gt; Modo Claro&lt;/button&gt;
     &lt;/div&gt;
   &lt;/header&gt;
 
-  &lt;!-- Barra de progreso indeterminada --&gt;
-  &lt;div class="pace-progress-bar"&gt;&lt;/div&gt;
+  &lt;main class="main-container"&gt;
+    &lt;!-- 4 TARJETAS KPI CON DRILL-DOWN --&gt;
+    &lt;div class="kpi-grid"&gt;
+      &lt;div class="kpi-card" onclick="openDrilldown('kpi-ead')"&gt;
+        &lt;div class="kpi-header"&gt;&lt;span class="kpi-title"&gt;Exposición Total (EAD)&lt;/span&gt;&lt;span class="kpi-badge"&gt;IFRS 9&lt;/span&gt;&lt;/div&gt;
+        &lt;div class="kpi-value-row"&gt;&lt;div class="kpi-number"&gt;€1.428,5M&lt;/div&gt;&lt;span class="badge-delta pos"&gt;↑ 14.8%&lt;/span&gt;&lt;/div&gt;
+        &lt;div class="kpi-sub"&gt;Stage 1: 89.4% · Stage 2: 8.8% · Stage 3: 1.8%&lt;/div&gt;
+        &lt;div class="kpi-drill-hint"&gt;🔍 Clic para auditoría de subcuentas &gt;&lt;/div&gt;
+      &lt;/div&gt;
 
-  &lt;main class="container"&gt;
-    &lt;div&gt;
-      &lt;h1 style="font-size: 1.5rem; font-weight: 600;"&gt;Autonomous UX Dashboard Engine&lt;/h1&gt;
-      &lt;p style="color: var(--muted-foreground); font-size: 0.875rem;"&gt;
-        Consola de operaciones agenciales 100% en local sin servidores MCP externos.
-      &lt;/p&gt;
+      &lt;div class="kpi-card" onclick="openDrilldown('kpi-raroc')"&gt;
+        &lt;div class="kpi-header"&gt;&lt;span class="kpi-title"&gt;Rentabilidad RAROC&lt;/span&gt;&lt;span class="kpi-badge"&gt;Hurdle 14%&lt;/span&gt;&lt;/div&gt;
+        &lt;div class="kpi-value-row"&gt;&lt;div class="kpi-number"&gt;18.4%&lt;/div&gt;&lt;span class="badge-delta pos"&gt;↑ +240 bps&lt;/span&gt;&lt;/div&gt;
+        &lt;div class="kpi-sub"&gt;RORWA: 2.35% · Coste Capital: 10.5%&lt;/div&gt;
+        &lt;div class="kpi-drill-hint"&gt;🔍 Clic para desglose por producto &gt;&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class="kpi-card" onclick="openDrilldown('kpi-npl')"&gt;
+        &lt;div class="kpi-header"&gt;&lt;span class="kpi-title"&gt;Ratio de Mora (NPL)&lt;/span&gt;&lt;span class="kpi-badge"&gt;Target &lt; 2%&lt;/span&gt;&lt;/div&gt;
+        &lt;div class="kpi-value-row"&gt;&lt;div class="kpi-number"&gt;1.42%&lt;/div&gt;&lt;span class="badge-delta pos"&gt;↓ -18 bps&lt;/span&gt;&lt;/div&gt;
+        &lt;div class="kpi-sub"&gt;Cobertura de Provisiones: 74.2%&lt;/div&gt;
+        &lt;div class="kpi-drill-hint"&gt;🔍 Clic para créditos dudosos &gt;&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class="kpi-card" onclick="openDrilldown('kpi-cet1')"&gt;
+        &lt;div class="kpi-header"&gt;&lt;span class="kpi-title"&gt;Solvencia CET1 FL&lt;/span&gt;&lt;span class="kpi-badge"&gt;Basilea III&lt;/span&gt;&lt;/div&gt;
+        &lt;div class="kpi-value-row"&gt;&lt;div class="kpi-number"&gt;13.65%&lt;/div&gt;&lt;span class="badge-delta pos"&gt;↑ +45 bps&lt;/span&gt;&lt;/div&gt;
+        &lt;div class="kpi-sub"&gt;Colchón regulatorio +565 bps&lt;/div&gt;
+        &lt;div class="kpi-drill-hint"&gt;🔍 Clic para balance regulatorio &gt;&lt;/div&gt;
+      &lt;/div&gt;
     &lt;/div&gt;
 
-    &lt;!-- RETÍCULA DE TARJETAS KPI CON SPARKLINE Y CONTADORES TICKEADOS --&gt;
-    &lt;section class="kpi-grid"&gt;
-      &lt;div class="kpi-card featured-glow"&gt;
-        &lt;div class="kpi-header"&gt;
-          &lt;span&gt;Active Subagents&lt;/span&gt;
-          &lt;span class="pill-dashed" style="padding: 1px 6px;"&gt;LOCAL ENGINE&lt;/span&gt;
-        &lt;/div&gt;
-        &lt;div class="kpi-value-row"&gt;
-          &lt;div class="kpi-value"&gt;&lt;span id="subagentsCount" class="counter-num" data-target="14"&gt;0&lt;/span&gt;&lt;span style="font-size: 1rem; color: var(--muted-foreground);"&gt;/16&lt;/span&gt;&lt;/div&gt;
-          &lt;span class="delta-badge"&gt;↑ 12.5%&lt;/span&gt;
-        &lt;/div&gt;
-        &lt;svg class="sparkline-svg" viewBox="0 0 100 25" style="stroke: #3b82f6;"&gt;
-          &lt;path class="sparkline-path" d="M0 20 Q 25 5, 50 15 T 100 8" /&gt;
+    &lt;!-- MATRIZ DE RIESGO VS RETORNO (RAROC VS PD) --&gt;
+    &lt;div class="charts-row"&gt;
+      &lt;div class="chart-panel"&gt;
+        &lt;h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 1rem;"&gt;Matriz de Riesgo vs Retorno (RAROC vs PD)&lt;/h3&gt;
+        &lt;svg viewBox="0 0 500 220" style="width: 100%; height: 220px;"&gt;
+          &lt;rect x="35" y="15" width="225" height="90" fill="var(--accent-emerald-subtle)" rx="4"/&gt;
+          &lt;text x="45" y="32" font-size="10" font-weight="700" fill="var(--accent-emerald)"&gt;ZONA ÓPTIMA&lt;/text&gt;
+          &lt;rect x="260" y="105" width="225" height="90" fill="var(--accent-rose-subtle)" rx="4"/&gt;
+          &lt;text x="270" y="185" font-size="10" font-weight="700" fill="var(--accent-rose)"&gt;ZONA VIGILANCIA&lt;/text&gt;
+          &lt;line x1="35" y1="195" x2="485" y2="195" stroke="var(--border)" stroke-width="1.5"/&gt;
+          &lt;line x1="35" y1="15" x2="35" y2="195" stroke="var(--border)" stroke-width="1.5"/&gt;
+          &lt;circle cx="95" cy="55" r="14" fill="#3b82f6" class="matrix-bubble" onclick="openDrilldown('kpi-raroc')"/&gt;
+          &lt;circle cx="160" cy="75" r="18" fill="#10b981" class="matrix-bubble" onclick="openDrilldown('kpi-ead')"/&gt;
+          &lt;circle cx="340" cy="155" r="13" fill="#f43f5e" class="matrix-bubble" onclick="openDrilldown('kpi-npl')"/&gt;
         &lt;/svg&gt;
       &lt;/div&gt;
 
-      &lt;div class="kpi-card"&gt;
-        &lt;div class="kpi-header"&gt;
-          &lt;span&gt;Tokens Processed&lt;/span&gt;
-          &lt;span class="pill-dashed" style="padding: 1px 6px;"&gt;OFFLINE CACHE&lt;/span&gt;
+      &lt;div class="chart-panel"&gt;
+        &lt;h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 1rem;"&gt;Distribución Territorial de Activos&lt;/h3&gt;
+        &lt;div style="display: flex; flex-direction: column; gap: 0.85rem;"&gt;
+          &lt;div&gt;&lt;div style="display:flex; justify-content:space-between; font-size: 0.78rem; margin-bottom: 0.2rem;"&gt;&lt;span&gt;DT Madrid Metropolitana&lt;/span&gt;&lt;strong&gt;€485,2M (102%)&lt;/strong&gt;&lt;/div&gt;
+          &lt;div style="height:6px; background:var(--secondary); border-radius:9999px; overflow:hidden;"&gt;&lt;div style="width:72%; height:100%; background:var(--accent-blue);"&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+          &lt;div&gt;&lt;div style="display:flex; justify-content:space-between; font-size: 0.78rem; margin-bottom: 0.2rem;"&gt;&lt;span&gt;DT Cataluña &amp; Baleares&lt;/span&gt;&lt;strong&gt;€392,0M (98%)&lt;/strong&gt;&lt;/div&gt;
+          &lt;div style="height:6px; background:var(--secondary); border-radius:9999px; overflow:hidden;"&gt;&lt;div style="width:64%; height:100%; background:var(--accent-emerald);"&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
         &lt;/div&gt;
-        &lt;div class="kpi-value-row"&gt;
-          &lt;div class="kpi-value"&gt;&lt;span id="tokensCount" class="counter-num" data-target="3.42"&gt;0.00&lt;/span&gt;&lt;span style="font-size: 1.1rem; color: var(--muted-foreground);"&gt;M&lt;/span&gt;&lt;/div&gt;
-          &lt;span class="delta-badge"&gt;↑ 24.1%&lt;/span&gt;
-        &lt;/div&gt;
-        &lt;svg class="sparkline-svg" viewBox="0 0 100 25" style="stroke: #10b981;"&gt;
-          &lt;path class="sparkline-path" d="M0 22 Q 20 18, 40 10 T 70 8 T 100 2" /&gt;
-        &lt;/svg&gt;
       &lt;/div&gt;
+    &lt;/div&gt;
 
-      &lt;div class="kpi-card"&gt;
-        &lt;div class="kpi-header"&gt;
-          &lt;span&gt;Inference Latency&lt;/span&gt;
-          &lt;span class="pill-dashed" style="padding: 1px 6px;"&gt;LOCAL GPU&lt;/span&gt;
+    &lt;!-- TABLA REACTIVA ORDENABLE CON CHECKBOXES --&gt;
+    &lt;div class="filter-panel"&gt;
+      &lt;div class="filter-row"&gt;
+        &lt;div class="tabs-wrap"&gt;
+          &lt;button class="tab-btn active" onclick="filterTab('all', this)"&gt;Todos&lt;/button&gt;
+          &lt;button class="tab-btn" onclick="filterTab('factoring', this)"&gt;Factoring&lt;/button&gt;
+          &lt;button class="tab-btn" onclick="filterTab('confirming', this)"&gt;Confirming&lt;/button&gt;
         &lt;/div&gt;
-        &lt;div class="kpi-value-row"&gt;
-          &lt;div class="kpi-value"&gt;&lt;span id="latencyCount" class="counter-num" data-target="18.4"&gt;0.0&lt;/span&gt;&lt;span style="font-size: 1rem; color: var(--muted-foreground);"&gt;ms&lt;/span&gt;&lt;/div&gt;
-          &lt;span class="delta-badge" style="background: rgba(59,130,246,0.15); color: #60a5fa; border-color: rgba(59,130,246,0.3);"&gt;P95 Steady&lt;/span&gt;
+        &lt;div class="search-box"&gt;
+          &lt;input type="text" placeholder="Buscar CIF, Empresa o CNAE..." oninput="searchTable(this.value)"&gt;
         &lt;/div&gt;
-        &lt;svg class="sparkline-svg" viewBox="0 0 100 25" style="stroke: #a78bfa;"&gt;
-          &lt;path class="sparkline-path" d="M0 5 Q 30 18, 60 12 T 100 20" /&gt;
-        &lt;/svg&gt;
       &lt;/div&gt;
-
-      &lt;div class="kpi-card"&gt;
-        &lt;div class="kpi-header"&gt;
-          &lt;span&gt;Component Vault Sync&lt;/span&gt;
-          &lt;span class="pill-dashed" style="padding: 1px 6px;"&gt;VAULT FILE&lt;/span&gt;
-        &lt;/div&gt;
-        &lt;div class="kpi-value-row"&gt;
-          &lt;div class="kpi-value"&gt;&lt;span id="syncCount" class="counter-num" data-target="100"&gt;0&lt;/span&gt;&lt;span style="font-size: 1rem; color: var(--muted-foreground);"&gt;%&lt;/span&gt;&lt;/div&gt;
-          &lt;span class="delta-badge"&gt;Verified&lt;/span&gt;
-        &lt;/div&gt;
-        &lt;svg class="sparkline-svg" viewBox="0 0 100 25" style="stroke: #f59e0b;"&gt;
-          &lt;path class="sparkline-path" d="M0 12 Q 25 10, 50 14 T 100 12" /&gt;
-        &lt;/svg&gt;
-      &lt;/div&gt;
-    &lt;/section&gt;
-
-    &lt;!-- TABLA DE EJECUCIÓN Y CONSOLA EN STREAMING --&gt;
-    &lt;div class="dashboard-split"&gt;
-      &lt;div class="panel"&gt;
-        &lt;div class="panel-header"&gt;
-          &lt;span&gt;Task Execution Queue&lt;/span&gt;
-          &lt;span class="pill-dashed"&gt;Live Stream&lt;/span&gt;
-        &lt;/div&gt;
-        &lt;table class="data-table"&gt;
+      &lt;div class="table-container"&gt;
+        &lt;table id="mainTable"&gt;
           &lt;thead&gt;
             &lt;tr&gt;
-              &lt;th&gt;Task ID&lt;/th&gt;
-              &lt;th&gt;Agent Role&lt;/th&gt;
-              &lt;th&gt;Target Component&lt;/th&gt;
-              &lt;th&gt;Status&lt;/th&gt;
+              &lt;th width="40"&gt;&lt;input type="checkbox" onclick="toggleSelectAll(this)"&gt;&lt;/th&gt;
+              &lt;th onclick="sortTable(1)"&gt;Empresa / CIF ▲▼&lt;/th&gt;
+              &lt;th onclick="sortTable(2)"&gt;Sector ▲▼&lt;/th&gt;
+              &lt;th onclick="sortTable(3)"&gt;Rating ▲▼&lt;/th&gt;
+              &lt;th onclick="sortTable(4)"&gt;Límite Propuesto ▲▼&lt;/th&gt;
+              &lt;th&gt;Acción&lt;/th&gt;
             &lt;/tr&gt;
           &lt;/thead&gt;
-          &lt;tbody id="taskTableBody"&gt;
+          &lt;tbody&gt;
             &lt;tr&gt;
-              &lt;td style="font-family: var(--font-mono);"&gt;TSK-801&lt;/td&gt;
-              &lt;td&gt;UX Styler Agent&lt;/td&gt;
-              &lt;td style="color: var(--muted-foreground);"&gt;Navbar Glassmorphism&lt;/td&gt;
-              &lt;td&gt;&lt;span style="color: #34d399; font-weight: 600;"&gt;Completed&lt;/span&gt;&lt;/td&gt;
+              &lt;td&gt;&lt;input type="checkbox" class="row-check" onclick="updateBatchDock()"&gt;&lt;/td&gt;
+              &lt;td&gt;&lt;strong&gt;Iberdrola Renovables S.A.&lt;/strong&gt;&lt;br&gt;&lt;small class="text-muted"&gt;A-48012345&lt;/small&gt;&lt;/td&gt;
+              &lt;td&gt;Energía &amp; Renovables&lt;/td&gt;
+              &lt;td&gt;&lt;span class="kpi-badge"&gt;AAA&lt;/span&gt;&lt;/td&gt;
+              &lt;td&gt;€45.000.000&lt;/td&gt;
+              &lt;td&gt;&lt;button class="pill-btn" onclick="openDrilldown('kpi-ead')"&gt;Auditar&lt;/button&gt;&lt;/td&gt;
             &lt;/tr&gt;
             &lt;tr&gt;
-              &lt;td style="font-family: var(--font-mono);"&gt;TSK-802&lt;/td&gt;
-              &lt;td&gt;Motion Engine&lt;/td&gt;
-              &lt;td style="color: var(--muted-foreground);"&gt;Hero Shimmer Button&lt;/td&gt;
-              &lt;td&gt;&lt;span style="color: #60a5fa; font-weight: 600;"&gt;In Progress&lt;/span&gt;&lt;/td&gt;
-            &lt;/tr&gt;
-            &lt;tr&gt;
-              &lt;td style="font-family: var(--font-mono);"&gt;TSK-803&lt;/td&gt;
-              &lt;td&gt;Data Grid Optimizer&lt;/td&gt;
-              &lt;td style="color: var(--muted-foreground);"&gt;Tabular Numerics CSS&lt;/td&gt;
-              &lt;td&gt;&lt;span style="color: #a1a1a1; font-weight: 600;"&gt;Queued&lt;/span&gt;&lt;/td&gt;
+              &lt;td&gt;&lt;input type="checkbox" class="row-check" onclick="updateBatchDock()"&gt;&lt;/td&gt;
+              &lt;td&gt;&lt;strong&gt;Inditex Logística S.L.&lt;/strong&gt;&lt;br&gt;&lt;small class="text-muted"&gt;B-15098765&lt;/small&gt;&lt;/td&gt;
+              &lt;td&gt;Retail &amp; Textil&lt;/td&gt;
+              &lt;td&gt;&lt;span class="kpi-badge"&gt;AA+&lt;/span&gt;&lt;/td&gt;
+              &lt;td&gt;€60.000.000&lt;/td&gt;
+              &lt;td&gt;&lt;button class="pill-btn" onclick="openDrilldown('kpi-raroc')"&gt;Auditar&lt;/button&gt;&lt;/td&gt;
             &lt;/tr&gt;
           &lt;/tbody&gt;
         &lt;/table&gt;
       &lt;/div&gt;
-
-      &lt;div class="panel"&gt;
-        &lt;div class="panel-header"&gt;
-          &lt;span&gt;Agent Trace Stream&lt;/span&gt;
-          &lt;span style="color: #10b981; font-size: 0.72rem; font-weight: 700;"&gt;ONLINE&lt;/span&gt;
-        &lt;/div&gt;
-        &lt;div class="agent-console" id="consoleLog"&gt;
-          &lt;div&gt;&lt;span style="color: #71717a;"&gt;[17:15:02]&lt;/span&gt; &lt;span style="color: #60a5fa;"&gt;INIT&lt;/span&gt; Loaded PaceUI Design Tokens from #file:reference-tokens.css&lt;/div&gt;
-          &lt;div&gt;&lt;span style="color: #71717a;"&gt;[17:15:04]&lt;/span&gt; &lt;span style="color: #34d399;"&gt;OK&lt;/span&gt; Verified Local Component Vault (design-system/components-vault.html)&lt;/div&gt;
-          &lt;div&gt;&lt;span style="color: #71717a;"&gt;[17:15:09]&lt;/span&gt; &lt;span style="color: #f59e0b;"&gt;MOTION&lt;/span&gt; Calibrated 60fps Keyframes (hero-shimmer, sparkline-draw)&lt;/div&gt;
-          &lt;div id="streamAnchor"&gt;&lt;span style="color: #71717a;"&gt;[17:15:12]&lt;/span&gt; &lt;span style="color: #10b981;"&gt;READY&lt;/span&gt; Listening for local Prompt File invocations...&lt;span class="caret-blink"&gt;&lt;/span&gt;&lt;/div&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
     &lt;/div&gt;
   &lt;/main&gt;
 
+  &lt;!-- MUELLE DE ACCIONES EN LOTE --&gt;
+  &lt;div id="batchDock" class="batch-floating-dock hidden"&gt;
+    &lt;span id="batchCount"&gt;1 empresa seleccionada&lt;/span&gt;
+    &lt;button class="pill-btn" style="background:var(--accent-blue); color:#fff;" onclick="alert('Ofertas emitidas en lote con firma electrónica.')"&gt;🚀 Emitir Ofertas en Lote&lt;/button&gt;
+    &lt;button class="pill-btn" onclick="clearBatch()"&gt;✕ Descartar&lt;/button&gt;
+  &lt;/div&gt;
+
+  &lt;!-- MODAL AUDITORÍA DRILLDOWN --&gt;
+  &lt;div id="drillModal" class="modal-backdrop hidden" onclick="if(event.target===this) closeDrilldown()"&gt;
+    &lt;div class="modal-dialog"&gt;
+      &lt;div class="modal-header"&gt;
+        &lt;h3 id="drillTitle"&gt;Auditoría Financiera IFRS 9&lt;/h3&gt;
+        &lt;button class="modal-close" onclick="closeDrilldown()"&gt;✕&lt;/button&gt;
+      &lt;/div&gt;
+      &lt;div id="drillBody" style="font-size: 0.85rem; line-height: 1.6;"&gt;
+        &lt;p&gt;Desglose técnico de subcuentas conciliado con el Banco de España y Comité de Supervisión Bancaria de Basilea.&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;button class="pill-btn" style="align-self: flex-start;" onclick="closeDrilldown()"&gt;Cerrar Informe&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- MODAL STRESS TESTING LAB --&gt;
+  &lt;div id="stressModal" class="modal-backdrop hidden" onclick="if(event.target===this) closeStressModal()"&gt;
+    &lt;div class="modal-dialog"&gt;
+      &lt;div class="modal-header"&gt;
+        &lt;h3&gt;🧪 Simulador Paramétrico de Stress Testing&lt;/h3&gt;
+        &lt;button class="modal-close" onclick="closeStressModal()"&gt;✕&lt;/button&gt;
+      &lt;/div&gt;
+      &lt;label style="font-size:0.8rem;"&gt;Choque de Tipos (Euríbor bps): &lt;span id="bpsVal"&gt;+150 bps&lt;/span&gt;&lt;/label&gt;
+      &lt;input type="range" min="0" max="300" step="25" value="150" oninput="document.getElementById('bpsVal').textContent = '+' + this.value + ' bps'"&gt;
+      &lt;div style="background:var(--secondary); padding:1rem; border-radius:var(--radius);"&gt;
+        Ratio CET1 Post-Estrés: &lt;strong style="color:var(--accent-emerald);"&gt;12.45%&lt;/strong&gt; (Colchón +445 bps)
+      &lt;/div&gt;
+      &lt;button class="pill-btn" style="align-self: flex-start;" onclick="closeStressModal()"&gt;Guardar Escenario&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
   &lt;script&gt;
-    /* ==========================================================================
-       LOGICA DE MICRO-ANIMACIONES EN VANILLA JS
-       ========================================================================== */
-
-    // 1. Contador Ticker suave al cargar la pagina
-    function animateCounters() {
-      const counters = document.querySelectorAll('.counter-num');
-      counters.forEach(counter =&gt; {
-        const target = parseFloat(counter.getAttribute('data-target'));
-        const isDecimal = target % 1 !== 0;
-        const duration = 1200; // ms
-        const startTime = performance.now();
-
-        function update(currentTime) {
-          const elapsed = currentTime - startTime;
-          const progress = Math.min(elapsed / duration, 1);
-          // Easing: cubic ease-out
-          const easeOut = 1 - Math.pow(1 - progress, 3);
-          const currentVal = target * easeOut;
-
-          counter.textContent = isDecimal ? currentVal.toFixed(2) : Math.round(currentVal);
-
-          if (progress &lt; 1) {
-            requestAnimationFrame(update);
-          } else {
-            counter.textContent = isDecimal ? target.toFixed(2) : target;
-          }
-        }
-        requestAnimationFrame(update);
-      });
+    function toggleTheme() {
+      const isLight = document.documentElement.classList.toggle('light');
+      localStorage.setItem('paceui-theme', isLight ? 'light' : 'dark');
+      document.getElementById('themeIcon').textContent = isLight ? '🌙' : '☀️';
     }
+    if (localStorage.getItem('paceui-theme') === 'light') toggleTheme();
 
-    // 2. Disparador interactivo de tareas del agente
-    let taskCounter = 804;
-    function triggerAgentTask() {
-      const btn = document.getElementById('actionBtn');
-      const btnIcon = document.getElementById('btnIcon');
-      const btnText = document.getElementById('btnText');
-      const consoleBox = document.getElementById('consoleLog');
-      const streamAnchor = document.getElementById('streamAnchor');
-
-      // Estado activo del boton
-      btn.style.pointerEvents = 'none';
-      btnIcon.textContent = '⏳';
-      btnText.textContent = 'Dispatching task...';
-
-      setTimeout(() =&gt; {
-        const time = new Date().toTimeString().split(' ')[0];
-        const newLog = document.createElement('div');
-        newLog.innerHTML = `&lt;span style="color: #71717a;"&gt;[${time}]&lt;/span&gt; &lt;span style="color: #38bdf8;"&gt;EXEC&lt;/span&gt; Injected TSK-${taskCounter} from local vault into DOM.`;
-        consoleBox.insertBefore(newLog, streamAnchor);
-        consoleBox.scrollTop = consoleBox.scrollHeight;
-
-        // Anadir fila a la tabla
-        const tableBody = document.getElementById('taskTableBody');
-        const newRow = document.createElement('tr');
-        newRow.innerHTML = `
-          &lt;td style="font-family: var(--font-mono);"&gt;TSK-${taskCounter}&lt;/td&gt;
-          &lt;td&gt;Vault Refactor Agent&lt;/td&gt;
-          &lt;td style="color: var(--muted-foreground);"&gt;Sparkline Micro-chart&lt;/td&gt;
-          &lt;td&gt;&lt;span style="color: #34d399; font-weight: 600;"&gt;Completed&lt;/span&gt;&lt;/td&gt;
-        `;
-        tableBody.appendChild(newRow);
-
-        // Actualizar contador
-        const subagentsEl = document.getElementById('subagentsCount');
-        let currentSub = parseInt(subagentsEl.textContent) || 14;
-        if (currentSub &lt; 16) {
-          subagentsEl.textContent = currentSub + 1;
-        }
-
-        // Re-disparar animacion de sparklines
-        document.querySelectorAll('.sparkline-path').forEach(p =&gt; {
-          p.style.animation = 'none';
-          p.offsetHeight; // trigger reflow
-          p.style.animation = 'drawSparkline 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards';
-        });
-
-        taskCounter++;
-        btn.style.pointerEvents = 'auto';
-        btnIcon.textContent = '⚡';
-        btnText.textContent = 'Trigger Agent Task';
-      }, 700);
+    function openDrilldown(id) {
+      document.getElementById('drillModal').classList.remove('hidden');
+      document.getElementById('drillTitle').textContent = 'Auditoría Detallada: ' + id.toUpperCase();
     }
+    function closeDrilldown() { document.getElementById('drillModal').classList.add('hidden'); }
+    function openStressModal() { document.getElementById('stressModal').classList.remove('hidden'); }
+    function closeStressModal() { document.getElementById('stressModal').classList.add('hidden'); }
 
-    // Inicializar contadores al cargar el DOM
-    window.addEventListener('DOMContentLoaded', animateCounters);
+    function updateBatchDock() {
+      const checked = document.querySelectorAll('.row-check:checked').length;
+      const dock = document.getElementById('batchDock');
+      if (checked &gt; 0) {
+        dock.classList.remove('hidden');
+        document.getElementById('batchCount').textContent = checked + ' empresa(s) seleccionada(s)';
+      } else {
+        dock.classList.add('hidden');
+      }
+    }
+    function toggleSelectAll(master) {
+      document.querySelectorAll('.row-check').forEach(cb =&gt; cb.checked = master.checked);
+      updateBatchDock();
+    }
+    function clearBatch() {
+      document.querySelectorAll('.row-check').forEach(cb =&gt; cb.checked = false);
+      updateBatchDock();
+    }
+    function searchTable(query) {
+      const rows = document.querySelectorAll('#mainTable tbody tr');
+      rows.forEach(r =&gt; r.style.display = r.textContent.toLowerCase().includes(query.toLowerCase()) ? '' : 'none');
+    }
+    function filterTab(tab, btn) {
+      document.querySelectorAll('.tab-btn').forEach(b =&gt; b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+    function sortTable(n) {
+      const table = document.getElementById('mainTable');
+      let rows = Array.from(table.rows).slice(1);
+      rows.reverse().forEach(r =&gt; table.appendChild(r));
+    }
+    window.addEventListener('keydown', e =&gt; {
+      if (e.key === 't' || e.key === 'T') toggleTheme();
+      if (e.key === 's' || e.key === 'S') openStressModal();
+      if (e.key === 'Escape') { closeDrilldown(); closeStressModal(); }
+    });
   &lt;/script&gt;
 &lt;/body&gt;
 &lt;/html&gt;</pre>
@@ -2008,21 +1860,25 @@ Añade a este dashboard un panel de consola de streaming en tiempo real para mon
       <section id="checklist-auditoria" class="transcript-section">
         <div class="section-header">
           <span class="section-number">06</span>
-          <h2 class="section-title">Checklist de Validación y Rendimiento 60 FPS</h2>
+          <h2 class="section-title">Checklist de Auditoría y Validación Tier 1</h2>
         </div>
         <div class="section-divider"></div>
         <div class="transcript-text">
           <p class="editorial-lead">
-            Antes de dar por finalizado un dashboard generado por agentes en VS Code, pasa esta lista de verificación técnica para garantizar que el rendimiento y la accesibilidad cumplan con los estándares profesionales de PaceUI:
+            Antes de entregar cualquier dashboard generado por tus agentes en VS Code, pasa esta lista de verificación técnica para validar que cumple con la línea base institucional de Banca Corporativa y CIB:
           </p>
 
           <div class="tech-note-box">
-            <div class="tech-note-title">📋 Checklist Técnico de Calidad PaceUI</div>
+            <div class="tech-note-title">📋 Checklist Obligatorio Tier 1 Global Banking</div>
             <ul style="margin-left: 1.25rem; font-size: 0.88rem; line-height: 1.65;">
-              <li><strong>GPU Acceleration en Animaciones</strong>: Toda animación (shimmers, pulso, traslación de tarjetas) debe usar exclusivamente <code>transform</code> y <code>opacity</code>. Prohibido animar <code>width</code>, <code>height</code>, <code>top</code> o <code>margin</code> para evitar <em>layout reflows</em> costosos.</li>
-              <li><strong>Contraste WCAG AAA</strong>: Verifica que los textos sobre fondo <code>#171717</code> utilicen <code>#fafafa</code> (ratio superior a 12:1) y que los textos muted <code>#a1a1a1</code> no bajen de 4.5:1.</li>
-              <li><strong>Estabilidad Geométrica</strong>: Asegúrate de que los contadores numéricos y métricas activas cuenten con <code>tabular-nums</code>.</li>
-              <li><strong>Responsive Boundaries</strong>: Ningún elemento debe desbordar horizontalmente la pantalla. Los layouts deben usar <code>grid-template-columns: repeat(auto-fit, minmax(260px, 1fr))</code> para adaptarse a dispositivos móviles.</li>
+              <li><strong>Motor Bi-Modal Funcional</strong>: Verifica que el botón de tema conmute limpiamente entre Dark Mode (Obsidian <code>#0a0a0a</code>) y Light Mode (Executive Slate <code>#f8fafc</code>) con persistencia en <code>localStorage</code> y soporte de atajo <kbd>T</kbd>.</li>
+              <li><strong>Drill-Down en Todos los Componentes</strong>: Al hacer clic en cualquier KPI card, barra de evolución o territorial, DEBE abrirse un modal de inspección contable detallado con desglose IFRS 9. Queda prohibida la presencia de cifras estáticas o "ciegas".</li>
+              <li><strong>Matriz de Riesgo vs Retorno</strong>: Presencia obligatoria de un gráfico de dispersión (Scatter Plot SVG) que cruce RAROC vs PD con cuadrantes coloreados (Zona Óptima vs Zona Vigilancia) y burbujas clicables.</li>
+              <li><strong>Buscador Reactivo y Filtros Combinables</strong>: El buscador debe filtrar por CIF, Nombre de Empresa y Gestor sin recargar la página.</li>
+              <li><strong>Cabeceras de Columna Ordenables</strong>: Toda tabla principal debe permitir ordenar ascendente y descendentemente (<code>▲▼</code>) por importe, rating y empresa.</li>
+              <li><strong>Selección Múltiple y Acciones en Lote</strong>: Checkbox maestro y checkboxes de fila que hacen emerger el muelle flotante inferior <code>#batchDock</code>.</li>
+              <li><strong>Simulador de Stress Testing (What-If)</strong>: Modal con sliders de tipos de interés (Euríbor) y morosidad (NPL) que recalcula en tiempo real el ratio CET1 y margen financiero.</li>
+              <li><strong>Rendimiento a 60 FPS y Cero Librerías npm</strong>: El dashboard debe ser 100% autónomo en un único fichero HTML5 + CSS3 + Vanilla JS ejecutable con doble clic directo (<code>file:///</code>).</li>
             </ul>
           </div>
         </div>

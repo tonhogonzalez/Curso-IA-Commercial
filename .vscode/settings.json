@@ -1,0 +1,18 @@
+{
+  "editor.tabSize": 2,
+  "editor.formatOnSave": true,
+  "editor.fontFamily": "'JetBrains Mono', 'Consolas', monospace",
+  "editor.fontLigatures": true,
+  "files.associations": {
+    "*.prompt.md": "markdown",
+    "*.css": "css",
+    "*.html": "html"
+  },
+  "emmet.includeLanguages": {
+    "markdown": "html"
+  },
+  "html.format.wrapLineLength": 160,
+  "github.copilot.chat.welcomeMessage": "always",
+  "liveServer.settings.donotShowInfoMsg": true,
+  "livePreview.defaultPreviewPath": "/dashboard-comercial-paceui.html"
+}
