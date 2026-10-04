@@ -78,6 +78,7 @@ const requiredFiles = [
   'cuadernos/05-paradigmas-y-computacion.html',
   'cuadernos/06-m365-copilot-banca-comercial.html',
   'cuadernos/07-migracion-chatgpt-copilot-m365.html',
+  'cuadernos/08-agentes-vscode-ux-dashboards.html',
   'cuadernos/_template.html'
 ];
 
@@ -95,7 +96,7 @@ const htmlFiles = [
   'cuadernos/01-pep-martorell.html', 'cuadernos/02-javier-ideami.html',
   'cuadernos/03-compendio-tecnico.html', 'cuadernos/04-el-universo-del-transformer.html',
   'cuadernos/05-paradigmas-y-computacion.html', 'cuadernos/06-m365-copilot-banca-comercial.html',
-  'cuadernos/07-migracion-chatgpt-copilot-m365.html'
+  'cuadernos/07-migracion-chatgpt-copilot-m365.html', 'cuadernos/08-agentes-vscode-ux-dashboards.html'
 ];
 
 htmlFiles.forEach(file => {
@@ -120,7 +121,7 @@ const cuadernoFiles = [
   'cuadernos/01-pep-martorell.html', 'cuadernos/02-javier-ideami.html',
   'cuadernos/03-compendio-tecnico.html', 'cuadernos/04-el-universo-del-transformer.html',
   'cuadernos/05-paradigmas-y-computacion.html', 'cuadernos/06-m365-copilot-banca-comercial.html',
-  'cuadernos/07-migracion-chatgpt-copilot-m365.html'
+  'cuadernos/07-migracion-chatgpt-copilot-m365.html', 'cuadernos/08-agentes-vscode-ux-dashboards.html'
 ];
 
 cuadernoFiles.forEach(file => {
