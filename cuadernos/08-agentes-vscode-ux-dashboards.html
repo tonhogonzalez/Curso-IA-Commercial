@@ -196,6 +196,134 @@
       0%, 50% { opacity: 1; }
       51%, 100% { opacity: 0; }
     }
+    /* INFOGRAFÍA ARQUITECTURA VS CODE */
+    .vscode-infographic-card {
+      background: #0d0d0f;
+      border: 1px solid #27272a;
+      border-radius: 12px;
+      margin: 2rem 0;
+      overflow: hidden;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+    }
+    .vscode-infographic-header {
+      background: #18181b;
+      padding: 0.75rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #27272a;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #e4e4e7;
+    }
+    .vscode-window-dots {
+      display: flex;
+      gap: 6px;
+    }
+    .vscode-window-dots span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .vscode-window-dots .dot-r { background: #ef4444; }
+    .vscode-window-dots .dot-y { background: #f59e0b; }
+    .vscode-window-dots .dot-g { background: #10b981; }
+
+    .vscode-infographic-body {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      min-height: 480px;
+    }
+    @media (max-width: 900px) {
+      .vscode-infographic-body {
+        grid-template-columns: 1fr;
+      }
+    }
+    .vscode-explorer-pane {
+      background: #121214;
+      border-right: 1px solid #27272a;
+      padding: 1.25rem 1rem;
+      font-family: var(--font-mono, monospace);
+      font-size: 0.8rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .vscode-explorer-title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #71717a;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.75rem;
+    }
+    .explorer-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.35rem 0.5rem;
+      border-radius: 6px;
+      color: #d4d4d8;
+      cursor: default;
+      transition: background 0.15s ease;
+    }
+    .explorer-item:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .explorer-item.folder {
+      color: #93c5fd;
+      font-weight: 600;
+    }
+    .explorer-item.sub-item {
+      margin-left: 1.2rem;
+    }
+    .explorer-item.sub-item-2 {
+      margin-left: 2.2rem;
+    }
+    .explorer-tag {
+      font-size: 0.65rem;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+    .tag-rule { background: rgba(139, 92, 246, 0.2); color: #c084fc; border: 1px solid rgba(139, 92, 246, 0.4); }
+    .tag-cmd { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.4); }
+    .tag-snip { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
+    .tag-vault { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
+    .tag-out { background: rgba(244, 63, 94, 0.2); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.4); }
+
+    .vscode-pipeline-pane {
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      background: #0a0a0c;
+    }
+    .pipeline-step-card {
+      background: #17171a;
+      border: 1px solid #27272a;
+      border-radius: 8px;
+      padding: 1rem 1.15rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      position: relative;
+    }
+    .pipeline-step-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #e4e4e7;
+    }
+    .pipeline-step-desc {
+      font-size: 0.8rem;
+      color: #a1a1aa;
+      line-height: 1.45;
+    }
   </style>
 </head>
 <body>
@@ -594,22 +722,168 @@
             Para que tu Visual Studio Code ejecute estas directivas de diseño de forma determinista en cualquier proyecto local, organizaremos la configuración en dos capas: las <strong>Instrucciones de Agente</strong> (Globales para Copilot/Cursor) y las <strong>Skills Modulares</strong> (Especializadas y llamables).
           </p>
 
-          <h3>3.1. Estructura de Directorios Recomendada en tu Proyecto Local (100% Sin MCP)</h3>
-          <p>En la raíz de tu proyecto en local, crea la siguiente arquitectura de carpetas y ficheros autónomos:</p>
+          <h3>3.1. Estructura de Directorios Profesional en tu Proyecto Local (100% Sin MCP)</h3>
+          <p>En la raíz de tu proyecto en local, crea la siguiente arquitectura completa de carpetas y ficheros autónomos:</p>
 
           <pre class="copyable-prompt-pre">mi-proyecto-dashboard/
 ├── .github/
-│   ├── copilot-instructions.md       &lt;-- Directivas globales inmutables para Copilot
+│   ├── copilot-instructions.md        &lt;-- Directivas globales inmutables para Copilot
 │   └── prompts/
-│       └── paceui-dashboard.prompt.md &lt;-- Prompt File ejecutable (/paceui-dashboard)
+│       └── paceui-dashboard.prompt.md  &lt;-- Prompt File ejecutable (/paceui-dashboard)
+├── .vscode/
+│   ├── settings.json                  &lt;-- Configuración de entorno y Live Reload
+│   └── paceui.code-snippets           &lt;-- Snippets de autocompletado express (Tab)
 ├── design-system/
-│   ├── reference-tokens.css          &lt;-- Variables CSS y paleta oficial PaceUI
-│   └── components-vault.html         &lt;-- Bóveda local de bloques y micro-animaciones
+│   ├── reference-tokens.css           &lt;-- Variables CSS y paleta oficial PaceUI
+│   └── components-vault.html          &lt;-- Bóveda local de bloques y micro-animaciones
 ├── skills/
 │   └── paceui-styler/
-│       └── SKILL.md                  &lt;-- Definición de skill agencial para Cursor / Antigravity
+│       └── SKILL.md                   &lt;-- Definición de skill agencial para Cursor / Antigravity
 └── src/
-    └── dashboard.html                &lt;-- Tu dashboard HTML objetivo</pre>
+    └── dashboard.html                 &lt;-- Tu dashboard HTML objetivo</pre>
+
+          <!-- INFOGRAFÍA VISUAL DE ARQUITECTURA EN VS CODE -->
+          <div class="vscode-infographic-card">
+            <div class="vscode-infographic-header">
+              <div class="vscode-window-dots">
+                <span class="dot-r"></span>
+                <span class="dot-y"></span>
+                <span class="dot-g"></span>
+              </div>
+              <div>Visual Studio Code — Arquitectura Agencial y Flujo de Archivos (PaceUI Standard)</div>
+              <span style="font-size: 0.72rem; color: #a1a1aa; font-family: monospace;">Zero-MCP Architecture</span>
+            </div>
+
+            <div class="vscode-infographic-body">
+              <!-- Columna Izquierda: Explorador de Archivos -->
+              <div class="vscode-explorer-pane">
+                <div class="vscode-explorer-title">📁 EXPLORADOR DE PROYECTO (VS CODE)</div>
+                
+                <div class="explorer-item folder">📁 .github</div>
+                <div class="explorer-item sub-item">
+                  <span>📄 copilot-instructions.md</span>
+                  <span class="explorer-tag tag-rule">REGLAS</span>
+                </div>
+                <div class="explorer-item sub-item folder">📁 prompts</div>
+                <div class="explorer-item sub-item-2">
+                  <span>⚡ paceui-dashboard.prompt.md</span>
+                  <span class="explorer-tag tag-cmd">SLASH CMD</span>
+                </div>
+
+                <div class="explorer-item folder" style="margin-top: 0.4rem;">📁 .vscode</div>
+                <div class="explorer-item sub-item">
+                  <span>⚙️ settings.json</span>
+                  <span class="explorer-tag tag-snip">CONFIG</span>
+                </div>
+                <div class="explorer-item sub-item">
+                  <span>✂️ paceui.code-snippets</span>
+                  <span class="explorer-tag tag-snip">SNIPPETS</span>
+                </div>
+
+                <div class="explorer-item folder" style="margin-top: 0.4rem;">📁 design-system</div>
+                <div class="explorer-item sub-item">
+                  <span>🎨 reference-tokens.css</span>
+                  <span class="explorer-tag tag-vault">TOKENS</span>
+                </div>
+                <div class="explorer-item sub-item">
+                  <span>🏛️ components-vault.html</span>
+                  <span class="explorer-tag tag-vault">VAULT</span>
+                </div>
+
+                <div class="explorer-item folder" style="margin-top: 0.4rem;">📁 skills / paceui-styler</div>
+                <div class="explorer-item sub-item">
+                  <span>🤖 SKILL.md</span>
+                  <span class="explorer-tag tag-rule">SKILL</span>
+                </div>
+
+                <div class="explorer-item folder" style="margin-top: 0.4rem;">📁 src</div>
+                <div class="explorer-item sub-item">
+                  <span>🖥️ dashboard.html</span>
+                  <span class="explorer-tag tag-out">OUTPUT DOM</span>
+                </div>
+              </div>
+
+              <!-- Columna Derecha: Flujo de Inferencia y Pipeline -->
+              <div class="vscode-pipeline-pane">
+                <div style="font-size: 0.85rem; font-weight: 700; color: #f4f4f5; display: flex; align-items: center; justify-content: space-between;">
+                  <span>🔄 Pipeline de Inferencia Local en VS Code</span>
+                  <span style="font-size: 0.72rem; color: #10b981; font-weight: 600;">100% LOCAL & OFFLINE</span>
+                </div>
+
+                <div class="pipeline-step-card">
+                  <div class="pipeline-step-header">
+                    <span>1. INVOCACIÓN DEL DESARROLLADOR</span>
+                    <span class="explorer-tag tag-cmd">DISPARADOR</span>
+                  </div>
+                  <div class="pipeline-step-desc">
+                    El usuario escribe <code>/paceui-dashboard</code> en Copilot Chat o presiona <code>Ctrl+I</code> sobre una etiqueta en <code>src/dashboard.html</code>.
+                  </div>
+                </div>
+
+                <div class="pipeline-step-card">
+                  <div class="pipeline-step-header">
+                    <span>2. REGLAS INMUTABLES DEL WORKSPACE</span>
+                    <span class="explorer-tag tag-rule">CONTEXTO BASE</span>
+                  </div>
+                  <div class="pipeline-step-desc">
+                    VS Code ancla silenciosamente <code>.github/copilot-instructions.md</code>, asegurando que el modelo nunca genere colores claros, bordes gruesos o fuentes inadecuadas.
+                  </div>
+                </div>
+
+                <div class="pipeline-step-card">
+                  <div class="pipeline-step-header">
+                    <span>3. INYECCIÓN DEL VAULT LOCAL Y TOKENS</span>
+                    <span class="explorer-tag tag-vault">CATÁLOGO FÍSICO</span>
+                  </div>
+                  <div class="pipeline-step-desc">
+                    El agente consulta <code>design-system/components-vault.html</code> y <code>reference-tokens.css</code> mediante embeddings locales o la etiqueta <code>#file:</code>, extrayendo los snippets con keyframes cinemáticos a 60 FPS.
+                  </div>
+                </div>
+
+                <div class="pipeline-step-card">
+                  <div class="pipeline-step-header">
+                    <span>4. ENSAMBLADO Y STREAMING AL EDITOR</span>
+                    <span class="explorer-tag tag-out">RESULTADO</span>
+                  </div>
+                  <div class="pipeline-step-desc">
+                    El modelo entrega código autónomo listo para guardar en <code>src/dashboard.html</code>, activando contadores tickeados con <code>requestAnimationFrame</code> y sparklines auto-dibujables.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- DIAGRAMA MERMAID DE RELACIONES -->
+          <div class="prompt-block-wrapper">
+            <div class="prompt-block-header">
+              <h4 class="prompt-block-title">🗺️ Mapa de Relaciones entre Archivos y Agentes</h4>
+              <span class="version-pill original">Diagrama de Dependencias en VS Code</span>
+            </div>
+            <div class="mermaid">
+            graph LR
+              subgraph VSCode ["VS Code Local Workspace"]
+                U(["👤 Usuario"]):::user -->|"/paceui-dashboard"| PF["⚡ paceui-dashboard.prompt.md"]:::prompt
+                U -->|"Ctrl + I / Snippet"| SN["✂️ paceui.code-snippets"]:::snip
+                
+                CI["🧠 copilot-instructions.md"]:::rule -.->|Reglas Globales| LLM{"🤖 GitHub Copilot<br>Engine"}:::ai
+                PF -->|Procedimiento| LLM
+                
+                CV["🏛️ components-vault.html"]:::vault -->|Snippets & Animaciones| LLM
+                RT["🎨 reference-tokens.css"]:::vault -->|Variables CSS| LLM
+                
+                LLM -->|Genera / Refactoriza| DOM["🖥️ src/dashboard.html<br>(Físicas 60 FPS)"]:::target
+                SN -.->|Expansión Tab rápida| DOM
+              end
+
+              classDef user fill:#1e1b4b,stroke:#6366f1,color:#c7d2fe;
+              classDef prompt fill:#1e3a8a,stroke:#3b82f6,color:#bfdbfe;
+              classDef snip fill:#78350f,stroke:#f59e0b,color:#fde68a;
+              classDef rule fill:#581c87,stroke:#a855f7,color:#f3e8ff;
+              classDef vault fill:#064e3b,stroke:#10b981,color:#a7f3d0;
+              classDef ai fill:#27272a,stroke:#71717a,color:#fafafa;
+              classDef target fill:#881337,stroke:#f43f5e,color:#fecdd3;
+            </div>
+          </div>
 
           <h3>3.2. Fichero 1: `.github/copilot-instructions.md`</h3>
           <p>
@@ -675,6 +949,127 @@ Agrega al archivo las reglas `@keyframes hero-shimmer`, `border-travel`, `caret-
 
 ## Paso 4: Consola de Trazas del Agente
 Si el dashboard interactúa con agentes o tareas en segundo plano, añade una consola monospaciada con timestamp, etiquetas coloreadas y el cursor de streaming activo.</pre>
+          </div>
+
+          <h3>3.4. Fichero 3: `.vscode/paceui.code-snippets` (Autocompletado Express sin Esperar a la IA)</h3>
+          <p>
+            Los desarrolladores senior de dashboards no abren el chat de IA para cada tarjeta o botón individual. En su lugar, configuran <strong>Code Snippets</strong> en VS Code. Al escribir un prefijo como <code>pace-kpi</code> y pulsar <kbd>Tab</kbd>, el bloque completo con sparkline SVG y clases CSS se inserta instantáneamente.
+          </p>
+          <p>Crea el archivo <code>.vscode/paceui.code-snippets</code> con este contenido:</p>
+
+          <div class="prompt-block-wrapper pro-version">
+            <div class="prompt-block-header">
+              <h3 class="prompt-block-title">✂️ Snippets Oficiales: `.vscode/paceui.code-snippets`</h3>
+              <span class="version-pill optimized">JSON de Autocompletado (Tab)</span>
+            </div>
+            <pre class="copyable-prompt-pre">{
+  "PaceUI KPI Card with Animated Sparkline": {
+    "prefix": "pace-kpi",
+    "body": [
+      "&lt;div class=\"kpi-card\"&gt;",
+      "  &lt;div class=\"kpi-header\"&gt;",
+      "    &lt;span&gt;${1:Métrica Activa}&lt;/span&gt;",
+      "    &lt;span class=\"pill-dashed\"&gt;${2:LOCAL}&lt;/span&gt;",
+      "  &lt;/div&gt;",
+      "  &lt;div class=\"kpi-value-row\"&gt;",
+      "    &lt;div class=\"kpi-value\"&gt;${3:0}&lt;span style=\"font-size: 1rem; color: var(--muted-foreground);\"&gt;${4:/100}&lt;/span&gt;&lt;/div&gt;",
+      "    &lt;span class=\"delta-badge\"&gt;↑ ${5:12.5%}&lt;/span&gt;",
+      "  &lt;/div&gt;",
+      "  &lt;svg class=\"sparkline-svg\" viewBox=\"0 0 100 25\" style=\"stroke: ${6:#3b82f6};\"&gt;",
+      "    &lt;path class=\"sparkline-path\" d=\"M0 20 Q 25 5, 50 15 T 100 8\" /&gt;",
+      "  &lt;/svg&gt;",
+      "&lt;/div&gt;"
+    ],
+    "description": "Inserta una tarjeta KPI PaceUI con sparkline animado y tabular-nums"
+  },
+  "PaceUI Hero-Shimmer Button": {
+    "prefix": "pace-btn",
+    "body": [
+      "&lt;button class=\"btn-shimmer\" onclick=\"${1:triggerAgentTask()}\"&gt;",
+      "  &lt;span&gt;✨ ${2:Ejecutar Acción}&lt;/span&gt;",
+      "&lt;/button&gt;"
+    ],
+    "description": "Inserta un botón de acción primario con reflejo diagonal hero-shimmer"
+  },
+  "PaceUI Indeterminate Progress Bar": {
+    "prefix": "pace-progress",
+    "body": [
+      "&lt;div class=\"pace-progress-bar\"&gt;&lt;/div&gt;"
+    ],
+    "description": "Barra de progreso líquida indeterminada para actividad de fondo"
+  }
+}</pre>
+          </div>
+
+          <h3>3.5. Fichero 4: `.vscode/settings.json` (Ajustes Profesionales del Workspace)</h3>
+          <p>
+            Garantiza que VS Code reconozca la sintaxis de los Prompt Files (<code>.prompt.md</code>), aplique formato uniforme en 2 espacios al guardar y configure la vista previa en vivo sin salir del editor:
+          </p>
+
+          <div class="prompt-block-wrapper">
+            <div class="prompt-block-header">
+              <h3 class="prompt-block-title">⚙️ Configuración del Editor: `.vscode/settings.json`</h3>
+              <span class="version-pill original">Workspace Settings</span>
+            </div>
+            <pre class="copyable-prompt-pre">{
+  "editor.tabSize": 2,
+  "editor.formatOnSave": true,
+  "editor.fontFamily": "'JetBrains Mono', 'Consolas', monospace",
+  "editor.fontLigatures": true,
+  "files.associations": {
+    "*.prompt.md": "markdown",
+    "*.css": "css"
+  },
+  "github.copilot.chat.welcomeMessage": "always",
+  "liveServer.settings.donotShowInfoMsg": true,
+  "livePreview.defaultPreviewPath": "/src/dashboard.html"
+}</pre>
+          </div>
+
+          <h3>3.6. Fichero 5: `design-system/reference-tokens.css` (Tokens Oficiales Desacoplados)</h3>
+          <p>
+            Almacena los tokens en una hoja CSS externa para poder importarla en cualquier dashboard o referenciarla mediante <code>#file:reference-tokens.css</code> en tus prompts:
+          </p>
+
+          <div class="prompt-block-wrapper">
+            <div class="prompt-block-header">
+              <h3 class="prompt-block-title">🎨 Tokens Oficiales: `design-system/reference-tokens.css`</h3>
+              <span class="version-pill original">Variables CSS PaceUI</span>
+            </div>
+            <pre class="copyable-prompt-pre">/* ==========================================================================
+   PALETA Y TOKENS DEL ESTÁNDAR PACEUI
+   ========================================================================== */
+:root {
+  --background: #0a0a0a;
+  --foreground: #fafafa;
+  --card: #171717;
+  --card-hover: #1f1f1f;
+  --border: #282828;
+  --primary: #e5e5e5;
+  --primary-foreground: #0a0a0a;
+  --muted: #262626;
+  --muted-foreground: #a1a1a1;
+  --accent-emerald: #10b981;
+  --accent-blue: #3b82f6;
+  --accent-amber: #f59e0b;
+  --accent-rose: #f43f5e;
+  --radius: 0.625rem;
+  --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+.bg-grid-pattern {
+  position: fixed;
+  inset: 0;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+  pointer-events: none;
+  z-index: 0;
+}</pre>
           </div>
         </div>
       </section>
