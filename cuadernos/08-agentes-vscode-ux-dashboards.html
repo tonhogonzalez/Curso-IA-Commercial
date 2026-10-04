@@ -241,9 +241,9 @@
         <span class="sidebar-link-number">03</span>
         Creación de Agentes y Skills en VS Code
       </a>
-      <a href="#orquestacion-mcp" class="sidebar-link">
+      <a href="#agentes-sin-mcp" class="sidebar-link">
         <span class="sidebar-link-number">04</span>
-        Invocación de Agentes y Servidor MCP
+        Agentes en VS Code Sin MCP: Prompt Files & Vault
       </a>
       <a href="#laboratorio-dashboard" class="sidebar-link">
         <span class="sidebar-link-number">05</span>
@@ -307,9 +307,9 @@
             <div class="bloom-col">
               <div class="bloom-col-header apply">🚀 3. Aplicar</div>
               <ul>
-                <li>Configurar el servidor MCP de PaceUI en VS Code local usando <code>mcp-remote</code>.</li>
-                <li>Crear la estructura física de ficheros de agentes y skills en el directorio local del proyecto.</li>
-                <li>Invocar a los agentes para refactorizar y transformar un dashboard HTML rudo en una consola interactiva de nivel de producción.</li>
+                <li>Configurar agentes y Prompt Files en VS Code local sin depender de MCP (arquitectura 100% nativa y offline).</li>
+                <li>Crear la estructura física de ficheros de agentes, skills y bóveda local de componentes (Component Vault).</li>
+                <li>Invocar a los agentes para refactorizar y transformar un dashboard HTML rudo en una consola interactiva con micro-animaciones fluidas.</li>
               </ul>
             </div>
           </div>
@@ -341,8 +341,8 @@
                   <span class="pace-badge-dashed"><span class="live-dot"></span> PACEUI PREVIEW INTERACTIVA</span>
                   <span style="font-size: 0.78rem; color: #a1a1a1;">Prueba los estados activos y animaciones en vivo</span>
                 </div>
-                <button class="pace-btn-shimmer" onclick="alert('¡Efecto Shimmer de PaceUI disparado!')">
-                  <span>✨ Acción Primaria (Shimmer)</span>
+                <button class="pace-btn-shimmer" id="demoShimmerBtn" onclick="testShowcaseAnimation()">
+                  <span id="demoBtnLabel">✨ Probar Micro-animación</span>
                 </button>
               </div>
 
@@ -350,25 +350,31 @@
                 <div class="pace-kpi-card pace-glow-border">
                   <div style="font-size: 0.75rem; color: #a1a1a1; text-transform: uppercase; font-weight: 600;">Active Subagents</div>
                   <div style="font-size: 1.85rem; font-weight: 700; margin: 0.25rem 0; font-variant-numeric: tabular-nums;">
-                    8<span style="font-size: 0.9rem; color: #71717a;">/10</span>
+                    <span id="demoSubagentCount">8</span><span style="font-size: 0.9rem; color: #71717a;">/10</span>
                   </div>
                   <div style="font-size: 0.72rem; color: #34d399; font-weight: 600;">↑ 99.4% Uptime SLA</div>
+                  <svg style="width: 100%; height: 26px; stroke: #3b82f6; stroke-width: 2; fill: none; margin-top: 6px;" viewBox="0 0 100 25">
+                    <path id="demoSparkPath1" d="M0 20 Q 25 5, 50 15 T 100 8" style="stroke-dasharray: 120; stroke-dashoffset: 0; transition: stroke-dashoffset 0.8s ease;" />
+                  </svg>
                 </div>
 
                 <div class="pace-kpi-card">
                   <div style="font-size: 0.75rem; color: #a1a1a1; text-transform: uppercase; font-weight: 600;">Streaming Latency</div>
                   <div style="font-size: 1.85rem; font-weight: 700; margin: 0.25rem 0; font-variant-numeric: tabular-nums; color: #60a5fa;">
-                    18.4<span style="font-size: 0.9rem; color: #71717a;">ms</span>
+                    <span id="demoLatencyCount">18.4</span><span style="font-size: 0.9rem; color: #71717a;">ms</span>
                   </div>
                   <div style="font-size: 0.72rem; color: #a1a1a1;">P99 Token Velocity</div>
+                  <svg style="width: 100%; height: 26px; stroke: #10b981; stroke-width: 2; fill: none; margin-top: 6px;" viewBox="0 0 100 25">
+                    <path id="demoSparkPath2" d="M0 22 Q 20 18, 40 10 T 70 8 T 100 2" style="stroke-dasharray: 120; stroke-dashoffset: 0; transition: stroke-dashoffset 0.8s ease;" />
+                  </svg>
                 </div>
 
                 <div class="pace-kpi-card">
                   <div style="font-size: 0.75rem; color: #a1a1a1; text-transform: uppercase; font-weight: 600;">Agent Status</div>
                   <div style="font-size: 1.1rem; font-weight: 600; margin: 0.65rem 0 0.35rem 0; font-family: monospace; color: #e4e4e7;">
-                    synthesizing_ui<span class="caret-blink"></span>
+                    <span id="demoStatusText">synthesizing_ui</span><span class="caret-blink"></span>
                   </div>
-                  <div style="font-size: 0.72rem; color: #10b981;">Streaming output to DOM</div>
+                  <div style="font-size: 0.72rem; color: #10b981;" id="demoStatusSub">Streaming output to DOM</div>
                 </div>
               </div>
             </div>
@@ -377,7 +383,7 @@
           <div class="concept-card highlight">
             <div class="concept-card-label">🔑 La Tesis Central del Cuaderno 08</div>
             <p>
-              Un agente de IA en VS Code sin directivas específicas generará código HTML genérico, colores estridentes y estilos anticuados. Al equipar a los agentes con <strong>Tokens de Diseño rigurosos</strong>, un <strong>Servidor MCP de componentes</strong> y <strong>Skills de micro-animación</strong>, convertimos a cualquier modelo en un Arquitecto Frontend de clase mundial.
+              Un agente de IA en VS Code sin directivas específicas generará código HTML genérico, colores estridentes y estilos anticuados. Al equipar a los agentes con <strong>Tokens de Diseño rigurosos</strong>, <strong>Prompt Files nativos (.github/prompts)</strong>, un <strong>Vault local de componentes</strong> y <strong>Skills de micro-animación sin depender de MCP</strong>, convertimos a cualquier modelo en un Arquitecto Frontend de clase mundial que opera 100% en local y offline.
             </p>
           </div>
         </div>
@@ -588,21 +594,22 @@
             Para que tu Visual Studio Code ejecute estas directivas de diseño de forma determinista en cualquier proyecto local, organizaremos la configuración en dos capas: las <strong>Instrucciones de Agente</strong> (Globales para Copilot/Cursor) y las <strong>Skills Modulares</strong> (Especializadas y llamables).
           </p>
 
-          <h3>3.1. Estructura de Directorios Recomendada en tu Proyecto Local</h3>
-          <p>En la raíz de tu proyecto en local, crea la siguiente arquitectura de carpetas y ficheros:</p>
+          <h3>3.1. Estructura de Directorios Recomendada en tu Proyecto Local (100% Sin MCP)</h3>
+          <p>En la raíz de tu proyecto en local, crea la siguiente arquitectura de carpetas y ficheros autónomos:</p>
 
           <pre class="copyable-prompt-pre">mi-proyecto-dashboard/
 ├── .github/
-│   └── copilot-instructions.md       <-- System prompt para GitHub Copilot Chat
-├── .vscode/
-│   ├── settings.json                 <-- Ajustes del workspace
-│   └── mcp.json                      <-- Configuración del servidor MCP de PaceUI
+│   ├── copilot-instructions.md       &lt;-- Directivas globales inmutables para Copilot
+│   └── prompts/
+│       └── paceui-dashboard.prompt.md &lt;-- Prompt File ejecutable (/paceui-dashboard)
+├── design-system/
+│   ├── reference-tokens.css          &lt;-- Variables CSS y paleta oficial PaceUI
+│   └── components-vault.html         &lt;-- Bóveda local de bloques y micro-animaciones
 ├── skills/
 │   └── paceui-styler/
-│       ├── SKILL.md                  <-- Definición formal de la skill agencial
-│       └── reference-tokens.css      <-- Tokens CSS de consulta rápida
+│       └── SKILL.md                  &lt;-- Definición de skill agencial para Cursor / Antigravity
 └── src/
-    └── dashboard.html                <-- Tu dashboard objetivo</pre>
+    └── dashboard.html                &lt;-- Tu dashboard HTML objetivo</pre>
 
           <h3>3.2. Fichero 1: `.github/copilot-instructions.md`</h3>
           <p>
@@ -672,58 +679,240 @@ Si el dashboard interactúa con agentes o tareas en segundo plano, añade una co
         </div>
       </section>
 
-      <!-- SECCIÓN 04: ORQUESTACIÓN Y MCP -->
-      <section id="orquestacion-mcp" class="transcript-section">
+      <!-- SECCIÓN 04: ARQUITECTURA AGENCIAL SIN MCP -->
+      <section id="agentes-sin-mcp" class="transcript-section">
         <div class="section-header">
           <span class="section-number">04</span>
-          <h2 class="section-title">Invocación de Agentes y Servidor MCP Oficial de PaceUI</h2>
+          <h2 class="section-title">Arquitectura Agencial en VS Code SIN MCP: Prompt Files y Vault Local</h2>
         </div>
         <div class="section-divider"></div>
         <div class="transcript-text">
           <p class="editorial-lead">
-            PaceUI dispone de un servidor oficial mediante **Model Context Protocol (MCP)** en `https://paceui.com/api/mcp`. Esto permite a las IAs en VS Code consultar el catálogo de componentes en tiempo real e instalar bloques con un solo clic.
+            Si no tienes acceso a servidores MCP (Model Context Protocol), no hay ningún impedimento. La arquitectura agencial en VS Code puede funcionar de forma <strong>100% nativa, local y offline</strong> aprovechando los <strong>Prompt Files de GitHub Copilot</strong> (<code>.github/prompts/</code>) y el patrón <strong>Local Component Vault</strong> (bóveda local de componentes).
           </p>
-
-          <h3>4.1. Configuración de `.vscode/mcp.json` en tu Proyecto</h3>
-          <p>
-            Crea o edita el archivo <code>.vscode/mcp.json</code> (o la configuración de tu extensión MCP en VS Code):
-          </p>
-
-          <pre class="copyable-prompt-pre">{
-  "mcpServers": {
-    "paceui": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "mcp-remote",
-        "https://paceui.com/api/mcp"
-      ]
-    }
-  }
-}</pre>
 
           <div class="tech-note-box">
-            <div class="tech-note-title">ℹ️ ¿Cómo funciona este puente MCP?</div>
-            <p>
-              Dado que el servidor de PaceUI es remoto (HTTP/SSE), la herramienta <code>mcp-remote</code> ejecutada mediante <code>npx</code> actúa como puente local entre la entrada/salida estándar (stdio) que requiere VS Code y la API remota de PaceUI. <strong>Las funciones de búsqueda por tags (<code>/find-block</code>) y componentes comunitarios son gratuitas y no requieren API key.</strong>
-            </p>
+            <div class="tech-note-title">💡 Las 4 Ventajas de Trabajar SIN MCP en Local</div>
+            <ul style="margin-left: 1.25rem; font-size: 0.88rem; line-height: 1.65;">
+              <li><strong>Zero Dependencias de Red</strong>: Sin caídas de servidores remotos, sin latencia HTTP y sin consumo de cuotas de APIs externas.</li>
+              <li><strong>Velocidad Instantánea</strong>: VS Code indexa tus ficheros locales en milisegundos usando embeddings del propio editor.</li>
+              <li><strong>Control Determinista del Diseño</strong>: Los snippets y animaciones de tu bóveda local no cambiarán inesperadamente por actualizaciones de un tercero.</li>
+              <li><strong>Privacidad Total</strong>: El código fuente de tu dashboard nunca viaja a servicios externos de MCP.</li>
+            </ul>
           </div>
 
-          <h3>4.2. Cómo Invocar al Agente en VS Code (Flujo Paso a Paso)</h3>
-          <p>Una vez configurados los ficheros, dispones de tres formas de invocar las capacidades en tu editor:</p>
+          <h3>4.1. Fichero 1: `.github/prompts/paceui-dashboard.prompt.md` (Slash Command Nativo)</h3>
+          <p>
+            En las versiones actuales de VS Code con GitHub Copilot Chat, cualquier archivo guardado en la carpeta <code>.github/prompts/</code> con extensión <code>.prompt.md</code> se convierte automáticamente en un <strong>Slash Command</strong> ejecutable desde el chat mediante una barra diagonal (por ejemplo, <code>/paceui-dashboard</code>).
+          </p>
+          <p>
+            Crea el fichero <code>.github/prompts/paceui-dashboard.prompt.md</code> con el siguiente contenido:
+          </p>
+
+          <div class="prompt-block-wrapper pro-version">
+            <div class="prompt-block-header">
+              <h3 class="prompt-block-title">⚡ Prompt File: `.github/prompts/paceui-dashboard.prompt.md`</h3>
+              <span class="version-pill optimized">Slash Command Nativo para Copilot</span>
+            </div>
+            <pre class="copyable-prompt-pre">---
+name: paceui-dashboard
+description: Transforma o genera dashboards HTML con el estandar PaceUI ("Alive UI"), integrando reticulas matematicas, tarjetas KPI densas, micro-animaciones CSS y sparklines fluidos sin librerias externas.
+argument: targetFile
+---
+
+Eres un Arquitecto Frontend y Disenador UX/UI de elite especializado en el estandar de diseno de PaceUI ("Alive UI").
+
+# Archivos de Referencia del Espacio de Trabajo
+- Directivas Globales: #file:.github/copilot-instructions.md
+- Boveda de Componentes: #file:design-system/components-vault.html
+- Tokens de Diseno: #file:design-system/reference-tokens.css
+
+# Objetivo de la Tarea
+Revisar el archivo HTML indicado en `${input:targetFile}` (o el archivo HTML abierto en el editor) y transformarlo en una interfaz de alta fidelidad con micro-animaciones fluidas a 60 FPS.
+
+# Reglas de Transformacion Obligatorias
+1. **Tokens y Paleta Base**:
+   - Aplica modo oscuro por defecto: fondo `--background: #0a0a0a`, tarjetas `--card: #171717`, bordes `--border: #282828`, texto primario `--foreground: #fafafa` y atenuado `--muted-foreground: #a1a1a1`.
+   - Inyecta la fuente "DM Sans" para textos de interfaz y "JetBrains Mono" para datos tecnicos.
+2. **Reticula Matematica de Fondo**:
+   - Agrega `.bg-grid-pattern` con lineas de 1px cada 40px y mascara radial difuminada al centro.
+3. **Tarjetas KPI ("Alive Metrics")**:
+   - Sustituye cualquier tarjeta estatica por la estructura de `.kpi-card` del vault:
+     * Header con etiqueta en pildora punteada (`border: 1px dashed var(--border)`).
+     * Numero grande con `font-variant-numeric: tabular-nums` y recuento suave con requestAnimationFrame.
+     * Badge semantico de variacion (verde `#10b981` con pulso suave).
+     * Sparkline SVG autocontenido con animacion de trazado (`stroke-dasharray` y `stroke-dashoffset`).
+4. **Cinematica y Micro-animaciones CSS**:
+   - Botones primarios con reflejo diagonal `hero-shimmer` activo y transicion hover.
+   - La tarjeta KPI principal debe tener el borde brillante perimetral `border-travel` o resplandor de acento.
+   - Consola de logs de agentes con cursor parpadeante `caret-blink` y scroll automatico.
+   - Barra de progreso indeterminada liquida para subprocesos.
+5. **Autonomia**:
+   - Todo el codigo debe ser HTML5 + CSS3 + Vanilla JS en un unico archivo sin dependencias pesadas ni frameworks de empaquetado.</pre>
+          </div>
+
+          <h3>4.2. Fichero 2: `design-system/components-vault.html` (Bóveda Local de Componentes)</h3>
+          <p>
+            En lugar de solicitar componentes a un servidor MCP remoto, almacenamos los componentes y snippets preprobados de PaceUI directamente en tu proyecto local dentro de <code>design-system/components-vault.html</code>. El modelo de IA en VS Code consultará este archivo mediante la etiqueta de contexto <code>#file:components-vault.html</code>:
+          </p>
+
+          <div class="prompt-block-wrapper">
+            <div class="prompt-block-header">
+              <h3 class="prompt-block-title">🏛️ Bóveda Local: `design-system/components-vault.html`</h3>
+              <span class="version-pill original">Snippets Autónomos Reutilizables</span>
+            </div>
+            <pre class="copyable-prompt-pre">&lt;!-- =====================================================================
+     BOVEDA LOCAL DE COMPONENTES PACEUI (DESIGN SYSTEM VAULT)
+     Uso en VS Code: Referencia este archivo con #file:components-vault.html
+     ===================================================================== --&gt;
+
+&lt;!-- SNIPPET 1: BOTON CON EFECTO HERO-SHIMMER --&gt;
+&lt;button class="btn-shimmer" onclick="handleAction(this)"&gt;
+  &lt;span&gt;✨ Ejecutar Tarea de Agente&lt;/span&gt;
+&lt;/button&gt;
+&lt;style&gt;
+.btn-shimmer {
+  position: relative;
+  overflow: hidden;
+  background: #e5e5e5;
+  color: #171717;
+  font-weight: 600;
+  font-size: 0.825rem;
+  padding: 0.55rem 1.25rem;
+  border-radius: 0.625rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+}
+.btn-shimmer:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(255,255,255,0.15); }
+.btn-shimmer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+  transform: translateX(-180%);
+  animation: hero-shimmer 4.5s infinite cubic-bezier(0.4, 0, 0.2, 1);
+}
+@keyframes hero-shimmer {
+  0% { transform: translateX(-180%); }
+  65% { transform: translateX(180%); }
+  100% { transform: translateX(180%); }
+}
+&lt;/style&gt;
+
+&lt;!-- SNIPPET 2: TARJETA KPI CON SPARKLINE SVG AUTODIBUJABLE --&gt;
+&lt;div class="kpi-card pace-glow-card"&gt;
+  &lt;div class="kpi-top"&gt;
+    &lt;span class="kpi-label"&gt;Active Subagents&lt;/span&gt;
+    &lt;span class="pill-dashed"&gt;VS CODE CLUSTER&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class="kpi-value-row"&gt;
+    &lt;div class="kpi-number" data-target="14"&gt;14&lt;span class="kpi-sub"&gt;/16&lt;/span&gt;&lt;/div&gt;
+    &lt;span class="badge-delta positive"&gt;↑ 12.5%&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;svg class="sparkline-draw" viewBox="0 0 100 24"&gt;
+    &lt;path d="M0 20 Q 25 4, 50 14 T 100 6" /&gt;
+  &lt;/svg&gt;
+&lt;/div&gt;
+&lt;style&gt;
+.kpi-card {
+  background: #171717;
+  border: 1px solid #282828;
+  border-radius: 0.625rem;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.kpi-card:hover { border-color: rgba(255,255,255,0.22); transform: translateY(-2px); }
+.sparkline-draw {
+  width: 100%;
+  height: 36px;
+  stroke: #3b82f6;
+  stroke-width: 2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+  animation: drawSparkline 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes drawSparkline {
+  to { stroke-dashoffset: 0; }
+}
+&lt;/style&gt;
+
+&lt;!-- SNIPPET 3: BARRA DE PROGRESO INDETERMINADA (SUBAGENT SCAN) --&gt;
+&lt;div class="pace-progress-bar"&gt;&lt;/div&gt;
+&lt;style&gt;
+.pace-progress-bar {
+  position: relative;
+  height: 4px;
+  width: 100%;
+  background: #262626;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+.pace-progress-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 35%;
+  background: linear-gradient(90deg, #3b82f6, #60a5fa);
+  border-radius: 9999px;
+  animation: progress-indeterminate 1.6s infinite ease-in-out;
+}
+@keyframes progress-indeterminate {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(300%); }
+}
+&lt;/style&gt;</pre>
+          </div>
+
+          <h3>4.3. Guía Paso a Paso: Cómo Invocar al Agente en VS Code SIN MCP</h3>
+          <p>Con tus archivos creados en local, dispones de cuatro modalidades directas de interacción dentro de VS Code:</p>
 
           <div class="ocfe-breakdown">
             <div class="ocfe-item">
-              <span class="ocfe-tag goal">Opción A</span>
-              <span class="ocfe-desc"><strong>Copilot Chat con referencia a instrucciones:</strong> Abre el chat de VS Code (<code>Ctrl + Alt + I</code> o <code>Cmd + Option + I</code>) y escribe: <em>"@workspace refactoriza src/dashboard.html siguiendo las directivas de #file:copilot-instructions.md para añadir 4 tarjetas KPI con sparklines y efecto shimmer."</em></span>
+              <span class="ocfe-tag goal">Método 1</span>
+              <span class="ocfe-desc">
+                <strong>Slash Command Nativo en Copilot Chat:</strong><br>
+                Abre GitHub Copilot Chat (<code>Ctrl + Alt + I</code> o <code>Cmd + Option + I</code>) y escribe simplemente:<br>
+                <code>/paceui-dashboard src/dashboard.html</code><br>
+                VS Code leerá automáticamente el archivo <code>.github/prompts/paceui-dashboard.prompt.md</code>, cargará los tokens y el vault local, y generará la propuesta de refactorización visual.
+              </span>
             </div>
             <div class="ocfe-item">
-              <span class="ocfe-tag ctx">Opción B</span>
-              <span class="ocfe-desc"><strong>Invocación de la Skill con Slash Commands:</strong> Si utilizas extensiones agenciales (como Antigravity o Claude Code), escribe en el prompt: <em>"/paceui-styler sobre dashboard.html"</em>. El agente cargará automáticamente <code>skills/paceui-styler/SKILL.md</code> y ejecutará la transformación.</span>
+              <span class="ocfe-tag ctx">Método 2</span>
+              <span class="ocfe-desc">
+                <strong>Referencia de Contexto con `#file:` en Chat General:</strong><br>
+                En cualquier panel de chat de VS Code (Copilot o Cursor), puedes anclar manualmente los archivos locales escribiendo:<br>
+                <em>"@workspace #file:components-vault.html #file:copilot-instructions.md refactoriza las tarjetas KPI de src/dashboard.html para que usen sparklines SVG animados y el botón con shimmer."</em>
+              </span>
             </div>
             <div class="ocfe-item">
-              <span class="ocfe-tag exp">Opción C</span>
-              <span class="ocfe-desc"><strong>Búsqueda vía MCP:</strong> Pregunta a la IA en el chat: <em>"Lista los bloques disponibles de PaceUI para dashboards con la etiqueta 'chart' usando el servidor MCP y dame el código para insertar en mi HTML."</em></span>
+              <span class="ocfe-tag exp">Método 3</span>
+              <span class="ocfe-desc">
+                <strong>Edición Rápida In-line (Ctrl + I / Cmd + I):</strong><br>
+                Abre tu archivo HTML en el editor de VS Code, selecciona un bloque `&lt;div&gt;` que contenga una métrica fea o anticuada, presiona <code>Ctrl + I</code> (o <code>Cmd + I</code>) y pide al agente in-line:<br>
+                <em>"Estiliza este bloque según #file:components-vault.html como una tarjeta KPI PaceUI con efecto hover y tabular-nums."</em>
+              </span>
+            </div>
+            <div class="ocfe-item">
+              <span class="ocfe-tag goal">Método 4</span>
+              <span class="ocfe-desc">
+                <strong>Herramientas Agenciales Modulares (Antigravity / Claude Code / Cline):</strong><br>
+                Si utilizas extensiones basadas en agentes autónomos con soporte de skills, ejecuta en la terminal o en la barra de prompts:<br>
+                <code>/paceui-styler src/dashboard.html</code><br>
+                El asistente leerá el fichero <code>skills/paceui-styler/SKILL.md</code>, ejecutará los 4 pasos secuenciales y actualizará tu archivo de forma transparente.
+              </span>
             </div>
           </div>
         </div>
@@ -751,24 +940,33 @@ Si el dashboard interactúa con agentes o tareas en segundo plano, añade una co
 &lt;head&gt;
   &lt;meta charset="UTF-8"&gt;
   &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
-  &lt;title&gt;Autonomous Operations Console — PaceUI Standard&lt;/title&gt;
+  &lt;title&gt;Autonomous UX Dashboard — PaceUI Standard (Zero-MCP Local)&lt;/title&gt;
   &lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;
   &lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin&gt;
-  &lt;link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"&gt;
+  &lt;link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"&gt;
   
   &lt;style&gt;
+    /* ==========================================================================
+       TOKENS DE DISENO OFICIALES PACEUI
+       ========================================================================== */
     :root {
       --background: #0a0a0a;
       --foreground: #fafafa;
       --card: #171717;
+      --card-hover: #1f1f1f;
       --border: #282828;
+      --border-subtle: rgba(255, 255, 255, 0.08);
       --primary: #e5e5e5;
-      --primary-foreground: #171717;
+      --primary-foreground: #0a0a0a;
       --muted: #262626;
       --muted-foreground: #a1a1a1;
+      --accent-emerald: #10b981;
+      --accent-blue: #3b82f6;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
       --radius: 0.625rem;
-      --font-sans: 'DM Sans', sans-serif;
-      --font-mono: 'JetBrains Mono', monospace;
+      --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -782,9 +980,10 @@ Si el dashboard interactúa con agentes o tareas en segundo plano, añade una co
       flex-direction: column;
       overflow-x: hidden;
       line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* 1. RETÍCULA MATEMÁTICA CON MÁSCARA RADIAL */
+    /* 1. RETICULA MATEMATICA CON MASCARA RADIAL */
     .bg-grid-pattern {
       position: fixed;
       inset: 0;
@@ -798,16 +997,16 @@ Si el dashboard interactúa con agentes o tareas en segundo plano, añade una co
       z-index: 0;
     }
 
-    /* 2. HEADER CON BLUR FROSTED */
+    /* 2. HEADER CON BLUR FROSTED GLASS */
     .header {
       position: sticky;
       top: 0;
       z-index: 40;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      background-color: rgba(10, 10, 10, 0.85);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      background-color: rgba(10, 10, 10, 0.82);
       border-bottom: 1px dashed var(--border);
-      height: 4rem;
+      height: 4.25rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -824,8 +1023,8 @@ Si el dashboard interactúa con agentes o tareas en segundo plano, añade una co
     }
 
     .brand-icon {
-      width: 1.85rem;
-      height: 1.85rem;
+      width: 1.9rem;
+      height: 1.9rem;
       background: var(--foreground);
       color: var(--background);
       border-radius: 6px;
@@ -838,7 +1037,7 @@ Si el dashboard interactúa con agentes o tareas en segundo plano, añade una co
     .pill-dashed {
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.45rem;
       border: 1px dashed var(--border);
       background: var(--card);
       padding: 0.25rem 0.75rem;
@@ -846,22 +1045,24 @@ Si el dashboard interactúa con agentes o tareas en segundo plano, añade una co
       font-size: 0.75rem;
       font-weight: 500;
       color: var(--muted-foreground);
+      transition: border-color 0.2s ease;
     }
+    .pill-dashed:hover { border-color: rgba(255, 255, 255, 0.25); }
 
     .dot-live {
       width: 0.5rem;
       height: 0.5rem;
       border-radius: 50%;
-      background-color: #10b981;
-      box-shadow: 0 0 10px #10b981;
+      background-color: var(--accent-emerald);
+      box-shadow: 0 0 10px var(--accent-emerald);
       animation: livePulse 2s infinite ease-in-out;
     }
     @keyframes livePulse {
       0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.85); }
+      50% { opacity: 0.35; transform: scale(0.85); }
     }
 
-    /* 3. BOTÓN CON SHIMMER ANIMADO */
+    /* 3. BOTON PRIMARIO MULTI-ESTADO CON HERO-SHIMMER */
     .btn-shimmer {
       position: relative;
       overflow: hidden;
@@ -869,7 +1070,7 @@ Si el dashboard interactúa con agentes o tareas en segundo plano, añade una co
       color: var(--primary-foreground);
       font-weight: 600;
       font-size: 0.825rem;
-      padding: 0.5rem 1.15rem;
+      padding: 0.55rem 1.25rem;
       border-radius: var(--radius);
       border: 1px solid transparent;
       cursor: pointer;
@@ -878,24 +1079,52 @@ Si el dashboard interactúa con agentes o tareas en segundo plano, añade una co
       gap: 0.5rem;
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .btn-shimmer:hover { transform: translateY(-1px); }
+    .btn-shimmer:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(255, 255, 255, 0.15);
+    }
+    .btn-shimmer:active { transform: translateY(0); }
     .btn-shimmer::before {
       content: '';
       position: absolute;
       inset: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
       transform: translateX(-180%);
-      animation: heroShimmer 5s infinite cubic-bezier(0.4, 0, 0.2, 1);
+      animation: heroShimmer 4.5s infinite cubic-bezier(0.4, 0, 0.2, 1);
+      pointer-events: none;
     }
     @keyframes heroShimmer {
       0% { transform: translateX(-180%); }
-      60% { transform: translateX(180%); }
+      65% { transform: translateX(180%); }
       100% { transform: translateX(180%); }
     }
 
-    /* 4. LAYOUT Y TARJETAS KPI */
+    /* 4. BARRA DE PROGRESO INDETERMINADA (ACTIVIDAD EN SEGUNDO PLANO) */
+    .pace-progress-bar {
+      position: relative;
+      height: 3px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      overflow: hidden;
+    }
+    .pace-progress-bar::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 30%;
+      background: linear-gradient(90deg, #3b82f6, #60a5fa);
+      animation: progressIndeterminate 2s infinite ease-in-out;
+    }
+    @keyframes progressIndeterminate {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(350%); }
+    }
+
+    /* 5. LAYOUT PRINCIPAL Y TARJETAS KPI */
     .container {
       position: relative;
       z-index: 10;
@@ -918,15 +1147,41 @@ Si el dashboard interactúa con agentes o tareas en segundo plano, añade una co
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 1.25rem;
+      padding: 1.35rem;
       display: flex;
       flex-direction: column;
-      gap: 0.75rem;
-      transition: border-color 0.2s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      gap: 0.85rem;
+      position: relative;
+      transition: border-color 0.2s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
     }
     .kpi-card:hover {
-      border-color: rgba(255, 255, 255, 0.22);
+      border-color: rgba(255, 255, 255, 0.25);
       transform: translateY(-2px);
+      box-shadow: 0 10px 24px -6px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Borde Luminoso Viajero (Border Travel) */
+    .kpi-card.featured-glow {
+      border-color: rgba(59, 130, 246, 0.4);
+      box-shadow: inset 0 0 20px rgba(59, 130, 246, 0.05);
+    }
+    .kpi-card.featured-glow::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: var(--radius);
+      padding: 1px;
+      background: linear-gradient(90deg, transparent, #3b82f6, transparent);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      animation: borderGlowSweep 4s infinite linear;
+    }
+    @keyframes borderGlowSweep {
+      0% { opacity: 0.3; }
+      50% { opacity: 0.9; }
+      100% { opacity: 0.3; }
     }
 
     .kpi-header {
@@ -947,7 +1202,7 @@ Si el dashboard interactúa con agentes o tareas en segundo plano, añade una co
     }
 
     .kpi-value {
-      font-size: 2rem;
+      font-size: 2.15rem;
       font-weight: 700;
       letter-spacing: -0.03em;
       font-variant-numeric: tabular-nums;
@@ -956,23 +1211,32 @@ Si el dashboard interactúa con agentes o tareas en segundo plano, añade una co
     .delta-badge {
       font-size: 0.75rem;
       font-weight: 600;
-      padding: 0.15rem 0.5rem;
+      padding: 0.2rem 0.55rem;
       border-radius: 9999px;
       background: rgba(16, 185, 129, 0.15);
       color: #34d399;
       border: 1px solid rgba(16, 185, 129, 0.3);
     }
 
+    /* 6. SPARKLINE SVG AUTODIBUJABLE (KEYFRAME PATH DRAW) */
     .sparkline-svg {
       width: 100%;
       height: 38px;
-      stroke: #3b82f6;
-      stroke-width: 2;
+      stroke-width: 2.2;
       fill: none;
       stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .sparkline-path {
+      stroke-dasharray: 220;
+      stroke-dashoffset: 220;
+      animation: drawSparkline 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes drawSparkline {
+      to { stroke-dashoffset: 0; }
     }
 
-    /* 5. TABLA Y CONSOLA EN STREAMING */
+    /* 7. LAYOUT SPLIT: TABLA Y CONSOLA DE AGENTE */
     .dashboard-split {
       display: grid;
       grid-template-columns: 2fr 1fr;
@@ -1017,30 +1281,37 @@ Si el dashboard interactúa con agentes o tareas en segundo plano, añade una co
     .data-table td {
       padding: 0.85rem 1.25rem;
       border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      transition: background-color 0.15s ease;
     }
-    .data-table tr:hover td { background-color: rgba(255, 255, 255, 0.02); }
+    .data-table tr:hover td { background-color: rgba(255, 255, 255, 0.025); }
 
     .agent-console {
       padding: 1.25rem;
       background: #0d0d0d;
       font-family: var(--font-mono);
       font-size: 0.78rem;
-      height: 240px;
+      height: 250px;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
-      gap: 0.6rem;
+      gap: 0.55rem;
+      scrollbar-width: thin;
+      scrollbar-color: #262626 transparent;
     }
+
     .caret-blink {
       display: inline-block;
-      width: 6px;
-      height: 12px;
+      width: 7px;
+      height: 13px;
       background: #fafafa;
       vertical-align: middle;
       animation: caretBlink 1s infinite;
       margin-left: 2px;
     }
-    @keyframes caretBlink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
+    @keyframes caretBlink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
   &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
@@ -1050,85 +1321,91 @@ Si el dashboard interactúa con agentes o tareas en segundo plano, añade una co
   &lt;header class="header"&gt;
     &lt;div class="brand"&gt;
       &lt;div class="brand-icon"&gt;P&lt;/div&gt;
-      &lt;span&gt;PACEDASH &lt;span style="font-weight: 300; opacity: 0.7;"&gt;AGENT-UX&lt;/span&gt;&lt;/span&gt;
+      &lt;span&gt;PACEDASH &lt;span style="font-weight: 300; opacity: 0.7;"&gt;LOCAL-AGENT&lt;/span&gt;&lt;/span&gt;
     &lt;/div&gt;
     &lt;div style="display: flex; align-items: center; gap: 1rem;"&gt;
       &lt;div class="pill-dashed"&gt;
         &lt;span class="dot-live"&gt;&lt;/span&gt;
-        &lt;span&gt;VS Code Cluster: Connected&lt;/span&gt;
+        &lt;span&gt;VS Code Local Vault: Sync&lt;/span&gt;
       &lt;/div&gt;
-      &lt;button class="btn-shimmer" onclick="addAgentLog()"&gt;
-        &lt;span&gt;+ Trigger Agent Task&lt;/span&gt;
+      &lt;button class="btn-shimmer" id="actionBtn" onclick="triggerAgentTask()"&gt;
+        &lt;span id="btnIcon"&gt;⚡&lt;/span&gt;
+        &lt;span id="btnText"&gt;Trigger Agent Task&lt;/span&gt;
       &lt;/button&gt;
     &lt;/div&gt;
   &lt;/header&gt;
+
+  &lt;!-- Barra de progreso indeterminada --&gt;
+  &lt;div class="pace-progress-bar"&gt;&lt;/div&gt;
 
   &lt;main class="container"&gt;
     &lt;div&gt;
       &lt;h1 style="font-size: 1.5rem; font-weight: 600;"&gt;Autonomous UX Dashboard Engine&lt;/h1&gt;
       &lt;p style="color: var(--muted-foreground); font-size: 0.875rem;"&gt;
-        Supervisión en tiempo real de modelos agenciales y métricas de inferencia frontend.
+        Consola de operaciones agenciales 100% en local sin servidores MCP externos.
       &lt;/p&gt;
     &lt;/div&gt;
 
+    &lt;!-- RETÍCULA DE TARJETAS KPI CON SPARKLINE Y CONTADORES TICKEADOS --&gt;
     &lt;section class="kpi-grid"&gt;
-      &lt;div class="kpi-card"&gt;
+      &lt;div class="kpi-card featured-glow"&gt;
         &lt;div class="kpi-header"&gt;
-          &lt;span&gt;Subagents Active&lt;/span&gt;
-          &lt;span class="pill-dashed" style="padding: 1px 6px;"&gt;VS CODE&lt;/span&gt;
+          &lt;span&gt;Active Subagents&lt;/span&gt;
+          &lt;span class="pill-dashed" style="padding: 1px 6px;"&gt;LOCAL ENGINE&lt;/span&gt;
         &lt;/div&gt;
         &lt;div class="kpi-value-row"&gt;
-          &lt;div class="kpi-value"&gt;14&lt;span style="font-size: 1rem; color: var(--muted-foreground);"&gt;/16&lt;/span&gt;&lt;/div&gt;
+          &lt;div class="kpi-value"&gt;&lt;span id="subagentsCount" class="counter-num" data-target="14"&gt;0&lt;/span&gt;&lt;span style="font-size: 1rem; color: var(--muted-foreground);"&gt;/16&lt;/span&gt;&lt;/div&gt;
           &lt;span class="delta-badge"&gt;↑ 12.5%&lt;/span&gt;
         &lt;/div&gt;
-        &lt;svg class="sparkline-svg" viewBox="0 0 100 25"&gt;
-          &lt;path d="M0 20 Q 25 5, 50 15 T 100 8" /&gt;
+        &lt;svg class="sparkline-svg" viewBox="0 0 100 25" style="stroke: #3b82f6;"&gt;
+          &lt;path class="sparkline-path" d="M0 20 Q 25 5, 50 15 T 100 8" /&gt;
         &lt;/svg&gt;
       &lt;/div&gt;
 
       &lt;div class="kpi-card"&gt;
         &lt;div class="kpi-header"&gt;
           &lt;span&gt;Tokens Processed&lt;/span&gt;
-          &lt;span class="pill-dashed" style="padding: 1px 6px;"&gt;24H&lt;/span&gt;
+          &lt;span class="pill-dashed" style="padding: 1px 6px;"&gt;OFFLINE CACHE&lt;/span&gt;
         &lt;/div&gt;
         &lt;div class="kpi-value-row"&gt;
-          &lt;div class="kpi-value"&gt;3.42&lt;span style="font-size: 1.1rem; color: var(--muted-foreground);"&gt;M&lt;/span&gt;&lt;/div&gt;
+          &lt;div class="kpi-value"&gt;&lt;span id="tokensCount" class="counter-num" data-target="3.42"&gt;0.00&lt;/span&gt;&lt;span style="font-size: 1.1rem; color: var(--muted-foreground);"&gt;M&lt;/span&gt;&lt;/div&gt;
           &lt;span class="delta-badge"&gt;↑ 24.1%&lt;/span&gt;
         &lt;/div&gt;
         &lt;svg class="sparkline-svg" viewBox="0 0 100 25" style="stroke: #10b981;"&gt;
-          &lt;path d="M0 22 Q 20 18, 40 10 T 70 8 T 100 2" /&gt;
+          &lt;path class="sparkline-path" d="M0 22 Q 20 18, 40 10 T 70 8 T 100 2" /&gt;
         &lt;/svg&gt;
       &lt;/div&gt;
 
       &lt;div class="kpi-card"&gt;
         &lt;div class="kpi-header"&gt;
-          &lt;span&gt;Refactor Latency&lt;/span&gt;
-          &lt;span class="pill-dashed" style="padding: 1px 6px;"&gt;AVG&lt;/span&gt;
+          &lt;span&gt;Inference Latency&lt;/span&gt;
+          &lt;span class="pill-dashed" style="padding: 1px 6px;"&gt;LOCAL GPU&lt;/span&gt;
         &lt;/div&gt;
         &lt;div class="kpi-value-row"&gt;
-          &lt;div class="kpi-value"&gt;320&lt;span style="font-size: 1rem; color: var(--muted-foreground);"&gt;ms&lt;/span&gt;&lt;/div&gt;
+          &lt;div class="kpi-value"&gt;&lt;span id="latencyCount" class="counter-num" data-target="18.4"&gt;0.0&lt;/span&gt;&lt;span style="font-size: 1rem; color: var(--muted-foreground);"&gt;ms&lt;/span&gt;&lt;/div&gt;
           &lt;span class="delta-badge" style="background: rgba(59,130,246,0.15); color: #60a5fa; border-color: rgba(59,130,246,0.3);"&gt;P95 Steady&lt;/span&gt;
         &lt;/div&gt;
         &lt;svg class="sparkline-svg" viewBox="0 0 100 25" style="stroke: #a78bfa;"&gt;
-          &lt;path d="M0 5 Q 30 18, 60 12 T 100 20" /&gt;
+          &lt;path class="sparkline-path" d="M0 5 Q 30 18, 60 12 T 100 20" /&gt;
         &lt;/svg&gt;
       &lt;/div&gt;
 
       &lt;div class="kpi-card"&gt;
         &lt;div class="kpi-header"&gt;
-          &lt;span&gt;Design System Sync&lt;/span&gt;
-          &lt;span class="pill-dashed" style="padding: 1px 6px;"&gt;MCP&lt;/span&gt;
+          &lt;span&gt;Component Vault Sync&lt;/span&gt;
+          &lt;span class="pill-dashed" style="padding: 1px 6px;"&gt;VAULT FILE&lt;/span&gt;
         &lt;/div&gt;
         &lt;div class="kpi-value-row"&gt;
-          &lt;div class="kpi-value"&gt;100&lt;span style="font-size: 1rem; color: var(--muted-foreground);"&gt;%&lt;/span&gt;&lt;/div&gt;
+          &lt;div class="kpi-value"&gt;&lt;span id="syncCount" class="counter-num" data-target="100"&gt;0&lt;/span&gt;&lt;span style="font-size: 1rem; color: var(--muted-foreground);"&gt;%&lt;/span&gt;&lt;/div&gt;
           &lt;span class="delta-badge"&gt;Verified&lt;/span&gt;
         &lt;/div&gt;
         &lt;svg class="sparkline-svg" viewBox="0 0 100 25" style="stroke: #f59e0b;"&gt;
-          &lt;path d="M0 12 Q 25 10, 50 14 T 100 12" /&gt;
+          &lt;path class="sparkline-path" d="M0 12 Q 25 10, 50 14 T 100 12" /&gt;
         &lt;/svg&gt;
       &lt;/div&gt;
     &lt;/section&gt;
 
+    &lt;!-- TABLA DE EJECUCIÓN Y CONSOLA EN STREAMING --&gt;
     &lt;div class="dashboard-split"&gt;
       &lt;div class="panel"&gt;
         &lt;div class="panel-header"&gt;
@@ -1144,7 +1421,7 @@ Si el dashboard interactúa con agentes o tareas en segundo plano, añade una co
               &lt;th&gt;Status&lt;/th&gt;
             &lt;/tr&gt;
           &lt;/thead&gt;
-          &lt;tbody&gt;
+          &lt;tbody id="taskTableBody"&gt;
             &lt;tr&gt;
               &lt;td style="font-family: var(--font-mono);"&gt;TSK-801&lt;/td&gt;
               &lt;td&gt;UX Styler Agent&lt;/td&gt;
@@ -1173,23 +1450,103 @@ Si el dashboard interactúa con agentes o tareas en segundo plano, añade una co
           &lt;span style="color: #10b981; font-size: 0.72rem; font-weight: 700;"&gt;ONLINE&lt;/span&gt;
         &lt;/div&gt;
         &lt;div class="agent-console" id="consoleLog"&gt;
-          &lt;div&gt;&lt;span style="color: #71717a;"&gt;[17:15:02]&lt;/span&gt; &lt;span style="color: #60a5fa;"&gt;INIT&lt;/span&gt; Loaded PaceUI Design Tokens&lt;/div&gt;
-          &lt;div&gt;&lt;span style="color: #71717a;"&gt;[17:15:04]&lt;/span&gt; &lt;span style="color: #34d399;"&gt;OK&lt;/span&gt; Connected to VS Code MCP Bridge&lt;/div&gt;
-          &lt;div&gt;&lt;span style="color: #71717a;"&gt;[17:15:09]&lt;/span&gt; &lt;span style="color: #f59e0b;"&gt;MOTION&lt;/span&gt; Keyframes calibrated to 60fps&lt;span class="caret-blink"&gt;&lt;/span&gt;&lt;/div&gt;
+          &lt;div&gt;&lt;span style="color: #71717a;"&gt;[17:15:02]&lt;/span&gt; &lt;span style="color: #60a5fa;"&gt;INIT&lt;/span&gt; Loaded PaceUI Design Tokens from #file:reference-tokens.css&lt;/div&gt;
+          &lt;div&gt;&lt;span style="color: #71717a;"&gt;[17:15:04]&lt;/span&gt; &lt;span style="color: #34d399;"&gt;OK&lt;/span&gt; Verified Local Component Vault (design-system/components-vault.html)&lt;/div&gt;
+          &lt;div&gt;&lt;span style="color: #71717a;"&gt;[17:15:09]&lt;/span&gt; &lt;span style="color: #f59e0b;"&gt;MOTION&lt;/span&gt; Calibrated 60fps Keyframes (hero-shimmer, sparkline-draw)&lt;/div&gt;
+          &lt;div id="streamAnchor"&gt;&lt;span style="color: #71717a;"&gt;[17:15:12]&lt;/span&gt; &lt;span style="color: #10b981;"&gt;READY&lt;/span&gt; Listening for local Prompt File invocations...&lt;span class="caret-blink"&gt;&lt;/span&gt;&lt;/div&gt;
         &lt;/div&gt;
       &lt;/div&gt;
     &lt;/div&gt;
   &lt;/main&gt;
 
   &lt;script&gt;
-    function addAgentLog() {
-      const consoleBox = document.getElementById('consoleLog');
-      const time = new Date().toTimeString().split(' ')[0];
-      const log = document.createElement('div');
-      log.innerHTML = `&lt;span style="color: #71717a;"&gt;[${time}]&lt;/span&gt; &lt;span style="color: #38bdf8;"&gt;EXEC&lt;/span&gt; Injected new UI block variation via Agent...`;
-      consoleBox.appendChild(log);
-      consoleBox.scrollTop = consoleBox.scrollHeight;
+    /* ==========================================================================
+       LOGICA DE MICRO-ANIMACIONES EN VANILLA JS
+       ========================================================================== */
+
+    // 1. Contador Ticker suave al cargar la pagina
+    function animateCounters() {
+      const counters = document.querySelectorAll('.counter-num');
+      counters.forEach(counter =&gt; {
+        const target = parseFloat(counter.getAttribute('data-target'));
+        const isDecimal = target % 1 !== 0;
+        const duration = 1200; // ms
+        const startTime = performance.now();
+
+        function update(currentTime) {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          // Easing: cubic ease-out
+          const easeOut = 1 - Math.pow(1 - progress, 3);
+          const currentVal = target * easeOut;
+
+          counter.textContent = isDecimal ? currentVal.toFixed(2) : Math.round(currentVal);
+
+          if (progress &lt; 1) {
+            requestAnimationFrame(update);
+          } else {
+            counter.textContent = isDecimal ? target.toFixed(2) : target;
+          }
+        }
+        requestAnimationFrame(update);
+      });
     }
+
+    // 2. Disparador interactivo de tareas del agente
+    let taskCounter = 804;
+    function triggerAgentTask() {
+      const btn = document.getElementById('actionBtn');
+      const btnIcon = document.getElementById('btnIcon');
+      const btnText = document.getElementById('btnText');
+      const consoleBox = document.getElementById('consoleLog');
+      const streamAnchor = document.getElementById('streamAnchor');
+
+      // Estado activo del boton
+      btn.style.pointerEvents = 'none';
+      btnIcon.textContent = '⏳';
+      btnText.textContent = 'Dispatching task...';
+
+      setTimeout(() =&gt; {
+        const time = new Date().toTimeString().split(' ')[0];
+        const newLog = document.createElement('div');
+        newLog.innerHTML = `&lt;span style="color: #71717a;"&gt;[${time}]&lt;/span&gt; &lt;span style="color: #38bdf8;"&gt;EXEC&lt;/span&gt; Injected TSK-${taskCounter} from local vault into DOM.`;
+        consoleBox.insertBefore(newLog, streamAnchor);
+        consoleBox.scrollTop = consoleBox.scrollHeight;
+
+        // Anadir fila a la tabla
+        const tableBody = document.getElementById('taskTableBody');
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+          &lt;td style="font-family: var(--font-mono);"&gt;TSK-${taskCounter}&lt;/td&gt;
+          &lt;td&gt;Vault Refactor Agent&lt;/td&gt;
+          &lt;td style="color: var(--muted-foreground);"&gt;Sparkline Micro-chart&lt;/td&gt;
+          &lt;td&gt;&lt;span style="color: #34d399; font-weight: 600;"&gt;Completed&lt;/span&gt;&lt;/td&gt;
+        `;
+        tableBody.appendChild(newRow);
+
+        // Actualizar contador
+        const subagentsEl = document.getElementById('subagentsCount');
+        let currentSub = parseInt(subagentsEl.textContent) || 14;
+        if (currentSub &lt; 16) {
+          subagentsEl.textContent = currentSub + 1;
+        }
+
+        // Re-disparar animacion de sparklines
+        document.querySelectorAll('.sparkline-path').forEach(p =&gt; {
+          p.style.animation = 'none';
+          p.offsetHeight; // trigger reflow
+          p.style.animation = 'drawSparkline 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards';
+        });
+
+        taskCounter++;
+        btn.style.pointerEvents = 'auto';
+        btnIcon.textContent = '⚡';
+        btnText.textContent = 'Trigger Agent Task';
+      }, 700);
+    }
+
+    // Inicializar contadores al cargar el DOM
+    window.addEventListener('DOMContentLoaded', animateCounters);
   &lt;/script&gt;
 &lt;/body&gt;
 &lt;/html&gt;</pre>
@@ -1253,5 +1610,53 @@ Si el dashboard interactúa con agentes o tareas en segundo plano, añade una co
   <script src="../js/quiz.js"></script>
   <script src="../js/annotations.js"></script>
   <script src="../js/achievements.js"></script>
+  <script>
+    function testShowcaseAnimation() {
+      const btn = document.getElementById('demoShimmerBtn');
+      const count = document.getElementById('demoSubagentCount');
+      const latency = document.getElementById('demoLatencyCount');
+      const statusText = document.getElementById('demoStatusText');
+      const statusSub = document.getElementById('demoStatusSub');
+      const spark1 = document.getElementById('demoSparkPath1');
+      const spark2 = document.getElementById('demoSparkPath2');
+
+      if (btn) {
+        btn.style.transform = 'scale(0.95)';
+        setTimeout(() => { btn.style.transform = ''; }, 160);
+      }
+
+      if (count) {
+        let current = parseInt(count.textContent) || 8;
+        count.textContent = current >= 10 ? 8 : current + 1;
+      }
+
+      if (latency) {
+        latency.textContent = (14.2 + Math.random() * 5).toFixed(1);
+      }
+
+      if (statusText && statusSub) {
+        const states = [
+          { text: 'vault_syncing', sub: 'Indexed #file:components-vault.html' },
+          { text: 'drawing_sparklines', sub: 'Calibrating stroke-dasharray' },
+          { text: 'shimmer_active', sub: 'GPU transform keyframes 60fps' },
+          { text: 'synthesizing_ui', sub: 'Streaming output to DOM' }
+        ];
+        const next = states[Math.floor(Math.random() * states.length)];
+        statusText.textContent = next.text;
+        statusSub.textContent = next.sub;
+      }
+
+      [spark1, spark2].forEach(spark => {
+        if (spark) {
+          spark.style.transition = 'none';
+          spark.style.strokeDashoffset = '120';
+          setTimeout(() => {
+            spark.style.transition = 'stroke-dashoffset 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+            spark.style.strokeDashoffset = '0';
+          }, 30);
+        }
+      });
+    }
+  </script>
 </body>
 </html>
