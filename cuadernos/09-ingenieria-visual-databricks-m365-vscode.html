@@ -1562,6 +1562,109 @@ html_war_room = r"""<!DOCTYPE html>
 
 displayHTML(html_war_room.replace("__PYSPARK_PAYLOAD__", payload_deals))</pre>
           </div>
+
+          <!-- SUBSECCIÓN 3.4: DE LA CELDA DE DATABRICKS AL CORREO ELECTRÓNICO (EJECUCIÓN 100% LOCAL FILE://) -->
+          <h3>3.4. De la Celda de Databricks al Correo Electrónico: Empaquetador <code>.HTML</code> Portable en 1 Clic y Utilidades Locales para el Receptor</h3>
+          <p>
+            Como ejecutas el código en celdas de <strong>Databricks</strong> pero envías los dashboards por <strong>correo electrónico (Outlook / Teams)</strong> para que cada director, gestor o analista los abra en local en su propio ordenador (<code>file:///C:/Users/.../Downloads/Informe.html</code> sin acceso a Databricks), añade siempre este <strong>Kit de Portabilidad y Ejecución Local</strong> al final de tu celda PySpark.
+          </p>
+          <p>
+            Este bloque resuelve <strong>3 necesidades críticas del trabajo diario</strong>: (1) muestra en tu celda de Databricks un botón verde <strong>«📥 Descargar .HTML Autocontenido para Enviar por Correo»</strong> codificado en Base64 para que bajes el fichero ya hidratado con los datos en 1 clic; (2) añade dentro del dashboard del receptor el botón <strong>«📊 Exportar Vista Filtrada a Excel/CSV»</strong> para que quien recibe el correo pueda bajarse a Excel los datos que está filtrando en pantalla; y (3) incluye reglas <code>@media print</code> y botón <strong>«🖨️ Guardar Informe en PDF A4»</strong>:
+          </p>
+
+          <div class="prompt-block-wrapper pro-version">
+            <div class="prompt-block-header">
+              <h4 class="prompt-block-title">📧 Snippet Maestro Databricks → Correo Local: Empaquetador Base64 + Exportador CSV Local + PDF Print</h4>
+              <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Kit Databricks-a-Correo</button>
+            </div>
+            <pre class="copyable-prompt-pre"># ==============================================================================
+# KIT DATABRICKS -> CORREO ELECTRÓNICO (EJECUCIÓN 100% LOCAL EN EL PC DEL RECEPTOR)
+# Añade este bloque al final de cualquier celda PySpark antes de displayHTML()
+# ==============================================================================
+import base64
+
+# 1. Utilidades JavaScript que viajarán DENTRO del HTML para quien lo abra desde el correo:
+#    - Descargar tabla filtrada actual a CSV compatible con Excel en español (BOM UTF-8 + punto y coma)
+#    - Imprimir / Guardar vista actual como PDF Ejecutivo A4 Horizontal
+#    - Auto-descargar copia portable del propio archivo .html con el estado actual
+local_receiver_toolbar_html = r"""
+<style>
+  @media print {
+    body { background: #070B14 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    .no-print-bar { display: none !important; }
+    @page { size: A4 landscape; margin: 8mm; }
+  }
+</style>
+<div class="no-print-bar" style="position:fixed; bottom:14px; right:18px; z-index:9999; display:flex; gap:8px; background:rgba(9,13,24,0.92); backdrop-filter:blur(12px); padding:8px 12px; border-radius:10px; border:1px solid rgba(99,102,241,0.4); box-shadow:0 12px 30px rgba(0,0,0,0.65); font-family:Inter,sans-serif;">
+  <button onclick="exportActiveDataToExcelCSV()" style="padding:6px 11px; border-radius:6px; border:1px solid rgba(16,185,129,0.45); background:rgba(16,185,129,0.18); color:#6ee7b7; font-size:11px; font-weight:600; cursor:pointer;">
+    📊 Exportar Datos a Excel (.CSV)
+  </button>
+  <button onclick="window.print()" style="padding:6px 11px; border-radius:6px; border:1px solid rgba(6,182,212,0.45); background:rgba(6,182,212,0.18); color:#67e8f9; font-size:11px; font-weight:600; cursor:pointer;">
+    🖨️ Guardar Vista en PDF
+  </button>
+  <button onclick="downloadStandaloneCopy()" style="padding:6px 11px; border-radius:6px; border:1px solid rgba(99,102,241,0.45); background:rgba(99,102,241,0.2); color:#c7d2fe; font-size:11px; font-weight:600; cursor:pointer;">
+    💾 Guardar Copia .HTML Local
+  </button>
+</div>
+<script>
+  function exportActiveDataToExcelCSV() {
+    const rows = (window.REPORT_DATA && (window.REPORT_DATA.products || window.REPORT_DATA.deals)) || [];
+    if (!rows.length) { alert('No hay filas en REPORT_DATA para exportar.'); return; }
+    const headers = Object.keys(rows[0]).filter(k => typeof rows[0][k] !== 'object');
+    const csvLines = [
+      headers.join(';'),
+      ...rows.map(r => headers.map(h => {
+        const val = r[h] ?? '';
+        return typeof val === 'number' ? String(val).replace('.', ',') : `"${String(val).replace(/"/g, '""')}"`;
+      }).join(';'))
+    ];
+    // BOM \uFEFF garantiza que Excel en Windows abra tildes y símbolo € perfectamente
+    const blob = new Blob(['\uFEFF' + csvLines.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'Datos_Dashboard_Commercial_' + new Date().toISOString().slice(0,10) + '.csv';
+    a.click();
+  }
+
+  function downloadStandaloneCopy() {
+    const clone = document.documentElement.cloneNode(true);
+    clone.querySelectorAll('[_echarts_instance_]').forEach(el => {
+      el.innerHTML = '';
+      el.removeAttribute('_echarts_instance_');
+    });
+    const htmlStr = '<!DOCTYPE html>\n<html lang="es" class="dark">\n' + clone.innerHTML + '\n</html>';
+    const blob = new Blob([htmlStr], { type: 'text/html;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'Dashboard_Ejecutivo_Local_' + new Date().toISOString().slice(0,10) + '.html';
+    a.click();
+  }
+</script>
+"""
+
+# 2. Inyectar el JSON de PySpark y la barra de herramientas local dentro del HTML final
+final_portable_html = (
+    html_template
+    .replace("__PYSPARK_PAYLOAD__", payload_json)
+    .replace("</body>", local_receiver_toolbar_html + "\n</body>")
+)
+
+# 3. Codificar el archivo .html completo en Base64 para descargarlo en 1 clic desde Databricks
+b64_html = base64.b64encode(final_portable_html.encode("utf-8")).decode("utf-8")
+download_banner = f"""
+<div style="background:#090d16; border:1px solid rgba(16,185,129,0.45); padding:10px 16px; border-radius:10px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; font-family:Inter,sans-serif; color:#f8fafc;">
+  <div style="font-size:12px;">
+    ✅ <strong>Dashboard compilado con datos embebidos ({len(final_portable_html)//1024} KB)</strong> · Listo para enviar por Outlook/Teams y abrir en local (<code>file://</code>)
+  </div>
+  <a href="data:text/html;base64,{b64_html}" download="Dashboard_Commercial_Banking_Portable.html"
+     style="background:#10b981; color:#05070e; font-weight:700; font-size:12px; padding:7px 14px; border-radius:7px; text-decoration:none;">
+    📥 Descargar .HTML para Enviar por Correo
+  </a>
+</div>
+"""
+
+displayHTML(download_banner + final_portable_html)</pre>
+          </div>
         </div>
       </section>
 
@@ -2145,89 +2248,104 @@ plt.show()</pre>
                   <td style="padding: 0.7rem;" class="tabular-mono"><code>skills/aesthetic-motion-critic/SKILL.md</code></td>
                   <td style="padding: 0.7rem;"><strong>Paso 2 (Refinador)</strong>: inyectar Spotlight CSS, Cross-Filtering, Drawer con Radar y <code>Ctrl+K</code> sin tocar datos.</td>
                 </tr>
-                <tr>
+                <tr style="border-bottom: 1px solid var(--border-subtle);">
                   <td style="padding: 0.7rem;" class="tabular-mono"><code>/excel-institucional</code></td>
                   <td style="padding: 0.7rem;" class="tabular-mono"><code>.github/prompts/excel-institucional.prompt.md</code></td>
                   <td style="padding: 0.7rem;" class="tabular-mono"><code>skills/institutional-excel-openpyxl/SKILL.md</code></td>
-                  <td style="padding: 0.7rem;">Generar scripts Python <code>openpyxl</code> u Office Scripts con formato financiero institucional.</td>
+                  <td style="padding: 0.7rem;">Generar libros Excel <code>openpyxl</code> o fórmulas dinámicas institucionales sin macros VBA.</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--border-subtle);">
+                  <td style="padding: 0.7rem;" class="tabular-mono"><code>/interactive-ppt</code></td>
+                  <td style="padding: 0.7rem;" class="tabular-mono"><code>.github/prompts/interactive-ppt.prompt.md</code></td>
+                  <td style="padding: 0.7rem;" class="tabular-mono"><code>skills/interactive-ppt-slides/SKILL.md</code></td>
+                  <td style="padding: 0.7rem;">Crear diapositivas 16:9 interactivas por dentro (pestañas internas, sliders en vivo y Morph <code>!!objeto</code>).</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--border-subtle);">
+                  <td style="padding: 0.7rem;" class="tabular-mono"><code>/infografia-ejecutiva</code></td>
+                  <td style="padding: 0.7rem;" class="tabular-mono"><code>.github/prompts/infografia-ejecutiva.prompt.md</code></td>
+                  <td style="padding: 0.7rem;" class="tabular-mono"><code>skills/executive-infographic-studio/SKILL.md</code></td>
+                  <td style="padding: 0.7rem;">Pintar infografías vectoriales SVG/HTML de alta densidad con exportación a imagen PNG / PDF.</td>
+                </tr>
+                <tr>
+                  <td style="padding: 0.7rem;" class="tabular-mono"><code>/video-explicativo</code></td>
+                  <td style="padding: 0.7rem;" class="tabular-mono"><code>.github/prompts/video-explicativo.prompt.md</code></td>
+                  <td style="padding: 0.7rem;" class="tabular-mono"><code>skills/motion-data-video/SKILL.md</code></td>
+                  <td style="padding: 0.7rem;">Generar vídeos explicativos animados con locución automática en español y grabación <code>.webm</code>.</td>
                 </tr>
               </tbody>
             </table>
           </div>
 
-          <!-- PROMPTS PARA M365 COPILOT EN EXCEL -->
-          <h3>5.2. Suite de Prompts y Office Scripts para Microsoft 365 Copilot en Excel</h3>
+          <!-- PROMPTS AVANZADOS PARA APLICAR DIRECTAMENTE EN EXCEL (CERO VBA / CERO SCRIPTS) -->
+          <h3>5.2. Batería de Prompts Avanzados para Aplicar Directamente en Excel (Copilot Lateral + Fórmulas Dinámicas Excel 365, Cero VBA)</h3>
+          <p>
+            Cuando ya tienes tus datos abiertos en Excel y <strong>no quieres usar macros VBA ni scripts externos</strong>, copia cualquiera de estos <strong>6 Prompts Directos</strong> y pégalos en el panel lateral de <strong>M365 Copilot en Excel</strong> (o en ChatGPT/Copilot Chat indicando el nombre de tus columnas) para obtener análisis avanzados, fórmulas matriciales que se despliegan solas (<em>Spill Arrays</em>) y simuladores interactivos nativos:
+          </p>
 
           <div class="prompt-block-wrapper m365-version">
             <div class="prompt-block-header">
-              <h4 class="prompt-block-title">📊 M365 Excel Prompt #1: Análisis Avanzado con Python in Excel (`=PY()`) para Canales Web/App y Cartera</h4>
-              <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Prompt Excel =PY()</button>
+              <h4 class="prompt-block-title">📊 Excel Prompt Directo #1 (Para pegar en Copilot en Excel): Activar «Advanced Analysis» y Pintar Panel de Cartera y Fricción Digital</h4>
+              <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Prompt Directo Copilot Excel</button>
             </div>
-            <pre class="copyable-prompt-pre">Actúa como un Especialista en Visualización Cuantitativa con Python in Excel (=PY()).
-Usando el rango de datos de la tabla activa:
-1. Prohibido generar gráficos con el estilo por defecto de Matplotlib/Seaborn. Configura el lienzo con fondo oscuro '#070B14' o blanco limpio sin bordes superiores ni derechos (sns.despine()), tipografía limpia y paleta corporativa ('#06B6D4' para App, '#6366F1' para Web, '#10B981' para Conversión y '#F43F5E' para Abandono/Fricción UX).
-2. Genera un bloque =PY() que construya un panel compuesto (GridSpec de 1x2):
-   - Subgráfico Izquierdo: Mapa de Calor (Heatmap) con anotaciones porcentuales de conversión y tasa de abandono por etapa del embudo digital (Login -> Simulador -> Solicitud -> Firma).
-   - Subgráfico Derecho: Curva de sensibilidad de conversión frente a latencia/fricción con banda de confianza sombreada y línea horizontal discontinua marcando el objetivo comercial (Hurdle/SLA).
-3. Devuelve el gráfico de alta resolución (dpi=160) listo para incrustar en la hoja de resumen ejecutivo.</pre>
+            <pre class="copyable-prompt-pre">Usa el modo de Análisis Avanzado (Advanced Analysis con Python integrado) sobre la tabla activa sin que yo tenga que programar nada:
+1. Analiza la distribución de Volumen, Conversión Digital, RORWA y Mora (NPL) por Canal (Web vs App) y Línea de Producto Comercial.
+2. Inserta en una hoja nueva un panel visual de alta resolución con estética ejecutiva limpia (sin bordes superiores ni derechos, colores corporativos azul marino #0F172A, cian #06B6D4, esmeralda #10B981 y coral #F43F5E) que contenga:
+   - Un gráfico de Puente (Waterfall) que descomponga desde el Margen de Intereses y Comisiones hasta el Coste de Riesgo y el EVA Neto.
+   - Una matriz de calor (Heatmap) que cruce el Tramo de Spread Comercial frente al Nivel de Mora mostrando el RORWA medio en cada casilla.
+3. Añade debajo una tabla resumen con las 3 anomalías o fugas de rentabilidad más relevantes detectadas en los datos.</pre>
           </div>
 
           <div class="prompt-block-wrapper m365-version">
             <div class="prompt-block-header">
-              <h4 class="prompt-block-title">🧮 M365 Excel Prompt #2: Ingeniería de Fórmulas Dinámicas (`XLOOKUP`, `SUMIFS`, Cohortes y Semáforos Unicode)</h4>
-              <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Prompt Fórmulas Excel</button>
+              <h4 class="prompt-block-title">🧮 Excel Prompt Directo #2: Columnas Calculadas de Pricing Bancario (Spread FTP, EVA y Semáforo de Comité en 1 Paso)</h4>
+              <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Prompt Columnas Comité</button>
             </div>
-            <pre class="copyable-prompt-pre">Actúa como un Modelador Financiero Senior en Banca Comercial. Sobre la tabla activa:
-1. Añade una columna calculada "Spread Neto s/ FTP (bps)" que reste el Coste FTP de la TAE Cliente multiplicado por 10.000.
-2. Añade una columna "EVA Generado (€)" aplicando la fórmula: =([@Volumen_EAD] * ([@RORWA_Neto] - $C$4) * [@Densidad_RWA]), donde $C$4 es el Hurdle Rate (2,50%).
-3. Añade una columna visual "Estado Comité" con fórmula condicional que muestre:
-   - "🟢 CREA VALOR (+EVA)" si RORWA >= 2,50% y NPL <= 2,20%
-   - "🟡 VIGILANCIA PRICING" si RORWA está entre 2,00% y 2,49%
-   - "🔴 DESTRUYE CAPITAL" si RORWA < 2,00% o NPL > 3,00%
-4. Aplica formato numérico personalizado `[Color10]"▲ "0.0%;[Red]"▼ "-0.0%;"—"0.0%` a todas las columnas de variación interanual.</pre>
+            <pre class="copyable-prompt-pre">Sobre la tabla activa de Excel, añade directamente estas 4 columnas calculadas con fórmulas estructuradas en español y formato institucional:
+1. Columna "Spread Neto s/ FTP (bps)": resta la columna de Coste FTP de la TAE Cliente y multiplica por 10.000.
+2. Columna "EVA Creado (€)": calcula `=[@Volumen_EAD] * [@Densidad_RWA] * ([@RORWA_Neto] - 0,025)` tomando 2,50% como Hurdle Rate de capital.
+3. Columna "Barras Visuales In-Cell": genera un gráfico de barras dentro de la propia celda sin macros usando `=REPETIR("█"; REDONDEAR([@Volumen_EAD] / MAX([Volumen_EAD]) * 15; 0)) & " " & TEXTO([@Volumen_EAD]; "#.##0,0 M€")`.
+4. Columna "Dictamen Comité": usa `=SI.CONJUNTO([@RORWA_Neto]>=0,025; "🟢 CREA VALOR (+EVA)"; [@RORWA_Neto]>=0,020; "🟡 REPRECIFICAR (+35 bps)"; VERDADERO; "🔴 DESTRUYE CAPITAL")` y resalta en rojo suave las filas con Mora > 2,8%.</pre>
           </div>
 
           <div class="prompt-block-wrapper excel-version">
             <div class="prompt-block-header">
-              <h4 class="prompt-block-title">⚡ M365 Excel Prompt #3: Office Script (TypeScript) para Formateo Institucional en 1 Clic</h4>
-              <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Office Script (Pestaña Automatizar)</button>
+              <h4 class="prompt-block-title">⚡ Excel Prompt Directo #3: Súper-Fórmula Dinámica `LET` + `AGRUPARPOR` / `PIVOTBY` (Cuadro de Mando Automático en 1 Sola Celda)</h4>
+              <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Prompt Fórmula Matricial</button>
             </div>
-            <pre class="copyable-prompt-pre">function main(workbook: ExcelScript.Workbook) {
-  const sheet = workbook.getActiveWorksheet();
-  sheet.setShowGridlines(false);
-  sheet.getRange("A:A").getFormat().setColumnWidth(22);
-  sheet.getRange("1:1").getFormat().setRowHeight(15);
+            <p style="font-size: 0.8rem; color: var(--text-secondary);">
+              Pega este prompt en Copilot o ChatGPT indicando tus columnas para que te devuelva una única fórmula `LET` de Excel 365 que, al pegarla en una sola celda (ej. `B6`), despliega automáticamente todo un cuadro de mando sin Tablas Dinámicas manuales:
+            </p>
+            <pre class="copyable-prompt-pre">Actúa como un Arquitecto de Fórmulas Dinámicas de Excel 365 (en español, usando punto y coma `;` como separador).
+Mi tabla de datos se llama `TablaCartera` y tiene las columnas: `[Segmento]`, `[Canal]`, `[Producto]`, `[Sesiones]`, `[Contratos]`, `[Volumen_M]`, `[RORWA]` y `[NPL]`.
 
-  const used = sheet.getUsedRange();
-  if (!used) return;
-  used.getFormat().getFont().setName("Segoe UI");
-  used.getFormat().setVerticalAlignment(ExcelScript.VerticalAlignment.center);
+Escribe una ÚNICA fórmula matricial avanzada usando `LET`, `APILARV`, `APILARH`, `UNICOS`, `FILTRAR` y `ORDENAR` (o `AGRUPARPOR`) para pegarla en la celda `B6` de mi hoja de Resumen que despliegue automáticamente:
+1. Cabecera dinámica de 6 columnas: Producto | Volumen Total (M€) | Cuota % Cartera | Conversión Digital (%) | RORWA Ponderado (%) | Semáforo EVA.
+2. Filas ordenadas de mayor a menor creación de valor (EVA), filtrando automáticamente según el Canal que el usuario elija en la celda desplegable `$C$3` (o mostrando todos si `$C$3="TODOS"`).
+3. Una fila final de Totales y Promedios Ponderados calculada dentro de la misma fórmula `LET` sin necesidad de arrastrar celdas.</pre>
+          </div>
 
-  const headerRow = used.getRow(0);
-  headerRow.getFormat().setRowHeight(28);
-  headerRow.getFormat().getFill().setColor("#0F172A");
-  headerRow.getFormat().getFont().setColor("#FFFFFF");
-  headerRow.getFormat().getFont().setBold(true);
+          <div class="prompt-block-wrapper excel-version">
+            <div class="prompt-block-header">
+              <h4 class="prompt-block-title">🎛️ Excel Prompt Directo #4: Construir un Simulador What-If Interactivo en Excel sin Macros (Sliders por Validación de Datos)</h4>
+              <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Prompt Simulador Excel</button>
+            </div>
+            <pre class="copyable-prompt-pre">Quiero crear un Simulador Interactivo de Escenarios en mi hoja de Excel para el Comité Comercial SIN usar macros VBA ni controles ActiveX bloqueados.
+Dame las fórmulas exactas en español (separador `;`) para configurar:
+1. Un selector en la celda `$C$3` con 3 escenarios ("1. Escenario Base", "2. Optimización UX App (+15% Conv / -20 bps FTP)", "3. Estrés Severo Mora (1,4x NPL / +45 bps CoR)") usando `ELEGIR` o `XLOOKUP` (`BUSCARX`) para cargar automáticamente los multiplicadores en las celdas `$D$3:$F$3`.
+2. Las fórmulas de las 4 Tarjetas KPI superiores (Celdas `B5:E6`) para que muestren el valor simulado y, justo debajo, el diferencial respecto al escenario base con flechas Unicode automáticas: `=SI(Delta>=0; "▲ +" & TEXTO(Delta;"0,0%"); "▼ " & TEXTO(Delta;"0,0%"))`.
+3. Una tabla de sensibilidad bidimensional de 5x5 celdas hecha con una sola fórmula matricial (`SECUENCIA` + `LET`) que cruce variaciones de Spread (-50 a +50 bps en columnas) frente a variaciones de Mora (-25% a +50% en filas) devolviendo el RORWA resultante.</pre>
+          </div>
 
-  const rowCount = used.getRowCount();
-  for (let r = 1; r < rowCount - 1; r++) {
-    const row = used.getRow(r);
-    row.getFormat().setRowHeight(22);
-    row.getFormat().getFill().setColor(r % 2 === 0 ? "#F8FAFC" : "#FFFFFF");
-    row.getFormat().getRangeBorder(ExcelScript.BorderIndex.edgeBottom).setStyle(ExcelScript.BorderLineStyle.continuous);
-    row.getFormat().getRangeBorder(ExcelScript.BorderIndex.edgeBottom).setColor("#E2E8F0");
-  }
-
-  if (rowCount > 2) {
-    const totalRow = used.getRow(rowCount - 1);
-    totalRow.getFormat().setRowHeight(26);
-    totalRow.getFormat().getFill().setColor("#F1F5F9");
-    totalRow.getFormat().getFont().setBold(true);
-    totalRow.getFormat().getRangeBorder(ExcelScript.BorderIndex.edgeTop).setStyle(ExcelScript.BorderLineStyle.continuous);
-    totalRow.getFormat().getRangeBorder(ExcelScript.BorderIndex.edgeBottom).setStyle(ExcelScript.BorderLineStyle.double);
-  }
-  used.getFormat().autofitColumns();
-}</pre>
+          <div class="prompt-block-wrapper m365-version">
+            <div class="prompt-block-header">
+              <h4 class="prompt-block-title">🔍 Excel Prompt Directo #5 (Detección de Fugas Comerciales e Inactividad Silenciosa en Cartera de Empresas)</h4>
+              <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Prompt Auditoría Cartera</button>
+            </div>
+            <pre class="copyable-prompt-pre">Analiza la tabla activa de clientes de Banca Comercial / Pymes y genera una nueva tabla filtrada llamada "Alertas_Retencion_y_UpSell" que identifique estos 3 segmentos accionables para los gestores:
+1. ALERTA FUGA SILENCIOSA (CHURN TEMPRANO): Clientes cuya facturación por TPV o saldo medio en cuenta vista haya caído más de un 30% respecto al trimestre anterior aunque mantengan productos contratados.
+2. POTENCIAL ATAQUE CIRBE (SHARE OF WALLET): Empresas con Rating interno excelente (PD < 1,0% y sin impagos) cuya cuota de financiación con nuestro banco sobre su endeudamiento total CIRBE sea inferior al 20%.
+3. OPORTUNIDAD PRONTO PAGO CONFIRMING: Proveedores recurrentes que reciben pagos a 60-90 días pero aún no han activado el anticipo digital en la App/Web.
+Ordénalos por Margen Potencial Recuperable (€) de mayor a menor.</pre>
           </div>
 
           <!-- SUBSECCIÓN 5.3: INGENIERÍA DE PRESENTACIONES EN POWERPOINT (BLUEPRINTS VISUALES + M365 COPILOT + PYTHON-PPTX) -->
@@ -2502,6 +2620,213 @@ Mantén intacta la parte de PySpark y `window.REPORT_DATA` del turno anterior. R
 4. CROSS-FILTERING REACTIVO + TABLA CON SPARKLINES SVG: hacer clic en cualquier elemento del gráfico filtra los KPIs superiores, actualiza la curva secundaria, filtra la tabla inferior (que debe incluir curvas `<svg><polyline/></svg>` de 12 meses en cada fila) y muestra el botón "Limpiar filtro ✕".
 5. SIMULADOR DE SENSIBILIDAD + ACTION TITLE DINÁMICO: añade 2 sliders en la cabecera que recalculen en vivo las métricas y reescriban el titular ejecutivo (`#action-title`) con la nueva conclusión numérica.
 6. ESCAPE A PANTALLA COMPLETA (BLOB URL): botón `↗ Pantalla Completa` que clone el HTML limpiando las instancias de ECharts y lo abra en una pestaña nueva con `URL.createObjectURL(new Blob(...))`.</pre>
+          </div>
+
+          <!-- =====================================================================
+               SUBSECCIÓN 5.5: SLIDES INTERACTIVAS POR DENTRO (MICRO-APP 16:9 + MORPH !!)
+               ===================================================================== -->
+          <h3>5.5. Diapositivas PowerPoint Interactivas por Dentro: Simulador Intra-Slide 16:9 en Vivo y Técnica `!!Morph` Nativa</h3>
+          <p>
+            Cuando estás defendiendo una propuesta en un Comité Comercial o de Riesgos, las diapositivas estáticas fallan en cuanto alguien pregunta: <em>«¿Y cómo cambia esa lámina si filtramos solo Pymes en App o si el coste de riesgo sube +30 bps?»</em>. Tienes dos formas de lograr que **cada diapositiva sea interactiva por dentro** sin salir de la lámina:
+          </p>
+          <ul>
+            <li><strong>Vía A (100% Nativa en `.pptx` sin macros): Nomenclatura `!!objeto` + Transición Transformar (*Morph*) + Botones de Acción Internos</strong>: En PowerPoint, si nombras las barras o tarjetas en el Panel de Selección empezando por doble exclamación (`!!barra_app`, `!!kpi_eva`) y enlazas botones tipo pestaña entre diapositivas gemelas con transición <em>Transformar (0,5 s)</em>, PowerPoint anima los gráficos a 60fps cuando haces clic en cada pestaña durante la reunión.</li>
+            <li><strong>Vía B (Micro-Slide 16:9 Interactiva en HTML / Web Viewer)</strong>: Pruébala aquí mismo en vivo —haz clic en las **3 pestañas internas de la diapositiva**, mueve el **slider de sensibilidad dentro de la propia slide** o pulsa los **botones de objeciones del CRO/CFO** al pie:</li>
+          </ul>
+
+          <!-- SIMULADOR DE DIAPOSITIVA 16:9 INTERACTIVA POR DENTRO EN VIVO -->
+          <div class="cyber-terminal-shell" id="live-interactive-slide-16-9" style="border: 1px solid rgba(6, 182, 212, 0.45); background: radial-gradient(circle at 90% 10%, rgba(6,182,212,0.12), #060913 70%);">
+            <!-- Barra superior de la Diapositiva 16:9 con Pestañas Internas y Slider en Vivo -->
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.75rem; margin-bottom: 0.9rem;">
+              <div>
+                <div class="tabular-mono" style="font-size: 0.65rem; color: #38bdf8; letter-spacing: 0.08em;">DIAPOSITIVA INTERACTIVA 16:9 • COMITÉ COMERCIAL &amp; RIESGOS (SLIDE 03 / 07)</div>
+                <div id="islide-action-title" style="font-size: 0.98rem; font-weight: 800; color: #f8fafc; margin-top: 0.2rem;">
+                  «La digitalización del Circulante (Confirming + Factoring) eleva el RORWA al 3,18% y libera +24,6 M€ de EVA»
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.4rem; background: rgba(0,0,0,0.5); padding: 0.25rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
+                <button type="button" id="islide-tab-1" onclick="setInteractiveSlideTab(1)" style="padding: 0.35rem 0.65rem; font-size: 0.72rem; border-radius: 6px; border: none; cursor: pointer; background: #06b6d4; color: #05070e; font-weight: 700;">1. Mix Circulante &amp; Trade</button>
+                <button type="button" id="islide-tab-2" onclick="setInteractiveSlideTab(2)" style="padding: 0.35rem 0.65rem; font-size: 0.72rem; border-radius: 6px; border: none; cursor: pointer; background: transparent; color: #94a3b8; font-weight: 600;">2. Embudo STP App vs Web</button>
+                <button type="button" id="islide-tab-3" onclick="setInteractiveSlideTab(3)" style="padding: 0.35rem 0.65rem; font-size: 0.72rem; border-radius: 6px; border: none; cursor: pointer; background: transparent; color: #94a3b8; font-weight: 600;">3. Matriz Sensibilidad Comité</button>
+              </div>
+            </div>
+
+            <!-- Cuerpo Central de la Diapositiva Interactiva -->
+            <div style="display: grid; grid-template-columns: repeat(12, 1fr); gap: 0.9rem; align-items: stretch;">
+              <!-- Columna Izquierda: 3 KPIs Reactivos de la Diapositiva + Control de Simulación en Reunión -->
+              <div style="grid-column: span 4; display: flex; flex-direction: column; gap: 0.6rem; justify-content: space-between;">
+                <div class="sp-card" style="padding: 0.75rem;">
+                  <div style="font-size: 0.65rem; color: #94a3b8; text-transform: uppercase;">Volumen Activo en Slide</div>
+                  <div id="islide-kpi-vol" class="tabular-mono" style="font-size: 1.45rem; font-weight: 800; color: #f8fafc;">1.480 M€</div>
+                  <div id="islide-kpi-sub1" style="font-size: 0.7rem; color: #67e8f9;">▲ +19,4% YoY en originación digital</div>
+                </div>
+                <div class="sp-card" style="padding: 0.75rem;">
+                  <div style="font-size: 0.65rem; color: #94a3b8; text-transform: uppercase;">RORWA Neto / EVA Creado</div>
+                  <div id="islide-kpi-rorwa" class="tabular-mono" style="font-size: 1.45rem; font-weight: 800; color: #34d399;">3,18% (+24,6 M€)</div>
+                  <div id="islide-kpi-sub2" style="font-size: 0.7rem; color: #a7f3d0;">Supera Hurdle Rate (2,50%) en +68 bps</div>
+                </div>
+                <div class="sp-card" style="padding: 0.75rem; background: rgba(99,102,241,0.1); border-color: rgba(99,102,241,0.35);">
+                  <div style="display: flex; justify-content: space-between; font-size: 0.72rem; color: #e2e8f0; margin-bottom: 0.3rem;">
+                    <span>🎚️ Simular Palanca en Reunión:</span>
+                    <span id="islide-slider-lbl" class="tabular-mono" style="color: #6ee7b7; font-weight: 700;">+20% Penetración Digital</span>
+                  </div>
+                  <input id="islide-sim-slider" type="range" min="-20" max="50" step="5" value="20" oninput="updateInteractiveSlide()" style="width: 100%; accent-color: #06b6d4; cursor: pointer;">
+                  <div style="font-size: 0.66rem; color: #94a3b8; margin-top: 0.25rem;">Mueve el deslizador durante la presentación para responder preguntas en vivo.</div>
+                </div>
+              </div>
+
+              <!-- Columna Derecha: Lienzo Dinámico Intra-Slide -->
+              <div class="sp-card" style="grid-column: span 8; padding: 0.9rem; display: flex; flex-direction: column; justify-content: space-between;">
+                <div id="islide-dynamic-body" style="min-height: 215px;"></div>
+                <!-- Botones Interactivos de Defensa ante Preguntas de Comité (CRO / CFO / Red Comercial) -->
+                <div style="margin-top: 0.75rem; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 0.65rem;">
+                  <div style="display: flex; flex-wrap: wrap; gap: 0.45rem; align-items: center; margin-bottom: 0.45rem;">
+                    <span class="tabular-mono" style="font-size: 0.65rem; color: #94a3b8;">🛡️ CLIC PARA DESPLEGAR CÁPSULA DE DEFENSA EN COMITÉ:</span>
+                    <button type="button" onclick="showSlideDefense('cro')" style="font-size: 0.68rem; padding: 0.22rem 0.6rem; border-radius: 999px; border: 1px solid rgba(244,63,94,0.45); background: rgba(244,63,94,0.15); color: #fda4af; cursor: pointer;">Pregunta CRO (Riesgo Admisión STP)</button>
+                    <button type="button" onclick="showSlideDefense('cfo')" style="font-size: 0.68rem; padding: 0.22rem 0.6rem; border-radius: 999px; border: 1px solid rgba(16,185,129,0.45); background: rgba(16,185,129,0.15); color: #6ee7b7; cursor: pointer;">Pregunta CFO (Consumo Capital RWA)</button>
+                    <button type="button" onclick="showSlideDefense('com')" style="font-size: 0.68rem; padding: 0.22rem 0.6rem; border-radius: 999px; border: 1px solid rgba(6,182,212,0.45); background: rgba(6,182,212,0.15); color: #67e8f9; cursor: pointer;">Pregunta Director Red (Canibalización Gestor)</button>
+                  </div>
+                  <div id="islide-defense-box" style="font-size: 0.74rem; color: #e2e8f0; background: rgba(0,0,0,0.4); border-left: 3px solid #10b981; padding: 0.45rem 0.7rem; border-radius: 4px;">
+                    💡 <strong>Respuesta CFO activa:</strong> El crecimiento en Confirming y Factoring Sin Recurso reduce la densidad media de RWA del 68% al 44% al anclar el riesgo en el gran comprador corporativo y avales CESCE/ICO.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="prompt-block-wrapper pro-version">
+            <div class="prompt-block-header">
+              <h4 class="prompt-block-title">⚡ Skill `/interactive-ppt`: Prompt para Generar Diapositivas Interactivas por Dentro (HTML 16:9 + PowerPoint Morph `!!`)</h4>
+              <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Prompt Slide Interactiva</button>
+            </div>
+            <pre class="copyable-prompt-pre">Actúa como un Arquitecto de Presentaciones Ejecutivas Interactivas (Skill `/interactive-ppt`).
+Necesito presentar [TEMA / DATOS DE CARTERA COMERCIAL] en formato panorámico 16:9 donde CADA DIAPOSITIVA SEA INTERACTIVA POR DENTRO:
+1. Cabecera con Kicker + Action Title dinámico que se reescriba solo al cambiar de filtro o mover el simulador.
+2. Barra de 3 Pestañas Clicables DENTRO de la misma diapositiva (`[1. Visión Ejecutiva]`, `[2. Desglose por Producto/Canal]`, `[3. Simulador de Sensibilidad]`) que cambien el gráfico ECharts y las métricas sin cambiar de diapositiva.
+3. Incluye un Slider de Simulación en vivo en la esquina de la diapositiva para ajustar supuestos en directo durante el Comité.
+4. Añade en el pie 3 botones clicables ("Defensa CRO Riesgos", "Defensa CFO Capital", "Defensa Red Comercial") que desplieguen al instante el argumento cuantitativo blindado.
+5. Si además me generas el script `python-pptx`, nombra las formas con el prefijo `!!` (`shape.name = "!!barra_1"`) entre diapositivas consecutivas para activar la transición nativa Transformar (Morph) de PowerPoint a 60fps.</pre>
+          </div>
+
+          <!-- =====================================================================
+               SUBSECCIÓN 5.6: ESTUDIO DE INFOGRAFÍAS EJECUTIVAS DE ALTA DENSIDAD (SVG + PNG)
+               ===================================================================== -->
+          <h3>5.6. Skill para Pintar Infografías Ejecutivas de Alta Densidad (Arquitectura Visual en Vivo + Exportación a Imagen PNG 4K)</h3>
+          <p>
+            Cuando quieres explicar en un correo ejecutivo o en una lámina de comité **cómo funciona un flujo completo de negocio** (por ejemplo, el <em>Circuito End-to-End de Originación Digital, Scoring STP, Pricing RAROC y Liquidación en Banca de Empresas</em>), una tabla no transmite la historia. Necesitas una **Infografía Vectorial de Alta Densidad** con nodos conectados, flujo animado de datos/capital, desglose visual de fórmulas y un botón para **descargarla como imagen PNG de alta resolución** y pegarla directamente en Outlook o PowerPoint:
+          </p>
+
+          <!-- CONSOLA DE INFOGRAFÍA EJECUTIVA EN VIVO (CON CAMBIO DE TEMA Y EXPORTACIÓN PNG) -->
+          <div class="cyber-terminal-shell" id="infographic-live-studio" style="padding: 1.25rem; background: #060a14;">
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+              <div style="display: flex; gap: 0.35rem; flex-wrap: wrap;">
+                <button type="button" id="infog-btn-1" onclick="setInfographicTopic(1)" style="padding: 0.38rem 0.75rem; font-size: 0.73rem; border-radius: 6px; border: none; cursor: pointer; background: #10b981; color: #05070e; font-weight: 700;">Infografía 1: Circuito STP &amp; Pricing Comercial</button>
+                <button type="button" id="infog-btn-2" onclick="setInfographicTopic(2)" style="padding: 0.38rem 0.75rem; font-size: 0.73rem; border-radius: 6px; border: none; cursor: pointer; background: rgba(255,255,255,0.06); color: #cbd5e1; font-weight: 600;">Infografía 2: Anatomía del Confirming &amp; Factoring</button>
+                <button type="button" id="infog-btn-3" onclick="setInfographicTopic(3)" style="padding: 0.38rem 0.75rem; font-size: 0.73rem; border-radius: 6px; border: none; cursor: pointer; background: rgba(255,255,255,0.06); color: #cbd5e1; font-weight: 600;">Infografía 3: Árbol de Creación de Valor RORWA</button>
+              </div>
+              <button type="button" onclick="exportInfographicToPNG()" style="padding: 0.42rem 0.85rem; font-size: 0.74rem; border-radius: 7px; border: 1px solid rgba(6,182,212,0.5); background: rgba(6,182,212,0.2); color: #67e8f9; font-weight: 700; cursor: pointer;">
+                📸 Descargar Infografía en PNG Alta Resolución (Para Correo / PPT)
+              </button>
+            </div>
+
+            <!-- LIENZO VECTORIAL SVG DE LA INFOGRAFÍA -->
+            <div id="infographic-canvas-wrap" style="background: #070B14; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1rem; overflow-x: auto;">
+              <svg id="executive-infographic-svg" viewBox="0 0 1060 430" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg" style="min-width: 780px; display: block; font-family: 'Inter', 'Segoe UI', sans-serif;">
+                <!-- Se hidrata dinámicamente con renderExecutiveInfographic() -->
+              </svg>
+            </div>
+          </div>
+
+          <div class="prompt-block-wrapper pro-version">
+            <div class="prompt-block-header">
+              <h4 class="prompt-block-title">🎨 Skill `/infografia-ejecutiva`: Prompt Maestro para Pintar Infografías Vectoriales SVG/HTML con Exportación a PNG</h4>
+              <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Prompt Infografía Ejecutiva</button>
+            </div>
+            <pre class="copyable-prompt-pre">Actúa como un Director de Infografía Financiera (estilo Visual Capitalist, Financial Times y McKinsey Visual Insights) usando la Skill `/infografia-ejecutiva`.
+Genera una Infografía Ejecutiva Autocontenida en HTML + SVG (`viewBox="0 0 1200 620"`) sobre: [ESCRIBE AQUÍ EL PROCESO, PRODUCTO COMERCIAL O RESULTADOS A EXPLICAR].
+
+REGLAS OBLIGATORIAS DE COMPOSICIÓN VISUAL:
+1. PROHIBIDO PÁRRAFOS LARGOS: Toda la información debe comunicarse mediante nodos numerados (`01` a `05`), conectores curvos Bézier con partículas animadas (`stroke-dasharray="6 6"` con animación de flujo continuo), iconos limpios y cifras gigantes en `tabular-nums`.
+2. ESTRUCTURA EN 3 NIVELES:
+   - Nivel Superior: Kicker + Titular Ejecutivo con la conclusión cuantitativa + 3 Píldoras de KPIs Globales.
+   - Nivel Central (Diagrama de Arquitectura / Flujo): 5 bloques conectados de izquierda a derecha mostrando entradas, transformación/filtros, tasas de paso (%) y fugas/costes en color semántico (`#06B6D4` Cian, `#6366F1` Índigo, `#10B981` Esmeralda, `#F43F5E` Coral).
+   - Nivel Inferior (Anatomía Matemática y Negocio): Desglose visual de la ecuación financiera y comparativa "Antes vs. Después".
+3. BOTÓN DE EXPORTACIÓN A PNG 4K: Incluye una función JavaScript que serialice el `<svg>` con `XMLSerializer()`, lo pinte en un `<canvas>` escalado a `2x` (Retina) y descargue el archivo `.png` listo para pegar en un correo de Outlook o en PowerPoint.</pre>
+          </div>
+
+          <!-- =====================================================================
+               SUBSECCIÓN 5.7: VÍDEOS EXPLICATIVOS ANIMADOS DE DATOS Y NEGOCIO
+               ===================================================================== -->
+          <h3>5.7. Skill para Generar Vídeos Explicativos del Contenido (Reproductor Animado en Vivo con Locución en Español y Grabación `.WEBM`)</h3>
+          <p>
+            Cuando envías un informe complejo por correo o Teams, el directivo muchas veces prefiere darle a <strong>«▶ Reproducir Resumen Explicativo (60s)»</strong> y que el propio dashboard le cuente la historia paso a paso mientras las gráficas hacen *morphing* solas, se iluminan los cuellos de botella y aparecen subtítulos ejecutivos sincronizados. Pruébalo en vivo (incluye **locución por voz en español** `Web Speech API` y **grabador a archivo de vídeo `.webm`**):
+          </p>
+
+          <!-- REPRODUCTOR DE VÍDEO EXPLICATIVO ANIMADO POR ESCENAS EN VIVO -->
+          <div class="cyber-terminal-shell" id="motion-video-player-shell" style="border: 1px solid rgba(16, 185, 129, 0.45); background: linear-gradient(180deg, #060913 0%, #090e1c 100%); padding: 1.25rem;">
+            <!-- Controles Superiores del Reproductor de Vídeo Explicativo -->
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.75rem; margin-bottom: 0.85rem;">
+              <div style="display: flex; align-items: center; gap: 0.55rem; flex-wrap: wrap;">
+                <button type="button" id="vid-play-btn" onclick="toggleExplanatoryVideoPlay()" style="padding: 0.45rem 0.95rem; font-size: 0.76rem; border-radius: 999px; border: none; background: #10b981; color: #05070e; font-weight: 800; cursor: pointer;">
+                  ▶ Reproducir Vídeo Explicativo (4 Escenas)
+                </button>
+                <button type="button" id="vid-voice-btn" onclick="toggleVideoVoice()" style="padding: 0.4rem 0.75rem; font-size: 0.73rem; border-radius: 999px; border: 1px solid rgba(99,102,241,0.45); background: rgba(99,102,241,0.18); color: #c7d2fe; font-weight: 600; cursor: pointer;">
+                  🔊 Locución Voz Español: ON
+                </button>
+                <span id="vid-scene-badge" class="tabular-mono" style="font-size: 0.7rem; color: #67e8f9; background: rgba(6,182,212,0.14); padding: 0.25rem 0.6rem; border-radius: 6px;">
+                  ESCENA 1 / 4 • TESIS EJECUTIVA
+                </span>
+              </div>
+              <div style="display: flex; gap: 0.45rem;">
+                <button type="button" id="vid-rec-btn" onclick="recordExplanatoryVideoWebM()" style="padding: 0.4rem 0.8rem; font-size: 0.72rem; border-radius: 7px; border: 1px solid rgba(244,63,94,0.5); background: rgba(244,63,94,0.18); color: #fda4af; font-weight: 700; cursor: pointer;">
+                  ⏺ Grabar y Descargar Vídeo (.WEBM)
+                </button>
+              </div>
+            </div>
+
+            <!-- Pantalla Cinematográfica 16:9 Renderizada en Canvas 2D a 60fps (Permite captura directa a .WEBM) -->
+            <div style="position: relative; border-radius: 10px; overflow: hidden; border: 1px solid rgba(255,255,255,0.12); background: #050811;">
+              <canvas id="explanatory-video-canvas" width="960" height="420" style="width: 100%; height: auto; display: block;"></canvas>
+            </div>
+
+            <!-- Línea de Tiempo de Escenas Clicable -->
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; margin-top: 0.8rem;">
+              <button type="button" id="vid-step-0" onclick="jumpToVideoScene(0)" style="text-align: left; padding: 0.5rem 0.65rem; border-radius: 7px; border: 1px solid rgba(16,185,129,0.5); background: rgba(16,185,129,0.15); color: #f8fafc; font-size: 0.72rem; cursor: pointer;">
+                <div class="tabular-mono" style="font-size: 0.63rem; color: #6ee7b7;">00:00 — ESCENA 1</div>
+                <div style="font-weight: 700;">1. Salto Omnicanal (+2.850 M€)</div>
+              </button>
+              <button type="button" id="vid-step-1" onclick="jumpToVideoScene(1)" style="text-align: left; padding: 0.5rem 0.65rem; border-radius: 7px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03); color: #cbd5e1; font-size: 0.72rem; cursor: pointer;">
+                <div class="tabular-mono" style="font-size: 0.63rem; color: #94a3b8;">00:06 — ESCENA 2</div>
+                <div style="font-weight: 700;">2. Fricción UX vs. Admisión STP</div>
+              </button>
+              <button type="button" id="vid-step-2" onclick="jumpToVideoScene(2)" style="text-align: left; padding: 0.5rem 0.65rem; border-radius: 7px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03); color: #cbd5e1; font-size: 0.72rem; cursor: pointer;">
+                <div class="tabular-mono" style="font-size: 0.63rem; color: #94a3b8;">00:12 — ESCENA 3</div>
+                <div style="font-weight: 700;">3. Puente P&amp;L &amp; RORWA (3,30%)</div>
+              </button>
+              <button type="button" id="vid-step-3" onclick="jumpToVideoScene(3)" style="text-align: left; padding: 0.5rem 0.65rem; border-radius: 7px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03); color: #cbd5e1; font-size: 0.72rem; cursor: pointer;">
+                <div class="tabular-mono" style="font-size: 0.63rem; color: #94a3b8;">00:18 — ESCENA 4</div>
+                <div style="font-weight: 700;">4. Plan de Acción Comité Q1</div>
+              </button>
+            </div>
+          </div>
+
+          <div class="prompt-block-wrapper pro-version">
+            <div class="prompt-block-header">
+              <h4 class="prompt-block-title">🎬 Skill `/video-explicativo`: Prompt Maestro para Crear Vídeos Explicativos Auto-Narrados (.HTML + Grabación `.WEBM`)</h4>
+              <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Prompt Vídeo Explicativo</button>
+            </div>
+            <pre class="copyable-prompt-pre">Actúa como un Director de Motion Graphics Financieros y Narrativa de Datos (Skill `/video-explicativo`).
+A partir de los siguientes datos/conclusiones: [PEGA AQUÍ TUS DATOS O CONCLUSIONES DEL MES], genera un Reproductor de Vídeo Explicativo Autocontenido en HTML5 Canvas / ECharts con estas características exactas:
+1. ESTRUCTURA EN 4 A 5 ESCENAS AUTOMÁTICAS:
+   - Escena 1: Titular Ejecutivo e Impacto Global en Volumen y RORWA.
+   - Escena 2: Animación del Embudo Digital Web/App destacando el punto exacto de fuga o éxito STP.
+   - Escena 3: Descomposición animada del Margen Comercial (P&L Waterfall: Spread - FTP + Fees - CoR = EVA).
+   - Escena 4: Recomendación accionable para el Comité con retorno estimado en M€.
+2. LOCUCIÓN AUTOMÁTICA EN ESPAÑOL + SUBTÍTULOS DE CINE:
+   - Usa `window.speechSynthesis` (voz `es-ES`) para narrar el guion ejecutivo de cada escena mientras se interpolan las barras y contadores a 60fps (`easeOutQuart`).
+   - Pinta en la franja inferior del lienzo una banda de subtítulos sincronizados (*Lower Third*) y una barra de progreso temporal.
+3. EXPORTACIÓN A ARCHIVO DE VÍDEO (`.WEBM`):
+   - Incluye un botón `⏺ Grabar y Descargar Vídeo (.webm)` usando `canvas.captureStream(30)` y `MediaRecorder` para poder adjuntar el vídeo en Teams o Outlook.</pre>
           </div>
         </div>
       </section>
@@ -3824,10 +4149,502 @@ Mantén intacta la parte de PySpark y `window.REPORT_DATA` del turno anterior. R
       renderDictionaryCards();
     }
 
+    // 7. Motor de Diapositiva PowerPoint Interactiva por Dentro (Sección 5.5)
+    let islideTab = 1;
+    function setInteractiveSlideTab(n) {
+      islideTab = n;
+      [1, 2, 3].forEach(i => {
+        const b = document.getElementById('islide-tab-' + i);
+        if (!b) return;
+        const active = (i === n);
+        b.style.background = active ? '#06b6d4' : 'transparent';
+        b.style.color = active ? '#05070e' : '#94a3b8';
+        b.style.fontWeight = active ? '700' : '600';
+      });
+      updateInteractiveSlide();
+    }
+
+    function updateInteractiveSlide() {
+      const sl = document.getElementById('islide-sim-slider');
+      if (!sl) return;
+      const boost = parseInt(sl.value, 10);
+      document.getElementById('islide-slider-lbl').textContent = (boost >= 0 ? '+' : '') + boost + '% Penetración Digital';
+
+      const vol = Math.round(1480 * (1 + boost * 0.008));
+      const rorwa = (3.02 + boost * 0.008).toFixed(2);
+      const eva = (21.0 + boost * 0.18).toFixed(1);
+
+      document.getElementById('islide-kpi-vol').textContent = vol.toLocaleString('es-ES') + ' M€';
+      document.getElementById('islide-kpi-rorwa').textContent = `${rorwa.replace('.', ',')}% (+${eva.replace('.', ',')} M€)`;
+      document.getElementById('islide-action-title').textContent =
+        `«Con ${boost >= 0 ? '+' : ''}${boost}% de impulso digital, el Circulante alcanza ${vol} M€, eleva el RORWA al ${rorwa.replace('.', ',')}% y crea +${eva.replace('.', ',')} M€ de EVA»`;
+
+      const body = document.getElementById('islide-dynamic-body');
+      if (!body) return;
+
+      if (islideTab === 1) {
+        const cnf = Math.round(vol * 0.42), fac = Math.round(vol * 0.34), dsc = Math.round(vol * 0.24);
+        body.innerHTML = `
+          <div style="font-size:0.75rem; font-weight:700; color:#67e8f9; margin-bottom:0.55rem;">PESTAÑA ACTIVA EN SLIDE: DESGLOSE POR LÍNEA DE CIRCULANTE Y TRADE FINANCE</div>
+          <div style="display:flex; flex-direction:column; gap:0.55rem; font-size:0.76rem;">
+            <div>
+              <div style="display:flex; justify-content:space-between; margin-bottom:3px;"><span>1. Confirming &amp; Pronto Pago Proveedores (B2B)</span><strong class="tabular-mono" style="color:#34d399;">${cnf} M€ · RORWA 2,95% · Densidad RWA 38%</strong></div>
+              <div style="height:10px; background:rgba(255,255,255,0.06); border-radius:5px;"><div style="height:10px; width:84%; background:linear-gradient(90deg,#06b6d4,#10b981); border-radius:5px;"></div></div>
+            </div>
+            <div>
+              <div style="display:flex; justify-content:space-between; margin-bottom:3px;"><span>2. Factoring Sin Recurso (Cesión Electrónica Facturae)</span><strong class="tabular-mono" style="color:#67e8f9;">${fac} M€ · RORWA 3,34% · Densidad RWA 44%</strong></div>
+              <div style="height:10px; background:rgba(255,255,255,0.06); border-radius:5px;"><div style="height:10px; width:68%; background:linear-gradient(90deg,#6366f1,#06b6d4); border-radius:5px;"></div></div>
+            </div>
+            <div>
+              <div style="display:flex; justify-content:space-between; margin-bottom:3px;"><span>3. Descuento Comercial SEPA B2B &amp; Avales Técnicos</span><strong class="tabular-mono" style="color:#a5b4fc;">${dsc} M€ · RORWA 3,12% · Densidad RWA 49%</strong></div>
+              <div style="height:10px; background:rgba(255,255,255,0.06); border-radius:5px;"><div style="height:10px; width:52%; background:linear-gradient(90deg,#8b5cf6,#6366f1); border-radius:5px;"></div></div>
+            </div>
+          </div>
+        `;
+      } else if (islideTab === 2) {
+        const stpApp = Math.min(94, 78 + Math.round(boost * 0.25));
+        const stpWeb = Math.min(88, 64 + Math.round(boost * 0.22));
+        body.innerHTML = `
+          <div style="font-size:0.75rem; font-weight:700; color:#a5b4fc; margin-bottom:0.55rem;">PESTAÑA ACTIVA EN SLIDE: COMPARATIVA EMBUDO STP Y TIME-TO-CASH (APP MÓVIL VS. WEB EMPRESAS)</div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; font-size:0.75rem;">
+            <div style="background:rgba(6,182,212,0.1); border:1px solid rgba(6,182,212,0.35); border-radius:8px; padding:0.7rem;">
+              <div style="color:#67e8f9; font-weight:700;">📱 Canal App Empresas (Preconcedidos 3 Clics)</div>
+              <div class="tabular-mono" style="font-size:1.35rem; font-weight:800; color:#fff; margin:0.25rem 0;">STP Auto: ${stpApp}%</div>
+              <div style="color:#cbd5e1;">• Time-to-Yes Mediano (P50): <strong>42 seg</strong><br>• Tasa de Conversión Final: <strong>21,4%</strong></div>
+            </div>
+            <div style="background:rgba(99,102,241,0.1); border:1px solid rgba(99,102,241,0.35); border-radius:8px; padding:0.7rem;">
+              <div style="color:#c7d2fe; font-weight:700;">💻 Portal Web Empresas (Conector CIRBE/AEAT)</div>
+              <div class="tabular-mono" style="font-size:1.35rem; font-weight:800; color:#fff; margin:0.25rem 0;">STP Auto: ${stpWeb}%</div>
+              <div style="color:#cbd5e1;">• Time-to-Yes Mediano (P50): <strong>3,8 min</strong><br>• Reducción abandono documental: <strong>-41%</strong></div>
+            </div>
+          </div>
+        `;
+      } else {
+        body.innerHTML = `
+          <div style="font-size:0.75rem; font-weight:700; color:#6ee7b7; margin-bottom:0.55rem;">PESTAÑA ACTIVA EN SLIDE: MATRIZ DE SENSIBILIDAD EN VIVO PARA PREGUNTAS DEL COMITÉ</div>
+          <table style="width:100%; border-collapse:collapse; font-size:0.73rem; text-align:right;" class="tabular-mono">
+            <thead>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.15); color:#94a3b8;">
+                <th style="text-align:left; padding:5px;">Escenario Mora \\ Spread</th>
+                <th style="padding:5px;">+200 bps</th>
+                <th style="padding:5px;">+240 bps (Base)</th>
+                <th style="padding:5px;">+280 bps</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.06);">
+                <td style="text-align:left; padding:6px; color:#cbd5e1;">CoR 35 bps (Benigno)</td>
+                <td style="padding:6px; color:#6ee7b7;">2,92%</td>
+                <td style="padding:6px; color:#34d399; font-weight:700;">3,38%</td>
+                <td style="padding:6px; color:#34d399; font-weight:700;">3,82%</td>
+              </tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.06); background:rgba(16,185,129,0.08);">
+                <td style="text-align:left; padding:6px; color:#fff; font-weight:700;">CoR 55 bps (Central)</td>
+                <td style="padding:6px; color:#67e8f9;">2,64%</td>
+                <td style="padding:6px; color:#34d399; font-weight:800;">${rorwa.replace('.', ',')}% ★</td>
+                <td style="padding:6px; color:#34d399; font-weight:700;">3,54%</td>
+              </tr>
+              <tr>
+                <td style="text-align:left; padding:6px; color:#fda4af;">CoR 95 bps (Estrés)</td>
+                <td style="padding:6px; color:#fbbf24;">2,18%</td>
+                <td style="padding:6px; color:#6ee7b7;">2,56%</td>
+                <td style="padding:6px; color:#34d399; font-weight:700;">2,98%</td>
+              </tr>
+            </tbody>
+          </table>
+        `;
+      }
+    }
+
+    function showSlideDefense(role) {
+      const box = document.getElementById('islide-defense-box');
+      if (!box) return;
+      if (role === 'cro') {
+        box.style.borderLeftColor = '#f43f5e';
+        box.innerHTML = '🛡️ <strong>Defensa ante el CRO (Riesgos):</strong> El motor de admisión STP aplica filtros automáticos de endeudamiento CIRBE y scoring transaccional TPV/Nóminas; la mora temprana (90d+) en originación digital es del <strong>1,12%</strong> (-34 bps inferior al canal manual).';
+      } else if (role === 'cfo') {
+        box.style.borderLeftColor = '#10b981';
+        box.innerHTML = '💎 <strong>Defensa ante el CFO (Capital &amp; Finanzas):</strong> La rotación corta del Confirming/Factoring (62 días de vencimiento medio) y el anclaje en grandes pagadores reduce la densidad RWA al <strong>44%</strong>, autofinanciando +14 bps de CET1.';
+      } else {
+        box.style.borderLeftColor = '#06b6d4';
+        box.innerHTML = '🤝 <strong>Defensa ante Dirección de Red Comercial:</strong> El canal digital no canibaliza al gestor: libera el 74% de las renovaciones rutinarias < 100k€ y envía al gestor <strong>alertas de cierre híbrido</strong> para operaciones estructuradas de Leasing y Trade.';
+      }
+    }
+
+    // 8. Motor de Infografías Ejecutivas en SVG + Exportación a PNG 4K (Sección 5.6)
+    let currentInfogTopic = 1;
+    function setInfographicTopic(n) {
+      currentInfogTopic = n;
+      [1, 2, 3].forEach(i => {
+        const b = document.getElementById('infog-btn-' + i);
+        if (!b) return;
+        const active = (i === n);
+        b.style.background = active ? '#10b981' : 'rgba(255,255,255,0.06)';
+        b.style.color = active ? '#05070e' : '#cbd5e1';
+        b.style.fontWeight = active ? '700' : '600';
+      });
+      renderExecutiveInfographic();
+    }
+
+    function renderExecutiveInfographic() {
+      const svg = document.getElementById('executive-infographic-svg');
+      if (!svg) return;
+
+      const configs = {
+        1: {
+          kicker: 'INFOGRAFÍA DE ARQUITECTURA OPERATIVA • BANCA COMERCIAL & CANALES DIGITALES',
+          title: 'Circuito End-to-End de Originación Digital, Scoring STP y Rentabilidad RAROC',
+          kpi1: '78% Tasa STP Auto', kpi2: '48 seg Time-to-Cash P90', kpi3: '3,30% RORWA Neto',
+          steps: [
+            { num: '01', name: 'Entrada Web / App', metric: '585k Sesiones', desc: 'Oferta preconcedida in-app + Simulador interactivo de cuota', col: '#06b6d4' },
+            { num: '02', name: 'Enriquecimiento API', metric: '< 180 ms', desc: 'Lectura instantánea CIRBE, AEAT y flujo TPV/Nóminas', col: '#6366f1' },
+            { num: '03', name: 'Motor Scoring STP', metric: 'PD 1,15% · LGD 32%', desc: 'Cálculo de Pérdida Esperada IFRS 9 y filtro de admisión', col: '#8b5cf6' },
+            { num: '04', name: 'Pricing & RAROC', metric: '+240 bps s/ FTP', desc: 'Bonificación dinámica por Cross-Sell y aval ICO/CESCE', col: '#f59e0b' },
+            { num: '05', name: 'Firma OTP & Abono', metric: '2.850 M€ (+EVA)', desc: 'Contrato digital y abono inmediato en cuenta corriente', col: '#10b981' }
+          ],
+          equation: 'ECUACIÓN DE VALOR:  [ Ingresos TIN (4,85%) - Coste FTP (2,45%) + Comisiones Cross-Sell (0,65%) - Coste Riesgo (0,42%) ] / RWA (48%) = RORWA 3,30% (+36,3 M€ EVA)'
+        },
+        2: {
+          kicker: 'INFOGRAFÍA DE CAPITAL CIRCULANTE • SUPPLY CHAIN FINANCE & FACTORING',
+          title: 'Anatomía del Ecosistema Confirming (Reverse Factoring) y Factoring Sin Recurso',
+          kpi1: '54% Pronto Pago', kpi2: '+190 bps Spread Neto', kpi3: '0,82% Mora NPL',
+          steps: [
+            { num: '01', name: 'Gran Pagador Cedente', metric: 'Remesa XML SEPA', desc: 'La empresa corporativa aprueba y remite facturas a 60-90 días', col: '#6366f1' },
+            { num: '02', name: 'Anclaje de Riesgo', metric: 'RWA Reducido 38%', desc: 'El riesgo crediticio se evalúa sobre el gran comprador, no el proveedor', col: '#06b6d4' },
+            { num: '03', name: 'Notificación 1-Clic', metric: 'App / Portal B2B', desc: 'El proveedor recibe aviso con oferta de cobro inmediato sin CIRBE', col: '#10b981' },
+            { num: '04', name: 'Anticipo Instantáneo', metric: '54% Adopción', desc: 'Abono de liquidez descontando spread comercial sin coste CAC', col: '#f59e0b' },
+            { num: '05', name: 'Captación Cruzada', metric: 'LTV/CAC 16,4x', desc: 'Conversión del proveedor no-cliente en nuevo cliente Pyme vinculado', col: '#ec4899' }
+          ],
+          equation: 'VENTAJA COMPETITIVA:  Cero consumo de CIRBE para el proveedor · Cero coste de adquisición (CAC) · Retención del grupo corporativo > 98%'
+        },
+        3: {
+          kicker: 'INFOGRAFÍA FINANCIERA PARA COMITÉ • ÁRBOL DE DESCOMPOSICIÓN RORWA & CET1',
+          title: 'Árbol DuPont Bancario: Cómo la Digitalización Comercial Autofinancia Solvencia CET1',
+          kpi1: '19,4% Cost-to-Income', kpi2: '44% Densidad RWA', kpi3: '+14 bps CET1 Orgánico',
+          steps: [
+            { num: '01', name: 'Margen Intereses (NII)', metric: '+240 bps Spread', desc: 'Defensa del margen cliente frente a curva Euríbor y FTP Tesorería', col: '#06b6d4' },
+            { num: '02', name: 'Ingresos por Comisiones', metric: '+65 bps Fees', desc: 'Adquirencia TPV (MDR), Divisas FX, Avales y Cash Pooling', col: '#10b981' },
+            { num: '03', name: 'Eficiencia Operativa', metric: 'CIR 19% en App', desc: 'Autoservicio digital reduce el Cost-to-Serve de 380€ a 64€/año', col: '#6366f1' },
+            { num: '04', name: 'Coste de Riesgo (CoR)', metric: '42 bps Dotación', desc: 'Alertas tempranas por caída de TPV y mitigación con garantías', col: '#f43f5e' },
+            { num: '05', name: 'Creación Capital EVA', metric: 'RORWA > 2,50%', desc: 'Supera el Hurdle Rate y genera capital orgánico CET1 para crecer', col: '#10b981' }
+          ],
+          equation: 'REGLA DE ORO DEL COMITÉ:  Toda línea con RORWA > Hurdle Rate (2,50%) crea EVA positivo y financia su propio crecimiento de RWA sin diluir CET1'
+        }
+      };
+
+      const c = configs[currentInfogTopic];
+      const stepBoxes = c.steps.map((s, idx) => {
+        const x = 25 + idx * 204;
+        const arrow = idx < 4 ? `
+          <path d="M ${x + 178} 205 L ${x + 202} 205" stroke="${s.col}" stroke-width="2.5" stroke-dasharray="4 3"/>
+          <polygon points="${x + 202},205 ${x + 195},200 ${x + 195},210" fill="${s.col}"/>
+        ` : '';
+        return `
+          <g>
+            <rect x="${x}" y="112" width="178" height="186" rx="10" fill="#0d1426" stroke="${s.col}" stroke-width="1.5"/>
+            <rect x="${x}" y="112" width="178" height="6" rx="3" fill="${s.col}"/>
+            <text x="${x + 14}" y="138" fill="${s.col}" font-size="11" font-weight="800" font-family="monospace">PASO ${s.num}</text>
+            <text x="${x + 14}" y="160" fill="#f8fafc" font-size="13.5" font-weight="700">${s.name}</text>
+            <rect x="${x + 14}" y="174" width="150" height="28" rx="6" fill="rgba(255,255,255,0.05)"/>
+            <text x="${x + 22}" y="193" fill="#6ee7b7" font-size="12.5" font-weight="800" font-family="monospace">${s.metric}</text>
+            <foreignObject x="${x + 14}" y="212" width="150" height="75">
+              <div xmlns="http://www.w3.org/1999/xhtml" style="color:#cbd5e1; font-size:11px; line-height:1.38; font-family:Inter,sans-serif;">
+                ${s.desc}
+              </div>
+            </foreignObject>
+            ${arrow}
+          </g>
+        `;
+      }).join('');
+
+      svg.innerHTML = `
+        <rect width="1060" height="430" rx="14" fill="#070B14"/>
+        <text x="28" y="34" fill="#38bdf8" font-size="11" font-weight="700" letter-spacing="1.2">${c.kicker}</text>
+        <text x="28" y="62" fill="#ffffff" font-size="19" font-weight="800">${c.title}</text>
+        <g transform="translate(28, 74)">
+          <rect x="0" y="0" width="185" height="24" rx="12" fill="rgba(16,185,129,0.16)" stroke="#10b981"/>
+          <text x="92" y="16" fill="#6ee7b7" font-size="11" font-weight="700" text-anchor="middle">✓ ${c.kpi1}</text>
+          <rect x="198" y="0" width="195" height="24" rx="12" fill="rgba(6,182,212,0.16)" stroke="#06b6d4"/>
+          <text x="295" y="16" fill="#67e8f9" font-size="11" font-weight="700" text-anchor="middle">⚡ ${c.kpi2}</text>
+          <rect x="406" y="0" width="195" height="24" rx="12" fill="rgba(99,102,241,0.18)" stroke="#6366f1"/>
+          <text x="503" y="16" fill="#c7d2fe" font-size="11" font-weight="700" text-anchor="middle">💎 ${c.kpi3}</text>
+        </g>
+        ${stepBoxes}
+        <rect x="25" y="318" width="1010" height="54" rx="9" fill="#0f172a" stroke="rgba(99,102,241,0.45)"/>
+        <text x="45" y="350" fill="#e2e8f0" font-size="12.5" font-weight="700" font-family="monospace">${c.equation}</text>
+        <text x="28" y="404" fill="#64748b" font-size="10.5">Fuente: Playbook de Ingeniería Visual — Cuaderno 09 · Estándar de Infografía Vectorial de Alta Densidad lista para Comité y Correo</text>
+      `;
+    }
+
+    function exportInfographicToPNG() {
+      const svgEl = document.getElementById('executive-infographic-svg');
+      if (!svgEl) return;
+      const svgData = new XMLSerializer().serializeToString(svgEl);
+      const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(svgBlob);
+      const img = new Image();
+      img.onload = function() {
+        const canvas = document.createElement('canvas');
+        canvas.width = 2120;
+        canvas.height = 860;
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#070B14';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        URL.revokeObjectURL(url);
+        const a = document.createElement('a');
+        a.download = `Infografia_Ejecutiva_Commercial_${currentInfogTopic}.png`;
+        a.href = canvas.toDataURL('image/png');
+        a.click();
+      };
+      img.src = url;
+    }
+
+    // 9. Motor del Reproductor de Vídeo Explicativo Animado + Locución Español + Grabación WebM (Sección 5.7)
+    const VIDEO_SCENES = [
+      {
+        badge: 'ESCENA 1 / 4 • TESIS EJECUTIVA OMNICANAL',
+        title: '1. La contratación digital alcanza 2.850 M€ (+18,4% CR) impulsada por App Empresas',
+        subtitle: 'El canal móvil concentra ya el 64% de las altas de circulante y eleva el RORWA de cartera +38 puntos básicos.',
+        speech: 'Escena uno. La contratación digital en banca comercial alcanza dos mil ochocientos cincuenta millones de euros, elevando la rentabilidad RORWA treinta y ocho puntos básicos.',
+        bars: [
+          { label: 'Preconcedidos App', val: 540, max: 700, col: '#06b6d4', tag: '540 M€ (RORWA 3,55%)' },
+          { label: 'Circulante Web', val: 680, max: 700, col: '#6366f1', tag: '680 M€ (RORWA 2,95%)' },
+          { label: 'Confirming B2B', val: 610, max: 700, col: '#10b981', tag: '610 M€ (RORWA 2,68%)' },
+          { label: 'Líneas Aval ESG', val: 410, max: 700, col: '#8b5cf6', tag: '410 M€ (RORWA 3,22%)' }
+        ]
+      },
+      {
+        badge: 'ESCENA 2 / 4 • DIAGNÓSTICO DE FRICCIÓN UX VS. ADMISIÓN STP',
+        title: '2. El 78% de aprobación STP en App contrasta con el abandono documental en Web',
+        subtitle: 'Sustituir la subida manual del PDF de IVA por conexión API con AEAT/CIRBE recupera 145 M€ de formalización.',
+        speech: 'Escena dos. Mientras la App logra un setenta y ocho por ciento de aprobación instantánea STP, eliminar la subida manual de documentos en Web recupera ciento cuarenta y cinco millones.',
+        bars: [
+          { label: '1. Login & Posición', val: 100, max: 100, col: '#06b6d4', tag: '100% Sesiones Inician' },
+          { label: '2. Simulador Cuota', val: 68, max: 100, col: '#6366f1', tag: '68% Calculan Oferta' },
+          { label: '3. Filtro STP Auto', val: 54, max: 100, col: '#10b981', tag: '54% Aprobado en < 48 seg' },
+          { label: 'Fuga PDF Manual', val: 31, max: 100, col: '#f43f5e', tag: '-31% Abandono por Fricción UX' }
+        ]
+      },
+      {
+        badge: 'ESCENA 3 / 4 • PUENTE DE CREACIÓN DE VALOR P&L (WATERFALL EVA)',
+        title: '3. Descomposición P&L: +36,3 M€ de Valor Económico Añadido (EVA) sobre Hurdle Rate',
+        subtitle: 'Las comisiones de Confirming, TPV y Divisas (+36,2 M€) absorben holgadamente el coste de riesgo (18,4 M€).',
+        speech: 'Escena tres. El puente de resultados demuestra que las comisiones de Confirming y TPV absorben el coste de riesgo, generando treinta y seis coma tres millones de valor económico añadido.',
+        bars: [
+          { label: 'Margen NII Neto FTP', val: 93.5, max: 135, col: '#06b6d4', tag: '+93,5 M€ (Spread s/ FTP)' },
+          { label: 'Ingresos Fees B2B', val: 129.7, max: 135, col: '#6366f1', tag: '+36,2 M€ (TPV + Confirming)' },
+          { label: 'Tras OPEX & CoR', val: 80.3, max: 135, col: '#f59e0b', tag: '-49,4 M€ (OPEX + Dotación IFRS9)' },
+          { label: 'EVA NETO CREADO', val: 36.3, max: 135, col: '#10b981', tag: '+36,3 M€ (Supera Hurdle 2,50%)' }
+        ]
+      },
+      {
+        badge: 'ESCENA 4 / 4 • HOJA DE RUTA Y DECISIÓN DEL COMITÉ Q1',
+        title: '4. Tres palancas inmediatas para capturar +18,5 M€ de Margen Neto adicional en Q1',
+        subtitle: '1) Conector CIRBE/AEAT en Web · 2) Pronto Pago Confirming en 1 clic · 3) Preconcedidos dinámicos sobre TPV.',
+        speech: 'Escena cuatro. Recomendamos al Comité activar tres palancas inmediatas en el primer trimestre que aportarán dieciocho coma cinco millones adicionales de margen neto.',
+        bars: [
+          { label: 'Conector API Fiscal', val: 7.4, max: 10, col: '#06b6d4', tag: '+7,4 M€ Margen Incremental' },
+          { label: 'Confirming 1-Clic', val: 6.2, max: 10, col: '#10b981', tag: '+6,2 M€ Margen Incremental' },
+          { label: 'Preconcedido s/ TPV', val: 4.9, max: 10, col: '#6366f1', tag: '+4,9 M€ Margen Incremental' },
+          { label: 'Impacto CET1 Grupo', val: 8.5, max: 10, col: '#34d399', tag: '+14 bps Solvencia Orgánica' }
+        ]
+      }
+    ];
+
+    let vidSceneIdx = 0, vidPlaying = false, vidVoiceEnabled = true, vidAnimProgress = 1, vidAnimReq = null, vidTimer = null;
+
+    function drawVideoSceneCanvas(progress = 1) {
+      const canvas = document.getElementById('explanatory-video-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width, h = canvas.height;
+      const sc = VIDEO_SCENES[vidSceneIdx];
+
+      // Fondo cinematográfico oscuro
+      ctx.fillStyle = '#050811';
+      ctx.fillRect(0, 0, w, h);
+
+      // Banda superior Kicker
+      ctx.fillStyle = '#0f172a';
+      ctx.fillRect(0, 0, w, 44);
+      ctx.fillStyle = '#38bdf8';
+      ctx.font = '700 12px "JetBrains Mono", monospace';
+      ctx.fillText(sc.badge, 28, 27);
+      ctx.fillStyle = '#10b981';
+      ctx.fillText('● MOTION DATA STORYTELLER 60FPS', w - 265, 27);
+
+      // Action Title de la escena
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '800 19px Inter, "Segoe UI", sans-serif';
+      ctx.fillText(sc.title, 28, 82);
+
+      // Barras animadas con interpolación easeOutQuart
+      const ease = 1 - Math.pow(1 - Math.min(1, progress), 4);
+      sc.bars.forEach((b, i) => {
+        const y = 115 + i * 52;
+        ctx.fillStyle = '#cbd5e1';
+        ctx.font = '600 13px Inter, "Segoe UI", sans-serif';
+        ctx.fillText(b.label, 28, y + 20);
+
+        // Fondo pista barra
+        ctx.fillStyle = 'rgba(255,255,255,0.06)';
+        ctx.fillRect(210, y + 4, 470, 24);
+
+        // Barra animada
+        const bw = (b.val / b.max) * 470 * ease;
+        ctx.fillStyle = b.col;
+        ctx.fillRect(210, y + 4, bw, 24);
+
+        // Etiqueta derecha tabular
+        ctx.fillStyle = '#f8fafc';
+        ctx.font = '700 13px "JetBrains Mono", monospace';
+        ctx.fillText(b.tag, 695, y + 21);
+      });
+
+      // Banda de Subtítulos tipo Cine (Lower Third)
+      ctx.fillStyle = 'rgba(9, 14, 28, 0.94)';
+      ctx.fillRect(24, h - 74, w - 48, 52);
+      ctx.strokeStyle = 'rgba(16, 185, 129, 0.5)';
+      ctx.strokeRect(24, h - 74, w - 48, 52);
+      ctx.fillStyle = '#6ee7b7';
+      ctx.font = '700 11px "JetBrains Mono", monospace';
+      ctx.fillText('🎙️ SUBTÍTULO NARRACIÓN EJECUTIVA:', 40, h - 53);
+      ctx.fillStyle = '#f1f5f9';
+      ctx.font = '500 13.5px Inter, "Segoe UI", sans-serif';
+      ctx.fillText(sc.subtitle, 40, h - 33);
+
+      // Barra de progreso global inferior
+      const totalProg = ((vidSceneIdx + Math.min(1, progress)) / VIDEO_SCENES.length) * w;
+      ctx.fillStyle = '#10b981';
+      ctx.fillRect(0, h - 5, totalProg, 5);
+    }
+
+    function animateCurrentVideoScene() {
+      cancelAnimationFrame(vidAnimReq);
+      const t0 = performance.now();
+      function stepFrame(now) {
+        vidAnimProgress = Math.min(1, (now - t0) / 950);
+        drawVideoSceneCanvas(vidAnimProgress);
+        if (vidAnimProgress < 1) vidAnimReq = requestAnimationFrame(stepFrame);
+      }
+      vidAnimReq = requestAnimationFrame(stepFrame);
+    }
+
+    function updateVideoTimelineUI() {
+      const sc = VIDEO_SCENES[vidSceneIdx];
+      const badge = document.getElementById('vid-scene-badge');
+      if (badge) badge.textContent = sc.badge;
+      [0, 1, 2, 3].forEach(i => {
+        const b = document.getElementById('vid-step-' + i);
+        if (!b) return;
+        const active = (i === vidSceneIdx);
+        b.style.borderColor = active ? 'rgba(16,185,129,0.6)' : 'rgba(255,255,255,0.08)';
+        b.style.background = active ? 'rgba(16,185,129,0.16)' : 'rgba(255,255,255,0.03)';
+      });
+    }
+
+    function speakCurrentVideoScene(onDone) {
+      if (!vidVoiceEnabled || !('speechSynthesis' in window)) {
+        vidTimer = setTimeout(onDone, 5200);
+        return;
+      }
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(VIDEO_SCENES[vidSceneIdx].speech);
+      u.lang = 'es-ES';
+      u.rate = 1.04;
+      u.onend = () => { if (vidPlaying) onDone(); };
+      u.onerror = () => { if (vidPlaying) vidTimer = setTimeout(onDone, 4000); };
+      window.speechSynthesis.speak(u);
+    }
+
+    function runVideoSequenceStep() {
+      if (!vidPlaying) return;
+      updateVideoTimelineUI();
+      animateCurrentVideoScene();
+      speakCurrentVideoScene(() => {
+        if (!vidPlaying) return;
+        if (vidSceneIdx < VIDEO_SCENES.length - 1) {
+          vidSceneIdx++;
+          runVideoSequenceStep();
+        } else {
+          vidPlaying = false;
+          const btn = document.getElementById('vid-play-btn');
+          if (btn) btn.textContent = '▶ Reproducir Vídeo Explicativo (4 Escenas)';
+        }
+      });
+    }
+
+    function toggleExplanatoryVideoPlay() {
+      const btn = document.getElementById('vid-play-btn');
+      clearTimeout(vidTimer);
+      if (vidPlaying) {
+        vidPlaying = false;
+        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+        if (btn) btn.textContent = '▶ Reproducir Vídeo Explicativo (4 Escenas)';
+      } else {
+        vidPlaying = true;
+        if (vidSceneIdx >= VIDEO_SCENES.length - 1 && vidAnimProgress >= 1) vidSceneIdx = 0;
+        if (btn) btn.textContent = '⏸ Pausar Vídeo Explicativo';
+        runVideoSequenceStep();
+      }
+    }
+
+    function toggleVideoVoice() {
+      vidVoiceEnabled = !vidVoiceEnabled;
+      if (!vidVoiceEnabled && 'speechSynthesis' in window) window.speechSynthesis.cancel();
+      const b = document.getElementById('vid-voice-btn');
+      if (b) {
+        b.textContent = vidVoiceEnabled ? '🔊 Locución Voz Español: ON' : '🔇 Locución Voz Español: OFF';
+        b.style.color = vidVoiceEnabled ? '#c7d2fe' : '#94a3b8';
+      }
+    }
+
+    function jumpToVideoScene(idx) {
+      clearTimeout(vidTimer);
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      vidSceneIdx = idx;
+      updateVideoTimelineUI();
+      animateCurrentVideoScene();
+      if (vidPlaying) runVideoSequenceStep();
+    }
+
+    function recordExplanatoryVideoWebM() {
+      const canvas = document.getElementById('explanatory-video-canvas');
+      const recBtn = document.getElementById('vid-rec-btn');
+      if (!canvas || !canvas.captureStream || typeof MediaRecorder === 'undefined') {
+        alert('Tu navegador no soporta MediaRecorder sobre Canvas.');
+        return;
+      }
+      const stream = canvas.captureStream(30);
+      const chunks = [];
+      const rec = new MediaRecorder(stream, { mimeType: 'video/webm' });
+      rec.ondataavailable = e => { if (e.data && e.data.size > 0) chunks.push(e.data); };
+      rec.onstop = () => {
+        const blob = new Blob(chunks, { type: 'video/webm' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'Video_Explicativo_Commercial_Banking.webm';
+        a.click();
+        if (recBtn) recBtn.textContent = '⏺ Grabar y Descargar Vídeo (.WEBM)';
+      };
+      if (recBtn) recBtn.textContent = '🔴 Grabando secuencia... (Descarga automática al finalizar)';
+      vidSceneIdx = 0;
+      vidPlaying = true;
+      rec.start();
+      runVideoSequenceStep();
+      setTimeout(() => {
+        if (rec.state === 'recording') rec.stop();
+      }, 16000);
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
       updateLiveTerminal();
       drawTopographicSurface3D();
       updateWarRoom();
+      updateInteractiveSlide();
+      renderExecutiveInfographic();
+      drawVideoSceneCanvas(1);
       renderDictionaryCards();
       window.addEventListener('resize', () => {
         if (window.demoMainChart) window.demoMainChart.resize();
