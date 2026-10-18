@@ -392,21 +392,23 @@ No incluyas markdown, saludos ni explicaciones fuera del bloque JSON.</div>
       <section class="recursos-section" id="glosario">
         <div class="recursos-section-header">
           <h2>
-            <span>📖</span> 6. Glosario Técnico de Inteligencia Artificial
+            <span>📖</span> 6. Glosario Integral: IA, M365 Copilot, Ingeniería Visual & Banca Comercial
           </h2>
-          <span class="sim-badge" id="glossary-counter">30 Términos</span>
+          <span class="sim-badge" id="glossary-counter">42 Términos</span>
         </div>
 
         <div class="glossary-controls">
-          <input type="search" id="glossary-search-input" class="glossary-search-input" placeholder="Buscar término o concepto (ej. KV Cache, AdamW, RAG, Polisemia, Causalidad)...">
+          <input type="search" id="glossary-search-input" class="glossary-search-input" placeholder="Buscar término o KPI (ej. RORWA, RAROC, IFRS 9, Confirming, OCFE, Databricks, ECharts, KV Cache, RAG)...">
           
           <div class="glossary-filter-chips">
-            <button class="glossary-chip active" data-cat="all">Todos</button>
+            <button class="glossary-chip active" data-cat="all">Todos (42)</button>
             <button class="glossary-chip" data-cat="fundamentos">Fundamentos & Matemáticas</button>
             <button class="glossary-chip" data-cat="arquitectura">Arquitectura & Transformers</button>
             <button class="glossary-chip" data-cat="hardware">Inferencia & Hardware</button>
-            <button class="glossary-chip" data-cat="rag_agentes">RAG & Agentes</button>
+            <button class="glossary-chip" data-cat="rag_agentes">RAG, Agentes & M365 Copilot</button>
             <button class="glossary-chip" data-cat="alineamiento">Alineamiento & Cognición</button>
+            <button class="glossary-chip" data-cat="banca_riesgos">Banca Comercial & Riesgos (C6/C9)</button>
+            <button class="glossary-chip" data-cat="visual_databricks">Ingeniería Visual & Databricks (C8/C9)</button>
           </div>
         </div>
 
@@ -642,131 +644,312 @@ No incluyas markdown, saludos ni explicaciones fuera del bloque JSON.</div>
   <!-- Script Interactivo para el Glosario y Matriz de Prompts -->
   <script>
     const RICH_GLOSSARY = [
+      // Fundamentos & Matemáticas (C1, C2, C3, C5)
       {
-        term: "KV Cache",
-        cat: "hardware",
-        desc: "Estructura de memoria en VRAM que almacena los tensores de Claves (K) y Valores (V) calculados en tokens anteriores, reduciendo la complejidad autoregresiva de O(N²) a O(1).",
-        notebook: "cuadernos/03-compendio-tecnico.html#kv-cache",
+        term: "Superinterpolador Estadístico",
+        cat: "fundamentos",
+        desc: "Concepto de Pep Martorell: las redes neuronales profundas interpolan con altísima precisión dentro de la variedad estadística vista en entrenamiento, pero no deducen leyes físicas fuera de su distribución.",
+        notebook: "cuadernos/01-pep-martorell.html#interpolador",
+        nbLabel: "Cuaderno 01: Pep Martorell"
+      },
+      {
+        term: "Correlación vs Causalidad",
+        cat: "fundamentos",
+        desc: "Principio epistemológico central: los LLMs operan en el nivel de asociación estadística multidimensional, pero requieren modelos de intervención y verificación humana para decisiones causales.",
+        notebook: "cuadernos/02-javier-ideami.html#causalidad",
+        nbLabel: "Cuaderno 02: Javier Ideami"
+      },
+      {
+        term: "Embeddings & Geometría Vectorial",
+        cat: "fundamentos",
+        desc: "Representaciones vectoriales continuas en espacios de alta dimensión donde la cercanía geométrica (similitud coseno) codifica relaciones semánticas y sintácticas.",
+        notebook: "cuadernos/03-compendio-tecnico.html#modulo-3",
         nbLabel: "Cuaderno 03: Compendio Técnico"
       },
       {
+        term: "AdamW & Descenso de Gradiente",
+        cat: "fundamentos",
+        desc: "Optimizador estándar que desacopla la regularización por decaimiento de pesos (Weight Decay) de los momentos adaptativos del gradiente, evitando el sobreajuste en modelos masivos.",
+        notebook: "cuadernos/03-compendio-tecnico.html#modulo-2",
+        nbLabel: "Cuaderno 03: Compendio Técnico"
+      },
+      {
+        term: "Autodiff Reverso (Grafo Dinámico)",
+        cat: "fundamentos",
+        desc: "Motor matemático de diferenciación automática en modo reverso que construye un DAG en tiempo de ejecución para propagar gradientes exactos mediante la regla de la cadena.",
+        notebook: "cuadernos/05-paradigmas-y-computacion.html#m2-autodiff",
+        nbLabel: "Cuaderno 05: Paradigmas & Computación"
+      },
+      {
+        term: "Aproximación Universal vs Inducción",
+        cat: "fundamentos",
+        desc: "Distinción formal entre aproximar una función continua sobre un compacto (Cybenko-Hornik) e inducir programas algorítmicos generalizables fuera de distribución.",
+        notebook: "cuadernos/05-paradigmas-y-computacion.html#m1-epistemologia",
+        nbLabel: "Cuaderno 05: Paradigmas & Computación"
+      },
+
+      // Arquitectura & Transformers (C1, C3, C4, C5)
+      {
         term: "Self-Attention (Autoatención)",
         cat: "arquitectura",
-        desc: "Mecanismo central de los Transformers (Q·Kᵀ / √d_k) que calcula pesos cruzados entre todos los tokens en paralelo, permitiendo resolver la polisemia considerando el contexto global.",
+        desc: "Mecanismo central de los Transformers softmax(QKᵀ / √d_k)V que pondera simultáneamente cada token frente al resto de la secuencia para desambiguar la polisemia contextual.",
         notebook: "cuadernos/01-pep-martorell.html#transformers",
         nbLabel: "Cuaderno 01: Pep Martorell"
       },
       {
-        term: "AdamW",
-        cat: "fundamentos",
-        desc: "Optimizador derivado de Adam que desacopla la regularización por decaimiento de pesos (Weight Decay) de los gradientes adaptativos, mejorando la generalización.",
-        notebook: "cuadernos/03-compendio-tecnico.html#adamw",
+        term: "Tokenización BPE (Byte-Pair Encoding)",
+        cat: "arquitectura",
+        desc: "Algoritmo sub-palabra que fusiona iterativamente los pares de bytes más frecuentes en un vocabulario compacto libre de tokens desconocidos (UNK).",
+        notebook: "cuadernos/03-compendio-tecnico.html#modulo-3",
         nbLabel: "Cuaderno 03: Compendio Técnico"
       },
       {
+        term: "Pre-LN vs Post-LN (Autopista del Gradiente)",
+        cat: "arquitectura",
+        desc: "En Pre-LN (x + SubLayer(LN(x))), la conexión residual actúa como una autopista limpia para que el gradiente fluya desde la pérdida hasta las primeras capas sin desvanecerse.",
+        notebook: "cuadernos/05-paradigmas-y-computacion.html#m5-pre-post-ln",
+        nbLabel: "Cuaderno 05: Paradigmas & Computación"
+      },
+      {
+        term: "RoPE, ALiBi & Multi-Head Attention",
+        cat: "arquitectura",
+        desc: "Codificaciones posicionales relativas/rotativas (RoPE y ALiBi) y atención multi-cabeza que permiten extrapolar contextos largos en LLMs modernos.",
+        notebook: "cuadernos/04-el-universo-del-transformer.html#seccion-6",
+        nbLabel: "Cuaderno 04: Universo del Transformer"
+      },
+
+      // Inferencia & Hardware (C1, C3, C4)
+      {
+        term: "KV Cache (Caché Key-Value)",
+        cat: "hardware",
+        desc: "Estructura en VRAM que almacena tensores K y V de pasos previos durante la generación autorregresiva, reduciendo la complejidad por token de O(N²) a O(N).",
+        notebook: "cuadernos/03-compendio-tecnico.html#modulo-4",
+        nbLabel: "Cuaderno 03: Compendio Técnico"
+      },
+      {
+        term: "FlashAttention & Jerarquía SRAM/HBM",
+        cat: "hardware",
+        desc: "Algoritmo exacto de atención por bloques (tiling) en SRAM de la GPU que evita materializar la matriz cuadrática N×N en memoria HBM.",
+        notebook: "cuadernos/03-compendio-tecnico.html#modulo-4",
+        nbLabel: "Cuaderno 03: Compendio Técnico"
+      },
+      {
+        term: "Temperatura, Top-K & Top-P Sampling",
+        cat: "hardware",
+        desc: "Hiperparámetros de decodificación estocástica que controlan el escalado de logits (z/T) y el truncamiento del núcleo de probabilidad acumulada.",
+        notebook: "cuadernos/03-compendio-tecnico.html#modulo-8",
+        nbLabel: "Cuaderno 03: Compendio Técnico"
+      },
+      {
+        term: "Gigafactorías de Cómputo & Inferencia",
+        cat: "hardware",
+        desc: "Clústeres masivos de GPUs interconectadas por NVLink/InfiniBand donde el coste energético y el ancho de banda de memoria determinan la economía de los LLMs.",
+        notebook: "cuadernos/01-pep-martorell.html#gigafactorias",
+        nbLabel: "Cuaderno 01: Pep Martorell"
+      },
+
+      // RAG, Agentes & M365 Copilot (C1, C3, C5, C6, C7)
+      {
         term: "RAG (Retrieval-Augmented Generation)",
         cat: "rag_agentes",
-        desc: "Arquitectura que recupera fragmentos de conocimiento relevante desde una base de datos vectorial externa y los inyecta en el contexto del prompt antes de la generación.",
-        notebook: "cuadernos/03-compendio-tecnico.html#rag",
+        desc: "Arquitectura híbrida que recupera fragmentos documentales verificados mediante búsqueda vectorial y léxica (BM25 + RRF) antes de sintetizar la respuesta.",
+        notebook: "cuadernos/03-compendio-tecnico.html#modulo-9",
         nbLabel: "Cuaderno 03: Compendio Técnico"
       },
       {
         term: "GraphRAG",
         cat: "rag_agentes",
-        desc: "Extensión de RAG basada en grafos de conocimiento y clustering jerárquico de comunidades (Leiden), facilitando respuestas globales y síntesis temática sobre grandes volúmenes.",
-        notebook: "cuadernos/03-compendio-tecnico.html#graphrag",
+        desc: "Evolución de RAG basada en grafos de conocimiento y detección jerárquica de comunidades (algoritmo de Leiden) para responder consultas globales sobre corpus enteros.",
+        notebook: "cuadernos/03-compendio-tecnico.html#modulo-9",
         nbLabel: "Cuaderno 03: Compendio Técnico"
       },
       {
-        term: "Metaprompting",
-        cat: "alineamiento",
-        desc: "Metodología donde se utiliza al propio modelo de lenguaje como arquitecto y auditor para diseñar, restringir y validar el prompt final antes de su ejecución.",
-        notebook: "cuadernos/02-javier-ideami.html#metaprompting",
-        nbLabel: "Cuaderno 02: Javier Ideami"
-      },
-      {
-        term: "Correlación vs Causalidad",
-        cat: "fundamentos",
-        desc: "Principio epistemológico central: los LLMs operan en el nivel 1 de la escalera causal (asociación estadística en espacios multidimensionales) pero no deducen causas sin modelos de intervención.",
-        notebook: "cuadernos/02-javier-ideami.html#causalidad",
-        nbLabel: "Cuaderno 02: Javier Ideami"
-      },
-      {
-        term: "Superinterpolador Estadístico",
-        cat: "fundamentos",
-        desc: "Concepto acuñado por Pep Martorell para definir a las redes neuronales profundas: navegadores de alta precisión en variedades de datos conocidas sin extrapolar leyes físicas ausentes.",
-        notebook: "cuadernos/01-pep-martorell.html#superinterpolador",
-        nbLabel: "Cuaderno 01: Pep Martorell"
-      },
-      {
-        term: "Tokenización BPE",
-        cat: "arquitectura",
-        desc: "Algoritmo de codificación por pares de bytes que fusiona iterativamente caracteres frecuentes en subpalabras, equilibrando la cobertura de vocabulario y el tamaño del diccionario.",
-        notebook: "cuadernos/03-compendio-tecnico.html#tokenizacion",
-        nbLabel: "Cuaderno 03: Compendio Técnico"
-      },
-      {
-        term: "Temperatura & Sampling",
-        cat: "hardware",
-        desc: "Hiperparámetro que escala los logits (z/T) antes del Softmax; temperaturas bajas (T→0) concentran la probabilidad en el token dominante, mientras que altas aplanan la distribución.",
-        notebook: "cuadernos/03-compendio-tecnico.html#sampling",
-        nbLabel: "Cuaderno 03: Compendio Técnico"
-      },
-      {
-        term: "Top-P (Nucleus Sampling)",
-        cat: "hardware",
-        desc: "Estrategia de muestreo dinámico que trunca la selección únicamente al conjunto más pequeño de tokens cuya masa de probabilidad acumulada alcance el umbral p (ej. 90%).",
-        notebook: "cuadernos/03-compendio-tecnico.html#sampling",
-        nbLabel: "Cuaderno 03: Compendio Técnico"
-      },
-      {
-        term: "FlashAttention",
-        cat: "hardware",
-        desc: "Algoritmo exacto de atención con conciencia de la memoria GPU (SRAM vs HBM) que evita materializar matrices intermedias N×N, acelerando el cómputo y ahorrando VRAM.",
-        notebook: "cuadernos/03-compendio-tecnico.html#flashattention",
-        nbLabel: "Cuaderno 03: Compendio Técnico"
-      },
-      {
-        term: "LoRA & QLoRA",
-        cat: "arquitectura",
-        desc: "Técnica de fine-tuning eficiente por adaptación de bajo rango que entrena matrices pequeñas A y B (W = W₀ + B·A) con congelación de los pesos base.",
-        notebook: "cuadernos/03-compendio-tecnico.html#lora",
-        nbLabel: "Cuaderno 03: Compendio Técnico"
-      },
-      {
-        term: "DPO (Direct Preference Optimization)",
-        cat: "alineamiento",
-        desc: "Método de alineamiento que optimiza los pesos directamente sobre comparaciones de preferencia humana sin necesidad de entrenar una red de recompensa separada.",
-        notebook: "cuadernos/03-compendio-tecnico.html#dpo",
-        nbLabel: "Cuaderno 03: Compendio Técnico"
-      },
-      {
-        term: "ReAct Agent",
+        term: "ReAct & Evaluation Harness",
         cat: "rag_agentes",
-        desc: "Framework para agentes de IA que combina razonamiento (Reasoning) y ejecución de herramientas (Acting) en bucle continuo para resolver problemas de múltiples pasos.",
-        notebook: "cuadernos/03-compendio-tecnico.html#agentes",
-        nbLabel: "Cuaderno 03: Compendio Técnico"
+        desc: "Bucle de agencia (Pensamiento → Acción/Herramienta → Observación) gobernado por un arnés determinista con validación de esquemas, reintentos y estado explícito.",
+        notebook: "cuadernos/05-paradigmas-y-computacion.html#m7-harness",
+        nbLabel: "Cuaderno 05: Paradigmas & Computación"
+      },
+      {
+        term: "Framework OCFE (M365 Copilot)",
+        cat: "rag_agentes",
+        desc: "Estándar de prompting corporativo para Microsoft 365 Copilot: Objetivo + Contexto (archivos/datos) + Fuente documental + Expectativa de formato de salida.",
+        notebook: "cuadernos/06-m365-copilot-banca-comercial.html#capitulo-1",
+        nbLabel: "Cuaderno 06: M365 Copilot Banca"
+      },
+      {
+        term: "Copilot Studio & Agentes Declarativos",
+        cat: "rag_agentes",
+        desc: "Diseño de agentes especializados en banca comercial conectados a bibliotecas de políticas de riesgo en SharePoint, CRM y conectores de Microsoft Graph.",
+        notebook: "cuadernos/06-m365-copilot-banca-comercial.html#capitulo-8",
+        nbLabel: "Cuaderno 06: M365 Copilot Banca"
+      },
+      {
+        term: "Shadow Testing & Migración a M365",
+        cat: "rag_agentes",
+        desc: "Metodología de validación en sombra A/B donde los agentes IA procesan expedientes reales en paralelo al equipo humano antes de autorizar su paso a producción.",
+        notebook: "cuadernos/07-migracion-chatgpt-copilot-m365.html#fase-3",
+        nbLabel: "Cuaderno 07: Migración a Copilot M365"
+      },
+
+      // Alineamiento & Cognición (C2, C3, C4, C5)
+      {
+        term: "Metaprompting & Ingeniería de Contexto",
+        cat: "alineamiento",
+        desc: "Uso del propio modelo de razonamiento como arquitecto y auditor para estructurar restricciones, criterios de evaluación y formato antes de ejecutar la tarea.",
+        notebook: "cuadernos/02-javier-ideami.html#prompting",
+        nbLabel: "Cuaderno 02: Javier Ideami"
       },
       {
         term: "Musculatura Cognitiva",
         cat: "alineamiento",
-        desc: "Capacidad de pensamiento crítico y análisis riguroso que los profesionales deben ejercitar deliberadamente para auditar y verificar las respuestas de los modelos de IA.",
-        notebook: "cuadernos/02-javier-ideami.html#musculatura-cognitiva",
+        desc: "Disciplina de pensamiento crítico, verificación cruzada y dominio técnico que evita la atrofia cognitiva del profesional al colaborar con sistemas generativos.",
+        notebook: "cuadernos/02-javier-ideami.html#musculatura",
         nbLabel: "Cuaderno 02: Javier Ideami"
       },
       {
-        term: "Embeddings",
-        cat: "fundamentos",
-        desc: "Representaciones vectoriales continuas en espacios de cientos o miles de dimensiones donde la cercanía geométrica (distancia coseno) refleja afinidad semántica.",
-        notebook: "cuadernos/03-compendio-tecnico.html#embeddings",
-        nbLabel: "Cuaderno 03: Compendio Técnico"
-      },
-      {
-        term: "Alucinación",
+        term: "RLHF, SFT & Ciclo de Vida GPT",
         cat: "alineamiento",
-        desc: "Generación de texto factualmente incorrecto, inventado o incoherente producido con alta confianza estadística debido a la naturaleza probabilística del modelo.",
-        notebook: "cuadernos/02-javier-ideami.html#alucinaciones",
-        nbLabel: "Cuaderno 02: Javier Ideami"
+        desc: "Pipeline de post-entrenamiento que alinea las políticas de generación del modelo con preferencias humanas de utilidad, veracidad e inocuidad.",
+        notebook: "cuadernos/04-el-universo-del-transformer.html#seccion-7",
+        nbLabel: "Cuaderno 04: Universo del Transformer"
+      },
+      {
+        term: "Grounding Epistémico vs Alucinación",
+        cat: "alineamiento",
+        desc: "Sustitución de la memoria paramétrica difusa por evidencia documental inyectada en contexto con trazabilidad estricta de citas.",
+        notebook: "cuadernos/05-paradigmas-y-computacion.html#m7-grounding",
+        nbLabel: "Cuaderno 05: Paradigmas & Computación"
+      },
+
+      // Banca Comercial, Riesgo de Crédito & Rentabilidad (C6, C9)
+      {
+        term: "RORWA (Return on Risk-Weighted Assets)",
+        cat: "banca_riesgos",
+        desc: "Beneficio Neto Atribuido dividido entre los Activos Ponderados por Riesgo (RWA). Es el KPI maestro en Banca de Empresas para medir la eficiencia en el uso del capital regulatorio.",
+        notebook: "cuadernos/09-ingenieria-visual-databricks-m365-vscode.html#diccionario-visual-commercial",
+        nbLabel: "Cuaderno 09: Diccionario Commercial"
+      },
+      {
+        term: "RAROC & Hurdle Rate",
+        cat: "banca_riesgos",
+        desc: "Rentabilidad ajustada al riesgo ((Ingresos − Costes − Pérdida Esperada) / Capital Económico). Toda operación con RAROC superior al Hurdle Rate (11%–13%) crea valor (EVA > 0).",
+        notebook: "cuadernos/09-ingenieria-visual-databricks-m365-vscode.html#diccionario-visual-commercial",
+        nbLabel: "Cuaderno 09: Diccionario Commercial"
+      },
+      {
+        term: "EVA (Economic Value Added)",
+        cat: "banca_riesgos",
+        desc: "Creación neta de riqueza económica de un cliente o cartera tras descontar el coste del capital absorbido: EVA = Beneficio Neto − (Capital Económico × Cost of Equity).",
+        notebook: "cuadernos/09-ingenieria-visual-databricks-m365-vscode.html#diccionario-visual-commercial",
+        nbLabel: "Cuaderno 09: Diccionario Commercial"
+      },
+      {
+        term: "NIM & FTP (Funds Transfer Pricing)",
+        cat: "banca_riesgos",
+        desc: "El FTP es la tasa interna de tesorería que separa el margen comercial de activo (crédito) y pasivo (depósitos) para calcular el Margen de Intereses Neto (NIM) puro de cada gestor.",
+        notebook: "cuadernos/09-ingenieria-visual-databricks-m365-vscode.html#diccionario-visual-commercial",
+        nbLabel: "Cuaderno 09: Diccionario Commercial"
+      },
+      {
+        term: "Confirming & Factoring (Working Capital)",
+        cat: "banca_riesgos",
+        desc: "Soluciones de financiación de circulante y cadena de suministro (anticipo de facturas a proveedores en Confirming y cesión de cuentas por cobrar con o sin recurso en Factoring).",
+        notebook: "cuadernos/09-ingenieria-visual-databricks-m365-vscode.html#diccionario-visual-commercial",
+        nbLabel: "Cuaderno 09: Diccionario Commercial"
+      },
+      {
+        term: "EAD, PD & LGD (Pérdida Esperada)",
+        cat: "banca_riesgos",
+        desc: "Tríada fundamental del riesgo de crédito: Expected Loss (EL) = EAD (Exposición en Impago) × PD (Probabilidad de Impago) × LGD (Severidad tras garantías).",
+        notebook: "cuadernos/09-ingenieria-visual-databricks-m365-vscode.html#diccionario-visual-commercial",
+        nbLabel: "Cuaderno 09: Diccionario Commercial"
+      },
+      {
+        term: "IFRS 9 (Stages 1, 2 y 3) & Cost of Risk (CoR)",
+        cat: "banca_riesgos",
+        desc: "Clasificación contable de la cartera crediticia en Stage 1 (normal), Stage 2 (vigilancia especial / SICR con provisión Lifetime) y Stage 3 (dudoso / NPL), junto al Coste del Riesgo en bps.",
+        notebook: "cuadernos/09-ingenieria-visual-databricks-m365-vscode.html#diccionario-visual-commercial",
+        nbLabel: "Cuaderno 09: Diccionario Commercial"
+      },
+      {
+        term: "Time-to-Yes, Time-to-Cash & Tasa STP",
+        cat: "banca_riesgos",
+        desc: "KPIs operativos de originación comercial: tiempo desde solicitud hasta aprobación en comité (Time-to-Yes), hasta desembolso (Time-to-Cash) y % de admisión automática sin toque manual (STP).",
+        notebook: "cuadernos/09-ingenieria-visual-databricks-m365-vscode.html#diccionario-visual-commercial",
+        nbLabel: "Cuaderno 09: Diccionario Commercial"
+      },
+      {
+        term: "Share of Wallet (SoW) & Cross-Sell Index",
+        cat: "banca_riesgos",
+        desc: "Cuota de negocio financiero que la empresa mantiene con nuestro banco frente al conjunto del sistema (CIRBE) y número medio de familias de producto contratadas por cliente.",
+        notebook: "cuadernos/09-ingenieria-visual-databricks-m365-vscode.html#diccionario-visual-commercial",
+        nbLabel: "Cuaderno 09: Diccionario Commercial"
+      },
+
+      // Ingeniería Visual, Databricks & VS Code (C8, C9)
+      {
+        term: "Arquitectura de 3 Bloques Desacoplados",
+        cat: "visual_databricks",
+        desc: "Patrón que separa (1) Motor de Estilos y Design Tokens, (2) Payload JSON precalculado (window.REPORT_DATA) y (3) Motor Reactivo JS, evitando el truncamiento de tokens del LLM.",
+        notebook: "cuadernos/09-ingenieria-visual-databricks-m365-vscode.html#intro-arquitectura",
+        nbLabel: "Cuaderno 09: Ingeniería Visual"
+      },
+      {
+        term: "Design Tokens PaceUI & Hairline Borders",
+        cat: "visual_databricks",
+        desc: "Sustitución de sombras difusas (shadow-lg) por jerarquía de luminancia en 3 niveles de superficie y bordes de precisión de 1px semitransparentes.",
+        notebook: "cuadernos/08-agentes-vscode-ux-dashboards.html#tokens-diseno",
+        nbLabel: "Cuaderno 08: Agentes VS Code & PaceUI"
+      },
+      {
+        term: "Tipografía Tabular (tabular-nums)",
+        cat: "visual_databricks",
+        desc: "Regla CSS obligatoria en dashboards financieros para que todos los dígitos tengan idéntico ancho horizontal, evitando que las tablas y KPIs tiemblen al animar o filtrar.",
+        notebook: "cuadernos/08-agentes-vscode-ux-dashboards.html#tokens-diseno",
+        nbLabel: "Cuaderno 08: Agentes VS Code & PaceUI"
+      },
+      {
+        term: "Apache ECharts & echarts.connect()",
+        cat: "visual_databricks",
+        desc: "Motor declarativo de visualización que permite sincronizar cursores entre múltiples gráficos, aplicar universalTransition, dataZoom, Sankey y Parallel Coordinates.",
+        notebook: "cuadernos/09-ingenieria-visual-databricks-m365-vscode.html#laboratorio-digital-vivo",
+        nbLabel: "Cuaderno 09: Ingeniería Visual"
+      },
+      {
+        term: "Puente Databricks PySpark → Email HTML",
+        cat: "visual_databricks",
+        desc: "Patrón de ingeniería donde PySpark agrega millones de filas en el clúster y empaqueta un único fichero .HTML autocontenido (Base64 URI) listo para enviarse por correo y abrirse sin servidor.",
+        notebook: "cuadernos/09-ingenieria-visual-databricks-m365-vscode.html#puente-databricks-pyspark",
+        nbLabel: "Cuaderno 09: Ingeniería Visual"
+      },
+      {
+        term: "Atribución Multicanal por Cadenas de Markov",
+        cat: "visual_databricks",
+        desc: "Modelo probabilístico de atribución digital que mide el Removal Effect de cada punto de contacto (App, Web, Gestor, Simulador) frente al sesgo del modelo Last-Click.",
+        notebook: "cuadernos/09-ingenieria-visual-databricks-m365-vscode.html#laboratorio-digital-vivo",
+        nbLabel: "Cuaderno 09: Ingeniería Visual"
+      },
+      {
+        term: "Fórmulas Matriciales Excel 365 (LET / PIVOTBY)",
+        cat: "visual_databricks",
+        desc: "Construcción de cuadros de mando en Excel sin macros VBA (.xlsm bloqueados por seguridad) utilizando matrices dinámicas LET, LAMBDA, AGRUPARPOR, PIVOTBY y barras REPT in-cell.",
+        notebook: "cuadernos/09-ingenieria-visual-databricks-m365-vscode.html#boveda-prompts-skills",
+        nbLabel: "Cuaderno 09: Ingeniería Visual"
+      },
+      {
+        term: "Slides PowerPoint Interactivas (Intra-Slide UX)",
+        cat: "visual_databricks",
+        desc: "Diapositivas ejecutivas 16:9 con pestañas conmutables dentro de la misma lámina, simulador de sensibilidad en vivo para comités y generación mediante Morph + desencadenadores o Web Add-in.",
+        notebook: "cuadernos/09-ingenieria-visual-databricks-m365-vscode.html#boveda-prompts-skills",
+        nbLabel: "Cuaderno 09: Ingeniería Visual"
+      },
+      {
+        term: "Estudio de Infografías SVG & Vídeo Explicativo",
+        cat: "visual_databricks",
+        desc: "Generación mediante agentes de pósters vectoriales SVG de alta densidad y píldoras de vídeo explicativo a 60fps con locución neuronal sincronizada y grabación .webm.",
+        notebook: "cuadernos/09-ingenieria-visual-databricks-m365-vscode.html#boveda-prompts-skills",
+        nbLabel: "Cuaderno 09: Ingeniería Visual"
       }
     ];
 

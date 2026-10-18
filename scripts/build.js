@@ -116,8 +116,13 @@ notebooks.sort((a, b) => a.id.localeCompare(b.id));
 // 2. Generate HTML Cards and inject into index.html
 let cardsHtml = '\n';
 for (const nb of notebooks) {
+  const numPrefix = parseInt(nb.id.split('-')[0], 10) || 0;
+  let track = 'fundamentos';
+  if (numPrefix === 6 || numPrefix === 7) track = 'copilot_banca';
+  else if (numPrefix >= 8) track = 'visual_databricks';
+
   cardsHtml += `      <!-- Episode ${nb.id} -->\n`;
-  cardsHtml += `      <a href="${nb.file}" class="episode-card">\n`;
+  cardsHtml += `      <a href="${nb.file}" class="episode-card" data-notebook-id="${nb.id}" data-track="${track}">\n`;
   cardsHtml += `        <div class="ep-number">${nb.number}</div>\n`;
   cardsHtml += `        <h3>${nb.title}</h3>\n`;
   cardsHtml += `        <div class="ep-guest">${nb.guest}</div>\n`;
