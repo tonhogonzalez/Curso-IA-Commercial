@@ -414,7 +414,8 @@
         { id: "war_room_raroc", label: "War Room Pricing & Waterfall", c: 9, url: "cuadernos/09-ingenieria-visual-databricks-m365-vscode.html#laboratorio-digital-vivo", desc: "Simulador Deal Desk con Puente P&L (Spread, FTP, Fees, CoR, EVA), Coordenadas Paralelas y Slide-Over Drawer." },
         { id: "excel_institucional", label: "Excel Institucional & Prompts", c: 9, url: "cuadernos/09-ingenieria-visual-databricks-m365-vscode.html#excel-institucional-python", desc: "Estándar sin cuadrícula, Matriz de Sensibilidad 2D, bloques =PY() y Prompts Directos para Copilot en Excel sin VBA." },
         { id: "ppt_infog_video", label: "Slides Interactivas, Infografías & Vídeo", c: 9, url: "cuadernos/09-ingenieria-visual-databricks-m365-vscode.html#boveda-prompts-skills", desc: "Diapositivas 16:9 interactivas por dentro, estudio de Infografías SVG exportables a PNG y Vídeos Explicativos (.webm)." },
-        { id: "diccionario_44", label: "Diccionario 44 KPIs Commercial", c: 9, url: "cuadernos/09-ingenieria-visual-databricks-m365-vscode.html#diccionario-visual-commercial", desc: "Enciclopedia visual con fórmulas y gráficos: RORWA, RAROC, Confirming, Factoring, TPV MDR, Cash Pooling, STP, IFRS 9 y CET1." }
+        { id: "diccionario_44", label: "Diccionario 44 KPIs Commercial", c: 9, url: "cuadernos/09-ingenieria-visual-databricks-m365-vscode.html#diccionario-visual-commercial", desc: "Enciclopedia visual con fórmulas y gráficos: RORWA, RAROC, Confirming, Factoring, TPV MDR, Cash Pooling, STP, IFRS 9 y CET1." },
+        { id: "workbench_c9", label: "Workbench: Prompts, Auto-Insights & CSV→HTML", c: 9, url: "cuadernos/09-ingenieria-visual-databricks-m365-vscode.html#workbench-operativo", desc: "Ensamblador de Prompts a medida, Motor de Narrativa Automática (Red Flags), Generador CSV→HTML para Correo y Pack Instalador." }
     ];
 
     const EDGES = [
@@ -456,7 +457,9 @@
         { source: "war_room_raroc", target: "diccionario_44", label: "RORWA · EVA · FTP" },
         { source: "excel_institucional", target: "banca_tier1", label: "reporting comité" },
         { source: "ppt_infog_video", target: "vscode_skills", label: "skills multimedia" },
-        { source: "ppt_infog_video", target: "databricks_html", label: "exportación local" }
+        { source: "ppt_infog_video", target: "databricks_html", label: "exportación local" },
+        { source: "workbench_c9", target: "databricks_html", label: "CSV→HTML correo" },
+        { source: "workbench_c9", target: "vscode_skills", label: "bootstrap kit" }
     ];
 
     class ConceptMap {
