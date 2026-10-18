@@ -452,6 +452,49 @@
         correct: 0,
         explanation: "El Shadow Testing permite validar con datos reales ya auditados del mes anterior que el nuevo agente de Copilot produce exactamente el mismo resultado que el flujo histórico de ChatGPT, identificando qué regla del System Prompt debe ajustarse si existe alguna discrepancia."
       }
+    ],
+
+    "09-ingenieria-visual-databricks-m365-vscode": [
+      {
+        question: "¿Por qué es crítico desacoplar el HTML en 3 bloques (Design Tokens CSS, Payload JSON window.REPORT_DATA y Motor de Renderizado JS) cuando un agente genera un dashboard en Databricks?",
+        options: [
+          "Para evitar que el LLM agote su presupuesto de atención y tokens mezclando datos con HTML, lo que suele provocar que recorte las curvas de animación, micro-interacciones y estados interactivos.",
+          "Porque Apache ECharts no puede renderizar gráficos si los datos no están en un archivo externo separado.",
+          "Para que el navegador desactive las hojas de estilo en cascada y cargue únicamente fuentes del sistema."
+        ],
+        correct: 0,
+        explanation: "Cuando un LLM incrusta datos directamente en el marcado HTML o dentro de las opciones de los gráficos, el archivo crece tanto que el modelo comprime la capa de CSS y JavaScript. Aislar window.REPORT_DATA (precalculado en PySpark) libera presupuesto de atención para el motor de interacción."
+      },
+      {
+        question: "¿Qué problema técnico resuelve la función openCleanFullscreen() al abrir un informe de displayHTML() de Databricks en una nueva pestaña mediante Blob URL?",
+        options: [
+          "Clona el DOM eliminando el atributo _echarts_instance_ y vaciando los contenedores de gráficos antes de serializar el HTML, evitando que la nueva pestaña herede etiquetas <canvas> muertas sin contexto WebGL/2D.",
+          "Comprime las imágenes en formato JPEG para reducir el consumo de memoria RAM del clúster Spark.",
+          "Desactiva la ejecución de JavaScript en la nueva pestaña por motivos de seguridad."
+        ],
+        correct: 0,
+        explanation: "Al usar document.documentElement.innerHTML directamente sobre un gráfico ECharts ya inicializado, se copian nodos <canvas> cuyo contexto gráfico no se transfiere al nuevo documento, dejando los gráficos en blanco. Limpiar _echarts_instance_ permite que window.onload los inicialice limpiamente."
+      },
+      {
+        question: "En la métrica de rentabilidad bancaria ajustada al riesgo, ¿qué mide exactamente el RORWA y cuándo genera valor económico real (EVA > 0)?",
+        options: [
+          "Mide el beneficio neto dividido por los Activos Ponderados por Riesgo (RWA); genera valor económico (EVA > 0) únicamente cuando el RORWA supera el Coste de Capital (Ke) exigido por el banco.",
+          "Mide el volumen total de préstamos concedidos sin restar la pérdida esperada (EL) ni los costes operativos.",
+          "Mide el porcentaje de clientes que abandonan el formulario web antes de firmar el contrato."
+        ],
+        correct: 0,
+        explanation: "El crecimiento de volumen (NII alto) puede destruir capital si consume demasiado RWA. Solo cuando el retorno sobre RWA (RORWA) supera el umbral del coste de capital (Hurdle Rate / Ke), la cartera genera Economic Value Added (EVA > 0)."
+      },
+      {
+        question: "¿Cuál es la regla de oro para lograr una estética institucional tipo Banca de Inversión en archivos Excel generados con openpyxl?",
+        options: [
+          "Ocultar la cuadrícula base (ws.views.sheetView[0].showGridLines = False), dejar margen en Fila 1 y Columna A, aplicar aire vertical (22pt en datos, 30pt en cabeceras) y usar tipografía diferenciada para Inputs (azul) y Fórmulas (negro).",
+          "Pintar todas las celdas con colores primarios saturados y bordes gruesos negros en las cuatro caras de cada celda.",
+          "Incrustar macros VBA con temporizadores para animar el color de las celdas cada segundo."
+        ],
+        correct: 0,
+        explanation: "En Excel corporativo las macros suelen estar bloqueadas. La excelencia visual proviene de eliminar el ruido de la cuadrícula base, dar aire vertical a las celdas, aplicar formatos numéricos explícitos con negativos en rojo entre paréntesis y usar DataBarRule sobrios."
+      }
     ]
   };
 

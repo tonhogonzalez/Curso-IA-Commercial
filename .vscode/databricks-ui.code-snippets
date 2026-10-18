@@ -1,0 +1,81 @@
+{
+  "Databricks PySpark to HTML Master Bridge": {
+    "prefix": "dbr-pyspark-deck",
+    "body": [
+      "import json",
+      "from decimal import Decimal",
+      "from datetime import date, datetime",
+      "from pyspark.sql import functions as F",
+      "",
+      "def spark_json_default(obj):",
+      "    if isinstance(obj, Decimal): return float(obj)",
+      "    if isinstance(obj, (date, datetime)): return obj.isoformat()",
+      "    return str(obj)",
+      "",
+      "# 1. Empaquetado JSON desde tu DataFrame PySpark",
+      "payload_json = json.dumps({",
+      "    \"meta\": {\"title\": \"${1:Seguimiento Omnicanal Web & App}\", \"period\": \"${2:Q4 2026}\"},",
+      "    \"rows\": [r.asDict() for r in ${3:df_agregado}.collect()]",
+      "}, default=spark_json_default)",
+      "",
+      "# 2. Plantilla HTML en Raw String (Prohibido usar f-strings)",
+      "html_template = r\"\"\"<!DOCTYPE html>",
+      "<html lang=\"es\" class=\"dark\">",
+      "<head>",
+      "  <meta charset=\"UTF-8\">",
+      "  <script src=\"https://cdn.tailwindcss.com\"></script>",
+      "  <script src=\"https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js\"></script>",
+      "  <script src=\"https://unpkg.com/lucide@latest\"></script>",
+      "  <style>",
+      "    body { margin: 0; background: #05070E; color: #F1F5F9; font-family: system-ui, sans-serif; }",
+      "    .mono { font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums; }",
+      "    .sp-card { position: relative; background: rgba(14, 20, 34, 0.75); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; overflow: hidden; }",
+      "  </style>",
+      "</head>",
+      "<body class=\"p-6\">",
+      "  <script>window.REPORT_DATA = __PYSPARK_PAYLOAD__;</script>",
+      "  <div id=\"app\"></div>",
+      "  <script>",
+      "    lucide.createIcons();",
+      "    console.log('Payload cargado:', window.REPORT_DATA);",
+      "  </script>",
+      "</body>",
+      "</html>\"\"\"",
+      "",
+      "displayHTML(html_template.replace(\"__PYSPARK_PAYLOAD__\", payload_json))"
+    ],
+    "description": "Puente determinista PySpark -> displayHTML sin colisión de llaves {}"
+  },
+  "ECharts Universal Morphing (Scatter / Treemap / Bar)": {
+    "prefix": "echarts-morph",
+    "body": [
+      "function renderMorphView(chartInstance, data, viewType = 'scatter') {",
+      "  const palette = ['#06B6D4', '#6366F1', '#10B981', '#F59E0B', '#F43F5E', '#8B5CF6'];",
+      "  const commonSeries = {",
+      "    id: 'commercial-morph-series',",
+      "    universalTransition: { enabled: true, divideShape: 'clone' }",
+      "  };",
+      "  $0",
+      "}"
+    ],
+    "description": "Estructura ECharts con universalTransition y divideShape: clone"
+  },
+  "OpenPyXL Institutional Excel Template": {
+    "prefix": "openpyxl-institucional",
+    "body": [
+      "from openpyxl import Workbook",
+      "from openpyxl.styles import Font, PatternFill, Alignment, Border, Side",
+      "from openpyxl.formatting.rule import DataBarRule",
+      "from openpyxl.utils import get_column_letter",
+      "",
+      "wb = Workbook()",
+      "ws = wb.active",
+      "ws.title = \"${1:Resumen Ejecutivo}\"",
+      "ws.views.sheetView[0].showGridLines = False",
+      "ws.column_dimensions['A'].width = 3",
+      "ws.row_dimensions[1].height = 15",
+      "$0"
+    ],
+    "description": "Inicializa un libro Excel en Python sin cuadrícula y con márgenes institucionales"
+  }
+}

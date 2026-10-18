@@ -1,4 +1,4 @@
-const CACHE_NAME = 'curso-ia-v9';
+const CACHE_NAME = 'curso-ia-v10';
 const ASSETS = [
   './',
   './index.html',
@@ -12,6 +12,8 @@ const ASSETS = [
   './cuadernos/05-paradigmas-y-computacion.html',
   './cuadernos/06-m365-copilot-banca-comercial.html',
   './cuadernos/07-migracion-chatgpt-copilot-m365.html',
+  './cuadernos/08-agentes-vscode-ux-dashboards.html',
+  './cuadernos/09-ingenieria-visual-databricks-m365-vscode.html',
   './css/styles.css',
   './js/main.js',
   './js/exam-data.js',

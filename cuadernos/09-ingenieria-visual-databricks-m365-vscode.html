@@ -1,0 +1,2530 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Playbook Maestro de Ingeniería Visual, Dashboards Interactivos en Databricks (PySpark -> displayHTML), Automatización de Excel Institucional (openpyxl), Prompts/Skills para VS Code y M365 Copilot (Excel, PowerPoint, Chat) y Diccionario Visual de 24 Métricas de Canales Digitales (Web/App), Banca Comercial, Rentabilidad y Riesgo.">
+  <meta name="keywords" content="Databricks, PySpark, displayHTML, Apache ECharts, Universal Transition, Morphing, Superficies 3D, OpenPyXL, Excel Institucional, M365 Copilot, Python in Excel, PowerPoint Action Titles, VS Code Skills, Prompt Files, Canales Digitales Web App, Markov, Sankey, RORWA, RAROC, LTV CAC, STP, IFRS 9">
+  <title>Cuaderno 09 — Playbook Maestro: Dashboards Databricks (PySpark/HTML), Excel Institucional, Skills VS Code & M365 Copilot y Glosario Visual Commercial | Curso IA Commercial</title>
+  <link rel="manifest" href="../manifest.json">
+  <link rel="stylesheet" href="../css/styles.css">
+  <!-- Apache ECharts 5.5 para las consolas interactivas en vivo -->
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+  <style>
+    /* ==========================================================================
+       ESTILOS ESPECÍFICOS DEL CUADERNO 09 (PLAYBOOK & CONSOLAS EN VIVO)
+       ========================================================================== */
+    .workspace-tabs-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      border-radius: 12px;
+      padding: 0.5rem;
+      margin: 1.75rem 0;
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 72px;
+      z-index: 30;
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
+    }
+    .ws-tab-btn {
+      flex: 1 1 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: transparent;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
+      text-align: center;
+    }
+    .ws-tab-btn:hover {
+      color: var(--text-primary);
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .ws-tab-btn.active {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.25) 0%, rgba(6, 182, 212, 0.2) 100%);
+      color: #fff;
+      border-color: rgba(99, 102, 241, 0.5);
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+    }
+
+    /* Contenedores de Prompts y Código Copiable */
+    .prompt-block-wrapper {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-lg);
+      padding: 1.4rem;
+      margin: 1.5rem 0;
+      box-shadow: var(--shadow-sm);
+    }
+    .prompt-block-wrapper.pro-version {
+      border-color: rgba(99, 102, 241, 0.45);
+      background: linear-gradient(180deg, rgba(99, 102, 241, 0.05) 0%, var(--bg-surface) 100%);
+    }
+    .prompt-block-wrapper.m365-version {
+      border-color: rgba(6, 182, 212, 0.45);
+      background: linear-gradient(180deg, rgba(6, 182, 212, 0.05) 0%, var(--bg-surface) 100%);
+    }
+    .prompt-block-wrapper.excel-version {
+      border-color: rgba(16, 185, 129, 0.45);
+      background: linear-gradient(180deg, rgba(16, 185, 129, 0.05) 0%, var(--bg-surface) 100%);
+    }
+    .prompt-block-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 0.85rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .prompt-block-title {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .copy-action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(99, 102, 241, 0.15);
+      color: #a5b4fc;
+      border: 1px solid rgba(99, 102, 241, 0.35);
+      border-radius: 6px;
+      padding: 0.35rem 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .copy-action-btn:hover {
+      background: rgba(99, 102, 241, 0.3);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+    .copyable-prompt-pre {
+      background: #070a12;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-left: 4px solid #6366f1;
+      border-radius: var(--radius-md);
+      padding: 1.15rem;
+      font-family: 'JetBrains Mono', var(--font-mono), monospace;
+      font-size: 0.8rem;
+      color: #e2e8f0;
+      white-space: pre-wrap;
+      line-height: 1.55;
+      margin: 0.5rem 0 0;
+      overflow-x: auto;
+      max-height: 520px;
+      overflow-y: auto;
+    }
+
+    /* CONSOLA INTERACTIVA EN VIVO (CYBER-TERMINAL WEB & APP) */
+    .cyber-terminal-shell {
+      background: #05070E;
+      background-image:
+        radial-gradient(circle at 12% 8%, rgba(99, 102, 241, 0.14) 0%, transparent 42%),
+        radial-gradient(circle at 88% 12%, rgba(6, 182, 212, 0.12) 0%, transparent 38%);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin: 2rem 0;
+      color: #f1f5f9;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65);
+      position: relative;
+      overflow: hidden;
+    }
+    .sp-card {
+      position: relative;
+      background: rgba(14, 20, 34, 0.76);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(16px);
+      padding: 1.1rem;
+      overflow: hidden;
+      transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1), border-color 220ms ease;
+    }
+    .sp-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(420px circle at var(--mx, -500px) var(--my, -500px), rgba(6, 182, 212, 0.13), transparent 40%);
+      pointer-events: none;
+      z-index: 1;
+    }
+    .sp-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 12px;
+      padding: 1px;
+      background: radial-gradient(240px circle at var(--mx, -500px) var(--my, -500px), rgba(99, 102, 241, 0.65), transparent 40%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .tabular-mono {
+      font-family: 'JetBrains Mono', var(--font-mono), monospace;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* DICCIONARIO VISUAL DE 24 TÉRMINOS */
+    .glossary-filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      align-items: center;
+      justify-content: space-between;
+      margin: 1.5rem 0;
+      padding: 1rem;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border-medium);
+      border-radius: 12px;
+    }
+    .glossary-search-input {
+      flex: 1 1 260px;
+      background: #070a12;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      padding: 0.55rem 0.9rem;
+      color: #f8fafc;
+      font-size: 0.85rem;
+    }
+    .glossary-cat-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+    .glossary-cat-btn {
+      padding: 0.4rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.05);
+      color: #94a3b8;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      cursor: pointer;
+      transition: all 150ms ease;
+    }
+    .glossary-cat-btn.active, .glossary-cat-btn:hover {
+      background: rgba(6, 182, 212, 0.2);
+      color: #67e8f9;
+      border-color: rgba(6, 182, 212, 0.45);
+    }
+    .metrics-vault-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1.25rem;
+      margin-top: 1.25rem;
+    }
+    .metric-dict-card {
+      background: rgba(14, 20, 34, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 12px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.85rem;
+      transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1), border-color 200ms ease;
+    }
+    .metric-dict-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(99, 102, 241, 0.45);
+    }
+    .metric-cat-tag {
+      font-size: 0.66rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      display: inline-block;
+    }
+    .cat-digital { background: rgba(6, 182, 212, 0.15); color: #67e8f9; border: 1px solid rgba(6, 182, 212, 0.35); }
+    .cat-commercial { background: rgba(99, 102, 241, 0.15); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.35); }
+    .cat-profit { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.35); }
+    .cat-risk { background: rgba(244, 63, 94, 0.15); color: #fda4af; border: 1px solid rgba(244, 63, 94, 0.35); }
+    .metric-formula-box {
+      background: #070a12;
+      border: 1px dashed rgba(255, 255, 255, 0.14);
+      border-radius: 6px;
+      padding: 0.5rem 0.7rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.74rem;
+      color: #cbd5e1;
+    }
+    .metric-viz-box {
+      background: rgba(5, 7, 14, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 8px;
+      padding: 0.65rem;
+    }
+    .metric-viz-label {
+      font-size: 0.68rem;
+      color: #94a3b8;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.35rem;
+      font-weight: 600;
+    }
+
+    /* Vista previa de Excel Institucional */
+    .excel-preview-frame {
+      background: #ffffff;
+      color: #0f172a;
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin: 1.25rem 0;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+      overflow-x: auto;
+    }
+    .excel-mock-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+    }
+    .excel-mock-table th {
+      background: #0F172A;
+      color: #FFFFFF;
+      font-weight: 700;
+      padding: 0.65rem 0.85rem;
+      text-align: right;
+    }
+    .excel-mock-table th:first-child { text-align: left; }
+    .excel-mock-table td {
+      padding: 0.55rem 0.85rem;
+      border-bottom: 1px solid #E2E8F0;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      color: #1E293B;
+    }
+    .excel-mock-table td:first-child { text-align: left; font-weight: 600; }
+    .excel-mock-table tr:nth-child(even) td { background: #F8FAFC; }
+    .excel-mock-table tr.excel-total-row td {
+      background: #F1F5F9;
+      font-weight: 700;
+      color: #0F172A;
+      border-top: 1px solid #0F172A;
+      border-bottom: 3px double #0F172A;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <nav class="top-nav">
+    <button class="menu-toggle" aria-label="Abrir menú">☰</button>
+    <a href="../index.html" class="nav-brand">
+      <div class="nav-brand-icon">IA</div>
+      <div class="nav-brand-text"><span>Curso IA</span> Commercial</div>
+    </a>
+    <div class="nav-links">
+      <a href="../index.html" class="nav-link">Cuadernos</a>
+      <a href="../muro.html" class="nav-link">Lienzo</a>
+      <a href="../recursos.html" class="nav-link">Recursos</a>
+      <a href="../examen.html" class="nav-link">Examen Oficial</a>
+      <a href="#" class="nav-link">Acerca de</a>
+    </div>
+  </nav>
+
+  <!-- Reading Progress -->
+  <div class="progress-bar">
+    <div class="progress-bar-fill"></div>
+  </div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Contenido del cuaderno</div>
+      <a href="#intro-arquitectura" class="sidebar-link active">
+        <span class="sidebar-link-number">00</span>
+        Arquitectura Desacoplada & 2 Nodos
+      </a>
+      <a href="#ux-premium-sistemas" class="sidebar-link">
+        <span class="sidebar-link-number">01</span>
+        Los 7 Sistemas de UX Premium & 3D
+      </a>
+      <a href="#laboratorio-digital-vivo" class="sidebar-link">
+        <span class="sidebar-link-number">02</span>
+        Consolas en Vivo: Web/App & 3D
+      </a>
+      <a href="#puente-databricks-pyspark" class="sidebar-link">
+        <span class="sidebar-link-number">03</span>
+        Puente Databricks (PySpark → HTML)
+      </a>
+      <a href="#excel-institucional-python" class="sidebar-link">
+        <span class="sidebar-link-number">04</span>
+        Excel Institucional (OpenPyXL & =PY)
+      </a>
+      <a href="#boveda-prompts-skills" class="sidebar-link">
+        <span class="sidebar-link-number">05</span>
+        Bóveda Skills VS Code & M365 Copilot
+      </a>
+      <a href="#diccionario-visual-commercial" class="sidebar-link">
+        <span class="sidebar-link-number">06</span>
+        Diccionario Visual (24 Métricas)
+      </a>
+    </div>
+  </aside>
+  <div class="sidebar-overlay"></div>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="content-wrapper">
+
+      <!-- Page Header -->
+      <div class="page-header">
+        <div class="breadcrumb">
+          <a href="../index.html">Cuadernos</a>
+          <span class="separator">/</span>
+          <span>Cuaderno 09</span>
+        </div>
+
+        <div class="page-meta">
+          <span class="meta-badge">CUADERNO 09</span>
+          <span class="meta-badge blue">Databricks · VS Code · M365 Copilot</span>
+          <span class="meta-info">Playbook de Ingeniería Visual & Bóveda de Código</span>
+        </div>
+
+        <h1 class="page-title">Playbook Maestro: Ingeniería Visual en Databricks (PySpark/HTML), Excel Institucional, Skills VS Code & M365 Copilot y Glosario Commercial</h1>
+        <p class="page-subtitle">Manual operativo para transformar datos de PySpark, Excel y canales digitales (Web & App) en terminales interactivos con Apache ECharts, superficies 3D rigurosas, presentaciones dirigidas por pasos y libros Excel con estándar de banca de inversión.</p>
+
+        <!-- Ficha de Objetivos Pedagógicos (Taxonomía de Bloom) -->
+        <div class="bloom-card">
+          <div class="bloom-header">
+            <h3 class="bloom-title">🎯 Objetivos de Aprendizaje & Competencias Operativas</h3>
+            <div class="bloom-meta-pills">
+              <span class="bloom-pill time">⏱️ 45 min lectura · Uso diario en Producción</span>
+              <span class="bloom-pill diff-intermediate">Nivel: Avanzado / Principal Engineer</span>
+            </div>
+          </div>
+          <div class="bloom-grid">
+            <div class="bloom-col">
+              <div class="bloom-col-header understand">🧠 1. Comprender</div>
+              <ul>
+                <li>Por qué los LLMs degradan el CSS/JS al mezclar datos y vista, y cómo solucionarlo mediante la <strong>Regla de los 3 Bloques</strong> y el patrón de <strong>2 Nodos Agénticos</strong>.</li>
+                <li>Cómo evitar la colisión de llaves <code>{{ }}</code> en celdas de Databricks utilizando cadenas crudas (<code>r"""..."""</code>) e inyección <code>.replace("__PYSPARK_PAYLOAD__")</code>.</li>
+                <li>Las 24 métricas fundamentales de <strong>Canales Digitales (Web/App), Banca Comercial, Rentabilidad (RORWA/EVA) y Riesgo (STP/IFRS 9)</strong>.</li>
+              </ul>
+            </div>
+            <div class="bloom-col">
+              <div class="bloom-col-header analyze">⚖️ 2. Analizar</div>
+              <ul>
+                <li>La diferencia entre el «3D decorativo sin ejes» y las <strong>Superficies Topográficas 3D de Sensibilidad</strong> con curvas de nivel y rigor matemático.</li>
+                <li>Cómo adaptar modelos cuantitativos (Cadenas de Markov, Embudos Sankey, Frontera Eficiente de Markowitz) al tráfico digital de Web y App Comercial.</li>
+                <li>Las limitaciones del sandbox <code>&lt;iframe&gt;</code> de <code>displayHTML()</code> en Databricks y cómo escapar a pantalla completa real mediante <code>Blob URL</code>.</li>
+              </ul>
+            </div>
+            <div class="bloom-col">
+              <div class="bloom-col-header apply">🚀 3. Aplicar</div>
+              <ul>
+                <li>Importar y ejecutar las <strong>4 nuevas Skills y Slash Commands en VS Code</strong> (<code>/databricks-deck</code>, <code>/digital-channels-ui</code>, <code>/motion-critic</code>, <code>/excel-institucional</code>).</li>
+                <li>Copiar y ejecutar prompts deterministas en <strong>M365 Copilot (Excel, Python in Excel <code>=PY()</code>, PowerPoint y Copilot Chat)</strong>.</li>
+                <li>Desplegar en 1 celda de Databricks presentaciones interactivas con Morphing Geométrico y generar libros Excel con <code>openpyxl</code> sin cuadrícula base.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- BARRA DE PESTAÑAS INTERACTIVAS DEL CUADERNO (WORKSPACE TABS) -->
+        <div class="workspace-tabs-bar" role="tablist" aria-label="Modo de vista del Cuaderno 09">
+          <button class="ws-tab-btn active" onclick="filterNotebookSections('all', this)">
+            <span>📚 Todo el Cuaderno (Vista Completa)</span>
+          </button>
+          <button class="ws-tab-btn" onclick="filterNotebookSections('ux-demos', this)">
+            <span>🎨 1. UX Premium, 3D & Consolas en Vivo</span>
+          </button>
+          <button class="ws-tab-btn" onclick="filterNotebookSections('code-shells', this)">
+            <span>⚡ 2. Código Maestro Databricks & Excel</span>
+          </button>
+          <button class="ws-tab-btn" onclick="filterNotebookSections('prompts-skills', this)">
+            <span>🤖 3. Skills VS Code & Prompts M365</span>
+          </button>
+          <button class="ws-tab-btn" onclick="filterNotebookSections('glossary-dict', this)">
+            <span>📖 4. Diccionario Visual (24 Términos)</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- =====================================================================
+           SECCIÓN 00: ARQUITECTURA DESACOPLADA Y PATRÓN EN 2 NODOS
+           ===================================================================== -->
+      <section id="intro-arquitectura" class="transcript-section" data-tab-group="ux-demos prompts-skills">
+        <div class="section-header">
+          <span class="section-number">00</span>
+          <h2 class="section-title">Diagnóstico Técnico: Desacoplamiento de Datos y el Patrón «Crítico Estético» en 2 Pasos</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p class="editorial-lead">
+            Pedirle a un modelo de lenguaje un diseño «premium, moderno y con animaciones avanzadas» produce por regresión estadística plantillas tipo Bootstrap de 2020: sombras difusas exageradas (<code>shadow-xl</code>), fondos grises planos (<code>#f3f4f6</code>), colores primarios saturados y transiciones bruscas (<code>transition: all 0.3s ease</code>). Además, cuando el agente debe calcular la lógica de datos y escribir la interfaz en un solo turno, comprime el CSS y el JavaScript para ahorrar tokens de salida.
+          </p>
+
+          <div class="concept-card highlight">
+            <div class="concept-card-label">🔑 Regla de Oro #1: Arquitectura de 3 Bloques Estrictos en el HTML</div>
+            <p>
+              El fallo que reduce un 60% la calidad visual de los dashboards generados por IA es incrustar los datos en mitad del HTML o dentro de la configuración de las gráficas. Todo entregable HTML debe obligar al agente a dividir el archivo en <strong>tres compartimentos estancos</strong>:
+            </p>
+            <ol style="margin-top: 0.6rem; margin-left: 1.25rem; line-height: 1.65;">
+              <li><strong>Bloque 1 — Motor de Estilos y Design Tokens (<code>&lt;style&gt;</code> + Tailwind CDN)</strong>: Variables CSS nativas, tipografía numérica tabular (<code>tabular-nums</code>), curvas <code>cubic-bezier(0.16, 1, 0.3, 1)</code> y shader CSS de iluminación especular (<code>.sp-card</code>).</li>
+              <li><strong>Bloque 2 — Payload de Datos Aislado (<code>&lt;script id="data-payload"&gt;</code>)</strong>: Un único objeto global inmutable (<code>window.REPORT_DATA = {...}</code>) con todas las métricas, vectores de 12 meses (sparklines) y enlaces Sankey precalculados en PySpark o Python.</li>
+              <li><strong>Bloque 3 — Motor Reactivo de Renderizado e Interacción (<code>&lt;script id="app-engine"&gt;</code>)</strong>: Funciones puras que leen <code>window.REPORT_DATA</code>, hidratan el DOM, conectan eventos de filtrado cruzado (<em>Cross-Filtering</em>) y sincronizan instancias de Apache ECharts.</li>
+            </ol>
+          </div>
+
+          <h3>0.1. El Patrón «Crítico Estético» en 2 Nodos (Por qué dividir el Prompt duplica la calidad)</h3>
+          <p>
+            Tanto en <strong>VS Code</strong> como especialmente en <strong>Microsoft 365 Copilot</strong> (donde la ventana de tokens de respuesta por turno es más conservadora), la estrategia más efectiva consiste en separar el trabajo en dos pasos secuenciales:
+          </p>
+
+          <div class="mermaid">
+          flowchart LR
+            subgraph Paso1 ["Turno / Nodo 1: Arquitecto de Datos y Estructura"]
+              D1["Tabla PySpark / Excel\n(Canales Web, App, Cartera)"] --> A1["🤖 Prompt Nodo 1:\nPre-agregación Vectorial + JSON\n+ Esqueleto HTML Funcional"]
+            end
+            subgraph Paso2 ["Turno / Nodo 2: Crítico Estético & Motion"]
+              A1 --> A2["✨ Prompt Nodo 2 (/motion-critic):\nProhibido tocar datos. Dedica 100% tokens a:\nSpotlight CSS + ECharts Morphing + Drawer + Ctrl+K"]
+            end
+            A2 --> Out["🏆 Terminal Ejecutivo 60 FPS\n(Listo para Comité / Databricks)"]
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SECCIÓN 01: LOS 7 SISTEMAS DE UX PREMIUM Y VISUALIZACIÓN AVANZADA
+           ===================================================================== -->
+      <section id="ux-premium-sistemas" class="transcript-section" data-tab-group="ux-demos">
+        <div class="section-header">
+          <span class="section-number">01</span>
+          <h2 class="section-title">Anatomía de un Terminal Ejecutivo: Los 7 Sistemas de UX Premium y Gráficos Avanzados</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            Para que un dashboard HTML o una presentación en una celda de Databricks transmita ingeniería de primer nivel (estilo <em>Linear, Vercel, Koyfin o Bloomberg Terminal</em>), debemos exigir en el prompt especificaciones técnicas deterministas por su nombre exacto:
+          </p>
+
+          <div style="overflow-x: auto; margin: 1.5rem 0;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
+              <thead>
+                <tr style="background: rgba(99, 102, 241, 0.15); border-bottom: 1px solid rgba(99, 102, 241, 0.4); text-align: left;">
+                  <th style="padding: 0.75rem;">Sistema Técnico</th>
+                  <th style="padding: 0.75rem;">Lo que hace un LLM por defecto (Mediocre)</th>
+                  <th style="padding: 0.75rem;">Lo que exigimos en nuestros Prompts y Skills (Estándar Estudio)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom: 1px solid var(--border-subtle);">
+                  <td style="padding: 0.75rem; font-weight: 700; color: #a5b4fc;">1. Superficies & Iluminación</td>
+                  <td style="padding: 0.75rem; color: var(--text-secondary);">Fondos planos con <code>box-shadow: shadow-xl</code> y bordes gruesos.</td>
+                  <td style="padding: 0.75rem;"><strong>Mouse-Tracking Spotlight CSS</strong>: listener global que inyecta <code>--mx</code> y <code>--my</code> con <code>mask-composite: exclude</code> iluminando los bordes de <code>1px</code> cercanos al cursor.</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--border-subtle);">
+                  <td style="padding: 0.75rem; font-weight: 700; color: #67e8f9;">2. Tipografía Numérica</td>
+                  <td style="padding: 0.75rem; color: var(--text-secondary);">Fuente proporcional estándar donde el número <code>1</code> mide distinto que el <code>8</code> (la interfaz «tiembla»).</td>
+                  <td style="padding: 0.75rem;">Propiedad obligatoria <code>font-variant-numeric: tabular-nums</code> (<code>JetBrains Mono</code>) en todos los KPIs, tablas, ejes y tooltips + interpolación <code>requestAnimationFrame</code> (<code>easeOutQuart</code>).</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--border-subtle);">
+                  <td style="padding: 0.75rem; font-weight: 700; color: #6ee7b7;">3. Transición de Gráficos</td>
+                  <td style="padding: 0.75rem; color: var(--text-secondary);">Ocultar un <code>div</code> con <code>display: none</code> o destruir/recrear un Chart.js estático.</td>
+                  <td style="padding: 0.75rem;"><strong>Morphing Geométrico en Apache ECharts</strong>: mismo <code>id</code> de serie con <code>universalTransition: { enabled: true, divideShape: 'clone' }</code> (las burbujas se fragmentan y vuelan hacia un Treemap o Ranking).</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--border-subtle);">
+                  <td style="padding: 0.75rem; font-weight: 700; color: #fcd34d;">4. Interacción Cruzada</td>
+                  <td style="padding: 0.75rem; color: var(--text-secondary);">Gráficos aislados que solo muestran un tooltip básico al pasar el ratón.</td>
+                  <td style="padding: 0.75rem;"><strong>Cross-Filtering Reactivo + Cursores Sincronizados</strong>: <code>echarts.connect([c1, c2])</code> + clic en cualquier serie filtra KPIs superiores, gráficas secundarias y tabla con <code>document.startViewTransition()</code>.</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--border-subtle);">
+                  <td style="padding: 0.75rem; font-weight: 700; color: #fda4af;">5. Densidad en Tablas</td>
+                  <td style="padding: 0.75rem; color: var(--text-secondary);">Tabla HTML plana solo con texto y cifras estáticas.</td>
+                  <td style="padding: 0.75rem;"><strong>Tabla Telemétrica con Micro-SVG Sparklines</strong>: cada fila dibuja al vuelo un <code>&lt;svg&gt;&lt;polyline/&gt;&lt;/svg&gt;</code> de los últimos 12 meses + clic para abrir <strong>Slide-Over Inspector Drawer</strong> con gráfico Radar.</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--border-subtle);">
+                  <td style="padding: 0.75rem; font-weight: 700; color: #c084fc;">6. Narrativa en Reuniones</td>
+                  <td style="padding: 0.75rem; color: var(--text-secondary);">Título fijo genérico («Dashboard de Canales Digitales Q4»).</td>
+                  <td style="padding: 0.75rem;"><strong>Scrollytelling por Pasos + Action Title Dinámico + <code>Ctrl+K</code></strong>: el titular ejecutivo reescribe la conclusión numérica en vivo al mover los sliders de sensibilidad o cambiar de paso con las flechas <code>←</code> / <code>→</code>.</td>
+                </tr>
+                <tr>
+                  <td style="padding: 0.75rem; font-weight: 700; color: #38bdf8;">7. Visualización 3D</td>
+                  <td style="padding: 0.75rem; color: var(--text-secondary);">Cilindros o esferas flotantes en Three.js sin ejes ni escala (aspecto de videojuego).</td>
+                  <td style="padding: 0.75rem;"><strong>Superficies Topográficas 3D de Sensibilidad</strong>: malla matemática $(X, Y, Z)$ con ejes cartesianos etiquetados, proyección de curvas de nivel (Hurdle Rate / Umbral SLA) y gradiente cromático institucional.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SECCIÓN 02: LABORATORIO INTERACTIVO EN VIVO (CONSOLAS FUNCIONALES)
+           ===================================================================== -->
+      <section id="laboratorio-digital-vivo" class="transcript-section" data-tab-group="ux-demos">
+        <div class="section-header">
+          <span class="section-number">02</span>
+          <h2 class="section-title">Laboratorio en Vivo: Terminal de Canales Digitales (Web & App) y Superficie 3D de Sensibilidad</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            Antes de copiar los prompts o los esqueletos de PySpark, prueba aquí mismo en vivo los dos motores visuales que generarán tus agentes. Mueve el cursor sobre los bordes de las tarjetas para ver el <strong>Spotlight especular</strong>, cambia entre los <strong>4 Pasos Narrativos</strong> (Sankey $\rightarrow$ Morphing Scatter/Treemap $\rightarrow$ Matriz de Markov $\rightarrow$ Frontera Eficiente), filtra por canal (<strong>Omnicanal, App Móvil, Web Empresas</strong>), mueve los sliders de simulación o haz clic en cualquier fila de la tabla:
+          </p>
+
+          <!-- CONSOLA INTERACTIVA 1: TERMINAL OMNICANAL WEB & APP -->
+          <div class="cyber-terminal-shell" id="live-digital-terminal">
+            <!-- Barra Superior: Pasos de Scrollytelling + Selector de Canal -->
+            <div class="sp-card" style="margin-bottom: 1rem; padding: 0.85rem 1.15rem; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.85rem;">
+              <div style="display: flex; align-items: center; gap: 0.65rem; flex-wrap: wrap;">
+                <span class="tabular-mono" style="font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; background: rgba(6, 182, 212, 0.18); color: #67e8f9; border: 1px solid rgba(6, 182, 212, 0.35); padding: 0.2rem 0.55rem; border-radius: 5px;">
+                  LIVE ENGINE • <span id="demo-step-counter">PASO 1 DE 4</span>
+                </span>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.25rem; background: rgba(0,0,0,0.45); padding: 0.25rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);">
+                  <button type="button" id="demo-step-1" onclick="setDemoStep(1)" style="padding: 0.35rem 0.65rem; font-size: 0.73rem; border-radius: 6px; border: none; cursor: pointer; background: #4f46e5; color: #fff; font-weight: 600;">1. Embudo Sankey UX</button>
+                  <button type="button" id="demo-step-2" onclick="setDemoStep(2)" style="padding: 0.35rem 0.65rem; font-size: 0.73rem; border-radius: 6px; border: none; cursor: pointer; background: transparent; color: #94a3b8; font-weight: 500;">2. Morphing (Scatter ↔ Treemap)</button>
+                  <button type="button" id="demo-step-3" onclick="setDemoStep(3)" style="padding: 0.35rem 0.65rem; font-size: 0.73rem; border-radius: 6px; border: none; cursor: pointer; background: transparent; color: #94a3b8; font-weight: 500;">3. Matriz Markov (Navegación)</button>
+                  <button type="button" id="demo-step-4" onclick="setDemoStep(4)" style="padding: 0.35rem 0.65rem; font-size: 0.73rem; border-radius: 6px; border: none; cursor: pointer; background: transparent; color: #94a3b8; font-weight: 500;">4. Frontera Eficiente & Cascada</button>
+                </div>
+              </div>
+
+              <!-- Conmutador de Canal Web / App -->
+              <div style="display: flex; align-items: center; gap: 0.35rem; background: rgba(0,0,0,0.45); padding: 0.25rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);">
+                <button type="button" id="ch-btn-all" onclick="setDemoChannel('all')" style="padding: 0.32rem 0.65rem; font-size: 0.72rem; border-radius: 6px; border: none; cursor: pointer; background: #0891b2; color: #fff; font-weight: 600;">🌐 Omnicanal</button>
+                <button type="button" id="ch-btn-app" onclick="setDemoChannel('app')" style="padding: 0.32rem 0.65rem; font-size: 0.72rem; border-radius: 6px; border: none; cursor: pointer; background: transparent; color: #94a3b8;">📱 App Comercial</button>
+                <button type="button" id="ch-btn-web" onclick="setDemoChannel('web')" style="padding: 0.32rem 0.65rem; font-size: 0.72rem; border-radius: 6px; border: none; cursor: pointer; background: transparent; color: #94a3b8;">💻 Web Empresas</button>
+              </div>
+            </div>
+
+            <!-- Barra de Simulación Paramétrica en Vivo -->
+            <div class="sp-card" style="margin-bottom: 1rem; padding: 0.7rem 1.15rem; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem;">
+              <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 1.25rem; font-size: 0.75rem;">
+                <label style="display: flex; align-items: center; gap: 0.5rem; color: #cbd5e1;">
+                  <span>⚡ Mejora Latencia / UX:</span>
+                  <input id="sim-ux-slider" type="range" min="-30" max="40" step="5" value="0" oninput="updateLiveTerminal()" style="width: 95px; accent-color: #06b6d4;">
+                  <span id="sim-ux-label" class="tabular-mono" style="color: #67e8f9; font-weight: 700; min-width: 48px;">Base 0%</span>
+                </label>
+                <label style="display: flex; align-items: center; gap: 0.5rem; color: #cbd5e1;">
+                  <span>📈 Shock Tipos (Margen):</span>
+                  <input id="sim-rate-slider" type="range" min="-100" max="150" step="10" value="0" oninput="updateLiveTerminal()" style="width: 95px; accent-color: #6366f1;">
+                  <span id="sim-rate-label" class="tabular-mono" style="color: #a5b4fc; font-weight: 700; min-width: 55px;">0 bps</span>
+                </label>
+                <label style="display: flex; align-items: center; gap: 0.5rem; color: #cbd5e1;">
+                  <span>🛡️ Filtro STP / Riesgo:</span>
+                  <input id="sim-risk-slider" type="range" min="0.7" max="1.6" step="0.1" value="1.0" oninput="updateLiveTerminal()" style="width: 85px; accent-color: #f43f5e;">
+                  <span id="sim-risk-label" class="tabular-mono" style="color: #fda4af; font-weight: 700; min-width: 36px;">1.0x</span>
+                </label>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <button type="button" id="demo-reset-filter" onclick="selectDemoProduct(null)" style="display: none; padding: 0.28rem 0.6rem; font-size: 0.7rem; border-radius: 5px; background: rgba(244, 63, 94, 0.2); color: #fda4af; border: 1px solid rgba(244, 63, 94, 0.4); cursor: pointer;" class="tabular-mono">
+                  Limpiar Filtro Activo ✕
+                </button>
+                <button type="button" onclick="applyDemoScenario(25, 50, 0.9)" style="padding: 0.28rem 0.6rem; font-size: 0.7rem; border-radius: 5px; background: rgba(16, 185, 129, 0.15); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.35); cursor: pointer;">
+                  ⚡ Preset: Optimización App STP
+                </button>
+                <button type="button" onclick="applyDemoScenario(-20, 110, 1.4)" style="padding: 0.28rem 0.6rem; font-size: 0.7rem; border-radius: 5px; background: rgba(245, 158, 11, 0.15); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.35); cursor: pointer;">
+                  ⚠️ Preset: Estrés Fricción + Mora
+                </button>
+              </div>
+            </div>
+
+            <!-- Action Title Ejecutivo Dinámico -->
+            <div style="padding: 0.2rem 0.35rem 0.9rem;">
+              <div id="demo-kicker" class="tabular-mono" style="font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.09em; color: #38bdf8;">
+                TELEMETRÍA DE CANALES DIGITALES & RENTABILIDAD COMERCIAL (RORWA)
+              </div>
+              <h3 id="demo-action-title" style="margin: 0.25rem 0 0; font-size: 1.15rem; font-weight: 700; color: #ffffff; letter-spacing: -0.02em;">
+                Cargando motor analítico...
+              </h3>
+            </div>
+
+            <!-- Fila de 4 Tarjetas KPI con Números Tabulares e Interpolación -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.85rem; margin-bottom: 1rem;">
+              <div class="sp-card">
+                <div style="display: flex; justify-content: space-between; font-size: 0.7rem; text-transform: uppercase; color: #94a3b8;">
+                  <span>Sesiones / Tráfico Activo</span>
+                  <span class="tabular-mono" style="color: #38bdf8;">MAU Digital</span>
+                </div>
+                <div id="demo-kpi-sessions" class="tabular-mono" style="font-size: 1.65rem; font-weight: 700; color: #fff; margin-top: 0.35rem;">0</div>
+                <div style="font-size: 0.72rem; color: #6ee7b7; margin-top: 0.25rem;" class="tabular-mono">
+                  ▲ Conversión Funnel: <span id="demo-kpi-cr">0.0%</span>
+                </div>
+              </div>
+
+              <div class="sp-card">
+                <div style="display: flex; justify-content: space-between; font-size: 0.7rem; text-transform: uppercase; color: #94a3b8;">
+                  <span>Volumen Formalizado Digital</span>
+                  <span class="tabular-mono" style="color: #a5b4fc;">STP Auto: <span id="demo-kpi-stp">68%</span></span>
+                </div>
+                <div id="demo-kpi-vol" class="tabular-mono" style="font-size: 1.65rem; font-weight: 700; color: #fff; margin-top: 0.35rem;">0 M€</div>
+                <div style="font-size: 0.72rem; color: #94a3b8; margin-top: 0.25rem;">
+                  Contratación 100% digital y flujo híbrido
+                </div>
+              </div>
+
+              <div class="sp-card">
+                <div style="display: flex; justify-content: space-between; font-size: 0.7rem; text-transform: uppercase; color: #94a3b8;">
+                  <span>RORWA Ponderado Cartera</span>
+                  <span class="tabular-mono" style="color: #6ee7b7;">Hurdle &gt; 2,50%</span>
+                </div>
+                <div id="demo-kpi-rorwa" class="tabular-mono" style="font-size: 1.65rem; font-weight: 700; color: #34d399; margin-top: 0.35rem;">0.00%</div>
+                <div style="font-size: 0.72rem; color: #94a3b8; margin-top: 0.25rem;">
+                  Mora NPL Sim.: <span id="demo-kpi-npl" class="tabular-mono" style="color: #fbbf24;">0.00%</span>
+                </div>
+              </div>
+
+              <div class="sp-card">
+                <div style="display: flex; justify-content: space-between; font-size: 0.7rem; text-transform: uppercase; color: #94a3b8;">
+                  <span>Margen Neto Comercial (EVA)</span>
+                  <span class="tabular-mono" style="color: #67e8f9;">Post-CoR</span>
+                </div>
+                <div id="demo-kpi-net" class="tabular-mono" style="font-size: 1.65rem; font-weight: 700; color: #22d3ee; margin-top: 0.35rem;">0.0 M€</div>
+                <div style="font-size: 0.72rem; color: #94a3b8; margin-top: 0.25rem;">
+                  Latencia Media API: <span id="demo-kpi-lat" class="tabular-mono" style="color: #cbd5e1;">210 ms</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Grilla Principal: Lienzo ECharts (7 cols) + Tabla Sparklines & Radar (5 cols) -->
+            <div style="display: grid; grid-template-columns: repeat(12, 1fr); gap: 1rem;">
+              <!-- Lienzo Principal ECharts -->
+              <div class="sp-card" style="grid-column: span 7; display: flex; flex-direction: column; justify-content: space-between; min-width: 300px;">
+                <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                  <div>
+                    <div id="demo-chart-title" style="font-size: 0.78rem; font-weight: 700; text-transform: uppercase; color: #e2e8f0;">1. EMBUDO SANKEY MULTICANAL</div>
+                    <div id="demo-chart-sub" style="font-size: 0.7rem; color: #94a3b8;">Haz clic en cualquier nodo o barra para filtrar todo el terminal</div>
+                  </div>
+                  <!-- Sub-selector de Morphing (visible en Paso 2) -->
+                  <div id="morph-subcontrols" style="display: none; gap: 0.25rem; background: rgba(0,0,0,0.45); padding: 0.2rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1);">
+                    <button type="button" id="m-btn-scatter" onclick="setMorphSubType('scatter')" style="padding: 0.22rem 0.55rem; font-size: 0.68rem; border-radius: 4px; border: none; background: #4f46e5; color: #fff; cursor: pointer;">Burbujas</button>
+                    <button type="button" id="m-btn-treemap" onclick="setMorphSubType('treemap')" style="padding: 0.22rem 0.55rem; font-size: 0.68rem; border-radius: 4px; border: none; background: transparent; color: #94a3b8; cursor: pointer;">Treemap</button>
+                    <button type="button" id="m-btn-bar" onclick="setMorphSubType('bar')" style="padding: 0.22rem 0.55rem; font-size: 0.68rem; border-radius: 4px; border: none; background: transparent; color: #94a3b8; cursor: pointer;">Barras</button>
+                  </div>
+                </div>
+                <div id="demo-main-echarts" style="width: 100%; height: 340px;"></div>
+              </div>
+
+              <!-- Panel Derecho: Tabla de Alta Densidad con Sparklines + Radar de Huella Digital -->
+              <div class="sp-card" style="grid-column: span 5; display: flex; flex-direction: column; justify-content: space-between; min-width: 280px;">
+                <div>
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                    <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #e2e8f0;">DESGLOSE POR PRODUCTO DIGITAL (CLIC PARA INSPECCIONAR)</span>
+                    <span class="tabular-mono" style="font-size: 0.66rem; color: #818cf8;">Sparkline 12M</span>
+                  </div>
+                  <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.74rem;">
+                      <thead>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); color: #94a3b8; text-transform: uppercase; font-size: 0.66rem;">
+                          <th style="padding: 0.4rem 0.25rem; text-align: left;">Producto / Línea</th>
+                          <th style="padding: 0.4rem 0.25rem; text-align: right;">Conv.</th>
+                          <th style="padding: 0.4rem 0.25rem; text-align: right;">Vol.</th>
+                          <th style="padding: 0.4rem 0.25rem; text-align: right;">RORWA</th>
+                          <th style="padding: 0.4rem 0.25rem; text-align: center;">12M</th>
+                        </tr>
+                      </thead>
+                      <tbody id="demo-telemetry-tbody"></tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <!-- Mini-Inspector Radar Inferior -->
+                <div style="border-top: 1px solid rgba(255,255,255,0.08); padding-top: 0.6rem; margin-top: 0.6rem;">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span id="demo-radar-title" style="font-size: 0.7rem; font-weight: 600; color: #67e8f9;">Huella Multidimensional (Media Cartera)</span>
+                    <span class="tabular-mono" style="font-size: 0.65rem; color: #64748b;">5 Ejes Normalizados</span>
+                  </div>
+                  <div id="demo-radar-echarts" style="width: 100%; height: 145px;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CONSOLA INTERACTIVA 2: SUPERFICIE TOPOGRÁFICA 3D DE SENSIBILIDAD Y ELASTICIDAD -->
+          <h3>2.2. Modelado Espacial Riguroso: Superficie Topográfica 3D de Sensibilidad Comercial (RORWA & Conversión Digital)</h3>
+          <p>
+            Cuando en un comité necesitas explicar cómo interactúan simultáneamente dos palancas continuas —por ejemplo, el <strong>Precio / Tipo de Interés Ofertado en el Simulador Digital (Eje X)</strong> y la <strong>Fricción UX o Deterioro de Mora (Eje Y)</strong>— sobre la <strong>Rentabilidad Neta Ajustada al Riesgo RORWA (Eje Z)</strong>, una superficie topográfica 3D con proyección de contornos permite visualizar exactamente la frontera donde la cartera cruza el <em>Hurdle Rate</em> (2,50%). Arrastra con el ratón sobre el lienzo 3D para rotar el ángulo acimutal y de elevación, o ajusta el apalancamiento:
+          </p>
+
+          <div class="cyber-terminal-shell" style="padding: 1.25rem;">
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 0.85rem;">
+              <div>
+                <span class="tabular-mono" style="font-size: 0.68rem; color: #34d399; text-transform: uppercase; letter-spacing: 0.08em;">3D TOPOGRAPHIC SURFACE ENGINE • ARRASTRA CON EL RATÓN PARA ROTAR</span>
+                <h4 style="margin: 0.2rem 0 0; font-size: 1rem; color: #fff;">Superficie de Sensibilidad: Spread Comercial (X) × Fricción / Mora (Y) → RORWA Neto % (Z)</h4>
+              </div>
+              <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; font-size: 0.75rem;">
+                <label style="display: flex; align-items: center; gap: 0.45rem; color: #cbd5e1;">
+                  <span>Eficiencia Digital STP:</span>
+                  <input id="surf-eff-slider" type="range" min="0.8" max="1.4" step="0.05" value="1.0" oninput="drawTopographicSurface3D()" style="width: 90px; accent-color: #10b981;">
+                  <span id="surf-eff-val" class="tabular-mono" style="color: #6ee7b7; font-weight: 700;">1.00x</span>
+                </label>
+                <label style="display: flex; align-items: center; gap: 0.45rem; color: #cbd5e1;">
+                  <span>Hurdle Rate Plano (Corte):</span>
+                  <input id="surf-hurdle-slider" type="range" min="1.8" max="3.2" step="0.1" value="2.5" oninput="drawTopographicSurface3D()" style="width: 90px; accent-color: #f43f5e;">
+                  <span id="surf-hurdle-val" class="tabular-mono" style="color: #fda4af; font-weight: 700;">2.50%</span>
+                </label>
+              </div>
+            </div>
+            <canvas id="topographic-3d-canvas" width="960" height="400" style="width: 100%; height: 380px; background: #03050a; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08); cursor: grab;"></canvas>
+            <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.6rem; font-size: 0.72rem; color: #94a3b8;" class="tabular-mono">
+              <span>🟢 Zona Esmeralda (&gt; Hurdle Rate): Creación de Valor Económico (+EVA)</span>
+              <span>🟣 Zona Índigo/Cian: Rentabilidad Moderada</span>
+              <span>🔴 Plano Discontinuo: Umbral Mínimo Exigido (Hurdle Rate)</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SECCIÓN 03: EL PUENTE DETERMINISTA DATABRICKS (PYSPARK -> DISPLAYHTML)
+           ===================================================================== -->
+      <section id="puente-databricks-pyspark" class="transcript-section" data-tab-group="code-shells">
+        <div class="section-header">
+          <span class="section-number">03</span>
+          <h2 class="section-title">El Puente Determinista en Databricks: De PySpark a `displayHTML()` sin Colisión de Llaves y con Pantalla Completa Real</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p class="editorial-lead">
+            Cuando trabajas en un notebook de Databricks sin motores de plantillas externos, existen tres cuellos de botella técnicos que arruinan el código generado por IA: (1) la colisión de llaves <code>{ }</code> al usar f-strings de Python sobre reglas CSS y objetos JS, (2) pasar tablas planas sin vectores precalculados, y (3) el bloqueo del modo pantalla completa dentro del <code>&lt;iframe&gt;</code> de <code>displayHTML()</code>.
+          </p>
+
+          <div class="tech-note-box">
+            <div class="tech-note-title">🛠️ Las 3 Soluciones de Ingeniería que Blindan tu Celda de Databricks</div>
+            <ul style="margin-left: 1.25rem; font-size: 0.88rem; line-height: 1.65;">
+              <li><strong>1. Raw String <code>r"""..."""</code> + <code>.replace("__PYSPARK_PAYLOAD__", payload_json)</code></strong>: Al prohibir <code>f"""..."""</code>, el agente puede escribir CSS complejo (<code>@keyframes</code>, pseudo-elementos) y JS moderno (desestructuración de objetos) sin escapar dobles llaves <code>{{ }}</code>.</li>
+              <li><strong>2. Pre-agregación Vectorial con <code>F.collect_list()</code> y Serializador Decimal</strong>: PySpark empaqueta las series de 12 meses como arrays nativos antes de llamar a <code>.collect()</code>, reduciendo el peso del JSON a pocos kilobytes.</li>
+              <li><strong>3. Escape Fiable del Sandbox (Corrección del Bug de Canvas en Blanco)</strong>: Si haces <code>document.documentElement.innerHTML</code> después de que ECharts se ha inicializado, el nuevo <code>Blob</code> recibe etiquetas <code>&lt;canvas&gt;</code> muertas sin contexto 2D/WebGL. En nuestra plantilla maestra guardamos la fuente original en <code>window.__CLEAN_SOURCE_HTML__</code> o disparamos una reinicialización limpia al abrir la nueva pestaña con <code>URL.createObjectURL(new Blob(...))</code>.</li>
+            </ul>
+          </div>
+
+          <!-- BLOQUE MAESTRO 1: CELDA COMPLETA PYSPARK -> DISPLAYHTML -->
+          <div class="prompt-block-wrapper pro-version">
+            <div class="prompt-block-header">
+              <h3 class="prompt-block-title">⚡ Plantilla Maestra #1: Celda Completa Databricks (`PySpark` → `displayHTML` con Scrollytelling, Sankey, Markov y Morphing)</h3>
+              <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Código PySpark + HTML</button>
+            </div>
+            <p style="font-size: 0.83rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
+              Copia y pega este bloque en <strong>una única celda de Python en Databricks</strong>. En tu proyecto real, solo tienes que sustituir el DataFrame de ejemplo <code>df_canales</code> por tu tabla Delta o vista SQL:
+            </p>
+            <pre class="copyable-prompt-pre">import json
+from decimal import Decimal
+from datetime import date, datetime
+from pyspark.sql import functions as F
+from pyspark.sql import types as T
+
+# ==============================================================================
+# 1. CAPA PYSPARK: EXTRACCIÓN Y PRE-CÁLCULO VECTORIAL (CANALES WEB & APP + CARTERA)
+# ==============================================================================
+sample_rows = [
+    # id, nombre_linea, canal, sesiones_miles, conv_pct, drop_ux_pct, stp_pct, vol_m, rorwa_pct, npl_pct, latencia_ms, serie_12m, radar_5d
+    ("APP-PRE", "Préstamos Preconcedidos App", "App Móvil", 185.0, 18.4, 9.2, 78.0, 540.0, 3.55, 2.15, 165, [38,41,44,46,50,54,58,62,66,71,76,82], [94,92,88,95,86]),
+    ("WEB-CORP", "Financiación Circulante Web", "Web Empresas", 92.0, 14.2, 16.5, 64.0, 680.0, 2.95, 1.10, 310, [48,50,52,55,58,61,64,67,71,75,79,85], [84,88,92,82,89]),
+    ("B2B-CONF", "Confirming & Supply Chain", "Portal Web / API", 64.0, 22.8, 6.8, 84.0, 610.0, 2.68, 0.82, 140, [55,57,60,62,65,68,70,73,76,79,82,86], [96,80,95,94,92]),
+    ("APP-TPV", "Onboarding Autónomos & TPV", "App Móvil", 140.0, 11.6, 24.0, 59.0, 320.0, 4.10, 3.05, 230, [22,25,24,28,31,34,37,39,42,45,48,52], [79,95,64,85,77]),
+    ("HYB-LEAS", "Leasing Maquinaria & Vehículos", "Híbrido Web + Gestor", 48.0, 12.9, 19.4, 55.0, 290.0, 2.48, 1.80, 380, [30,31,32,33,35,34,36,38,39,40,42,44], [75,72,82,70,76]),
+    ("WEB-ESG", "Líneas Transición Verde / ICO", "Web Empresas", 56.0, 16.5, 11.8, 71.0, 410.0, 3.22, 1.32, 260, [20,26,32,38,44,50,56,62,68,74,80,87], [90,85,90,88,89])
+]
+
+schema = T.StructType([
+    T.StructField("id", T.StringType()),
+    T.StructField("name", T.StringType()),
+    T.StructField("channel", T.StringType()),
+    T.StructField("sessions_k", T.DoubleType()),
+    T.StructField("conv_pct", T.DoubleType()),
+    T.StructField("drop_ux_pct", T.DoubleType()),
+    T.StructField("stp_pct", T.DoubleType()),
+    T.StructField("vol", T.DoubleType()),
+    T.StructField("rorwa", T.DoubleType()),
+    T.StructField("npl", T.DoubleType()),
+    T.StructField("latency_ms", T.IntegerType()),
+    T.StructField("trend", T.ArrayType(T.IntegerType())),
+    T.StructField("radar", T.ArrayType(T.IntegerType()))
+])
+
+df_canales = spark.createDataFrame(sample_rows, schema=schema)
+segments_list = [row.asDict() for row in df_canales.collect()]
+
+# Enlaces Sankey (Origen Tráfico -> Simulador -> Resolución Comercial/Riesgo)
+sankey_nodes = [
+    {"name": "Tráfico Digital (585k Sesiones)"},
+    {"name": "App Móvil (325k)"},
+    {"name": "Web Empresas & API (260k)"},
+    {"name": "Simulador Iniciado (390k)"},
+    {"name": "Contratación Formalizada (2.850 M€)"},
+    {"name": "Abandono Fricción UX / Latencia"},
+    {"name": "Filtro Admisión Riesgo (No STP)"}
+]
+sankey_links = [
+    {"source": "Tráfico Digital (585k Sesiones)", "target": "App Móvil (325k)", "value": 325},
+    {"source": "Tráfico Digital (585k Sesiones)", "target": "Web Empresas & API (260k)", "value": 260},
+    {"source": "App Móvil (325k)", "target": "Simulador Iniciado (390k)", "value": 225},
+    {"source": "App Móvil (325k)", "target": "Abandono Fricción UX / Latencia", "value": 100},
+    {"source": "Web Empresas & API (260k)", "target": "Simulador Iniciado (390k)", "value": 165},
+    {"source": "Web Empresas & API (260k)", "target": "Abandono Fricción UX / Latencia", "value": 95},
+    {"source": "Simulador Iniciado (390k)", "target": "Contratación Formalizada (2.850 M€)", "value": 255},
+    {"source": "Simulador Iniciado (390k)", "target": "Filtro Admisión Riesgo (No STP)", "value": 85},
+    {"source": "Simulador Iniciado (390k)", "target": "Abandono Fricción UX / Latencia", "value": 50}
+]
+
+def spark_json_default(obj):
+    if isinstance(obj, Decimal): return float(obj)
+    if isinstance(obj, (date, datetime)): return obj.isoformat()
+    return str(obj)
+
+payload_json = json.dumps({
+    "meta": {"period": "Q4 2026", "hurdle_rorwa": 2.50},
+    "segments": segments_list,
+    "sankey": {"nodes": sankey_nodes, "links": sankey_links}
+}, default=spark_json_default)
+
+# ==============================================================================
+# 2. MOTOR HTML DE PRESENTACIÓN INTERACTIVA (RAW STRING SIN F-STRINGS)
+# ==============================================================================
+html_deck = r"""<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <title>Commercial & Digital Intelligence Deck</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+    :root { --bg-canvas: #05070E; --card-bg: rgba(14, 20, 34, 0.75); }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; font-family: 'Inter', sans-serif; background-color: var(--bg-canvas);
+      background-image: radial-gradient(circle at 12% 8%, rgba(99, 102, 241, 0.14) 0%, transparent 42%),
+                        radial-gradient(circle at 88% 12%, rgba(6, 182, 212, 0.11) 0%, transparent 38%);
+      color: #F1F5F9; overflow-x: hidden;
+    }
+    .mono { font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums; }
+    .sp-card {
+      position: relative; background: var(--card-bg); border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(16px);
+      overflow: hidden; transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .sp-card::before {
+      content: ""; position: absolute; inset: 0;
+      background: radial-gradient(460px circle at var(--mx, -500px) var(--my, -500px), rgba(6, 182, 212, 0.12), transparent 40%);
+      pointer-events: none; z-index: 1;
+    }
+    .sp-card::after {
+      content: ""; position: absolute; inset: 0; border-radius: 14px; padding: 1px;
+      background: radial-gradient(240px circle at var(--mx, -500px) var(--my, -500px), rgba(99, 102, 241, 0.65), transparent 40%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; z-index: 2;
+    }
+  </style>
+</head>
+<body class="p-4 lg:p-6 select-none">
+  <!-- 1. PAYLOAD AISLADO -->
+  <script id="data-payload">window.SPARK_DATA = __PYSPARK_PAYLOAD__;</script>
+
+  <div class="max-w-[1600px] mx-auto flex flex-col justify-between min-h-[820px] gap-4">
+    <!-- BARRA DE NAVEGACIÓN POR PASOS + CONTROLES -->
+    <header class="sp-card px-5 py-3.5 flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <span class="px-2 py-0.5 text-[10px] mono uppercase tracking-widest bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 rounded">
+          DATABRICKS DECK • <span id="slide-counter">PASO 1 DE 3</span>
+        </span>
+        <div class="flex items-center gap-1 bg-black/40 p-1 rounded-lg border border-white/10 text-xs">
+          <button id="step-btn-1" onclick="goToStep(1)" class="px-3 py-1 rounded-md bg-indigo-600 text-white font-medium transition">1. Embudo Sankey Web/App</button>
+          <button id="step-btn-2" onclick="goToStep(2)" class="px-3 py-1 rounded-md text-slate-400 hover:text-white transition">2. Cuadrante Eficiencia (Morph)</button>
+          <button id="step-btn-3" onclick="goToStep(3)" class="px-3 py-1 rounded-md text-slate-400 hover:text-white transition">3. Treemap Margen Neto</button>
+        </div>
+      </div>
+      <div class="flex items-center gap-4">
+        <div class="flex items-center gap-2 text-xs">
+          <span class="text-slate-400 uppercase">Mejora UX</span>
+          <input id="sl-ux" type="range" min="-20" max="30" step="5" value="0" class="w-20 accent-cyan-400" oninput="updateEngine()">
+          <span id="lbl-ux" class="mono text-cyan-300 w-10 text-right">0%</span>
+        </div>
+        <div class="flex items-center gap-2 text-xs">
+          <span class="text-slate-400 uppercase">Tipos</span>
+          <input id="sl-rate" type="range" min="-100" max="150" step="10" value="0" class="w-20 accent-indigo-400" oninput="updateEngine()">
+          <span id="lbl-rate" class="mono text-indigo-300 w-14 text-right">0 bps</span>
+        </div>
+        <button onclick="openCleanFullscreen()" class="px-3 py-1.5 text-xs font-medium bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg transition">
+          ↗ Pantalla Completa
+        </button>
+      </div>
+    </header>
+
+    <!-- ACTION TITLE DINÁMICO -->
+    <div class="px-1">
+      <div class="text-[11px] mono uppercase tracking-widest text-cyan-400">INTELIGENCIA COMERCIAL & CANALES DIGITALES (WEB / APP)</div>
+      <h1 id="action-title" class="text-xl lg:text-2xl font-semibold text-white tracking-tight mt-0.5">Sincronizando telemetría...</h1>
+    </div>
+
+    <!-- 4 TARJETAS KPI -->
+    <section class="grid grid-cols-4 gap-3.5">
+      <div class="sp-card p-4">
+        <div class="flex justify-between items-center">
+          <span class="text-[11px] uppercase tracking-wider text-slate-400">Sesiones Digitales</span>
+          <span id="filter-badge" onclick="selectSeg(null)" class="hidden cursor-pointer text-[10px] mono bg-rose-500/20 text-rose-300 px-2 py-0.5 rounded">Reset ✕</span>
+        </div>
+        <div id="kpi-sess" class="text-2xl font-semibold mono text-white mt-1.5">0k</div>
+        <div class="text-[11px] text-emerald-400 mono mt-1">Conversión Media: <span id="kpi-conv">0%</span></div>
+      </div>
+      <div class="sp-card p-4">
+        <span class="text-[11px] uppercase tracking-wider text-slate-400">Volumen Formalizado</span>
+        <div id="kpi-vol" class="text-2xl font-semibold mono text-white mt-1.5">0 M€</div>
+        <div class="text-[11px] text-cyan-300 mono mt-1">Aprobación Automática STP: <span id="kpi-stp">0%</span></div>
+      </div>
+      <div class="sp-card p-4">
+        <span class="text-[11px] uppercase tracking-wider text-slate-400">RORWA Ponderado</span>
+        <div id="kpi-rorwa" class="text-2xl font-semibold mono text-emerald-400 mt-1.5">0.00%</div>
+        <div class="text-[11px] text-slate-400 mt-1">Hurdle Objetivo: <span class="mono text-white">2.50%</span></div>
+      </div>
+      <div class="sp-card p-4">
+        <span class="text-[11px] uppercase tracking-wider text-slate-400">Margen Operativo Neto</span>
+        <div id="kpi-net" class="text-2xl font-semibold mono text-cyan-300 mt-1.5">0.0 M€</div>
+        <div class="text-[11px] text-slate-400 mt-1">Mora Cartera (NPL): <span id="kpi-npl" class="mono text-amber-300">0.00%</span></div>
+      </div>
+    </section>
+
+    <!-- LIENZO PRINCIPAL + TABLA CON SPARKLINES -->
+    <section class="grid grid-cols-12 gap-4 flex-1">
+      <div class="sp-card p-4 col-span-12 lg:col-span-7 flex flex-col justify-between">
+        <div class="flex justify-between items-center mb-2">
+          <h2 id="chart-title" class="text-xs font-semibold uppercase tracking-wider text-slate-200">FLUJO SANKEY OMNICANAL</h2>
+          <div class="flex gap-1.5 text-[11px] mono">
+            <button onclick="goToStep(state.step > 1 ? state.step - 1 : 3)" class="px-2.5 py-1 rounded bg-white/5 text-slate-300 border border-white/10">←</button>
+            <button onclick="goToStep(state.step < 3 ? state.step + 1 : 1)" class="px-2.5 py-1 rounded bg-indigo-600 text-white">→</button>
+          </div>
+        </div>
+        <div id="main-canvas" class="w-full h-[380px]"></div>
+      </div>
+      <div class="sp-card p-4 col-span-12 lg:col-span-5 flex flex-col justify-between">
+        <div>
+          <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-200 mb-2">DESGLOSE TELEMÉTRICO (CLIC PARA FILTRAR)</h2>
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="border-b border-white/10 text-[10px] uppercase text-slate-400">
+                <th class="py-1.5">Línea / Canal</th>
+                <th class="py-1.5 text-right">Conv.</th>
+                <th class="py-1.5 text-right">Vol.</th>
+                <th class="py-1.5 text-right">RORWA</th>
+                <th class="py-1.5 text-center">12M</th>
+              </tr>
+            </thead>
+            <tbody id="seg-tbody" class="divide-y divide-white/[0.05]"></tbody>
+          </table>
+        </div>
+        <div id="mini-trend" class="w-full h-[130px] mt-2"></div>
+      </div>
+    </section>
+  </div>
+
+  <script id="app-engine">
+    document.addEventListener('mousemove', e => {
+      document.querySelectorAll('.sp-card').forEach(c => {
+        const r = c.getBoundingClientRect();
+        c.style.setProperty('--mx', `${e.clientX - r.left}px`);
+        c.style.setProperty('--my', `${e.clientY - r.top}px`);
+      });
+    });
+
+    let state = { step: 1, uxBoost: 0, rateBps: 0, selectedId: null };
+    const mainChart = echarts.init(document.getElementById('main-canvas'));
+    const miniChart = echarts.init(document.getElementById('mini-trend'));
+    const palette = ['#06B6D4', '#6366F1', '#10B981', '#F59E0B', '#EC4899', '#8B5CF6'];
+
+    function animateCounter(id, target, dec = 1, suffix = '') {
+      const el = document.getElementById(id);
+      const start = parseFloat(el.dataset.v || 0);
+      el.dataset.v = target;
+      const t0 = performance.now();
+      function tick(now) {
+        const p = Math.min((now - t0) / 480, 1);
+        const ease = 1 - Math.pow(1 - p, 4);
+        const cur = start + (target - start) * ease;
+        el.textContent = cur.toLocaleString('es-ES', { minimumFractionDigits: dec, maximumFractionDigits: dec }) + suffix;
+        if (p < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+
+    function sparkSvg(arr, color) {
+      const w = 64, h = 20, min = Math.min(...arr), max = Math.max(...arr);
+      const pts = arr.map((v, i) => `${((i / (arr.length - 1)) * w).toFixed(1)},${(h - ((v - min) / (max - min || 1)) * (h - 4) - 2).toFixed(1)}`).join(' ');
+      return `<svg width="${w}" height="${h}"><polyline fill="none" stroke="${color}" stroke-width="1.8" points="${pts}"/></svg>`;
+    }
+
+    function computeData() {
+      return window.SPARK_DATA.segments.map(s => {
+        const adjConv = Math.max(2, s.conv_pct * (1 + state.uxBoost / 100));
+        const adjVol = s.vol * (1 + (state.uxBoost * 0.006));
+        const adjRorwa = Math.max(0.4, s.rorwa + (state.rateBps * 0.004));
+        const netM = adjVol * (adjRorwa / 100) * 0.65;
+        return { ...s, adjConv, adjVol, adjRorwa, netM };
+      });
+    }
+
+    function updateEngine() {
+      state.uxBoost = parseInt(document.getElementById('sl-ux').value, 10);
+      state.rateBps = parseInt(document.getElementById('sl-rate').value, 10);
+      document.getElementById('lbl-ux').textContent = (state.uxBoost > 0 ? '+' : '') + state.uxBoost + '%';
+      document.getElementById('lbl-rate').textContent = (state.rateBps > 0 ? '+' : '') + state.rateBps + ' bps';
+      document.getElementById('filter-badge').classList.toggle('hidden', !state.selectedId);
+
+      const all = computeData();
+      const active = state.selectedId ? all.filter(d => d.id === state.selectedId) : all;
+      const totSess = active.reduce((s, d) => s + d.sessions_k, 0);
+      const totVol = active.reduce((s, d) => s + d.adjVol, 0);
+      const wConv = active.reduce((s, d) => s + d.adjConv * d.sessions_k, 0) / totSess;
+      const wStp = active.reduce((s, d) => s + d.stp_pct * d.adjVol, 0) / totVol;
+      const wRorwa = active.reduce((s, d) => s + d.adjRorwa * d.adjVol, 0) / totVol;
+      const wNpl = active.reduce((s, d) => s + d.npl * d.adjVol, 0) / totVol;
+      const totNet = active.reduce((s, d) => s + d.netM, 0);
+
+      animateCounter('kpi-sess', totSess, 0, 'k');
+      animateCounter('kpi-vol', totVol, 0, ' M€');
+      animateCounter('kpi-rorwa', wRorwa, 2, '%');
+      animateCounter('kpi-net', totNet, 1, ' M€');
+      document.getElementById('kpi-conv').textContent = wConv.toFixed(1) + '%';
+      document.getElementById('kpi-stp').textContent = wStp.toFixed(0) + '%';
+      document.getElementById('kpi-npl').textContent = wNpl.toFixed(2) + '%';
+
+      const titleEl = document.getElementById('action-title');
+      if (state.step === 1) {
+        titleEl.textContent = `Los canales digitales procesan ${totSess.toFixed(0)}k sesiones con una conversión media del ${wConv.toFixed(1)}% (${totVol.toFixed(0)} M€ formalizados)`;
+      } else if (state.step === 2) {
+        titleEl.textContent = `Bajo simulación (${state.uxBoost >= 0 ? '+' : ''}${state.uxBoost}% UX / ${state.rateBps >= 0 ? '+' : ''}${state.rateBps} bps), el RORWA alcanza el ${wRorwa.toFixed(2)}% (+${(wRorwa - 2.5).toFixed(2)}% vs. Hurdle)`;
+      } else {
+        titleEl.textContent = `La cartera digital genera ${totNet.toFixed(1)} M€ de Margen Operativo Neto con un ${wStp.toFixed(0)}% de admisión automática STP`;
+      }
+
+      document.getElementById('seg-tbody').innerHTML = all.map(d => `
+        <tr onclick="selectSeg('${d.id}')" class="cursor-pointer transition hover:bg-white/[0.05] ${state.selectedId === d.id ? 'bg-indigo-500/20' : ''}">
+          <td class="py-2 font-medium text-white">${d.name}</td>
+          <td class="py-2 text-right mono text-cyan-300">${d.adjConv.toFixed(1)}%</td>
+          <td class="py-2 text-right mono text-slate-300">${d.adjVol.toFixed(0)} M€</td>
+          <td class="py-2 text-right mono font-semibold ${d.adjRorwa >= 2.5 ? 'text-emerald-400' : 'text-amber-300'}">${d.adjRorwa.toFixed(2)}%</td>
+          <td class="py-2 text-center">${sparkSvg(d.trend, '#06B6D4')}</td>
+        </tr>
+      `).join('');
+
+      if (state.step === 1) {
+        mainChart.setOption({
+          tooltip: { trigger: 'item', backgroundColor: 'rgba(9,13,22,0.92)', textStyle: { color: '#fff' } },
+          series: [{
+            type: 'sankey', emphasis: { focus: 'adjacency' }, nodeAlign: 'left',
+            lineStyle: { color: 'gradient', curveness: 0.5, opacity: 0.45 },
+            label: { color: '#E2E8F0', fontSize: 11 },
+            data: window.SPARK_DATA.sankey.nodes, links: window.SPARK_DATA.sankey.links
+          }]
+        }, true);
+      } else if (state.step === 2) {
+        mainChart.setOption({
+          tooltip: { backgroundColor: 'rgba(9,13,22,0.92)', textStyle: { color: '#fff' },
+            formatter: p => `<b>${p.data.name}</b><br/>Conversión: ${p.data.value[0].toFixed(1)}%<br/>RORWA: ${p.data.value[1].toFixed(2)}%<br/>Volumen: ${p.data.value[2].toFixed(0)} M€`
+          },
+          grid: { top: 28, right: 35, bottom: 38, left: 52 },
+          xAxis: { name: 'Conversión Digital (%) →', nameLocation: 'middle', nameGap: 25, type: 'value', splitLine: { lineStyle: { color: 'rgba(255,255,255,0.06)' } }, axisLabel: { color: '#94A3B8' } },
+          yAxis: { name: '↑ RORWA (%)', type: 'value', splitLine: { lineStyle: { color: 'rgba(255,255,255,0.06)' } }, axisLabel: { color: '#94A3B8' } },
+          series: [{
+            id: 'morph-series', type: 'scatter', universalTransition: { enabled: true, divideShape: 'clone' },
+            symbolSize: val => Math.sqrt(val[2]) * 2.1,
+            data: all.map((d, i) => ({
+              name: d.name, segId: d.id, value: [d.adjConv, d.adjRorwa, d.adjVol],
+              itemStyle: { color: palette[i % palette.length], opacity: (!state.selectedId || state.selectedId === d.id) ? 0.92 : 0.25 }
+            })),
+            label: { show: true, formatter: '{b}', position: 'top', color: '#F1F5F9', fontSize: 10 }
+          }]
+        }, true);
+      } else {
+        mainChart.setOption({
+          tooltip: { formatter: '{b}: {c} M€ Margen Neto' },
+          series: [{
+            id: 'morph-series', type: 'treemap', universalTransition: { enabled: true, divideShape: 'clone' },
+            roam: false, breadcrumb: { show: false },
+            itemStyle: { borderColor: '#05070E', borderWidth: 3, gapWidth: 3, borderRadius: 8 },
+            data: all.map((d, i) => ({
+              name: `${d.name}\n+${d.netM.toFixed(1)} M€`, segId: d.id, value: Number(d.netM.toFixed(2)),
+              itemStyle: { color: palette[i % palette.length] }
+            }))
+          }]
+        }, true);
+      }
+
+      const months = ['E','F','M','A','M','J','J','A','S','O','N','D'];
+      const curve = months.map((_, i) => active.reduce((acc, d) => acc + d.trend[i], 0));
+      miniChart.setOption({
+        grid: { top: 10, right: 10, bottom: 20, left: 35 },
+        xAxis: { type: 'category', data: months, axisLabel: { color: '#64748B', fontSize: 10 } },
+        yAxis: { type: 'value', splitLine: { lineStyle: { color: 'rgba(255,255,255,0.04)' } }, axisLabel: { color: '#64748B', fontSize: 10 } },
+        series: [{ type: 'line', smooth: 0.35, symbol: 'none', lineStyle: { width: 2.5, color: '#06B6D4' }, areaStyle: { color: 'rgba(6,182,212,0.18)' }, data: curve }]
+      });
+    }
+
+    function goToStep(n) {
+      state.step = n;
+      document.getElementById('slide-counter').textContent = `PASO ${n} DE 3`;
+      [1, 2, 3].forEach(i => {
+        document.getElementById('step-btn-' + i).className = (i === n)
+          ? 'px-3 py-1 rounded-md bg-indigo-600 text-white font-medium transition'
+          : 'px-3 py-1 rounded-md text-slate-400 hover:text-white transition';
+      });
+      updateEngine();
+    }
+
+    function selectSeg(id) { state.selectedId = (state.selectedId === id) ? null : id; updateEngine(); }
+    mainChart.on('click', p => { if (p.data && p.data.segId) selectSeg(p.data.segId); });
+
+    // ESCAPE FIABLE A PANTALLA COMPLETA (Recrea los contenedores limpios sin arrastrar canvas muertos)
+    function openCleanFullscreen() {
+      const cloneDoc = document.documentElement.cloneNode(true);
+      cloneDoc.querySelector('#main-canvas').innerHTML = '';
+      cloneDoc.querySelector('#main-canvas').removeAttribute('_echarts_instance_');
+      cloneDoc.querySelector('#mini-trend').innerHTML = '';
+      cloneDoc.querySelector('#mini-trend').removeAttribute('_echarts_instance_');
+      const blob = new Blob(['<!DOCTYPE html><html lang="es" class="dark">' + cloneDoc.innerHTML + '</html>'], { type: 'text/html;charset=utf-8' });
+      window.open(URL.createObjectURL(blob), '_blank');
+    }
+
+    window.addEventListener('resize', () => { mainChart.resize(); miniChart.resize(); });
+    updateEngine();
+  </script>
+</body>
+</html>"""
+
+final_cell_html = html_deck.replace("__PYSPARK_PAYLOAD__", payload_json)
+displayHTML(final_cell_html)</pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SECCIÓN 04: EXCEL INSTITUCIONAL (OPENPYXL, =PY() Y OFFICE SCRIPTS)
+           ===================================================================== -->
+      <section id="excel-institucional-python" class="transcript-section" data-tab-group="code-shells">
+        <div class="section-header">
+          <span class="section-number">04</span>
+          <h2 class="section-title">Estándar Institucional en Excel: Automatización con `openpyxl`, `Python in Excel (=PY)` y Office Scripts</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p class="editorial-lead">
+            Excel no permite micro-interacciones web fluidas sin macros VBA (bloqueadas por seguridad corporativa). El acabado «premium» en un Excel generado por código proviene de aplicar rigurosamente las normas de <strong>modelado financiero institucional</strong> (banca de inversión y consultoría estratégica): ocultar la cuadrícula base, abrir márgenes de respiración en <code>Columna A</code> y <code>Fila 1</code>, fijar alturas de fila generosas, usar formatos numéricos condicionales con símbolos Unicode (<code>▲</code> / <code>▼</code>) e inyectar fórmulas nativas dinámicas.
+          </p>
+
+          <!-- VISTA PREVIA VISUAL DEL ACABADO EXCEL INSTITUCIONAL -->
+          <h3>4.1. Vista Previa del Estándar Contable Institucional (Lienzo sin Cuadrícula + DataBars + Unicode)</h3>
+          <div class="excel-preview-frame">
+            <div style="font-size: 1.05rem; font-weight: 700; color: #0F172A; margin-bottom: 0.2rem;">SEGUIMIENTO EJECUTIVO DE CANALES DIGITALES Y CARTERA COMERCIAL</div>
+            <div style="font-size: 0.75rem; color: #64748B; margin-bottom: 0.9rem;">Estándar Institucional: Cuadrícula oculta (showGridLines = False) · Margen B2 · Fórmulas Nativas SUM/AVERAGE · DataBarRule</div>
+            <table class="excel-mock-table">
+              <thead>
+                <tr>
+                  <th>Línea Comercial / Canal</th>
+                  <th>Sesiones Activas</th>
+                  <th>Conversión Digital</th>
+                  <th>Volumen Formalizado</th>
+                  <th>Variación YoY</th>
+                  <th>RORWA Neto</th>
+                  <th>Mora (NPL)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Préstamos Preconcedidos (App Móvil)</td>
+                  <td>185.000</td>
+                  <td>18,4%</td>
+                  <td style="background: linear-gradient(90deg, rgba(99,102,241,0.18) 79%, transparent 79%);">540,0 M€</td>
+                  <td style="color: #059669; font-weight: 600;">▲ 14,2%</td>
+                  <td style="color: #059669; font-weight: 600;">3,55%</td>
+                  <td>2,15%</td>
+                </tr>
+                <tr>
+                  <td>Financiación Circulante (Web Empresas)</td>
+                  <td>92.000</td>
+                  <td>14,2%</td>
+                  <td style="background: linear-gradient(90deg, rgba(99,102,241,0.18) 100%, transparent 100%);">680,0 M€</td>
+                  <td style="color: #059669; font-weight: 600;">▲ 8,4%</td>
+                  <td style="color: #059669; font-weight: 600;">2,95%</td>
+                  <td>1,10%</td>
+                </tr>
+                <tr>
+                  <td>Confirming & Supply Chain (Portal B2B)</td>
+                  <td>64.000</td>
+                  <td>22,8%</td>
+                  <td style="background: linear-gradient(90deg, rgba(99,102,241,0.18) 89%, transparent 89%);">610,0 M€</td>
+                  <td style="color: #059669; font-weight: 600;">▲ 11,6%</td>
+                  <td style="color: #059669; font-weight: 600;">2,68%</td>
+                  <td>0,82%</td>
+                </tr>
+                <tr>
+                  <td>Onboarding Autónomos & TPV (App Móvil)</td>
+                  <td>140.000</td>
+                  <td>11,6%</td>
+                  <td style="background: linear-gradient(90deg, rgba(99,102,241,0.18) 47%, transparent 47%);">320,0 M€</td>
+                  <td style="color: #dc2626; font-weight: 600;">▼ -2,3%</td>
+                  <td style="color: #059669; font-weight: 600;">4,10%</td>
+                  <td>3,05%</td>
+                </tr>
+                <tr>
+                  <td>Líneas Transición Verde ESG (Web Empresas)</td>
+                  <td>56.000</td>
+                  <td>16,5%</td>
+                  <td style="background: linear-gradient(90deg, rgba(99,102,241,0.18) 60%, transparent 60%);">410,0 M€</td>
+                  <td style="color: #059669; font-weight: 600;">▲ 19,5%</td>
+                  <td style="color: #059669; font-weight: 600;">3,22%</td>
+                  <td>1,32%</td>
+                </tr>
+                <tr class="excel-total-row">
+                  <td>Total / Promedio Cartera (=SUBTOTAL)</td>
+                  <td>537.000</td>
+                  <td>16,7%</td>
+                  <td>2.560,0 M€</td>
+                  <td style="color: #059669;">▲ 10,3%</td>
+                  <td>3,30%</td>
+                  <td>1,69%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- SCRIPT PYTHON OPENPYXL COMPLETO -->
+          <div class="prompt-block-wrapper excel-version">
+            <div class="prompt-block-header">
+              <h3 class="prompt-block-title">📗 Plantilla Maestra #2: Script Python (`openpyxl`) con Acabado Institucional Completo</h3>
+              <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Script OpenPyXL</button>
+            </div>
+            <pre class="copyable-prompt-pre">from openpyxl import Workbook
+from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
+from openpyxl.formatting.rule import DataBarRule
+from openpyxl.utils import get_column_letter
+
+def build_executive_commercial_excel(filename="Informe_Ejecutivo_Commercial_Digital.xlsx"):
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Resumen Ejecutivo"
+
+    # 1. Ocultar cuadrícula base y fijar márgenes de respiración (Col A y Fila 1)
+    ws.views.sheetView[0].showGridLines = False
+    ws.column_dimensions["A"].width = 3
+    ws.row_dimensions[1].height = 15
+
+    # 2. Tokens tipográficos y paleta institucional
+    font_family = "Segoe UI"
+    title_font = Font(name=font_family, size=15, bold=True, color="0F172A")
+    subtitle_font = Font(name=font_family, size=9, italic=True, color="64748B")
+    header_font = Font(name=font_family, size=10, bold=True, color="FFFFFF")
+    data_font = Font(name=font_family, size=10, color="1E293B")
+    total_font = Font(name=font_family, size=10, bold=True, color="0F172A")
+
+    header_fill = PatternFill("solid", fgColor="0F172A")
+    zebra_fill = PatternFill("solid", fgColor="F8FAFC")
+    total_fill = PatternFill("solid", fgColor="F1F5F9")
+
+    border_row = Border(bottom=Side(style="thin", color="E2E8F0"))
+    border_total = Border(
+        top=Side(style="thin", color="0F172A"),
+        bottom=Side(style="double", color="0F172A")
+    )
+
+    # 3. Bloque de Título en B2
+    ws["B2"] = "SEGUIMIENTO EJECUTIVO DE CANALES DIGITALES Y CARTERA COMERCIAL"
+    ws["B2"].font = title_font
+    ws.row_dimensions[2].height = 28
+
+    ws["B3"] = "Cifras acumuladas Q4 2026 · Fórmulas dinámicas auditables · Estándar Tier 1"
+    ws["B3"].font = subtitle_font
+    ws.row_dimensions[3].height = 18
+
+    # 4. Cabeceras de Tabla en Fila 5
+    headers = [
+        "Línea Comercial / Canal", "Sesiones Activas", "Conversión Digital",
+        "Volumen Formalizado (M€)", "Variación YoY", "RORWA Neto", "Mora (NPL)"
+    ]
+    ws.row_dimensions[5].height = 28
+    for idx, text in enumerate(headers, start=2):
+        cell = ws.cell(row=5, column=idx, value=text)
+        cell.font = header_font
+        cell.fill = header_fill
+        cell.alignment = Alignment(horizontal="left" if idx == 2 else "right", vertical="center")
+
+    # 5. Datos y Formatos Numéricos Explícitos
+    rows = [
+        ("Préstamos Preconcedidos (App Móvil)", 185000, 0.184, 540.0, 0.142, 0.0355, 0.0215),
+        ("Financiación Circulante (Web Empresas)", 92000, 0.142, 680.0, 0.084, 0.0295, 0.0110),
+        ("Confirming & Supply Chain (Portal B2B)", 64000, 0.228, 610.0, 0.116, 0.0268, 0.0082),
+        ("Onboarding Autónomos & TPV (App Móvil)", 140000, 0.116, 320.0, -0.023, 0.0410, 0.0305),
+        ("Líneas Transición Verde ESG (Web Empresas)", 56000, 0.165, 410.0, 0.195, 0.0322, 0.0132),
+    ]
+
+    start_row = 6
+    for offset, row_data in enumerate(rows):
+        r_idx = start_row + offset
+        ws.row_dimensions[r_idx].height = 22
+        is_even = (offset % 2 == 1)
+        for c_idx, val in enumerate(row_data, start=2):
+            c = ws.cell(row=r_idx, column=c_idx, value=val)
+            c.font = data_font
+            c.border = border_row
+            if is_even:
+                c.fill = zebra_fill
+            c.alignment = Alignment(horizontal="left" if c_idx == 2 else "right", vertical="center")
+
+            if c_idx == 3:
+                c.number_format = '#,##0;(#,##0);"-"'
+            elif c_idx in (4, 8):
+                c.number_format = '0.0%'
+            elif c_idx == 5:
+                c.number_format = '#,##0.0 "M€";(#,##0.0) "M€";"-"'
+            elif c_idx == 6:
+                c.number_format = '[Color10]"▲ "0.0%;[Red]"▼ "-0.0%;"—"0.0%'
+            elif c_idx == 7:
+                c.number_format = '0.00%'
+
+    # 6. Fila de Totales con Fórmulas Nativas de Excel y Doble Línea Contable
+    tot_row = start_row + len(rows)
+    ws.row_dimensions[tot_row].height = 26
+    ws.cell(row=tot_row, column=2, value="Total / Promedio Cartera").alignment = Alignment(horizontal="left", vertical="center")
+    ws.cell(row=tot_row, column=3, value=f"=SUM(C{start_row}:C{tot_row-1})").number_format = '#,##0'
+    ws.cell(row=tot_row, column=4, value=f"=AVERAGE(D{start_row}:D{tot_row-1})").number_format = '0.0%'
+    ws.cell(row=tot_row, column=5, value=f"=SUM(E{start_row}:E{tot_row-1})").number_format = '#,##0.0 "M€"'
+    ws.cell(row=tot_row, column=6, value=f"=AVERAGE(F{start_row}:F{tot_row-1})").number_format = '[Color10]"▲ "0.0%;[Red]"▼ "-0.0%;"—"0.0%'
+    ws.cell(row=tot_row, column=7, value=f"=AVERAGE(G{start_row}:G{tot_row-1})").number_format = '0.00%'
+    ws.cell(row=tot_row, column=8, value=f"=AVERAGE(H{start_row}:H{tot_row-1})").number_format = '0.0%'
+
+    for c_idx in range(2, 9):
+        cell = ws.cell(row=tot_row, column=c_idx)
+        cell.font = total_font
+        cell.fill = total_fill
+        cell.border = border_total
+        if c_idx > 2:
+            cell.alignment = Alignment(horizontal="right", vertical="center")
+
+    # 7. Barras de datos (In-Cell Analytics) en la columna de Volumen (Columna E)
+    data_bar = DataBarRule(start_type="num", start_value=0, end_type="max", color="6366F1", showValue="None")
+    ws.conditional_formatting.add(f"E{start_row}:E{tot_row-1}", data_bar)
+
+    # 8. Autoajuste de ancho de columnas con holgura (+5 caracteres)
+    widths = [42, 18, 18, 24, 16, 16, 15]
+    for idx, w in enumerate(widths, start=2):
+        ws.column_dimensions[get_column_letter(idx)].width = w
+
+    ws.freeze_panes = f"B{start_row}"
+    wb.save(filename)
+
+if __name__ == "__main__":
+    build_executive_commercial_excel()</pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SECCIÓN 05: BÓVEDA DE SKILLS PARA VS CODE Y PROMPTS PARA M365 COPILOT
+           ===================================================================== -->
+      <section id="boveda-prompts-skills" class="transcript-section" data-tab-group="prompts-skills">
+        <div class="section-header">
+          <span class="section-number">05</span>
+          <h2 class="section-title">Bóveda de Skills para VS Code y Prompts Directos para M365 Copilot (Excel, PowerPoint y Chat)</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p class="editorial-lead">
+            Todos los artefactos de esta sección ya están creados físicamente en las carpetas <code>skills/</code>, <code>.github/prompts/</code> y <code>.vscode/</code> de este repositorio para que los importes en tu Visual Studio Code, y además incluyen bloques listos para copiar y pegar directamente dentro de <strong>Microsoft 365 Copilot en Excel</strong>, <strong>PowerPoint</strong> y <strong>Copilot Chat</strong>.
+          </p>
+
+          <h3>5.1. Mapa de Skills y Slash Commands ya instalados en tu Workspace de VS Code</h3>
+          <div style="overflow-x: auto; margin: 1.25rem 0;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 0.84rem;">
+              <thead>
+                <tr style="background: rgba(6, 182, 212, 0.15); border-bottom: 1px solid rgba(6, 182, 212, 0.4); text-align: left;">
+                  <th style="padding: 0.7rem;">Slash Command en VS Code</th>
+                  <th style="padding: 0.7rem;">Ruta del Prompt File</th>
+                  <th style="padding: 0.7rem;">Ruta de la Skill Agencial</th>
+                  <th style="padding: 0.7rem;">Cuándo usarlo</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom: 1px solid var(--border-subtle);">
+                  <td style="padding: 0.7rem;" class="tabular-mono"><code>/databricks-deck</code></td>
+                  <td style="padding: 0.7rem;" class="tabular-mono"><code>.github/prompts/databricks-deck.prompt.md</code></td>
+                  <td style="padding: 0.7rem;" class="tabular-mono"><code>skills/databricks-scrolly-deck/SKILL.md</code></td>
+                  <td style="padding: 0.7rem;">Generar 1 celda PySpark → <code>displayHTML()</code> con Scrollytelling en 3 pasos y escape <code>Blob URL</code>.</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--border-subtle);">
+                  <td style="padding: 0.7rem;" class="tabular-mono"><code>/digital-channels-ui</code></td>
+                  <td style="padding: 0.7rem;" class="tabular-mono"><code>.github/prompts/digital-channels-ui.prompt.md</code></td>
+                  <td style="padding: 0.7rem;" class="tabular-mono"><code>skills/digital-channels-telemetry/SKILL.md</code></td>
+                  <td style="padding: 0.7rem;">Analítica de Canales Web y App (Lucide Icons, Sankey UX, Matriz Markov, Superficie 3D).</td>
+                </tr>
+                <tr style="border-bottom: 1px solid var(--border-subtle);">
+                  <td style="padding: 0.7rem;" class="tabular-mono"><code>/motion-critic</code></td>
+                  <td style="padding: 0.7rem;" class="tabular-mono"><code>.github/prompts/motion-critic.prompt.md</code></td>
+                  <td style="padding: 0.7rem;" class="tabular-mono"><code>skills/aesthetic-motion-critic/SKILL.md</code></td>
+                  <td style="padding: 0.7rem;"><strong>Paso 2 (Refinador)</strong>: inyectar Spotlight CSS, Cross-Filtering, Drawer con Radar y <code>Ctrl+K</code> sin tocar datos.</td>
+                </tr>
+                <tr>
+                  <td style="padding: 0.7rem;" class="tabular-mono"><code>/excel-institucional</code></td>
+                  <td style="padding: 0.7rem;" class="tabular-mono"><code>.github/prompts/excel-institucional.prompt.md</code></td>
+                  <td style="padding: 0.7rem;" class="tabular-mono"><code>skills/institutional-excel-openpyxl/SKILL.md</code></td>
+                  <td style="padding: 0.7rem;">Generar scripts Python <code>openpyxl</code> u Office Scripts con formato financiero institucional.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- PROMPTS PARA M365 COPILOT EN EXCEL -->
+          <h3>5.2. Prompts y Skills Listos para Copiar en Microsoft 365 Copilot (Dentro de Excel)</h3>
+
+          <div class="prompt-block-wrapper m365-version">
+            <div class="prompt-block-header">
+              <h4 class="prompt-block-title">📊 M365 Excel Prompt #1: Python in Excel (`=PY()`) para Visualización Cuantitativa de Canales Web & App</h4>
+              <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Prompt Excel =PY()</button>
+            </div>
+            <p style="font-size: 0.82rem; color: var(--text-secondary);">
+              Pega este prompt en el panel lateral de <strong>Copilot en Excel</strong> (activando el análisis avanzado con Python) para generar matrices de transición de Markov o curvas de sensibilidad con estética institucional:
+            </p>
+            <pre class="copyable-prompt-pre">Actúa como un Especialista en Visualización Cuantitativa con Python in Excel (=PY()).
+Usando el rango de datos de la tabla activa:
+1. Prohibido generar gráficos con el estilo por defecto de Matplotlib/Seaborn. Configura el lienzo con fondo oscuro '#070B14' o blanco limpio sin bordes superiores ni derechos (sns.despine()), tipografía limpia y paleta corporativa ('#06B6D4' para App, '#6366F1' para Web, '#10B981' para Conversión y '#F43F5E' para Abandono/Fricción UX).
+2. Genera un bloque =PY() que construya un panel compuesto (GridSpec de 1x2):
+   - Subgráfico Izquierdo: Mapa de Calor (Heatmap) con anotaciones porcentuales de conversión y tasa de abandono por etapa del embudo digital (Login -> Simulador -> Solicitud -> Firma).
+   - Subgráfico Derecho: Curva de sensibilidad de conversión frente a latencia/fricción con banda de confianza sombreada y línea horizontal discontinua marcando el objetivo comercial (Hurdle/SLA).
+3. Devuelve el gráfico de alta resolución (dpi=160) listo para incrustar en la hoja de resumen ejecutivo.</pre>
+          </div>
+
+          <div class="prompt-block-wrapper excel-version">
+            <div class="prompt-block-header">
+              <h4 class="prompt-block-title">⚡ M365 Excel Prompt #2: Generador de Office Script (TypeScript) para Formateo Institucional en 1 Clic</h4>
+              <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Office Script (Pestaña Automatizar)</button>
+            </div>
+            <p style="font-size: 0.82rem; color: var(--text-secondary);">
+              Si estás en <strong>Excel Web o Desktop (M365)</strong> y no puedes ejecutar Python local con <code>openpyxl</code>, abre la pestaña <strong>Automatizar → Nuevo Script</strong>, pega este código TypeScript y pulsa <strong>Ejecutar</strong>. Transformará cualquier tabla en un informe de banca de inversión al instante:
+            </p>
+            <pre class="copyable-prompt-pre">function main(workbook: ExcelScript.Workbook) {
+  const sheet = workbook.getActiveWorksheet();
+  // 1. Ocultar líneas de cuadrícula base
+  sheet.setShowGridlines(false);
+
+  // 2. Margen perimetral de respiración en Columna A y Fila 1
+  sheet.getRange("A:A").getFormat().setColumnWidth(22);
+  sheet.getRange("1:1").getFormat().setRowHeight(15);
+
+  const used = sheet.getUsedRange();
+  if (!used) return;
+  used.getFormat().getFont().setName("Segoe UI");
+  used.getFormat().setVerticalAlignment(ExcelScript.VerticalAlignment.center);
+
+  // 3. Formatear cabecera principal (primera fila del rango usado)
+  const headerRow = used.getRow(0);
+  headerRow.getFormat().setRowHeight(28);
+  headerRow.getFormat().getFill().setColor("#0F172A");
+  headerRow.getFormat().getFont().setColor("#FFFFFF");
+  headerRow.getFormat().getFont().setBold(true);
+
+  // 4. Zebra Striping y alturas en filas de datos
+  const rowCount = used.getRowCount();
+  for (let r = 1; r < rowCount - 1; r++) {
+    const row = used.getRow(r);
+    row.getFormat().setRowHeight(22);
+    row.getFormat().getFill().setColor(r % 2 === 0 ? "#F8FAFC" : "#FFFFFF");
+    row.getFormat().getRangeBorder(ExcelScript.BorderIndex.edgeBottom).setStyle(ExcelScript.BorderLineStyle.continuous);
+    row.getFormat().getRangeBorder(ExcelScript.BorderIndex.edgeBottom).setColor("#E2E8F0");
+  }
+
+  // 5. Fila de Totales con doble borde contable inferior
+  if (rowCount > 2) {
+    const totalRow = used.getRow(rowCount - 1);
+    totalRow.getFormat().setRowHeight(26);
+    totalRow.getFormat().getFill().setColor("#F1F5F9");
+    totalRow.getFormat().getFont().setBold(true);
+    totalRow.getFormat().getRangeBorder(ExcelScript.BorderIndex.edgeTop).setStyle(ExcelScript.BorderLineStyle.continuous);
+    totalRow.getFormat().getRangeBorder(ExcelScript.BorderIndex.edgeBottom).setStyle(ExcelScript.BorderLineStyle.double);
+  }
+
+  used.getFormat().autofitColumns();
+}</pre>
+          </div>
+
+          <!-- PROMPTS PARA M365 COPILOT EN POWERPOINT -->
+          <h3>5.3. Prompts Directos para Microsoft 365 Copilot en PowerPoint (Narrativa Ejecutiva & Action Titles)</h3>
+
+          <div class="prompt-block-wrapper m365-version">
+            <div class="prompt-block-header">
+              <h4 class="prompt-block-title">📽️ M365 PowerPoint Prompt: Storyboarding Ejecutivo con Pirámide de Minto y Action Titles Cuantitativos</h4>
+              <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Prompt PowerPoint</button>
+            </div>
+            <pre class="copyable-prompt-pre">Actúa como un Socio Director de Consultoría Estratégica en Banca Comercial y Canales Digitales.
+Crea una presentación ejecutiva basada en [referencia tu archivo con /ArchivoDatos] aplicando estrictamente estas 4 reglas:
+1. PROHIBIDO USAR TÍTULOS DESCRIPTIVOS VACÍOS (como "Evolución de Canales Digitales" o "Análisis de Cartera"). Cada diapositiva DEBE llevar un ACTION TITLE cuantitativo de una frase completa que resuma el hallazgo de negocio (ej: "El canal App impulsa el 68% de la contratación digital y mejora el RORWA en +42 bps frente a Web").
+2. ESTRUCTURA DE CADA DIAPOSITIVA (3 CAPAS):
+   - Kicker superior en mayúsculas: Categoría del análisis (ej. EMBUDO DE CONVERSIÓN WEB VS APP | RENTABILIDAD RORWA).
+   - Cuerpo central en 3 bloques de datos (KPI principal + causa raíz de fricción UX o admisión STP + palanca de acción comercial).
+   - Nota al pie con la métrica de control de riesgo (NPL / Coste de Riesgo en bps).
+3. SECUENCIA NARRATIVA OBLIGATORIA EN 5 DIAPOSITIVAS:
+   - Slide 1: Síntesis Ejecutiva (Principio de la Pirámide de Minto: Conclusión -> 3 Argumentos cuantitativos).
+   - Slide 2: Embudo de Conversión Omnicanal (Tráfico Web/App -> Simulador -> Fricción UX vs. Rechazo STP -> Formalización).
+   - Slide 3: Matriz de Eficiencia Comercial (Volumen formalizado vs. RORWA Neto y cumplimiento del Hurdle Rate).
+   - Slide 4: Diagnóstico de Fricción Digital (Latencia API, abandono por pantalla y migración hacia gestor híbrido).
+   - Slide 5: Plan de Acción Trimestral con impacto estimado en Margen Operativo Neto (M€) y conversión (%).</pre>
+          </div>
+
+          <!-- FLUJO EN 2 TURNOS PARA M365 COPILOT CHAT / AGENT BUILDER -->
+          <h3>5.4. Flujo en 2 Turnos para M365 Copilot Chat / VS Code (Para Evitar Recortes de Código)</h3>
+
+          <div class="prompt-block-wrapper pro-version">
+            <div class="prompt-block-header">
+              <h4 class="prompt-block-title">🥇 Turno 1 (Arquitecto de Datos y Estructura Desacoplada)</h4>
+              <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Prompt Turno 1</button>
+            </div>
+            <pre class="copyable-prompt-pre">Actúa como un Arquitecto Principal de Datos en Databricks (PySpark) y Desarrollador Frontend.
+Tengo una tabla con las siguientes columnas: [PEGA AQUÍ TUS COLUMNAS O DESCRIPCIÓN DE DATOS].
+
+PASO 1 (SOLO ARQUITECTURA DE DATOS Y ESQUELETO BASE):
+1. Escribe la agregación en PySpark que calcule los KPIs principales, empaquete las series temporales de 12 periodos con `F.collect_list()` y construya los nodos/enlaces (`nodes` y `links`) para un diagrama de flujo Sankey.
+2. Serializa todo en un único JSON (`payload_json`) manejando tipos `Decimal` y `Date`.
+3. Declara un bloque `html_template = r"""<!DOCTYPE html>..."""` (PROHIBIDO usar f-strings en el HTML) con:
+   - Tailwind CSS CDN + Apache ECharts 5.5 CDN + Lucide Icons CDN.
+   - El bloque aislado `<script id="data-payload">window.REPORT_DATA = __PYSPARK_PAYLOAD__;</script>`.
+   - Las tarjetas de KPIs con clase `tabular-nums` y los contenedores vacíos de las gráficas conectados a `window.REPORT_DATA`.
+4. Termina con `displayHTML(html_template.replace("__PYSPARK_PAYLOAD__", payload_json))`.</pre>
+          </div>
+
+          <div class="prompt-block-wrapper pro-version">
+            <div class="prompt-block-header">
+              <h4 class="prompt-block-title">🥈 Turno 2 (Crítico Estético, ECharts Morphing, Spotlight y Controles en Vivo)</h4>
+              <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Prompt Turno 2</button>
+            </div>
+            <pre class="copyable-prompt-pre">Actúa ahora como un Principal Design Engineer (Nodo 2: Crítico Estético y Refinador de Motion).
+Mantén intacta la parte de PySpark y `window.REPORT_DATA` del turno anterior. Reescribe únicamente el interior de `html_template = r"""..."""` para incorporar obligatoriamente estos 6 sistemas avanzados:
+1. SHADER SPOTLIGHT CSS (`.sp-card`): listener `mousemove` que inyecta `--mx` y `--my` con `mask-composite: exclude` iluminando los bordes de 1px.
+2. CONTADORES INTERPOLADOS A 60FPS: función `requestAnimationFrame` con curva `easeOutQuart` (550ms) y `font-variant-numeric: tabular-nums` en todos los números.
+3. MORPHING GEOMÉTRICO EN ECHARTS: conmutador de vistas que comparta el mismo `id` de serie con `universalTransition: { enabled: true, divideShape: 'clone' }` (pasando de Cuadrante Scatter a Treemap Jerárquico y Ranking de Barras) + Matriz de Calor de Markov.
+4. CROSS-FILTERING REACTIVO + TABLA CON SPARKLINES SVG: hacer clic en cualquier elemento del gráfico filtra los KPIs superiores, actualiza la curva secundaria, filtra la tabla inferior (que debe incluir curvas `<svg><polyline/></svg>` de 12 meses en cada fila) y muestra el botón "Limpiar filtro ✕".
+5. SIMULADOR DE SENSIBILIDAD + ACTION TITLE DINÁMICO: añade 2 sliders en la cabecera que recalculen en vivo las métricas y reescriban el titular ejecutivo (`#action-title`) con la nueva conclusión numérica.
+6. ESCAPE A PANTALLA COMPLETA (BLOB URL): botón `↗ Pantalla Completa` que clone el HTML limpiando las instancias de ECharts y lo abra en una pestaña nueva con `URL.createObjectURL(new Blob(...))`.</pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SECCIÓN 06: DICCIONARIO VISUAL DE 24 TÉRMINOS (DIGITAL, COMMERCIAL, RENTABILIDAD Y RIESGO)
+           ===================================================================== -->
+      <section id="diccionario-visual-commercial" class="transcript-section" data-tab-group="glossary-dict">
+        <div class="section-header">
+          <span class="section-number">06</span>
+          <h2 class="section-title">Diccionario Visual Interactivo: 24 Términos de Canales Digitales (Web/App), Banca Comercial, Rentabilidad y Riesgo</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p class="editorial-lead">
+            Esta referencia interactiva conecta cada métrica de negocio con su <strong>definición ejecutiva</strong>, su <strong>fórmula matemática</strong>, un <strong>caso real en Banca Comercial / Canales Digitales</strong> y el <strong>componente gráfico exacto</strong> que debes pedirle a tu agente para representarla con rigor ante un comité.
+          </p>
+
+          <!-- Buscador y Filtros del Diccionario Visual -->
+          <div class="glossary-filter-bar">
+            <input type="text" id="dict-search-input" class="glossary-search-input" placeholder="🔍 Buscar término, sigla o gráfico (ej. Markov, Sankey, RORWA, LTV, STP, Drop-off, IFRS 9)..." oninput="filterDictionaryCards()">
+            <div class="glossary-cat-pills">
+              <button type="button" class="glossary-cat-btn active" onclick="setDictCategory('all', this)">Todos (24)</button>
+              <button type="button" class="glossary-cat-btn" onclick="setDictCategory('digital', this)">📱 A. Canales Digitales Web/App (7)</button>
+              <button type="button" class="glossary-cat-btn" onclick="setDictCategory('commercial', this)">🚀 B. Commercial & Cliente (7)</button>
+              <button type="button" class="glossary-cat-btn" onclick="setDictCategory('profit', this)">💎 C. Rentabilidad & P&amp;L (5)</button>
+              <button type="button" class="glossary-cat-btn" onclick="setDictCategory('risk', this)">🛡️ D. Riesgo &amp; Admisión STP (5)</button>
+            </div>
+          </div>
+
+          <!-- Contenedor de las 24 Tarjetas con Mini-Gráficos SVG -->
+          <div id="metrics-vault-container" class="metrics-vault-grid"></div>
+        </div>
+      </section>
+
+      <!-- Autoevaluación interactiva -->
+      <div class="quiz-target"></div>
+
+    </div><!-- /content-wrapper -->
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <p class="footer-text">
+        Curso IA Commercial — Cuaderno 09 · Playbook Maestro de Ingeniería Visual, Databricks, Excel, VS Code &amp; M365 Copilot
+      </p>
+    </footer>
+  </main>
+
+  <!-- Back to Top -->
+  <button class="back-to-top" aria-label="Volver arriba">↑</button>
+
+  <!-- =========================================================================
+       MOTOR JAVASCRIPT DEL CUADERNO 09 (CONSOLAS ECHARTS, 3D SURFACE Y GLOSARIO)
+       ========================================================================= -->
+  <script>
+    // 1. Conmutador de Pestañas Superiores del Cuaderno
+    function filterNotebookSections(group, btnEl) {
+      document.querySelectorAll('.ws-tab-btn').forEach(b => b.classList.remove('active'));
+      if (btnEl) btnEl.classList.add('active');
+      document.querySelectorAll('.transcript-section').forEach(sec => {
+        if (group === 'all') {
+          sec.style.display = '';
+        } else {
+          const groups = (sec.getAttribute('data-tab-group') || '').split(' ');
+          sec.style.display = groups.includes(group) ? '' : 'none';
+        }
+      });
+      setTimeout(() => {
+        if (window.demoMainChart) window.demoMainChart.resize();
+        if (window.demoRadarChart) window.demoRadarChart.resize();
+        drawTopographicSurface3D();
+      }, 60);
+    }
+
+    // 2. Función de Copiado con Feedback Visual Instantáneo
+    function copyPreBlock(btn) {
+      const wrapper = btn.closest('.prompt-block-wrapper');
+      const pre = wrapper ? wrapper.querySelector('pre') : null;
+      if (!pre) return;
+      navigator.clipboard.writeText(pre.innerText).then(() => {
+        const original = btn.innerHTML;
+        btn.innerHTML = '✅ ¡Copiado al portapapeles!';
+        btn.style.background = 'rgba(16, 185, 129, 0.3)';
+        btn.style.color = '#6ee7b7';
+        setTimeout(() => {
+          btn.innerHTML = original;
+          btn.style.background = '';
+          btn.style.color = '';
+        }, 1800);
+      });
+    }
+
+    // 3. Spotlight Reactivo al Cursor para todas las tarjetas .sp-card
+    document.addEventListener('mousemove', e => {
+      document.querySelectorAll('.sp-card').forEach(card => {
+        const rect = card.getBoundingClientRect();
+        card.style.setProperty('--mx', `${e.clientX - rect.left}px`);
+        card.style.setProperty('--my', `${e.clientY - rect.top}px`);
+      });
+    });
+
+    // 4. Datos y Estado del Terminal Interactivo en Vivo (Sección 02)
+    const DEMO_PRODUCTS = [
+      { id: 'APP-PRE', name: 'Preconcedidos App', ch: 'app', sess: 185, conv: 18.4, stp: 78, vol: 540, rorwa: 3.55, npl: 2.15, lat: 165, trend: [38,41,44,46,50,54,58,62,66,71,76,82], radar: [94,92,88,95,86] },
+      { id: 'WEB-CIR', name: 'Circulante Web Empresas', ch: 'web', sess: 92, conv: 14.2, stp: 64, vol: 680, rorwa: 2.95, npl: 1.10, lat: 310, trend: [48,50,52,55,58,61,64,67,71,75,79,85], radar: [84,88,92,82,89] },
+      { id: 'WEB-CNF', name: 'Confirming Portal B2B', ch: 'web', sess: 64, conv: 22.8, stp: 84, vol: 610, rorwa: 2.68, npl: 0.82, lat: 140, trend: [55,57,60,62,65,68,70,73,76,79,82,86], radar: [96,80,95,94,92] },
+      { id: 'APP-TPV', name: 'Onboarding TPV Móvil', ch: 'app', sess: 140, conv: 11.6, stp: 59, vol: 320, rorwa: 4.10, npl: 3.05, lat: 230, trend: [22,25,24,28,31,34,37,39,42,45,48,52], radar: [79,95,64,85,77] },
+      { id: 'APP-TAR', name: 'Tarjetas Negocios App', ch: 'app', sess: 110, conv: 19.5, stp: 81, vol: 290, rorwa: 3.80, npl: 1.90, lat: 155, trend: [30,33,35,38,41,44,47,50,53,57,60,65], radar: [91,90,84,92,85] },
+      { id: 'WEB-ESG', name: 'Líneas Avaladas ESG', ch: 'web', sess: 56, conv: 16.5, stp: 71, vol: 410, rorwa: 3.22, npl: 1.32, lat: 260, trend: [20,26,32,38,44,50,56,62,68,74,80,87], radar: [90,85,90,88,89] }
+    ];
+
+    let demoState = {
+      step: 1,
+      morphSub: 'scatter',
+      channel: 'all',
+      selectedId: null,
+      uxBoost: 0,
+      rateBps: 0,
+      riskMult: 1.0
+    };
+
+    function animateDemoNumber(elId, target, dec = 1, suffix = '') {
+      const el = document.getElementById(elId);
+      if (!el) return;
+      const start = parseFloat(el.dataset.val || 0);
+      el.dataset.val = target;
+      const t0 = performance.now();
+      function frame(now) {
+        const p = Math.min((now - t0) / 450, 1);
+        const ease = 1 - Math.pow(1 - p, 4);
+        const cur = start + (target - start) * ease;
+        el.textContent = cur.toLocaleString('es-ES', { minimumFractionDigits: dec, maximumFractionDigits: dec }) + suffix;
+        if (p < 1) requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    }
+
+    function buildMiniSparkline(arr, color) {
+      const w = 58, h = 18, min = Math.min(...arr), max = Math.max(...arr);
+      const pts = arr.map((v, i) => `${((i / (arr.length - 1)) * w).toFixed(1)},${(h - ((v - min) / (max - min || 1)) * (h - 4) - 2).toFixed(1)}`).join(' ');
+      return `<svg width="${w}" height="${h}" style="display:inline-block;vertical-align:middle;"><polyline fill="none" stroke="${color}" stroke-width="1.8" stroke-linecap="round" points="${pts}"/></svg>`;
+    }
+
+    function getSimulatedProducts() {
+      return DEMO_PRODUCTS
+        .filter(p => demoState.channel === 'all' || p.ch === demoState.channel)
+        .map(p => {
+          const adjConv = Math.max(2, p.conv * (1 + demoState.uxBoost * 0.008));
+          const adjVol = p.vol * (1 + demoState.uxBoost * 0.005);
+          const adjNpl = p.npl * demoState.riskMult;
+          const adjRorwa = Math.max(0.3, p.rorwa + (demoState.rateBps * 0.004) - ((demoState.riskMult - 1) * 0.85));
+          const adjLat = Math.max(60, Math.round(p.lat * (1 - demoState.uxBoost * 0.007)));
+          const netEva = adjVol * ((adjRorwa - 1.1) / 100) * 0.68;
+          return { ...p, adjConv, adjVol, adjNpl, adjRorwa, adjLat, netEva };
+        });
+    }
+
+    function updateLiveTerminal() {
+      demoState.uxBoost = parseInt(document.getElementById('sim-ux-slider').value, 10);
+      demoState.rateBps = parseInt(document.getElementById('sim-rate-slider').value, 10);
+      demoState.riskMult = parseFloat(document.getElementById('sim-risk-slider').value);
+
+      document.getElementById('sim-ux-label').textContent = (demoState.uxBoost > 0 ? '+' : '') + demoState.uxBoost + '%';
+      document.getElementById('sim-rate-label').textContent = (demoState.rateBps > 0 ? '+' : '') + demoState.rateBps + ' bps';
+      document.getElementById('sim-risk-label').textContent = demoState.riskMult.toFixed(1) + 'x';
+      document.getElementById('demo-reset-filter').style.display = demoState.selectedId ? 'inline-block' : 'none';
+      document.getElementById('morph-subcontrols').style.display = demoState.step === 2 ? 'flex' : 'none';
+
+      const all = getSimulatedProducts();
+      const active = demoState.selectedId ? all.filter(d => d.id === demoState.selectedId) : all;
+      const list = active.length ? active : all;
+
+      const totSess = list.reduce((s, d) => s + d.sess, 0);
+      const totVol = list.reduce((s, d) => s + d.adjVol, 0);
+      const wConv = list.reduce((s, d) => s + d.adjConv * d.sess, 0) / totSess;
+      const wStp = list.reduce((s, d) => s + d.stp * d.adjVol, 0) / totVol;
+      const wRorwa = list.reduce((s, d) => s + d.adjRorwa * d.adjVol, 0) / totVol;
+      const wNpl = list.reduce((s, d) => s + d.adjNpl * d.adjVol, 0) / totVol;
+      const wLat = list.reduce((s, d) => s + d.adjLat * d.sess, 0) / totSess;
+      const totNet = list.reduce((s, d) => s + d.netEva, 0);
+
+      animateDemoNumber('demo-kpi-sessions', totSess * 1000, 0, '');
+      animateDemoNumber('demo-kpi-vol', totVol, 0, ' M€');
+      animateDemoNumber('demo-kpi-rorwa', wRorwa, 2, '%');
+      animateDemoNumber('demo-kpi-net', totNet, 1, ' M€');
+      document.getElementById('demo-kpi-cr').textContent = wConv.toFixed(1) + '%';
+      document.getElementById('demo-kpi-stp').textContent = wStp.toFixed(0) + '%';
+      document.getElementById('demo-kpi-npl').textContent = wNpl.toFixed(2) + '%';
+      document.getElementById('demo-kpi-lat').textContent = Math.round(wLat) + ' ms';
+
+      const chName = demoState.channel === 'app' ? 'App Comercial' : (demoState.channel === 'web' ? 'Web Empresas' : 'Omnicanal (Web + App)');
+      const actionTitle = document.getElementById('demo-action-title');
+      if (demoState.step === 1) {
+        actionTitle.textContent = `${chName}: El flujo digital convierte el ${wConv.toFixed(1)}% (${totVol.toFixed(0)} M€) con un ${wStp.toFixed(0)}% de aprobación automática STP`;
+      } else if (demoState.step === 2) {
+        actionTitle.textContent = `Bajo escenario (${demoState.rateBps >= 0 ? '+' : ''}${demoState.rateBps} bps / ${demoState.riskMult.toFixed(1)}x mora), la cartera rinde un RORWA del ${wRorwa.toFixed(2)}% y genera ${totNet.toFixed(1)} M€ netos`;
+      } else if (demoState.step === 3) {
+        actionTitle.textContent = `Matriz de Markov: El 58% de los usuarios que usan el Simulador avanzan a Solicitud cuando la latencia es < ${Math.round(wLat)} ms`;
+      } else {
+        actionTitle.textContent = `Frontera Eficiente Comercial: Reasignar tráfico hacia Preconcedidos App y Confirming B2B eleva el RORWA +38 bps`;
+      }
+
+      // Renderizar tabla con Sparklines
+      const tbody = document.getElementById('demo-telemetry-tbody');
+      tbody.innerHTML = all.map(d => {
+        const isSel = demoState.selectedId === d.id;
+        const rColor = d.adjRorwa >= 2.5 ? '#34d399' : '#fbbf24';
+        return `
+          <tr onclick="selectDemoProduct('${d.id}')" style="cursor:pointer; border-bottom: 1px solid rgba(255,255,255,0.05); background: ${isSel ? 'rgba(99,102,241,0.22)' : 'transparent'};">
+            <td style="padding: 0.42rem 0.25rem; font-weight: 600; color: #f8fafc;">${d.name}</td>
+            <td style="padding: 0.42rem 0.25rem; text-align: right; color: #67e8f9;" class="tabular-mono">${d.adjConv.toFixed(1)}%</td>
+            <td style="padding: 0.42rem 0.25rem; text-align: right; color: #cbd5e1;" class="tabular-mono">${d.adjVol.toFixed(0)}M</td>
+            <td style="padding: 0.42rem 0.25rem; text-align: right; font-weight: 700; color: ${rColor};" class="tabular-mono">${d.adjRorwa.toFixed(2)}%</td>
+            <td style="padding: 0.42rem 0.25rem; text-align: center;">${buildMiniSparkline(d.trend, d.ch === 'app' ? '#06b6d4' : '#6366f1')}</td>
+          </tr>
+        `;
+      }).join('');
+
+      renderDemoCharts(all, list);
+    }
+
+    function renderDemoCharts(all, activeList) {
+      if (!window.echarts) return;
+      if (!window.demoMainChart) {
+        window.demoMainChart = echarts.init(document.getElementById('demo-main-echarts'));
+        window.demoMainChart.on('click', params => {
+          if (params.data && params.data.prodId) selectDemoProduct(params.data.prodId);
+        });
+      }
+      if (!window.demoRadarChart) {
+        window.demoRadarChart = echarts.init(document.getElementById('demo-radar-echarts'));
+      }
+
+      const palette = ['#06B6D4', '#6366F1', '#10B981', '#F59E0B', '#EC4899', '#8B5CF6'];
+      const titleEl = document.getElementById('demo-chart-title');
+      const subEl = document.getElementById('demo-chart-sub');
+
+      if (demoState.step === 1) {
+        titleEl.textContent = '1. EMBUDO SANKEY MULTICANAL: TRÁFICO → SIMULADOR → CONTRATACIÓN VS. FRICCIÓN UX';
+        subEl.textContent = 'Trazabilidad del flujo de sesiones digitales entre App Móvil y Web Empresas';
+        const appVol = Math.round(all.filter(d => d.ch === 'app').reduce((s, d) => s + d.adjVol, 0));
+        const webVol = Math.round(all.filter(d => d.ch === 'web').reduce((s, d) => s + d.adjVol, 0));
+        const dropUx = Math.max(120, Math.round(420 * (1 - demoState.uxBoost * 0.012)));
+        const stpRej = Math.round(310 * demoState.riskMult);
+        window.demoMainChart.setOption({
+          tooltip: { trigger: 'item', backgroundColor: 'rgba(9,13,22,0.92)', textStyle: { color: '#fff', fontSize: 12 } },
+          series: [{
+            type: 'sankey', emphasis: { focus: 'adjacency' }, nodeAlign: 'left',
+            lineStyle: { color: 'gradient', curveness: 0.5, opacity: 0.45 },
+            label: { color: '#E2E8F0', fontSize: 11 },
+            data: [
+              { name: 'Tráfico Digital Entrada', itemStyle: { color: '#6366F1' } },
+              { name: 'Canal App Móvil', itemStyle: { color: '#06B6D4' } },
+              { name: 'Canal Web Empresas', itemStyle: { color: '#818CF8' } },
+              { name: 'Simulador Financiero', itemStyle: { color: '#38BDF8' } },
+              { name: 'Formalización STP (' + (appVol + webVol) + ' M€)', itemStyle: { color: '#10B981' } },
+              { name: 'Abandono Fricción UX', itemStyle: { color: '#F43F5E' } },
+              { name: 'Filtro Riesgo / No STP', itemStyle: { color: '#F59E0B' } }
+            ],
+            links: [
+              { source: 'Tráfico Digital Entrada', target: 'Canal App Móvil', value: appVol + 220 },
+              { source: 'Tráfico Digital Entrada', target: 'Canal Web Empresas', value: webVol + 210 },
+              { source: 'Canal App Móvil', target: 'Simulador Financiero', value: appVol + 90 },
+              { source: 'Canal App Móvil', target: 'Abandono Fricción UX', value: Math.round(dropUx * 0.45) },
+              { source: 'Canal Web Empresas', target: 'Simulador Financiero', value: webVol + 85 },
+              { source: 'Canal Web Empresas', target: 'Abandono Fricción UX', value: Math.round(dropUx * 0.55) },
+              { source: 'Simulador Financiero', target: 'Formalización STP (' + (appVol + webVol) + ' M€)', value: appVol + webVol },
+              { source: 'Simulador Financiero', target: 'Filtro Riesgo / No STP', value: stpRej }
+            ]
+          }]
+        }, true);
+      } else if (demoState.step === 2) {
+        titleEl.textContent = '2. MORPHING GEOMÉTRICO UNIVERSAL (SCATTER ↔ TREEMAP ↔ BARRAS)';
+        subEl.textContent = 'Pulsa los botones superiores derecha (Burbujas / Treemap / Barras) o haz clic en un nodo';
+        if (demoState.morphSub === 'scatter') {
+          window.demoMainChart.setOption({
+            tooltip: {
+              backgroundColor: 'rgba(9,13,22,0.92)', textStyle: { color: '#fff', fontSize: 12 },
+              formatter: p => `<b>${p.data.name}</b><br/>Conversión: ${p.data.value[0].toFixed(1)}%<br/>RORWA: ${p.data.value[1].toFixed(2)}%<br/>Volumen: ${p.data.value[2].toFixed(0)} M€`
+            },
+            grid: { top: 30, right: 30, bottom: 38, left: 50 },
+            xAxis: { name: 'Conversión Digital (%) →', nameLocation: 'middle', nameGap: 25, type: 'value', splitLine: { lineStyle: { color: 'rgba(255,255,255,0.06)' } }, axisLabel: { color: '#94A3B8' } },
+            yAxis: { name: '↑ RORWA (%)', type: 'value', splitLine: { lineStyle: { color: 'rgba(255,255,255,0.06)' } }, axisLabel: { color: '#94A3B8' } },
+            series: [{
+              id: 'demo-morph', type: 'scatter', universalTransition: { enabled: true, divideShape: 'clone' },
+              symbolSize: val => Math.sqrt(val[2]) * 1.9,
+              markLine: { silent: true, lineStyle: { color: '#10B981', type: 'dashed' }, data: [{ yAxis: 2.5, name: 'Hurdle' }] },
+              data: all.map((d, i) => ({
+                name: d.name, prodId: d.id, value: [d.adjConv, d.adjRorwa, d.adjVol],
+                itemStyle: { color: palette[i % palette.length], opacity: (!demoState.selectedId || demoState.selectedId === d.id) ? 0.92 : 0.25 }
+              })),
+              label: { show: true, formatter: '{b}', position: 'top', color: '#E2E8F0', fontSize: 10 }
+            }]
+          }, true);
+        } else if (demoState.morphSub === 'treemap') {
+          window.demoMainChart.setOption({
+            tooltip: { formatter: '{b}: {c} M€' },
+            series: [{
+              id: 'demo-morph', type: 'treemap', universalTransition: { enabled: true, divideShape: 'clone' },
+              roam: false, breadcrumb: { show: false },
+              itemStyle: { borderColor: '#05070E', borderWidth: 3, gapWidth: 3, borderRadius: 8 },
+              data: all.map((d, i) => ({
+                name: `${d.name}\n(${d.adjRorwa.toFixed(2)}% RORWA)`, prodId: d.id, value: Math.round(d.adjVol),
+                itemStyle: { color: palette[i % palette.length] }
+              }))
+            }]
+          }, true);
+        } else {
+          window.demoMainChart.setOption({
+            grid: { top: 15, right: 35, bottom: 30, left: 155 },
+            xAxis: { type: 'value', splitLine: { lineStyle: { color: 'rgba(255,255,255,0.06)' } }, axisLabel: { color: '#94A3B8' } },
+            yAxis: { type: 'category', data: all.map(d => d.name), axisLabel: { color: '#E2E8F0', fontSize: 11 } },
+            series: [{
+              id: 'demo-morph', type: 'bar', universalTransition: { enabled: true, divideShape: 'clone' },
+              barWidth: '55%',
+              data: all.map((d, i) => ({
+                value: Number(d.netEva.toFixed(1)), prodId: d.id,
+                itemStyle: { color: palette[i % palette.length], borderRadius: [0, 6, 6, 0] }
+              })),
+              label: { show: true, position: 'right', formatter: '{c} M€', color: '#94A3B8' }
+            }]
+          }, true);
+        }
+      } else if (demoState.step === 3) {
+        titleEl.textContent = '3. MATRIZ DE TRANSICIÓN DE NAVEGACIÓN (CADENAS DE MARKOV DIGITALES)';
+        subEl.textContent = 'Probabilidad condicional P(Siguiente Pantalla | Pantalla Actual) en sesiones Web & App';
+        const screens = ['Login/Home', 'Posición Global', 'Simulador Crédito', 'Subida Doc/CIRBE', 'Firma OTP/Contrato'];
+        const boost = demoState.uxBoost * 0.0025;
+        const baseM = [
+          [0.12, 0.48, 0.28, 0.07, 0.05],
+          [0.08, 0.22, 0.46 + boost, 0.14, 0.10],
+          [0.05, 0.10, 0.15, 0.48 + boost, 0.22 + boost],
+          [0.04, 0.06, 0.12, 0.18, 0.60 + boost],
+          [0.15, 0.35, 0.10, 0.05, 0.35]
+        ];
+        const heatData = [];
+        screens.forEach((_, i) => screens.forEach((__, j) => {
+          const val = Math.min(0.95, Math.max(0.02, baseM[i][j]));
+          heatData.push([j, i, Number((val * 100).toFixed(1))]);
+        }));
+        window.demoMainChart.setOption({
+          tooltip: {
+            position: 'top', backgroundColor: 'rgba(9,13,22,0.92)', textStyle: { color: '#fff' },
+            formatter: p => `<b>${screens[p.data[1]]} → ${screens[p.data[0]]}</b>: ${p.data[2]}% de probabilidad`
+          },
+          grid: { top: 15, right: 20, bottom: 45, left: 115 },
+          xAxis: { type: 'category', data: screens, axisLabel: { color: '#94A3B8', fontSize: 10, interval: 0 } },
+          yAxis: { type: 'category', data: screens, axisLabel: { color: '#E2E8F0', fontSize: 10 } },
+          visualMap: { min: 0, max: 70, orient: 'horizontal', left: 'center', bottom: 0, textStyle: { color: '#94A3B8', fontSize: 10 }, inRange: { color: ['#0f172a', '#1e1b4b', '#4f46e5', '#06b6d4', '#10b981'] } },
+          series: [{
+            type: 'heatmap', data: heatData,
+            label: { show: true, formatter: p => p.data[2] + '%', color: '#fff', fontSize: 10 }
+          }]
+        }, true);
+      } else {
+        titleEl.textContent = '4. FRONTERA EFICIENTE COMERCIAL (MARKOWITZ APLICADO A CONVERSIÓN VS. FRICCIÓN/RIESGO)';
+        subEl.textContent = 'Curva óptima teórica frente a la posición real de cada producto digital';
+        const frontierCurve = [];
+        for (let x = 0.6; x <= 3.5; x += 0.2) {
+          frontierCurve.push([Number(x.toFixed(2)), Number((1.4 + Math.sqrt(x) * 1.45 + (demoState.rateBps * 0.003)).toFixed(2))]);
+        }
+        window.demoMainChart.setOption({
+          tooltip: { trigger: 'item', backgroundColor: 'rgba(9,13,22,0.92)', textStyle: { color: '#fff' } },
+          grid: { top: 28, right: 30, bottom: 38, left: 50 },
+          xAxis: { name: 'Riesgo NPL / Fricción (%) →', nameLocation: 'middle', nameGap: 25, type: 'value', min: 0.4, max: 3.8, splitLine: { lineStyle: { color: 'rgba(255,255,255,0.06)' } }, axisLabel: { color: '#94A3B8' } },
+          yAxis: { name: '↑ RORWA Neto (%)', type: 'value', min: 1.5, max: 4.8, splitLine: { lineStyle: { color: 'rgba(255,255,255,0.06)' } }, axisLabel: { color: '#94A3B8' } },
+          series: [
+            {
+              name: 'Frontera Eficiente Óptima', type: 'line', smooth: true, symbol: 'none',
+              lineStyle: { width: 2.5, type: 'dashed', color: '#10B981' },
+              areaStyle: { color: 'rgba(16, 185, 129, 0.07)' },
+              data: frontierCurve
+            },
+            {
+              name: 'Productos Actuales', type: 'scatter', symbolSize: 18,
+              data: all.map((d, i) => ({
+                name: d.name, prodId: d.id, value: [Number(d.adjNpl.toFixed(2)), Number(d.adjRorwa.toFixed(2))],
+                itemStyle: { color: palette[i % palette.length] }
+              })),
+              label: { show: true, formatter: '{b}', position: 'top', color: '#F1F5F9', fontSize: 10 }
+            }
+          ]
+        }, true);
+      }
+
+      // Actualizar Radar Inferior
+      const avgRadar = [0, 1, 2, 3, 4].map(idx =>
+        Math.round(activeList.reduce((s, d) => s + d.radar[idx], 0) / activeList.length)
+      );
+      document.getElementById('demo-radar-title').textContent = demoState.selectedId
+        ? `Huella Paramétrica: ${activeList[0].name}`
+        : 'Huella Multidimensional (Media Cartera Activa)';
+      window.demoRadarChart.setOption({
+        radar: {
+          radius: '68%',
+          indicator: [
+            { name: 'UX Conv.', max: 100 },
+            { name: 'RORWA', max: 100 },
+            { name: 'Calidad NPL', max: 100 },
+            { name: 'STP Auto', max: 100 },
+            { name: 'Retención', max: 100 }
+          ],
+          axisName: { color: '#94A3B8', fontSize: 9 },
+          splitArea: { areaStyle: { color: ['rgba(99,102,241,0.05)', 'rgba(6,182,212,0.02)'] } },
+          splitLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } }
+        },
+        series: [{
+          type: 'radar',
+          data: [{
+            value: avgRadar,
+            areaStyle: { color: 'rgba(6, 182, 212, 0.3)' },
+            lineStyle: { color: '#22D3EE', width: 2 },
+            itemStyle: { color: '#22D3EE' }
+          }]
+        }]
+      });
+    }
+
+    function setDemoStep(n) {
+      demoState.step = n;
+      document.getElementById('demo-step-counter').textContent = `PASO ${n} DE 4`;
+      [1, 2, 3, 4].forEach(i => {
+        const b = document.getElementById('demo-step-' + i);
+        if (!b) return;
+        b.style.background = (i === n) ? '#4f46e5' : 'transparent';
+        b.style.color = (i === n) ? '#fff' : '#94a3b8';
+        b.style.fontWeight = (i === n) ? '600' : '500';
+      });
+      updateLiveTerminal();
+    }
+
+    function setMorphSubType(sub) {
+      demoState.morphSub = sub;
+      ['scatter', 'treemap', 'bar'].forEach(k => {
+        const b = document.getElementById('m-btn-' + k);
+        if (!b) return;
+        b.style.background = (k === sub) ? '#4f46e5' : 'transparent';
+        b.style.color = (k === sub) ? '#fff' : '#94a3b8';
+      });
+      updateLiveTerminal();
+    }
+
+    function setDemoChannel(ch) {
+      demoState.channel = ch;
+      demoState.selectedId = null;
+      ['all', 'app', 'web'].forEach(k => {
+        const b = document.getElementById('ch-btn-' + k);
+        if (!b) return;
+        b.style.background = (k === ch) ? '#0891b2' : 'transparent';
+        b.style.color = (k === ch) ? '#fff' : '#94a3b8';
+        b.style.fontWeight = (k === ch) ? '600' : '500';
+      });
+      updateLiveTerminal();
+    }
+
+    function selectDemoProduct(id) {
+      demoState.selectedId = (demoState.selectedId === id) ? null : id;
+      updateLiveTerminal();
+    }
+
+    function applyDemoScenario(ux, rate, risk) {
+      document.getElementById('sim-ux-slider').value = ux;
+      document.getElementById('sim-rate-slider').value = rate;
+      document.getElementById('sim-risk-slider').value = risk;
+      updateLiveTerminal();
+    }
+
+    // 5. Motor de Superficie Topográfica 3D Interactiva (Sección 02.2)
+    let surfRotZ = -0.65, surfRotX = 0.58, isSurfDragging = false, lastSurfX = 0, lastSurfY = 0;
+
+    function drawTopographicSurface3D() {
+      const canvas = document.getElementById('topographic-3d-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width, h = canvas.height;
+      ctx.clearRect(0, 0, w, h);
+
+      const eff = parseFloat(document.getElementById('surf-eff-slider').value || 1.0);
+      const hurdle = parseFloat(document.getElementById('surf-hurdle-slider').value || 2.5);
+      document.getElementById('surf-eff-val').textContent = eff.toFixed(2) + 'x';
+      document.getElementById('surf-hurdle-val').textContent = hurdle.toFixed(2) + '%';
+
+      const N = 20;
+      const scale = Math.min(w, h) * 0.36;
+      const cx = w * 0.5, cy = h * 0.58;
+
+      function project3D(nx, ny, nz) {
+        // Rotación orbital Z y elevación X
+        const cosZ = Math.cos(surfRotZ), sinZ = Math.sin(surfRotZ);
+        const cosX = Math.cos(surfRotX), sinX = Math.sin(surfRotX);
+        const x1 = nx * cosZ - ny * sinZ;
+        const y1 = nx * sinZ + ny * cosZ;
+        const y2 = y1 * cosX - nz * sinX;
+        const z2 = y1 * sinX + nz * cosX;
+        const fov = 3.2 / (3.2 + y2 * 0.25);
+        return {
+          x: cx + x1 * scale * fov,
+          y: cy - z2 * scale * fov,
+          depth: y2
+        };
+      }
+
+      function rorwaModel(u, v) {
+        // u: Spread comercial (-1 a 1), v: Fricción UX / Mora (-1 a 1)
+        const base = 2.65 * eff + 0.95 * u - 0.85 * v - 0.32 * (u * u) - 0.25 * (v * v) + 0.28 * Math.sin(u * 2.2) * Math.cos(v * 2.0);
+        return Math.max(0.6, Math.min(4.6, base));
+      }
+
+      // Dibujar plano de corte del Hurdle Rate
+      const hNorm = (hurdle - 2.5) * 0.42;
+      const corners = [[-1, -1], [1, -1], [1, 1], [-1, 1]].map(([u, v]) => project3D(u, v, hNorm));
+      ctx.save();
+      ctx.beginPath();
+      corners.forEach((p, idx) => idx === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y));
+      ctx.closePath();
+      ctx.fillStyle = 'rgba(244, 63, 94, 0.08)';
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(244, 63, 94, 0.55)';
+      ctx.setLineDash([5, 4]);
+      ctx.lineWidth = 1.3;
+      ctx.stroke();
+      ctx.restore();
+
+      // Construir polígonos de la superficie topográfica y ordenarlos por profundidad (Painter's Algorithm)
+      const quads = [];
+      for (let i = 0; i < N; i++) {
+        for (let j = 0; j < N; j++) {
+          const u0 = -1 + (2 * i) / N, u1 = -1 + (2 * (i + 1)) / N;
+          const v0 = -1 + (2 * j) / N, v1 = -1 + (2 * (j + 1)) / N;
+
+          const r00 = rorwaModel(u0, v0), r10 = rorwaModel(u1, v0);
+          const r11 = rorwaModel(u1, v1), r01 = rorwaModel(u0, v1);
+          const rAvg = (r00 + r10 + r11 + r01) / 4;
+
+          const p00 = project3D(u0, v0, (r00 - 2.5) * 0.42);
+          const p10 = project3D(u1, v0, (r10 - 2.5) * 0.42);
+          const p11 = project3D(u1, v1, (r11 - 2.5) * 0.42);
+          const p01 = project3D(u0, v1, (r01 - 2.5) * 0.42);
+
+          quads.push({
+            pts: [p00, p10, p11, p01],
+            depth: (p00.depth + p10.depth + p11.depth + p01.depth) / 4,
+            rAvg
+          });
+        }
+      }
+
+      quads.sort((a, b) => b.depth - a.depth);
+
+      quads.forEach(q => {
+        ctx.beginPath();
+        q.pts.forEach((p, idx) => idx === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y));
+        ctx.closePath();
+
+        if (q.rAvg >= hurdle + 0.35) {
+          ctx.fillStyle = 'rgba(16, 185, 129, 0.72)';
+          ctx.strokeStyle = 'rgba(110, 231, 183, 0.45)';
+        } else if (q.rAvg >= hurdle) {
+          ctx.fillStyle = 'rgba(6, 182, 212, 0.68)';
+          ctx.strokeStyle = 'rgba(103, 232, 249, 0.4)';
+        } else if (q.rAvg >= hurdle - 0.4) {
+          ctx.fillStyle = 'rgba(99, 102, 241, 0.62)';
+          ctx.strokeStyle = 'rgba(165, 180, 252, 0.35)';
+        } else {
+          ctx.fillStyle = 'rgba(244, 63, 94, 0.58)';
+          ctx.strokeStyle = 'rgba(253, 164, 175, 0.35)';
+        }
+        ctx.lineWidth = 0.8;
+        ctx.fill();
+        ctx.stroke();
+      });
+
+      // Etiquetas de Ejes 3D
+      const lblX = project3D(1.12, -1, -0.4);
+      const lblY = project3D(-1, 1.12, -0.4);
+      const lblZ = project3D(-1, -1, 0.95);
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '600 11px "JetBrains Mono", monospace';
+      ctx.fillText('Eje X: Spread / Precio TIN →', lblX.x - 40, lblX.y);
+      ctx.fillText('Eje Y: Fricción UX / NPL →', lblY.x - 40, lblY.y);
+      ctx.fillStyle = '#34d399';
+      ctx.fillText('↑ Eje Z: RORWA Neto (%)', lblZ.x - 20, lblZ.y);
+    }
+
+    (function initSurfaceInteraction() {
+      const c = document.getElementById('topographic-3d-canvas');
+      if (!c) return;
+      c.addEventListener('mousedown', e => { isSurfDragging = true; lastSurfX = e.clientX; lastSurfY = e.clientY; c.style.cursor = 'grabbing'; });
+      window.addEventListener('mouseup', () => { isSurfDragging = false; c.style.cursor = 'grab'; });
+      c.addEventListener('mousemove', e => {
+        if (!isSurfDragging) return;
+        surfRotZ += (e.clientX - lastSurfX) * 0.01;
+        surfRotX = Math.max(0.2, Math.min(1.2, surfRotX + (e.clientY - lastSurfY) * 0.008));
+        lastSurfX = e.clientX;
+        lastSurfY = e.clientY;
+        drawTopographicSurface3D();
+      });
+    })();
+
+    // 6. Base de Datos Completa de los 24 Términos del Diccionario Visual (Sección 06)
+    const DICTIONARY_TERMS = [
+      // BLOQUE A: CANALES DIGITALES (WEB & APP COMMERCIAL)
+      {
+        num: "01", cat: "digital", catLabel: "Canales Digitales Web/App",
+        title: "MAU / DAU & Stickiness Ratio",
+        def: "Mide el volumen de usuarios únicos activos diarios (DAU) frente a los mensuales (MAU) en la App Comercial o Web de Empresas. Refleja la frecuencia de enganche orgánico por operatoria de tesorería y consultas.",
+        formula: "Stickiness (%) = (DAU / MAU) × 100",
+        example: "Si la App de Empresas registra 120.000 MAU y 42.000 DAU, el Stickiness es del 35% (hábito diario alto para impactar con ofertas preconcedidas sin gastar en medios pagos).",
+        chartType: "Curva de Área Doble + Sparkline de Adherencia",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#06b6d4" stop-opacity="0.45"/><stop offset="100%" stop-color="#06b6d4" stop-opacity="0"/></linearGradient></defs><path d="M5 44 Q 45 38, 85 26 T 165 16 T 215 10 L 215 50 L 5 50 Z" fill="url(#g1)"/><path d="M5 44 Q 45 38, 85 26 T 165 16 T 215 10" fill="none" stroke="#06b6d4" stroke-width="2"/><path d="M5 48 Q 55 44, 110 38 T 215 28" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-dasharray="3,3"/></svg>`
+      },
+      {
+        num: "02", cat: "digital", catLabel: "Canales Digitales Web/App",
+        title: "Funnel Conversion Rate (CR%) & Micro-Conversiones",
+        def: "Porcentaje de sesiones que superan cada etapa del embudo digital (Login → Landing Producto → Simulador → Solicitud → Firma OTP) hasta la contratación efectiva.",
+        formula: "CR Global (%) = (Contratos Firmados / Sesiones Totales) × 100",
+        formula2: "Step CR_i = Usuarios Paso i / Usuarios Paso (i-1)",
+        example: "En la App Móvil el paso del Simulador a Solicitud convierte al 64%, mientras que en Web cae al 41% por pedir certificado digital antes de mostrar la cuota.",
+        chartType: "Diagrama Sankey Multinivel (Web vs. App)",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><rect x="6" y="8" width="10" height="38" fill="#6366f1" rx="2"/><rect x="95" y="12" width="10" height="28" fill="#06b6d4" rx="2"/><rect x="195" y="8" width="10" height="18" fill="#10b981" rx="2"/><rect x="195" y="32" width="10" height="14" fill="#f43f5e" rx="2"/><path d="M16 22 C 55 22, 55 24, 95 24" fill="none" stroke="#06b6d4" stroke-width="12" stroke-opacity="0.35"/><path d="M105 20 C 150 20, 150 16, 195 16" fill="none" stroke="#10b981" stroke-width="9" stroke-opacity="0.4"/><path d="M105 32 C 150 32, 150 39, 195 39" fill="none" stroke="#f43f5e" stroke-width="6" stroke-opacity="0.35"/></svg>`
+      },
+      {
+        num: "03", cat: "digital", catLabel: "Canales Digitales Web/App",
+        title: "Drop-off Rate & UX Friction Index",
+        def: "Tasa de abandono en un paso específico del proceso de contratación motivada por fricción de experiencia de usuario (exceso de campos manuales, subida de PDF fiscal o lentitud del servidor).",
+        formula: "Drop-off Paso k (%) = 1 - (Usuarios Paso k+1 / Usuarios Paso k)",
+        example: "Eliminar la subida manual del modelo 303 de IVA en la solicitud de TPV redujo el Drop-off del paso 3 del 39% al 14%.",
+        chartType: "Cascada (Waterfall) de Pérdida de Sesiones",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><rect x="12" y="8" width="28" height="40" fill="#6366f1" rx="2"/><rect x="60" y="8" width="28" height="10" fill="#f43f5e" rx="2"/><rect x="108" y="18" width="28" height="14" fill="#f43f5e" rx="2"/><rect x="156" y="32" width="28" height="16" fill="#10b981" rx="2"/><line x1="40" y1="18" x2="108" y2="18" stroke="#475569" stroke-dasharray="2,2"/></svg>`
+      },
+      {
+        num: "04", cat: "digital", catLabel: "Canales Digitales Web/App",
+        title: "Matriz de Transición de Navegación (Cadenas de Markov)",
+        def: "Modelo estocástico que calcula la probabilidad condicional de que un usuario salte de la pantalla i a la pantalla j en su siguiente clic dentro de la App o la Web.",
+        formula: "P(S_{t+1} = j | S_t = i) = N_{i→j} / Σ_k N_{i→k}",
+        example: "Identificar que el 58% de las empresas que consultan el módulo de Divisas saltan inmediatamente a Confirming Internacional.",
+        chartType: "Heatmap Matricial N×N con Probabilidades",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><g transform="translate(35,4)"><rect x="0" y="0" width="28" height="14" fill="#1e1b4b"/><rect x="30" y="0" width="28" height="14" fill="#06b6d4"/><rect x="60" y="0" width="28" height="14" fill="#312e81"/><rect x="90" y="0" width="28" height="14" fill="#10b981"/><rect x="0" y="16" width="28" height="14" fill="#4f46e5"/><rect x="30" y="16" width="28" height="14" fill="#0f172a"/><rect x="60" y="16" width="28" height="14" fill="#10b981"/><rect x="90" y="16" width="28" height="14" fill="#1e1b4b"/><rect x="0" y="32" width="28" height="14" fill="#0f172a"/><rect x="30" y="32" width="28" height="14" fill="#4f46e5"/><rect x="60" y="32" width="28" height="14" fill="#06b6d4"/><rect x="90" y="32" width="28" height="14" fill="#312e81"/></g></svg>`
+      },
+      {
+        num: "05", cat: "digital", catLabel: "Canales Digitales Web/App",
+        title: "Time-to-Yes (TTY) & Time-to-Cash Digital",
+        def: "Tiempo transcurrido desde que el cliente inicia la solicitud en el canal digital hasta que recibe la aprobación firme (Time-to-Yes) y el abono efectivo en cuenta (Time-to-Cash).",
+        formula: "TTY = t(Aprobación Firme) - t(Inicio Solicitud) [Percentiles P50 / P90]",
+        example: "En préstamos preconcedidos por App el P90 de Time-to-Cash es de 48 segundos frente a 72 horas cuando requiere bastanteo manual.",
+        chartType: "Curva de Densidad con Marcadores P50 / P90 / SLA",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><path d="M10 48 C 35 48, 45 8, 70 8 C 95 8, 120 42, 205 48" fill="rgba(16,185,129,0.2)" stroke="#10b981" stroke-width="2"/><line x1="70" y1="6" x2="70" y2="48" stroke="#67e8f9" stroke-dasharray="3,2"/><line x1="135" y1="12" x2="135" y2="48" stroke="#f43f5e" stroke-dasharray="3,2"/></svg>`
+      },
+      {
+        num: "06", cat: "digital", catLabel: "Canales Digitales Web/App",
+        title: "API Latency & Error Rate Impact en Conversión",
+        def: "Mide cómo la latencia de respuesta en milisegundos de los servicios de scoring/precio y los fallos HTTP (5xx/Timeouts) destruyen conversión en el checkout digital.",
+        formula: "Elasticidad Latencia = Δ% Conversión / Δ Latencia (cada +100 ms)",
+        example: "Cada incremento de +250 ms en el cálculo de cuota del simulador Web reduce la tasa de firma final en -3,4 puntos porcentuales.",
+        chartType: "Scatter Bivariante + Curva de Regresión No Lineal",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><circle cx="30" cy="14" r="3.5" fill="#06b6d4"/><circle cx="65" cy="18" r="3.5" fill="#06b6d4"/><circle cx="105" cy="26" r="3.5" fill="#6366f1"/><circle cx="145" cy="36" r="3.5" fill="#f43f5e"/><circle cx="185" cy="43" r="3.5" fill="#f43f5e"/><path d="M20 12 Q 110 22, 200 46" fill="none" stroke="#f43f5e" stroke-width="1.8"/></svg>`
+      },
+      {
+        num: "07", cat: "digital", catLabel: "Canales Digitales Web/App",
+        title: "Atribución Omnicanal & Flujo Híbrido (Web/App → Gestor)",
+        def: "Cuantifica las operaciones que nacen en canales digitales (simulación o carrito abandonado en Web/App) pero se formalizan con asistencia del gestor remoto o en oficina.",
+        formula: "Ventas Híbridas (%) = Contratos Iniciados Digital y Cerrados por Gestor / Total",
+        example: "El 42% del Leasing de maquinaria se simula primero en la Web de Empresas y se firma tras llamada proactiva del especialista al día siguiente.",
+        chartType: "Flujo Aluvial / Cuerdas de Atribución Multicanal",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><path d="M15 14 C 90 14, 120 38, 205 38" fill="none" stroke="#6366f1" stroke-width="6" stroke-opacity="0.5"/><path d="M15 38 C 90 38, 120 16, 205 16" fill="none" stroke="#06b6d4" stroke-width="6" stroke-opacity="0.5"/><circle cx="15" cy="14" r="5" fill="#6366f1"/><circle cx="15" cy="38" r="5" fill="#06b6d4"/><circle cx="205" cy="16" r="5" fill="#10b981"/><circle cx="205" cy="38" r="5" fill="#f59e0b"/></svg>`
+      },
+
+      // BLOQUE B: DESEMPEÑO COMMERCIAL & VALOR DE CLIENTE
+      {
+        num: "08", cat: "commercial", catLabel: "Commercial & Cliente",
+        title: "CAC (Customer / Product Acquisition Cost) por Canal",
+        def: "Coste total comercial, tecnológico y de marketing invertido dividido por el número de clientes o contratos formalizados en cada canal.",
+        formula: "CAC (€) = (Coste Campaña + Coste Canal/Gestor) / Nº Altas Efectivas",
+        example: "Formalizar un anticipo de facturas por notificación in-app tiene un CAC marginal de 9€, frente a 165€ mediante originación presencial tradicional.",
+        chartType: "Barras Horizontales Comparativas por Canal",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><rect x="10" y="10" width="35" height="10" fill="#10b981" rx="2"/><rect x="10" y="24" width="85" height="10" fill="#06b6d4" rx="2"/><rect x="10" y="38" width="175" height="10" fill="#f43f5e" rx="2"/></svg>`
+      },
+      {
+        num: "09", cat: "commercial", catLabel: "Commercial & Cliente",
+        title: "LTV (Customer Lifetime Value) & Ratio LTV / CAC",
+        def: "Valor actual neto de los márgenes netos que generará el cliente durante su permanencia esperada dividido entre su coste de adquisición.",
+        formula: "LTV = Σ_t [ (Margen Bruto_t - Coste Servicio_t) × (1 - Churn)^t / (1 + r)^t ]",
+        example: "Un comercio captado digitalmente con Cuenta + TPV + Línea Crédito presenta un LTV de 3.150€ y un ratio LTV/CAC de 14,2x.",
+        chartType: "Cuadrante de Burbujas (CAC vs. LTV vs. Volumen)",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><line x1="110" y1="4" x2="110" y2="50" stroke="#334155" stroke-dasharray="2,2"/><line x1="10" y1="27" x2="210" y2="27" stroke="#334155" stroke-dasharray="2,2"/><circle cx="55" cy="15" r="10" fill="rgba(16,185,129,0.65)" stroke="#10b981"/><circle cx="85" cy="20" r="7" fill="rgba(6,182,212,0.65)" stroke="#06b6d4"/><circle cx="165" cy="39" r="8" fill="rgba(244,63,94,0.6)" stroke="#f43f5e"/></svg>`
+      },
+      {
+        num: "10", cat: "commercial", catLabel: "Commercial & Cliente",
+        title: "Cross-Sell Ratio & Share of Wallet (Vinculación)",
+        def: "Número medio de familias de producto contratadas por el cliente (Nómina/Impuestos, TPV, Tarjetas, Seguros, Circulante, Largo Plazo) y cuota estimada sobre su negocio bancario total.",
+        formula: "Cross-Sell Index = Total Productos Activos / Total Clientes Activos",
+        example: "Las pymes con ≥ 4 productos en canales digitales muestran una tasa de fuga anual inferior al 2,1%.",
+        chartType: "Gráfico de Radar Multieje (Huella de Vinculación)",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><polygon points="110,5 142,20 130,48 90,48 78,20" fill="rgba(99,102,241,0.28)" stroke="#818cf8" stroke-width="1.8"/><polygon points="110,14 128,24 122,42 98,42 92,24" fill="none" stroke="#475569" stroke-dasharray="2,2"/></svg>`
+      },
+      {
+        num: "11", cat: "commercial", catLabel: "Commercial & Cliente",
+        title: "Propensión NBA (Next Best Action) & Uplift Neto",
+        def: "Probabilidad calculada en Databricks de que un cliente contrate el siguiente producto recomendado y ganancia incremental real respecto a un grupo de control sin impacto.",
+        formula: "Uplift (%) = CR(Grupo Tratamiento NBA) - CR(Grupo Control Aleatorio)",
+        example: "Impactar en el primer banner de la App usando el modelo NBA genera un Uplift neto de +5,4 puntos sobre campañas masivas.",
+        chartType: "Curva Cumulative Gain / Lift por Deciles",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><line x1="15" y1="46" x2="205" y2="8" stroke="#475569" stroke-dasharray="3,3"/><path d="M15 46 Q 60 10, 205 8" fill="none" stroke="#10b981" stroke-width="2.2"/></svg>`
+      },
+      {
+        num: "12", cat: "commercial", catLabel: "Commercial & Cliente",
+        title: "Preconcedidos (Pre-approved): Tasa de Activación y Consumo",
+        def: "Porcentaje de la bolsa total de límites de crédito preaprobados por Riesgos que los canales digitales y gestores consiguen activar y transformar en saldo dispuesto.",
+        formula: "Drawdown Rate (%) = Saldo Formalizado Preconcedidos / Límite Total Preaprobado",
+        example: "Sobre 1.800 M€ de límites preaprobados visibles en la App, una mejora en el flujo de 3 clics elevó la activación del 14% al 21,5%.",
+        chartType: "Anillos Concéntricos (Sunburst / Gauge Multinivel)",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><circle cx="110" cy="27" r="21" fill="none" stroke="#1e293b" stroke-width="6"/><path d="M110 6 A 21 21 0 1 1 90 34" fill="none" stroke="#06b6d4" stroke-width="6" stroke-linecap="round"/><circle cx="110" cy="27" r="12" fill="none" stroke="#1e293b" stroke-width="5"/><path d="M110 15 A 12 12 0 1 1 99 31" fill="none" stroke="#10b981" stroke-width="5" stroke-linecap="round"/></svg>`
+      },
+      {
+        num: "13", cat: "commercial", catLabel: "Commercial & Cliente",
+        title: "Churn Rate & Supervivencia por Cohortes (Inactividad Silenciosa)",
+        def: "En banca comercial el abandono rara vez es el cierre formal de la cuenta; se detecta por la caída brusca de facturación TPV, saldos medios o logins digitales a lo largo de los meses.",
+        formula: "Retención Cohorte(m, t) = Clientes Activos en Mes t / Clientes Captados en Mes m",
+        example: "Monitorizar la retención en el mes 6 de las cuentas captadas vía campaña digital para anticipar fugas con alertas al gestor.",
+        chartType: "Mapa de Calor Triangular de Cohortes Mensuales",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><g transform="translate(45,6)"><rect x="0" y="0" width="24" height="11" fill="#06b6d4"/><rect x="26" y="0" width="24" height="11" fill="#0891b2"/><rect x="52" y="0" width="24" height="11" fill="#4f46e5"/><rect x="78" y="0" width="24" height="11" fill="#312e81"/><rect x="0" y="13" width="24" height="11" fill="#06b6d4"/><rect x="26" y="13" width="24" height="11" fill="#0891b2"/><rect x="52" y="13" width="24" height="11" fill="#4f46e5"/><rect x="0" y="26" width="24" height="11" fill="#06b6d4"/><rect x="26" y="26" width="24" height="11" fill="#10b981"/></g></svg>`
+      },
+      {
+        num: "14", cat: "commercial", catLabel: "Commercial & Cliente",
+        title: "Elasticidad de Precio Dinámico en Simuladores Digitales",
+        def: "Sensibilidad de la tasa de contratación en el simulador Web/App ante variaciones en el tipo de interés ofertado (TIN/TAE) según el importe y plazo solicitado.",
+        formula: "ε_Precio = (% Cambio en Tasa de Aceptación) / (% Cambio en Tipo Ofertado)",
+        example: "Detectar el punto exacto de tipo de interés que maximiza el margen esperado (Conversión × Margen Unitario) en préstamos digitales.",
+        chartType: "Superficie Topográfica 3D (Precio × Plazo → Margen)",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><polygon points="110,6 185,22 110,46 35,22" fill="rgba(99,102,241,0.25)" stroke="#06b6d4" stroke-width="1.5"/><line x1="72" y1="14" x2="148" y2="34" stroke="#6366f1"/><line x1="148" y1="14" x2="72" y2="34" stroke="#10b981"/></svg>`
+      },
+
+      // BLOQUE C: RENTABILIDAD BANCARIA & CUENTA DE RESULTADOS (P&L)
+      {
+        num: "15", cat: "profit", catLabel: "Rentabilidad & P&L",
+        title: "NII (Net Interest Income) & Spread Comercial sobre FTP",
+        def: "Margen de intereses generado por la diferencia entre el tipo cobrado al cliente (o remunerado al pasivo) y la tasa interna de transferencia de fondos (FTP - Funds Transfer Pricing) de Tesorería.",
+        formula: "NII Comercial = Volumen Medio × (Tipo Cliente - Tasa FTP Interna)",
+        example: "Una póliza de crédito en Web al 5,45% con FTP del 3,15% aporta un spread comercial neto de 230 bps.",
+        chartType: "Puente de Variación de Margen (Efecto Volumen vs. Precio)",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><rect x="15" y="20" width="32" height="28" fill="#64748b" rx="2"/><rect x="68" y="10" width="32" height="12" fill="#10b981" rx="2"/><rect x="121" y="10" width="32" height="6" fill="#06b6d4" rx="2"/><rect x="174" y="14" width="32" height="34" fill="#6366f1" rx="2"/></svg>`
+      },
+      {
+        num: "16", cat: "profit", catLabel: "Rentabilidad & P&L",
+        title: "Fee Income (Comisiones Netas) & Cost-to-Income Ratio (Eficiencia)",
+        def: "Ingresos por servicios (TPV, confirming, divisas, medios de pago) y porcentaje del Margen Bruto absorbido por los gastos de explotación.",
+        formula: "Cost-to-Income (CIR %) = (Gastos Operativos / Margen Bruto) × 100",
+        example: "La contratación autoservicio en App reduce el Cost-to-Income de la línea de tarjetas del 44% al 19%.",
+        chartType: "Barras Apiladas (NII + Fees) con Línea de Ratio CIR (%)",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><rect x="25" y="24" width="24" height="24" fill="#6366f1"/><rect x="25" y="14" width="24" height="10" fill="#06b6d4"/><rect x="95" y="20" width="24" height="28" fill="#6366f1"/><rect x="95" y="8" width="24" height="12" fill="#06b6d4"/><rect x="165" y="16" width="24" height="32" fill="#6366f1"/><rect x="165" y="4" width="24" height="12" fill="#06b6d4"/><polyline points="37,16 107,26 177,36" fill="none" stroke="#10b981" stroke-width="2"/></svg>`
+      },
+      {
+        num: "17", cat: "profit", catLabel: "Rentabilidad & P&L",
+        title: "RORWA (Return on Risk-Weighted Assets) & RAROC",
+        def: "Métrica maestra de rentabilidad bancaria: mide el beneficio neto generado por cada unidad de Activo Ponderado por Riesgo (APR/RWA) o Capital Económico consumido.",
+        formula: "RORWA (%) = (Margen Bruto - Costes - Pérdida Esperada - Impuestos) / RWA",
+        example: "Confirming digital tiene un RORWA del 2,68% por su bajo consumo de capital, superando a préstamos sin aval con tipos más altos pero mayor RWA.",
+        chartType: "Treemap Jerárquico (Área = RWA, Color = RORWA)",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><rect x="8" y="6" width="95" height="42" fill="#10b981" fill-opacity="0.7" rx="3"/><rect x="107" y="6" width="60" height="24" fill="#06b6d4" fill-opacity="0.7" rx="3"/><rect x="107" y="33" width="60" height="15" fill="#6366f1" fill-opacity="0.7" rx="3"/><rect x="171" y="6" width="41" height="42" fill="#f59e0b" fill-opacity="0.7" rx="3"/></svg>`
+      },
+      {
+        num: "18", cat: "profit", catLabel: "Rentabilidad & P&L",
+        title: "Hurdle Rate & EVA (Economic Value Added)",
+        def: "El Hurdle Rate es la rentabilidad mínima exigida por el capital del banco (ej. 2,50% RORWA). El EVA mide el valor económico neto creado por encima de ese umbral.",
+        formula: "EVA (€) = RWA × (RORWA Real - Hurdle Rate Exigido)",
+        example: "Cualquier línea por debajo del Hurdle Rate destruye valor para el accionista aunque su beneficio contable sea positivo.",
+        chartType: "Barras Divergentes respecto al Eje Hurdle Rate",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><line x1="10" y1="28" x2="210" y2="28" stroke="#94a3b8" stroke-dasharray="3,2"/><rect x="25" y="10" width="28" height="18" fill="#10b981" rx="2"/><rect x="75" y="14" width="28" height="14" fill="#10b981" rx="2"/><rect x="125" y="28" width="28" height="14" fill="#f43f5e" rx="2"/><rect x="170" y="8" width="28" height="20" fill="#06b6d4" rx="2"/></svg>`
+      },
+      {
+        num: "19", cat: "profit", catLabel: "Rentabilidad & P&L",
+        title: "Frontera Eficiente de Cartera Comercial (Markowitz)",
+        def: "Curva matemática en el plano Riesgo-Rentabilidad que identifica la asignación de volumen entre productos y canales digitales que maximiza el RORWA para un nivel de mora dado.",
+        formula: "Max w^T · μ_RORWA   sujeto a   w^T · Σ_Riesgo · w ≤ σ²_Objetivo",
+        example: "Muestra visualmente en comité cuántos puntos básicos de RORWA gana el banco reequilibrando el mix comercial hacia productos sobre la curva.",
+        chartType: "Curva Parabólica de Frontera Eficiente + Nodos de Cartera",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><path d="M25 46 Q 55 10, 200 8" fill="none" stroke="#10b981" stroke-width="2" stroke-dasharray="4,2"/><circle cx="75" cy="24" r="4.5" fill="#06b6d4"/><circle cx="120" cy="30" r="5.5" fill="#6366f1"/><circle cx="155" cy="18" r="5" fill="#10b981"/></svg>`
+      },
+
+      // BLOQUE D: RIESGO DE CRÉDITO EN LA ADMISIÓN DIGITAL Y COMERCIAL
+      {
+        num: "20", cat: "risk", catLabel: "Riesgo & Admisión STP",
+        title: "STP Rate (Straight-Through Processing / Aprobación Automática)",
+        def: "Porcentaje de solicitudes digitales resueltas instantáneamente por el motor algorítmico de riesgos sin intervención de un analista humano.",
+        formula: "STP Rate (%) = Solicitudes Resueltas Automáticamente / Total Solicitudes Digitales",
+        example: "Elevar el STP del 55% al 78% en Pymes evita que el cliente abandone mientras espera respuesta de sanción manual.",
+        chartType: "Barras 100% Apiladas (Auto STP / Analista / Denegado)",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><rect x="12" y="18" width="125" height="16" fill="#10b981" rx="2"/><rect x="139" y="18" width="38" height="16" fill="#f59e0b"/><rect x="179" y="18" width="29" height="16" fill="#f43f5e" rx="2"/></svg>`
+      },
+      {
+        num: "21", cat: "risk", catLabel: "Riesgo & Admisión STP",
+        title: "Tríada Fundamental: EAD, PD (%) y LGD (%)",
+        def: "Exposición en el momento del incumplimiento (EAD), Probabilidad de impago a 12 meses (PD) y Severidad o pérdida tras ejecutar garantías/avales (LGD).",
+        formula: "Pérdida Esperada (EL) = EAD (€) × PD (%) × LGD (%)",
+        example: "Un préstamo con aval ICO tiene una LGD del 15%-20%, permitiendo aprobar digitalmente a clientes con mayor PD manteniendo baja la pérdida esperada.",
+        chartType: "Diagrama de Descomposición Multiplicativa (EAD × PD × LGD)",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><rect x="12" y="12" width="48" height="28" fill="rgba(99,102,241,0.3)" stroke="#6366f1" rx="4"/><rect x="86" y="12" width="48" height="28" fill="rgba(6,182,212,0.3)" stroke="#06b6d4" rx="4"/><rect x="160" y="12" width="48" height="28" fill="rgba(244,63,94,0.3)" stroke="#f43f5e" rx="4"/><text x="36" y="30" fill="#fff" font-size="10" text-anchor="middle" font-family="monospace">EAD</text><text x="73" y="30" fill="#94a3b8" font-size="12" text-anchor="middle">×</text><text x="110" y="30" fill="#fff" font-size="10" text-anchor="middle" font-family="monospace">PD%</text><text x="147" y="30" fill="#94a3b8" font-size="12" text-anchor="middle">×</text><text x="184" y="30" fill="#fff" font-size="10" text-anchor="middle" font-family="monospace">LGD%</text></svg>`
+      },
+      {
+        num: "22", cat: "risk", catLabel: "Riesgo & Admisión STP",
+        title: "EL (Expected Loss) & CoR (Cost of Risk en bps)",
+        def: "Coste anualizado de las dotaciones por insolvencia expresado en puntos básicos (bps) sobre el volumen medio de la cartera crediticia.",
+        formula: "Cost of Risk (bps) = (Dotaciones Netas Anuales / Cartera Media) × 10.000",
+        example: "Un CoR de 45 bps significa que el banco provisiona 0,45€ por cada 100€ prestados en esa línea de negocio.",
+        chartType: "Cascada Contable P&L: Margen Bruto → CoR → Neto",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><rect x="18" y="8" width="36" height="40" fill="#06b6d4" rx="2"/><rect x="74" y="8" width="36" height="12" fill="#f59e0b" rx="2"/><rect x="130" y="20" width="36" height="10" fill="#f43f5e" rx="2"/><rect x="176" y="30" width="30" height="18" fill="#10b981" rx="2"/></svg>`
+      },
+      {
+        num: "23", cat: "risk", catLabel: "Riesgo & Admisión STP",
+        title: "NPL Ratio (Tasa de Mora) & Fases IFRS 9 (Stage 1, 2 y 3)",
+        def: "Clasificación regulatoria del crédito: Stage 1 (Riesgo normal), Stage 2 (Vigilancia especial por deterioro significativo del riesgo) y Stage 3 (Moroso > 90 días = NPL).",
+        formula: "NPL Ratio (%) = Saldo Dudoso (Stage 3) / Exposición Total de Cartera",
+        example: "Analizar las cosechas (vintages) de préstamos originados en Web vs. App a los 6 y 12 meses para vigilar el paso temprano a Stage 2.",
+        chartType: "Matriz de Migración IFRS 9 & Curvas de Cosecha (Vintages)",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><path d="M12 46 Q 90 44, 205 36" fill="none" stroke="#10b981" stroke-width="2"/><path d="M12 46 Q 90 36, 205 22" fill="none" stroke="#f59e0b" stroke-width="2"/><path d="M12 46 Q 90 26, 205 8" fill="none" stroke="#f43f5e" stroke-width="2"/></svg>`
+      },
+      {
+        num: "24", cat: "risk", catLabel: "Riesgo & Admisión STP",
+        title: "RWA / APR (Risk-Weighted Assets) & Densidad de Capital",
+        def: "Importe de los activos ponderados por su nivel de riesgo regulatorio (Basilea III) y su ratio sobre la exposición total (Densidad RWA = RWA / EAD).",
+        formula: "RWA = EAD × Factor de Ponderación Regulatoria f(PD, LGD, Madurez, Aval)",
+        example: "Una línea con aval público computa con densidad RWA del 20%, mientras que un crédito sin garantía a pyme computa al 75%-85%.",
+        chartType: "Barras Comparativas de Densidad RWA / Consumo de Capital",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><rect x="14" y="10" width="180" height="10" fill="rgba(255,255,255,0.08)" rx="2"/><rect x="14" y="10" width="45" height="10" fill="#10b981" rx="2"/><rect x="14" y="28" width="180" height="10" fill="rgba(255,255,255,0.08)" rx="2"/><rect x="14" y="28" width="142" height="10" fill="#6366f1" rx="2"/></svg>`
+      }
+    ];
+
+    let currentDictCat = 'all';
+
+    function renderDictionaryCards() {
+      const container = document.getElementById('metrics-vault-container');
+      if (!container) return;
+      const q = (document.getElementById('dict-search-input')?.value || '').toLowerCase().trim();
+
+      const filtered = DICTIONARY_TERMS.filter(item => {
+        const matchCat = currentDictCat === 'all' || item.cat === currentDictCat;
+        const matchText = !q ||
+          item.title.toLowerCase().includes(q) ||
+          item.def.toLowerCase().includes(q) ||
+          item.formula.toLowerCase().includes(q) ||
+          item.example.toLowerCase().includes(q) ||
+          item.chartType.toLowerCase().includes(q);
+        return matchCat && matchText;
+      });
+
+      container.innerHTML = filtered.map(item => `
+        <article class="metric-dict-card">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.55rem;">
+              <span class="metric-cat-tag cat-${item.cat}">${item.catLabel}</span>
+              <span class="tabular-mono" style="font-size: 0.72rem; color: #64748b;">#${item.num}</span>
+            </div>
+            <h4 style="margin: 0 0 0.45rem; font-size: 0.98rem; color: #f8fafc; font-weight: 700;">${item.title}</h4>
+            <p style="margin: 0 0 0.65rem; font-size: 0.8rem; color: #cbd5e1; line-height: 1.5;">${item.def}</p>
+            <div class="metric-formula-box" style="margin-bottom: 0.65rem;">
+              📐 ${item.formula}
+            </div>
+            <p style="margin: 0; font-size: 0.77rem; color: #94a3b8; line-height: 1.45;">
+              <strong style="color: #e2e8f0;">💼 Caso Commercial / Digital:</strong> ${item.example}
+            </p>
+          </div>
+          <div class="metric-viz-box">
+            <div class="metric-viz-label">
+              <span>📊 Visualización Recomendada:</span>
+              <span style="color: #67e8f9;">${item.chartType}</span>
+            </div>
+            ${item.svg}
+          </div>
+        </article>
+      `).join('');
+    }
+
+    function setDictCategory(cat, btn) {
+      currentDictCat = cat;
+      document.querySelectorAll('.glossary-cat-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      renderDictionaryCards();
+    }
+
+    function filterDictionaryCards() {
+      renderDictionaryCards();
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      updateLiveTerminal();
+      drawTopographicSurface3D();
+      renderDictionaryCards();
+      window.addEventListener('resize', () => {
+        if (window.demoMainChart) window.demoMainChart.resize();
+        if (window.demoRadarChart) window.demoRadarChart.resize();
+        drawTopographicSurface3D();
+      });
+    });
+  </script>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/search-data.js"></script>
+  <script src="../js/search.js"></script>
+  <script src="../js/highlighter.js"></script>
+  
+  <!-- Custom Scripts -->
+  <script src="../js/diagrams.js"></script>
+  <script src="../js/edit-mode.js"></script>
+  <script src="../js/playground.js"></script>
+  <script src="../js/glossary.js"></script>
+  <script src="../js/ai-tutor.js"></script>
+  <script src="../js/text-zoom.js"></script>
+  <script src="../js/simulations.js"></script>
+  <script src="../js/quiz.js"></script>
+  <script src="../js/annotations.js"></script>
+  <script src="../js/achievements.js"></script>
+</body>
+</html>
