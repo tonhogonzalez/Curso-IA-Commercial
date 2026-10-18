@@ -5,8 +5,8 @@
         .concept-map-container {
             position: relative;
             width: 100%;
-            height: 600px;
-            min-height: 60vh;
+            height: 660px;
+            min-height: 64vh;
             border-radius: var(--radius-lg);
             overflow: hidden;
             background: var(--bg-surface);
@@ -15,6 +15,7 @@
             color: var(--text-primary);
             display: flex;
             flex-direction: column;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
         }
         
         .concept-map-container.is-fullscreen {
@@ -32,46 +33,52 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem;
+            padding: 0.85rem 1.15rem;
             background: var(--bg-card);
             border-bottom: 1px solid var(--border-subtle);
             flex-wrap: wrap;
-            gap: 1rem;
+            gap: 0.75rem;
+            z-index: 12;
         }
 
         .cmap-filters {
             display: flex;
-            gap: 0.5rem;
+            gap: 0.4rem;
             flex-wrap: wrap;
+            align-items: center;
         }
 
         .cmap-filter-btn {
             background: var(--bg-surface);
             border: 1px solid var(--border-medium);
             color: var(--text-secondary);
-            padding: 0.25rem 0.75rem;
+            padding: 0.28rem 0.68rem;
             border-radius: var(--radius-full, 9999px);
-            font-size: 0.875rem;
+            font-size: 0.78rem;
+            font-weight: 600;
             cursor: pointer;
             transition: all var(--transition-fast);
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.4rem;
+            user-select: none;
         }
 
         .cmap-filter-btn:hover {
             border-color: var(--text-primary);
+            transform: translateY(-1px);
         }
 
         .cmap-filter-btn.active {
             border-color: currentColor;
             color: currentColor;
-            background: var(--bg-secondary);
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 12px -4px currentColor;
         }
         
         .cmap-filter-dot {
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
             background-color: currentColor;
         }
@@ -80,48 +87,57 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            flex: 1;
+            max-width: 260px;
         }
 
         .cmap-search input {
+            width: 100%;
             background: var(--bg-surface);
             border: 1px solid var(--border-medium);
             color: var(--text-primary);
-            padding: 0.5rem 1rem;
+            padding: 0.42rem 0.85rem;
             border-radius: var(--radius-sm);
-            font-size: 0.875rem;
+            font-size: 0.82rem;
             outline: none;
+            transition: border-color 0.15s ease;
         }
 
         .cmap-search input:focus {
-            border-color: var(--accent-blue);
+            border-color: var(--accent-cyan, #06b6d4);
         }
 
         .cmap-controls {
             display: flex;
-            gap: 0.5rem;
+            gap: 0.4rem;
+            align-items: center;
         }
 
         .cmap-btn {
             background: var(--bg-surface);
             border: 1px solid var(--border-medium);
             color: var(--text-primary);
-            padding: 0.5rem;
+            padding: 0.42rem 0.6rem;
             border-radius: var(--radius-sm);
             cursor: pointer;
             transition: all var(--transition-fast);
-            display: grid;
-            place-items: center;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.75rem;
+            font-weight: 600;
         }
 
         .cmap-btn:hover {
             background: var(--bg-secondary);
+            border-color: var(--accent-cyan, #06b6d4);
         }
 
         .cmap-canvas-wrapper {
             position: relative;
             flex: 1;
             overflow: hidden;
-            background: var(--bg-primary);
+            background: radial-gradient(circle at 50% 50%, rgba(30, 41, 59, 0.35) 0%, var(--bg-primary) 85%);
             cursor: grab;
         }
         
@@ -135,58 +151,147 @@
             height: 100%;
         }
 
+        /* Tarjeta de Inspección Fija con Foco Blindado */
         .cmap-tooltip {
             position: absolute;
-            background: var(--bg-card);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-md);
-            padding: 1rem;
-            box-shadow: var(--shadow-lg);
+            background: rgba(13, 18, 30, 0.96);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid rgba(99, 102, 241, 0.45);
+            border-radius: 12px;
+            padding: 1.1rem 1.2rem;
+            box-shadow: 0 22px 48px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.06);
             pointer-events: none;
             opacity: 0;
-            transition: opacity var(--transition-fast);
-            z-index: 10;
-            max-width: 300px;
-            transform: translate(-50%, -120%);
+            transition: opacity 160ms ease, transform 160ms cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 30;
+            width: 310px;
+            max-width: calc(100% - 24px);
+            transform: translate(-50%, -108%) scale(0.96);
+        }
+
+        [data-theme="light"] .cmap-tooltip {
+            background: rgba(255, 255, 255, 0.98);
+            border-color: rgba(59, 130, 246, 0.45);
+            box-shadow: 0 20px 45px rgba(15, 23, 42, 0.18);
         }
 
         .cmap-tooltip.visible {
             opacity: 1;
             pointer-events: auto;
+            transform: translate(-50%, -112%) scale(1);
+            cursor: default;
+        }
+
+        .cmap-tooltip-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 0.5rem;
+            margin-bottom: 0.35rem;
+        }
+
+        .cmap-tooltip-badge {
+            font-family: var(--font-mono);
+            font-size: 0.66rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 0.15rem 0.5rem;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.07);
+            letter-spacing: 0.04em;
+        }
+
+        .cmap-tooltip-close {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.9rem;
+            line-height: 1;
+            padding: 2px 5px;
+            border-radius: 4px;
+        }
+
+        .cmap-tooltip-close:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.08);
         }
         
         .cmap-tooltip h4 {
-            margin: 0 0 0.5rem 0;
+            margin: 0 0 0.45rem 0;
             color: var(--text-primary);
             font-family: var(--font-display);
+            font-size: 1.02rem;
+            line-height: 1.25;
         }
         
         .cmap-tooltip p {
-            margin: 0 0 1rem 0;
+            margin: 0 0 0.85rem 0;
             color: var(--text-secondary);
-            font-size: 0.875rem;
-            line-height: 1.4;
+            font-size: 0.82rem;
+            line-height: 1.48;
         }
 
-        .cmap-tooltip a {
-            display: inline-block;
-            background: var(--accent-blue);
-            color: white;
+        .cmap-tooltip-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+        }
+
+        .cmap-tooltip a.cmap-goto-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            width: 100%;
+            background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+            color: #060913 !important;
+            font-weight: 700;
             text-decoration: none;
-            padding: 0.25rem 0.75rem;
-            border-radius: var(--radius-sm);
-            font-size: 0.875rem;
+            padding: 0.48rem 0.85rem;
+            border-radius: 7px;
+            font-size: 0.8rem;
             pointer-events: auto;
+            box-shadow: 0 4px 14px rgba(6, 182, 212, 0.35);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .cmap-tooltip a.cmap-goto-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(6, 182, 212, 0.5);
+        }
+
+        .cmap-hint-bar {
+            position: absolute;
+            bottom: 10px;
+            left: 14px;
+            z-index: 8;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(8px);
+            padding: 0.3rem 0.7rem;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            pointer-events: none;
+        }
+
+        [data-theme="light"] .cmap-hint-bar {
+            background: rgba(255, 255, 255, 0.85);
+            border-color: rgba(15, 23, 42, 0.1);
         }
 
         .cmap-edge-tooltip {
             position: absolute;
             background: var(--bg-surface);
-            color: var(--text-secondary);
+            color: var(--text-primary);
             border: 1px solid var(--border-medium);
-            padding: 0.25rem 0.5rem;
+            padding: 0.25rem 0.55rem;
             border-radius: var(--radius-sm);
-            font-size: 0.75rem;
+            font-size: 0.72rem;
+            font-weight: 600;
             pointer-events: none;
             opacity: 0;
             transition: opacity var(--transition-fast);
@@ -199,36 +304,41 @@
             opacity: 1;
         }
         
-        /* Tema claro/oscuro colores base para JS */
         :root {
-            --cmap-c1: var(--accent-violet, #8b5cf6);
-            --cmap-c2: var(--accent-blue, #3b82f6);
-            --cmap-c3: var(--accent-cyan, #06b6d4);
-            --cmap-c4: var(--accent-emerald, #10b981);
-            --cmap-c5: var(--accent-amber, #f59e0b);
-            --cmap-c6: #0078d4;
+            --cmap-c1: #8b5cf6;
+            --cmap-c2: #3b82f6;
+            --cmap-c3: #06b6d4;
+            --cmap-c4: #10b981;
+            --cmap-c5: #f59e0b;
+            --cmap-c6: #0ea5e9;
+            --cmap-c7: #ec4899;
+            --cmap-c8: #a855f7;
+            --cmap-c9: #14b8a6;
             --cmap-text: var(--text-primary, #f8fafc);
-            --cmap-bg: var(--bg-surface, #1e293b);
-            --cmap-edge: var(--border-medium, #475569);
-            --cmap-edge-hover: var(--text-secondary, #94a3b8);
+            --cmap-bg: var(--bg-surface, #111827);
+            --cmap-edge: var(--border-medium, #334155);
+            --cmap-edge-hover: #38bdf8;
         }
         
         [data-theme="light"] {
             --cmap-text: var(--text-primary, #0f172a);
             --cmap-bg: var(--bg-surface, #ffffff);
             --cmap-edge: var(--border-medium, #cbd5e1);
-            --cmap-edge-hover: var(--text-secondary, #64748b);
+            --cmap-edge-hover: #0284c7;
         }
     `;
 
-    // Datos del grafo
+    // Los 9 Cuadernos del Curso con sus rutas y anclas
     const CUADERNOS = [
-        { id: 1, name: "Cuaderno 01", colorVar: "--cmap-c1", colorHex: "#8b5cf6" },
-        { id: 2, name: "Cuaderno 02", colorVar: "--cmap-c2", colorHex: "#3b82f6" },
-        { id: 3, name: "Cuaderno 03", colorVar: "--cmap-c3", colorHex: "#06b6d4" },
-        { id: 4, name: "Cuaderno 04", colorVar: "--cmap-c4", colorHex: "#10b981" },
-        { id: 5, name: "Cuaderno 05", colorVar: "--cmap-c5", colorHex: "#f59e0b" },
-        { id: 6, name: "Cuaderno 06", colorVar: "--cmap-c6", colorHex: "#0078d4" }
+        { id: 1, short: "C1", name: "Cuaderno 01 · Pep Martorell", colorVar: "--cmap-c1", colorHex: "#8b5cf6", cx: -320, cy: -180 },
+        { id: 2, short: "C2", name: "Cuaderno 02 · Javier Ideami", colorVar: "--cmap-c2", colorHex: "#3b82f6", cx: 0, cy: -220 },
+        { id: 3, short: "C3", name: "Cuaderno 03 · Compendio Técnico", colorVar: "--cmap-c3", colorHex: "#06b6d4", cx: 320, cy: -180 },
+        { id: 4, short: "C4", name: "Cuaderno 04 · Universo Transformer", colorVar: "--cmap-c4", colorHex: "#10b981", cx: -340, cy: 10 },
+        { id: 5, short: "C5", name: "Cuaderno 05 · Paradigmas & Harness", colorVar: "--cmap-c5", colorHex: "#f59e0b", cx: 0, cy: 0 },
+        { id: 6, short: "C6", name: "Cuaderno 06 · M365 Banca Comercial", colorVar: "--cmap-c6", colorHex: "#0ea5e9", cx: 340, cy: 10 },
+        { id: 7, short: "C7", name: "Cuaderno 07 · Migración ChatGPT→M365", colorVar: "--cmap-c7", colorHex: "#ec4899", cx: -300, cy: 190 },
+        { id: 8, short: "C8", name: "Cuaderno 08 · Agentes VS Code & PaceUI", colorVar: "--cmap-c8", colorHex: "#a855f7", cx: 0, cy: 210 },
+        { id: 9, short: "C9", name: "Cuaderno 09 · Databricks, Excel & Diccionario", colorVar: "--cmap-c9", colorHex: "#14b8a6", cx: 320, cy: 190 }
     ];
 
     const CUADERNO_LINKS = {
@@ -237,75 +347,116 @@
         3: 'cuadernos/03-compendio-tecnico.html',
         4: 'cuadernos/04-el-universo-del-transformer.html',
         5: 'cuadernos/05-paradigmas-y-computacion.html',
-        6: 'cuadernos/06-m365-copilot-banca-comercial.html'
+        6: 'cuadernos/06-m365-copilot-banca-comercial.html',
+        7: 'cuadernos/07-migracion-chatgpt-copilot-m365.html',
+        8: 'cuadernos/08-agentes-vscode-ux-dashboards.html',
+        9: 'cuadernos/09-ingenieria-visual-databricks-m365-vscode.html'
     };
 
+    // 48 Conceptos Clave distribuidos en los 9 Cuadernos con enlace directo a la sección exacta
     const NODES = [
         // Cuaderno 01
-        { id: "superinterpolador", label: "Superinterpolador Estadístico", c: 1, desc: "Los LLMs vistos como modelos probabilísticos avanzados." },
-        { id: "polisemia", label: "Polisemia", c: 1, desc: "Palabras con múltiples significados dependiendo del contexto." },
-        { id: "transformers_c1", label: "Transformers", c: 1, desc: "Arquitectura base para el procesamiento de lenguaje natural." },
-        { id: "supercomputacion", label: "Supercomputación", c: 1, desc: "Capacidad de cómputo necesaria para entrenar modelos a gran escala." },
+        { id: "superinterpolador", label: "Superinterpolador Estadístico", c: 1, url: "cuadernos/01-pep-martorell.html#interpolador", desc: "Los LLMs como interpoladores de alta dimensión que navegan el espacio latente sin deducir leyes físicas fuera de su distribución." },
+        { id: "polisemia", label: "Polisemia Contextual", c: 1, url: "cuadernos/01-pep-martorell.html#transformers", desc: "Resolución dinámica del significado de cada palabra según los tokens circundantes mediante mecanismos de atención." },
+        { id: "transformers_c1", label: "Transformers", c: 1, url: "cuadernos/01-pep-martorell.html#transformers", desc: "Arquitectura paralela que sustituyó a las RNN secuenciales y permitió escalar el entrenamiento masivo." },
+        { id: "supercomputacion", label: "Supercomputación & Soberanía", c: 1, url: "cuadernos/01-pep-martorell.html#gigafactorias", desc: "Infraestructura de cómputo (GPUs, interconexión y energía) e impacto en el sistema productivo y científico." },
+        { id: "agentizacion_c1", label: "Agentización Empresarial", c: 1, url: "cuadernos/01-pep-martorell.html#agentizacion", desc: "Transición desde chatbots conversacionales hacia enjambres de agentes que ejecutan procesos de negocio." },
+
         // Cuaderno 02
-        { id: "correlacion", label: "Correlación vs Causalidad", c: 2, desc: "La diferencia entre asociación de variables y relaciones causa-efecto." },
-        { id: "metaprompting", label: "Metaprompting", c: 2, desc: "El uso de prompts para generar o gestionar otros prompts." },
-        { id: "pensamiento_critico", label: "Pensamiento Crítico", c: 2, desc: "Habilidad esencial para evaluar respuestas de IA." },
-        { id: "agi", label: "AGI", c: 2, desc: "Inteligencia Artificial General con capacidades humanas o superiores." },
-        { id: "alineamiento", label: "Alineamiento", c: 2, desc: "Asegurar que los objetivos de la IA coinciden con los valores humanos." },
+        { id: "correlacion", label: "Correlación vs Causalidad", c: 2, url: "cuadernos/02-javier-ideami.html#causalidad", desc: "Distinción crítica entre asociación estadística en datos históricos y comprensión causal de intervenciones." },
+        { id: "metaprompting", label: "Metaprompting", c: 2, url: "cuadernos/02-javier-ideami.html#prompting", desc: "Usar al propio LLM como ingeniero de prompts para auditar, refinar y estructurar instrucciones complejas." },
+        { id: "pensamiento_critico", label: "Musculatura Cognitiva", c: 2, url: "cuadernos/02-javier-ideami.html#musculatura", desc: "Entrenamiento deliberado del juicio crítico humano para auditar y dirigir sistemas generativos sin atrofia cognitiva." },
+        { id: "agi", label: "Horizonte AGI 2030", c: 2, url: "cuadernos/02-javier-ideami.html#horizonte-2030", desc: "Evolución hacia sistemas multimodales con razonamiento híbrido y modelos del mundo." },
+        { id: "alineamiento", label: "Alineamiento & Gobernanza", c: 2, url: "cuadernos/02-javier-ideami.html#alineamiento", desc: "Garantizar que la optimización de objetivos de la IA respete las intenciones, seguridad y ética humanas." },
+
         // Cuaderno 03
-        { id: "backprop", label: "Backpropagation", c: 3, desc: "Algoritmo para calcular gradientes en redes neuronales." },
-        { id: "adamw", label: "AdamW", c: 3, desc: "Variante del optimizador Adam con weight decay corregido." },
-        { id: "kv_cache", label: "KV Cache", c: 3, desc: "Mecanismo para optimizar la inferencia guardando Keys y Values previos." },
-        { id: "rag", label: "RAG", c: 3, desc: "Generación Aumentada por Recuperación." },
-        { id: "agentes", label: "Agentes Autónomos", c: 3, desc: "Sistemas capaces de planificar y ejecutar acciones." },
-        { id: "embeddings", label: "Embeddings", c: 3, desc: "Representaciones vectoriales de conceptos o textos." },
+        { id: "backprop", label: "Backpropagation", c: 3, url: "cuadernos/03-compendio-tecnico.html#modulo-2", desc: "Propagación hacia atrás del error mediante la regla de la cadena para ajustar miles de millones de pesos." },
+        { id: "adamw", label: "Optimizador AdamW", c: 3, url: "cuadernos/03-compendio-tecnico.html#modulo-3", desc: "Optimizador con momentos adaptativos y Weight Decay desacoplado, estándar en el entrenamiento de LLMs." },
+        { id: "kv_cache", label: "KV Cache & FlashAttention", c: 3, url: "cuadernos/03-compendio-tecnico.html#modulo-8", desc: "Almacenamiento en VRAM de tensores Key/Value previos para reducir la complejidad de inferencia de O(N²) a O(N)." },
+        { id: "rag", label: "Arquitectura RAG", c: 3, url: "cuadernos/03-compendio-tecnico.html#modulo-9", desc: "Generación Aumentada por Recuperación: búsqueda vectorial e inyección documental en tiempo de inferencia." },
+        { id: "agentes", label: "Flujos Agenciales ReAct", c: 3, url: "cuadernos/03-compendio-tecnico.html#modulo-10", desc: "Bucle Razonamiento + Acción con uso de herramientas (Tool Calling), memoria y planificación." },
+        { id: "embeddings", label: "Espacios de Embeddings", c: 3, url: "cuadernos/03-compendio-tecnico.html#modulo-4", desc: "Geometría vectorial continua donde la similitud coseno captura relaciones semánticas y financieras." },
+
         // Cuaderno 04
-        { id: "self_attention", label: "Self-Attention", c: 4, desc: "Mecanismo que permite a un modelo sopesar diferentes partes del input." },
-        { id: "multi_head", label: "Multi-Head Attention", c: 4, desc: "Uso de múltiples mecanismos de atención en paralelo." },
-        { id: "rope", label: "RoPE / ALiBi", c: 4, desc: "Técnicas de codificación posicional relativa." },
-        { id: "softmax", label: "Softmax", c: 4, desc: "Función de activación para convertir logits en probabilidades." },
-        { id: "rlhf", label: "RLHF", c: 4, desc: "Aprendizaje por refuerzo a partir de retroalimentación humana." },
-        { id: "grounding", label: "Grounding", c: 4, desc: "Anclar respuestas del modelo a fuentes de información reales." },
+        { id: "self_attention", label: "Scaled Dot-Product Attention", c: 4, url: "cuadernos/04-el-universo-del-transformer.html#seccion-3", desc: "Cálculo matricial Softmax(Q·Kᵀ / √d_k)·V que pondera la relevancia cruzada entre todos los tokens." },
+        { id: "multi_head", label: "Multi-Head Attention", c: 4, url: "cuadernos/04-el-universo-del-transformer.html#seccion-4", desc: "Atención en paralelo sobre múltiples subespacios de proyección para capturar sintaxis, semántica y contexto." },
+        { id: "rope", label: "Codificación RoPE / ALiBi", c: 4, url: "cuadernos/04-el-universo-del-transformer.html#seccion-6", desc: "Codificación posicional rotatoria relativa que permite extrapolar ventanas de contexto largas." },
+        { id: "softmax", label: "Softmax & Temperatura", c: 4, url: "cuadernos/04-el-universo-del-transformer.html#seccion-7", desc: "Normalización exponencial de logits en distribución de probabilidad controlada por Temperatura y Top-P." },
+        { id: "rlhf", label: "RLHF / DPO", c: 4, url: "cuadernos/04-el-universo-del-transformer.html#seccion-7", desc: "Ajuste fino post-entrenamiento basado en preferencias humanas para alinear utilidad y seguridad." },
+        { id: "grounding", label: "Grounding Corporativo", c: 4, url: "cuadernos/04-el-universo-del-transformer.html#seccion-8", desc: "Anclaje estricto de las respuestas del modelo a fuentes verificables con trazabilidad de citas." },
+
         // Cuaderno 05
-        { id: "turing_conexionismo", label: "Turing vs Conexionismo", c: 5, desc: "Paradigmas fundamentales de la computación y la IA." },
-        { id: "autodiff", label: "Autodiff / DAG", c: 5, desc: "Diferenciación automática basada en grafos acíclicos dirigidos." },
-        { id: "sgd_adam", label: "SGD / Adam", c: 5, desc: "Optimizadores fundamentales." },
-        { id: "ln", label: "Pre-LN vs Post-LN", c: 5, desc: "Variantes en la ubicación de Layer Normalization." },
-        { id: "eval", label: "Evaluation Harness", c: 5, desc: "Marcos estandarizados para evaluar LLMs." },
-        { id: "graphrag", label: "GraphRAG", c: 5, desc: "RAG potenciado con Grafos de Conocimiento." },
+        { id: "turing_conexionismo", label: "Turing vs Conexionismo", c: 5, url: "cuadernos/05-paradigmas-y-computacion.html#m1-epistemologia", desc: "Contraste entre lógica simbólica explícita y representaciones subsimbólicas distribuidas en redes neuronales." },
+        { id: "autodiff", label: "Autodiff / Grafos DAG", c: 5, url: "cuadernos/05-paradigmas-y-computacion.html#m2-autodiff", desc: "Diferenciación automática exacta sobre grafos computacionales acíclicos dirigidos en PyTorch." },
+        { id: "ln", label: "Pre-LN vs Post-LN", c: 5, url: "cuadernos/05-paradigmas-y-computacion.html#m5-pre-post-ln", desc: "Normalización de capa previa en la vía residual que estabiliza el gradiente sin requerir warmup crítico." },
+        { id: "eval", label: "Evaluation Harness", c: 5, url: "cuadernos/05-paradigmas-y-computacion.html#m7-harness", desc: "Bancos de pruebas estandarizados (MMLU, GSM8K, HumanEval) y jueces LLM para auditar regresiones." },
+        { id: "graphrag", label: "GraphRAG & Leiden", c: 5, url: "cuadernos/05-paradigmas-y-computacion.html#m7-grounding", desc: "Extracción de grafos de entidades y detección jerárquica de comunidades para responder consultas globales." },
+
         // Cuaderno 06
-        { id: "framework_ocfe", label: "Framework OCFE", c: 6, desc: "Estructuración de prompts corporativos: Objetivo, Contexto, Fuente y Expectativas." },
-        { id: "copilot_studio", label: "Copilot Studio / Agentes", c: 6, desc: "Desarrollo y modelado de agentes declarativos con System Instructions especializadas." },
-        { id: "copilot_notebooks", label: "Copilot Notebooks", c: 6, desc: "Espacios de inferencia acotados con Grounding restrictivo absoluto (hasta 300 archivos)." },
-        { id: "banca_tier1", label: "Banca Comercial Tier 1", c: 6, desc: "Aplicaciones avanzadas en Riesgos de Crédito, KYC/AML, Sindicaciones y Cash Management." },
-        { id: "excel_python", label: "Excel con Python", c: 6, desc: "Modelado financiero avanzado, simulaciones Monte Carlo, RAROC y ratios de solvencia." }
+        { id: "framework_ocfe", label: "Framework OCFE", c: 6, url: "cuadernos/06-m365-copilot-banca-comercial.html#capitulo-1", desc: "Estándar de prompting en Banca Comercial: Objetivo, Contexto, Fuente de Datos y Expectativas de Salida." },
+        { id: "copilot_studio", label: "Copilot Studio / Agentes", c: 6, url: "cuadernos/06-m365-copilot-banca-comercial.html#capitulo-8", desc: "Construcción de agentes declarativos en M365 con System Instructions, conectores SharePoint y acciones." },
+        { id: "copilot_notebooks", label: "Copilot Notebooks", c: 6, url: "cuadernos/06-m365-copilot-banca-comercial.html#capitulo-9", desc: " Cuadernos de trabajo acotados en M365 con Grounding exclusivo sobre expedientes de riesgos y clientes." },
+        { id: "banca_tier1", label: "Banca Comercial Tier 1", c: 6, url: "cuadernos/06-m365-copilot-banca-comercial.html#intro", desc: "150 casos de uso reales en Riesgos de Crédito, Comités, KYC/AML, Sindicaciones y Cash Management." },
+
+        // Cuaderno 07
+        { id: "migracion_m365", label: "Migración ChatGPT → M365", c: 7, url: "cuadernos/07-migracion-chatgpt-copilot-m365.html#intro", desc: "Protocolo en 3 fases para portar proyectos de ChatGPT hacia el perímetro seguro de Microsoft 365 Copilot." },
+        { id: "ingenieria_inversa", label: "Consolidación de Contexto", c: 7, url: "cuadernos/07-migracion-chatgpt-copilot-m365.html#fase-1", desc: "Prompts de auditoría para extraer reglas implícitas, diccionarios de datos y scripts desde hilos largos." },
+        { id: "shadow_testing", label: "Shadow Testing A/B", c: 7, url: "cuadernos/07-migracion-chatgpt-copilot-m365.html#fase-3", desc: "Validación cruzada en paralelo entre agentes para certificar precisión numérica y ausencia de regresiones." },
+
+        // Cuaderno 08
+        { id: "alive_ui", label: "Estándar PaceUI / Alive UI", c: 8, url: "cuadernos/08-agentes-vscode-ux-dashboards.html#intro", desc: "Filosofía de interfaces financieras vivas con bordes de 1px, superficies Obsidian y tipografía tabular-nums." },
+        { id: "vscode_skills", label: "Skills & Prompts VS Code", c: 8, url: "cuadernos/08-agentes-vscode-ux-dashboards.html#creacion-ficheros", desc: "Arquitectura de ficheros SKILL.md y .prompt.md para automatizar agentes de diseño y código en VS Code." },
+        { id: "spotlight_css", label: "Spotlight & Micro-Crafts CSS", c: 8, url: "cuadernos/08-agentes-vscode-ux-dashboards.html#motor-animaciones", desc: "Iluminación radial reactiva al cursor (--mx, --my), curvas cubic-bezier y contadores interpolados a 60fps." },
+
+        // Cuaderno 09
+        { id: "databricks_html", label: "Databricks PySpark → HTML", c: 9, url: "cuadernos/09-ingenieria-visual-databricks-m365-vscode.html#puente-databricks-pyspark", desc: "Puente determinista que agrega en PySpark, inyecta window.REPORT_DATA y empaqueta el HTML para enviar por correo." },
+        { id: "echarts_morph", label: "ECharts Morphing & 3D", c: 9, url: "cuadernos/09-ingenieria-visual-databricks-m365-vscode.html#laboratorio-digital-vivo", desc: "Transiciones geométricas universales (Scatter ↔ Treemap ↔ Barras), Sankey, Markov y Superficie Topográfica 3D." },
+        { id: "war_room_raroc", label: "War Room Pricing & Waterfall", c: 9, url: "cuadernos/09-ingenieria-visual-databricks-m365-vscode.html#laboratorio-digital-vivo", desc: "Simulador Deal Desk con Puente P&L (Spread, FTP, Fees, CoR, EVA), Coordenadas Paralelas y Slide-Over Drawer." },
+        { id: "excel_institucional", label: "Excel Institucional & Prompts", c: 9, url: "cuadernos/09-ingenieria-visual-databricks-m365-vscode.html#excel-institucional-python", desc: "Estándar sin cuadrícula, Matriz de Sensibilidad 2D, bloques =PY() y Prompts Directos para Copilot en Excel sin VBA." },
+        { id: "ppt_infog_video", label: "Slides Interactivas, Infografías & Vídeo", c: 9, url: "cuadernos/09-ingenieria-visual-databricks-m365-vscode.html#boveda-prompts-skills", desc: "Diapositivas 16:9 interactivas por dentro, estudio de Infografías SVG exportables a PNG y Vídeos Explicativos (.webm)." },
+        { id: "diccionario_44", label: "Diccionario 44 KPIs Commercial", c: 9, url: "cuadernos/09-ingenieria-visual-databricks-m365-vscode.html#diccionario-visual-commercial", desc: "Enciclopedia visual con fórmulas y gráficos: RORWA, RAROC, Confirming, Factoring, TPV MDR, Cash Pooling, STP, IFRS 9 y CET1." }
     ];
 
     const EDGES = [
-        { source: "transformers_c1", target: "self_attention", label: "mecanismo central" },
-        { source: "backprop", target: "autodiff", label: "implementación" },
-        { source: "adamw", target: "sgd_adam", label: "evolución" },
-        { source: "embeddings", target: "polisemia", label: "resolución" },
-        { source: "rag", target: "graphrag", label: "extensión" },
-        { source: "rag", target: "grounding", label: "técnica" },
-        { source: "self_attention", target: "multi_head", label: "composición" },
-        { source: "kv_cache", target: "self_attention", label: "optimización" },
-        { source: "rlhf", target: "alineamiento", label: "método" },
+        { source: "transformers_c1", target: "self_attention", label: "mecanismo base" },
+        { source: "backprop", target: "autodiff", label: "implementación DAG" },
+        { source: "adamw", target: "backprop", label: "optimización" },
+        { source: "embeddings", target: "polisemia", label: "desambiguación" },
+        { source: "rag", target: "graphrag", label: "grafos de conocimiento" },
+        { source: "rag", target: "grounding", label: "anclaje documental" },
+        { source: "self_attention", target: "multi_head", label: "subespacios paralelos" },
+        { source: "kv_cache", target: "self_attention", label: "aceleración O(N)" },
+        { source: "rlhf", target: "alineamiento", label: "preferencia humana" },
         { source: "metaprompting", target: "agentes", label: "orquestación" },
-        { source: "eval", target: "rlhf", label: "validación" },
-        { source: "transformers_c1", target: "supercomputacion", label: "requiere" },
-        { source: "superinterpolador", target: "agi", label: "debate" },
-        { source: "correlacion", target: "pensamiento_critico", label: "base de" },
-        { source: "self_attention", target: "softmax", label: "utiliza" },
-        { source: "self_attention", target: "rope", label: "posicionamiento" },
+        { source: "eval", target: "rlhf", label: "auditoría de calidad" },
+        { source: "transformers_c1", target: "supercomputacion", label: "escalado" },
+        { source: "superinterpolador", target: "agi", label: "límites teóricos" },
+        { source: "correlacion", target: "pensamiento_critico", label: "epistemología" },
+        { source: "self_attention", target: "softmax", label: "ponderación" },
+        { source: "self_attention", target: "rope", label: "posición relativa" },
         { source: "turing_conexionismo", target: "transformers_c1", label: "paradigma" },
-        { source: "ln", target: "transformers_c1", label: "estabilidad" },
-        // Edges Cuaderno 06
-        { source: "framework_ocfe", target: "metaprompting", label: "ingeniería de prompts" },
-        { source: "copilot_notebooks", target: "grounding", label: "sandbox restrictivo" },
-        { source: "copilot_studio", target: "agentes", label: "plataforma de agentes" },
-        { source: "banca_tier1", target: "framework_ocfe", label: "metodología" },
-        { source: "excel_python", target: "banca_tier1", label: "análisis de riesgos" }
+        { source: "ln", target: "transformers_c1", label: "estabilidad residual" },
+        { source: "agentizacion_c1", target: "agentes", label: "arquitectura" },
+        // Conexiones C6, C7, C8 y C9
+        { source: "framework_ocfe", target: "metaprompting", label: "estructura prompt" },
+        { source: "copilot_notebooks", target: "grounding", label: "perímetro acotado" },
+        { source: "copilot_studio", target: "agentes", label: "agentes M365" },
+        { source: "banca_tier1", target: "framework_ocfe", label: "casos de negocio" },
+        { source: "migracion_m365", target: "copilot_studio", label: "portabilidad" },
+        { source: "ingenieria_inversa", target: "migracion_m365", label: "extracción contexto" },
+        { source: "shadow_testing", target: "eval", label: "validación A/B" },
+        { source: "shadow_testing", target: "migracion_m365", label: "certificación" },
+        { source: "vscode_skills", target: "copilot_studio", label: "automatización" },
+        { source: "alive_ui", target: "spotlight_css", label: "tokens & shaders" },
+        { source: "alive_ui", target: "echarts_morph", label: "diseño visual" },
+        { source: "vscode_skills", target: "databricks_html", label: "generación en 2 turnos" },
+        { source: "databricks_html", target: "echarts_morph", label: "displayHTML()" },
+        { source: "databricks_html", target: "war_room_raroc", label: "simulador P&L" },
+        { source: "banca_tier1", target: "diccionario_44", label: "métricas bancarias" },
+        { source: "war_room_raroc", target: "diccionario_44", label: "RORWA · EVA · FTP" },
+        { source: "excel_institucional", target: "banca_tier1", label: "reporting comité" },
+        { source: "ppt_infog_video", target: "vscode_skills", label: "skills multimedia" },
+        { source: "ppt_infog_video", target: "databricks_html", label: "exportación local" }
     ];
 
     class ConceptMap {
@@ -318,26 +469,26 @@
             this.tooltip = this.container.querySelector('.cmap-tooltip');
             this.edgeTooltip = this.container.querySelector('.cmap-edge-tooltip');
             
-            // State
             this.nodes = JSON.parse(JSON.stringify(NODES));
             this.edges = JSON.parse(JSON.stringify(EDGES));
             this.width = 0;
             this.height = 0;
             
-            this.transform = { x: 0, y: 0, k: 1 };
-            this.dragState = { node: null, isDragging: false, isPanning: false, startX: 0, startY: 0 };
+            this.transform = { x: 0, y: 0, k: 0.92 };
+            this.dragState = { node: null, isDragging: false, isPanning: false, startX: 0, startY: 0, downClientX: 0, downClientY: 0, moved: false };
             this.hoveredNode = null;
+            this.selectedNode = null; // Foco bloqueado al hacer clic
             this.hoveredEdge = null;
             
-            this.activeFilters = new Set([1, 2, 3, 4, 5, 6]);
+            this.activeFilters = new Set([1, 2, 3, 4, 5, 6, 7, 8, 9]);
             this.searchQuery = "";
             this.isFullscreen = false;
 
             this.styleCache = {
-                bg: '#1e293b',
+                bg: '#111827',
                 text: '#f8fafc',
-                edge: '#475569',
-                edgeHover: '#94a3b8'
+                edge: '#334155',
+                edgeHover: '#38bdf8'
             };
             
             this.initPhysics();
@@ -345,10 +496,8 @@
             this.bindEvents();
             this.updateThemeColors();
             
-            // Start loop
             this.animationId = requestAnimationFrame(() => this.tick());
             
-            // Observer for theme changes
             const observer = new MutationObserver(() => {
                 this.updateThemeColors();
                 this.draw();
@@ -360,33 +509,46 @@
             this.container.innerHTML = `
                 <div class="cmap-toolbar">
                     <div class="cmap-filters">
+                        <button type="button" class="cmap-filter-btn active cmap-filter-all" style="color: var(--accent-cyan, #06b6d4)">
+                            Todos (9)
+                        </button>
                         ${CUADERNOS.map(c => `
-                            <button class="cmap-filter-btn active" data-c="${c.id}" style="color: var(${c.colorVar})">
+                            <button type="button" class="cmap-filter-btn active" data-c="${c.id}" title="${c.name}" style="color: var(${c.colorVar})">
                                 <span class="cmap-filter-dot"></span>
-                                C${c.id}
+                                ${c.short}
                             </button>
                         `).join('')}
                     </div>
                     <div class="cmap-search">
-                        <input type="text" placeholder="Buscar concepto..." aria-label="Buscar concepto">
+                        <input type="text" placeholder="🔍 Buscar concepto, RORWA, RAG, ECharts..." aria-label="Buscar concepto">
                     </div>
                     <div class="cmap-controls">
-                        <button class="cmap-btn cmap-btn-center" aria-label="Centrar vista">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19 12h2M3 12h2M12 3v2M12 19v2M19 5l-2 2M5 19l2-2M5 5l2 2M19 19l-2-2"></path></svg>
+                        <button type="button" class="cmap-btn cmap-btn-center" title="Centrar y reencuadrar mapa" aria-label="Centrar vista">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19 12h2M3 12h2M12 3v2M12 19v2M19 5l-2 2M5 19l2-2M5 5l2 2M19 19l-2-2"></path></svg>
+                            <span>Centrar</span>
                         </button>
-                        <button class="cmap-btn cmap-btn-fs" aria-label="Pantalla completa">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+                        <button type="button" class="cmap-btn cmap-btn-fs" title="Pantalla completa" aria-label="Pantalla completa">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
                         </button>
                     </div>
                 </div>
                 <div class="cmap-canvas-wrapper">
                     <canvas class="cmap-canvas"></canvas>
                     <div class="cmap-tooltip">
+                        <div class="cmap-tooltip-header">
+                            <span class="cmap-tooltip-badge">CUADERNO 01</span>
+                            <button type="button" class="cmap-tooltip-close" aria-label="Cerrar detalle">✕</button>
+                        </div>
                         <h4></h4>
                         <p></p>
-                        <a href="#">Ir al cuaderno</a>
+                        <div class="cmap-tooltip-actions">
+                            <a href="#" class="cmap-goto-btn">Ir al cuaderno y sección →</a>
+                        </div>
                     </div>
                     <div class="cmap-edge-tooltip"></div>
+                    <div class="cmap-hint-bar">
+                        💡 <strong>Clic</strong> en un nodo para fijar el foco y abrir su tarjeta · <strong>Doble clic</strong> para ir directo al cuaderno · <strong>Rueda</strong> para zoom
+                    </div>
                 </div>
             `;
         }
@@ -394,9 +556,9 @@
         updateThemeColors() {
             const computedStyle = getComputedStyle(document.documentElement);
             this.styleCache.text = computedStyle.getPropertyValue('--cmap-text').trim() || '#f8fafc';
-            this.styleCache.bg = computedStyle.getPropertyValue('--cmap-bg').trim() || '#1e293b';
-            this.styleCache.edge = computedStyle.getPropertyValue('--cmap-edge').trim() || '#475569';
-            this.styleCache.edgeHover = computedStyle.getPropertyValue('--cmap-edge-hover').trim() || '#94a3b8';
+            this.styleCache.bg = computedStyle.getPropertyValue('--cmap-bg').trim() || '#111827';
+            this.styleCache.edge = computedStyle.getPropertyValue('--cmap-edge').trim() || '#334155';
+            this.styleCache.edgeHover = computedStyle.getPropertyValue('--cmap-edge-hover').trim() || '#38bdf8';
             
             CUADERNOS.forEach(c => {
                 c.colorHex = computedStyle.getPropertyValue(c.colorVar).trim() || c.colorHex;
@@ -404,24 +566,24 @@
         }
 
         initPhysics() {
-            // Inicializar posiciones aleatorias
-            this.nodes.forEach(n => {
-                n.x = Math.random() * 800 - 400;
-                n.y = Math.random() * 600 - 300;
+            // Distribuir nodos inicialmente alrededor del centroide de su Cuaderno para evitar apelotonamiento
+            this.nodes.forEach((n, idx) => {
+                const cObj = CUADERNOS.find(c => c.id === n.c) || { cx: 0, cy: 0 };
+                const angle = (idx * 1.37);
+                const radius = 55 + (idx % 4) * 28;
+                n.x = cObj.cx + Math.cos(angle) * radius;
+                n.y = cObj.cy + Math.sin(angle) * radius;
                 n.vx = 0;
                 n.vy = 0;
-                n.width = 150; // Calculado después pero inicial
-                n.height = 40;
-                
-                // Map edges
+                n.width = 165;
+                n.height = 34;
                 n.edges = [];
             });
             
-            // Referencias directas para edges
             this.edges.forEach(e => {
                 e.sourceNode = this.nodes.find(n => n.id === e.source);
                 e.targetNode = this.nodes.find(n => n.id === e.target);
-                if(e.sourceNode && e.targetNode) {
+                if (e.sourceNode && e.targetNode) {
                     e.sourceNode.edges.push(e);
                     e.targetNode.edges.push(e);
                 }
@@ -435,25 +597,26 @@
         }
 
         updatePhysics() {
-            const alpha = 0.1; // cooling factor
-            const repelStrength = 5000;
-            const springLength = 150;
-            const springStrength = 0.05;
-            const damping = 0.8;
+            const alpha = 0.085;
+            const repelStrength = 9500;
+            const springLength = 155;
+            const springStrength = 0.045;
+            const damping = 0.76;
             
             const visibleNodes = this.nodes.filter(n => this.activeFilters.has(n.c));
             
-            // 1. Repulsion
+            // 1. Repulsión + Anti-solapamiento rectangular de cajas
             for (let i = 0; i < visibleNodes.length; i++) {
                 for (let j = i + 1; j < visibleNodes.length; j++) {
                     const n1 = visibleNodes[i];
                     const n2 = visibleNodes[j];
-                    const dx = n2.x - n1.x;
-                    const dy = n2.y - n1.y;
+                    let dx = n2.x - n1.x;
+                    let dy = n2.y - n1.y;
                     const distSq = dx * dx + dy * dy;
-                    if (distSq > 0 && distSq < 90000) { // Max repulsion distance
-                        const dist = Math.sqrt(distSq);
-                        const force = repelStrength / distSq;
+
+                    if (distSq > 0 && distSq < 140000) {
+                        const dist = Math.sqrt(distSq) || 1;
+                        const force = repelStrength / Math.max(distSq, 400);
                         const fx = (dx / dist) * force;
                         const fy = (dy / dist) * force;
                         
@@ -466,13 +629,30 @@
                             n2.vy += fy * alpha;
                         }
                     }
+
+                    // Separación de cajas rectangulares para que ningún texto pise a otro
+                    const minX = (n1.width + n2.width) / 2 + 14;
+                    const minY = (n1.height + n2.height) / 2 + 10;
+                    if (Math.abs(dx) < minX && Math.abs(dy) < minY) {
+                        const overlapX = minX - Math.abs(dx);
+                        const overlapY = minY - Math.abs(dy);
+                        if (overlapX < overlapY) {
+                            const push = (overlapX * 0.18) * (dx >= 0 ? 1 : -1);
+                            if (n1 !== this.dragState.node) n1.vx -= push;
+                            if (n2 !== this.dragState.node) n2.vx += push;
+                        } else {
+                            const push = (overlapY * 0.18) * (dy >= 0 ? 1 : -1);
+                            if (n1 !== this.dragState.node) n1.vy -= push;
+                            if (n2 !== this.dragState.node) n2.vy += push;
+                        }
+                    }
                 }
             }
             
-            // 2. Springs (Edges)
+            // 2. Muelles de aristas
             this.edges.forEach(e => {
-                if(!e.sourceNode || !e.targetNode) return;
-                if(!this.activeFilters.has(e.sourceNode.c) || !this.activeFilters.has(e.targetNode.c)) return;
+                if (!e.sourceNode || !e.targetNode) return;
+                if (!this.activeFilters.has(e.sourceNode.c) || !this.activeFilters.has(e.targetNode.c)) return;
                 
                 const dx = e.targetNode.x - e.sourceNode.x;
                 const dy = e.targetNode.y - e.sourceNode.y;
@@ -494,16 +674,18 @@
                 }
             });
             
-            // 3. Center gravity
+            // 3. Atracción suave hacia su clúster de Cuaderno (o al centro si hay pocos filtros activos)
+            const multiCluster = this.activeFilters.size > 2;
             visibleNodes.forEach(n => {
-                const force = 0.01;
-                if (n !== this.dragState.node) {
-                    n.vx += -n.x * force * alpha;
-                    n.vy += -n.y * force * alpha;
-                }
+                if (n === this.dragState.node) return;
+                const cObj = CUADERNOS.find(c => c.id === n.c);
+                const targetX = (multiCluster && cObj) ? cObj.cx * 0.85 : 0;
+                const targetY = (multiCluster && cObj) ? cObj.cy * 0.85 : 0;
+                n.vx += (targetX - n.x) * 0.018 * alpha;
+                n.vy += (targetY - n.y) * 0.018 * alpha;
             });
             
-            // 4. Update positions
+            // 4. Integración de velocidad
             visibleNodes.forEach(n => {
                 if (n !== this.dragState.node) {
                     n.x += n.vx;
@@ -512,6 +694,15 @@
                     n.vy *= damping;
                 }
             });
+        }
+
+        isConnected(n1, n2) {
+            if (!n1 || !n2) return false;
+            if (n1 === n2) return true;
+            return this.edges.some(e =>
+                (e.sourceNode === n1 && e.targetNode === n2) ||
+                (e.sourceNode === n2 && e.targetNode === n1)
+            );
         }
 
         draw() {
@@ -527,91 +718,102 @@
                 this.activeFilters.has(e.sourceNode.c) && 
                 this.activeFilters.has(e.targetNode.c)
             );
+
+            const focusNode = this.selectedNode || this.hoveredNode;
             
-            // Draw edges
+            // Dibujar aristas
             visibleEdges.forEach(e => {
                 this.ctx.beginPath();
                 this.ctx.moveTo(e.sourceNode.x, e.sourceNode.y);
                 this.ctx.lineTo(e.targetNode.x, e.targetNode.y);
                 
                 const isHovered = this.hoveredEdge === e;
-                const involvesHoveredNode = this.hoveredNode && (e.sourceNode === this.hoveredNode || e.targetNode === this.hoveredNode);
+                const involvesFocus = focusNode && (e.sourceNode === focusNode || e.targetNode === focusNode);
                 
-                if (isHovered || involvesHoveredNode) {
+                if (isHovered || involvesFocus) {
                     this.ctx.strokeStyle = this.styleCache.edgeHover;
-                    this.ctx.lineWidth = 2 / this.transform.k;
+                    this.ctx.lineWidth = 2.2 / this.transform.k;
+                    this.ctx.globalAlpha = 0.95;
                 } else {
                     this.ctx.strokeStyle = this.styleCache.edge;
-                    this.ctx.lineWidth = 1 / this.transform.k;
-                }
-                
-                // Fade out edges if searching
-                if (this.searchQuery && !involvesHoveredNode) {
-                    this.ctx.globalAlpha = 0.2;
+                    this.ctx.lineWidth = 1.1 / this.transform.k;
+                    this.ctx.globalAlpha = (focusNode || this.searchQuery) ? 0.16 : 0.55;
                 }
                 
                 this.ctx.stroke();
                 this.ctx.globalAlpha = 1.0;
             });
             
-            // Draw nodes
-            this.ctx.font = '12px Inter, sans-serif';
+            // Dibujar nodos
+            this.ctx.font = '600 11.5px Inter, sans-serif';
             this.ctx.textBaseline = 'middle';
             this.ctx.textAlign = 'center';
             
             visibleNodes.forEach(n => {
+                const isSelected = this.selectedNode === n;
                 const isHovered = this.hoveredNode === n;
-                const isMatched = this.searchQuery && n.label.toLowerCase().includes(this.searchQuery);
-                const isDimmed = this.searchQuery && !isMatched && !isHovered;
+                const isNeighbor = focusNode && this.isConnected(focusNode, n);
+                const isMatched = this.searchQuery && (
+                    n.label.toLowerCase().includes(this.searchQuery) ||
+                    n.desc.toLowerCase().includes(this.searchQuery)
+                );
+
+                let isDimmed = false;
+                if (this.searchQuery) {
+                    isDimmed = !isMatched && !isSelected && !isHovered;
+                } else if (focusNode) {
+                    isDimmed = !isNeighbor;
+                }
                 
                 const cObj = CUADERNOS.find(c => c.id === n.c);
                 const color = cObj ? cObj.colorHex : '#888';
                 
-                // Medir ancho texto
-                const textMetrics = this.ctx.measureText(n.label);
-                n.width = Math.max(120, textMetrics.width + 30);
-                n.height = 36;
+                const textMetrics = this.ctx.measureText(`C${n.c} · ${n.label}`);
+                n.width = Math.max(124, textMetrics.width + 26);
+                n.height = 34;
                 
-                this.ctx.globalAlpha = isDimmed ? 0.2 : 1.0;
+                this.ctx.globalAlpha = isDimmed ? 0.22 : 1.0;
                 
-                // Sombra si está hovered
-                if (isHovered || isMatched) {
+                if (isSelected || isHovered || isMatched) {
                     this.ctx.shadowColor = color;
-                    this.ctx.shadowBlur = 10;
+                    this.ctx.shadowBlur = isSelected ? 18 : 11;
                 } else {
                     this.ctx.shadowBlur = 0;
                 }
                 
-                // Fondo nodo
+                // Caja redondeada del nodo
                 this.ctx.beginPath();
                 this.ctx.roundRect(n.x - n.width/2, n.y - n.height/2, n.width, n.height, 8);
-                this.ctx.fillStyle = this.styleCache.bg;
+                this.ctx.fillStyle = isSelected ? color : this.styleCache.bg;
                 this.ctx.fill();
                 
-                // Borde nodo
-                this.ctx.lineWidth = isHovered || isMatched ? 2 : 1;
+                // Borde del nodo
+                this.ctx.lineWidth = (isSelected || isHovered || isMatched) ? 2.2 : 1.2;
                 this.ctx.strokeStyle = color;
                 this.ctx.stroke();
                 
-                this.ctx.shadowBlur = 0; // reset shadow
+                this.ctx.shadowBlur = 0;
                 
-                // Texto
-                this.ctx.fillStyle = isHovered || isMatched ? color : this.styleCache.text;
-                this.ctx.fillText(n.label, n.x, n.y);
+                // Etiqueta con prefijo de cuaderno
+                this.ctx.fillStyle = isSelected ? '#060913' : ((isHovered || isMatched) ? color : this.styleCache.text);
+                this.ctx.fillText(`C${n.c} · ${n.label}`, n.x, n.y);
             });
             
             this.ctx.restore();
             
-            // Update tooltip position if visible
-            if (this.hoveredNode && this.tooltip.classList.contains('visible')) {
-                const screenX = (this.hoveredNode.x * this.transform.k) + (this.width / 2) + this.transform.x;
-                const screenY = (this.hoveredNode.y * this.transform.k) + (this.height / 2) + this.transform.y;
-                this.tooltip.style.left = `${screenX}px`;
-                this.tooltip.style.top = `${screenY - (this.hoveredNode.height/2 * this.transform.k) - 10}px`;
+            // Posicionar la tarjeta de inspección manteniendo dentro de los bordes visibles del contenedor
+            const activeTooltipNode = this.selectedNode;
+            if (activeTooltipNode && this.tooltip.classList.contains('visible')) {
+                const rawX = (activeTooltipNode.x * this.transform.k) + (this.width / 2) + this.transform.x;
+                const rawY = (activeTooltipNode.y * this.transform.k) + (this.height / 2) + this.transform.y;
+                const clampedX = Math.max(165, Math.min(this.width - 165, rawX));
+                const clampedY = Math.max(175, Math.min(this.height - 25, rawY - (activeTooltipNode.height / 2 * this.transform.k) - 8));
+                this.tooltip.style.left = `${clampedX}px`;
+                this.tooltip.style.top = `${clampedY}px`;
             }
             
-            // Edge tooltip position
-            if (this.hoveredEdge && !this.hoveredNode) {
+            // Tooltip de arista
+            if (this.hoveredEdge && !this.hoveredNode && !this.selectedNode) {
                 const midX = (this.hoveredEdge.sourceNode.x + this.hoveredEdge.targetNode.x) / 2;
                 const midY = (this.hoveredEdge.sourceNode.y + this.hoveredEdge.targetNode.y) / 2;
                 const screenX = (midX * this.transform.k) + (this.width / 2) + this.transform.x;
@@ -626,15 +828,16 @@
         }
 
         resize() {
-            const rect = this.container.querySelector('.cmap-canvas-wrapper').getBoundingClientRect();
-            // Handle high DPI displays
+            const wrapper = this.container.querySelector('.cmap-canvas-wrapper');
+            if (!wrapper) return;
+            const rect = wrapper.getBoundingClientRect();
             const dpr = window.devicePixelRatio || 1;
             this.width = rect.width;
             this.height = rect.height;
             
             this.canvas.width = this.width * dpr;
             this.canvas.height = this.height * dpr;
-            this.ctx.scale(dpr, dpr);
+            this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         }
 
         bindEvents() {
@@ -642,28 +845,52 @@
             
             const wrapper = this.container.querySelector('.cmap-canvas-wrapper');
             
-            // Mouse / Touch events for pan and drag
-            wrapper.addEventListener('mousedown', this.onPointerDown.bind(this));
-            wrapper.addEventListener('mousemove', this.onPointerMove.bind(this));
+            // CRÍTICO: Evitar que hacer clic dentro de la tarjeta (.cmap-tooltip) o en "Ir al cuaderno" pierda el foco o dispare eventos del canvas
+            ['mousedown', 'mouseup', 'click', 'touchstart', 'touchend'].forEach(evtName => {
+                this.tooltip.addEventListener(evtName, (e) => {
+                    e.stopPropagation();
+                });
+            });
+
+            this.tooltip.querySelector('.cmap-tooltip-close').addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.selectedNode = null;
+                this.hideTooltip();
+            });
+
+            // Eventos solo sobre el canvas
+            this.canvas.addEventListener('mousedown', this.onPointerDown.bind(this));
+            this.canvas.addEventListener('mousemove', this.onPointerMove.bind(this));
             window.addEventListener('mouseup', this.onPointerUp.bind(this));
             
-            wrapper.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                this.onPointerDown(e.touches[0]);
+            // Doble clic en un nodo abre directamente su cuaderno y sección
+            this.canvas.addEventListener('dblclick', (e) => {
+                const pos = this.getGraphPos(e.clientX, e.clientY);
+                const node = this.findNodeAt(pos.x, pos.y);
+                if (node) {
+                    window.location.href = node.url || CUADERNO_LINKS[node.c];
+                }
+            });
+
+            this.canvas.addEventListener('touchstart', (e) => {
+                if (e.touches.length === 1) {
+                    this.onPointerDown(e.touches[0]);
+                }
+            }, { passive: true });
+            this.canvas.addEventListener('touchmove', (e) => {
+                if (e.touches.length === 1) {
+                    e.preventDefault();
+                    this.onPointerMove(e.touches[0]);
+                }
             }, { passive: false });
-            wrapper.addEventListener('touchmove', (e) => {
-                e.preventDefault();
-                this.onPointerMove(e.touches[0]);
-            }, { passive: false });
-            window.addEventListener('touchend', this.onPointerUp.bind(this));
+            this.canvas.addEventListener('touchend', this.onPointerUp.bind(this));
             
-            // Zoom
+            // Zoom con rueda
             wrapper.addEventListener('wheel', (e) => {
                 e.preventDefault();
                 const zoomFactor = -e.deltaY * 0.001;
-                const newK = Math.max(0.2, Math.min(3, this.transform.k * (1 + zoomFactor)));
+                const newK = Math.max(0.3, Math.min(2.6, this.transform.k * (1 + zoomFactor)));
                 
-                // Zoom towards mouse position
                 const rect = this.canvas.getBoundingClientRect();
                 const mouseX = e.clientX - rect.left - this.width/2;
                 const mouseY = e.clientY - rect.top - this.height/2;
@@ -673,42 +900,96 @@
                 this.transform.k = newK;
             }, { passive: false });
             
-            // Tooltip clicks
-            wrapper.addEventListener('click', (e) => {
-                if (this.dragState.wasDragging) return; // Don't click if just finished dragging
-                if (this.hoveredNode) {
-                    this.showTooltip(this.hoveredNode);
+            // Clic en el canvas para fijar/desfijar el foco en un nodo
+            this.canvas.addEventListener('click', (e) => {
+                if (this.dragState.moved) return;
+                const pos = this.getGraphPos(e.clientX, e.clientY);
+                const clickedNode = this.findNodeAt(pos.x, pos.y);
+                if (clickedNode) {
+                    this.selectedNode = clickedNode;
+                    this.showTooltip(clickedNode);
                 } else {
+                    this.selectedNode = null;
                     this.hideTooltip();
                 }
             });
             
-            // Toolbar interactions
-            const filterBtns = this.container.querySelectorAll('.cmap-filter-btn');
-            filterBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const c = parseInt(btn.dataset.c);
+            // Filtros por Cuaderno (C1 a C9 + Botón Todos)
+            const allBtn = this.container.querySelector('.cmap-filter-all');
+            const filterBtns = this.container.querySelectorAll('.cmap-filter-btn[data-c]');
+
+            const syncFilterButtonsUI = () => {
+                filterBtns.forEach(btn => {
+                    const c = parseInt(btn.dataset.c, 10);
+                    const cObj = CUADERNOS.find(x => x.id === c);
                     if (this.activeFilters.has(c)) {
-                        this.activeFilters.delete(c);
+                        btn.classList.add('active');
+                        btn.style.color = `var(${cObj.colorVar})`;
+                    } else {
                         btn.classList.remove('active');
                         btn.style.color = 'var(--text-secondary)';
+                    }
+                });
+                if (this.activeFilters.size === CUADERNOS.length) {
+                    allBtn.classList.add('active');
+                } else {
+                    allBtn.classList.remove('active');
+                }
+            };
+
+            allBtn.addEventListener('click', () => {
+                if (this.activeFilters.size === CUADERNOS.length) {
+                    // Si todos estaban activos, mantenemos todos activos y centramos
+                    this.transform = { x: 0, y: 0, k: 0.92 };
+                } else {
+                    CUADERNOS.forEach(c => this.activeFilters.add(c.id));
+                }
+                this.selectedNode = null;
+                this.hideTooltip();
+                syncFilterButtonsUI();
+            });
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const c = parseInt(btn.dataset.c, 10);
+                    // Si todos están activos y el usuario pulsa un cuaderno concreto, aislamos ese cuaderno (o si vuelve a pulsarlo cuando está solo, activamos todos)
+                    if (this.activeFilters.size === CUADERNOS.length) {
+                        this.activeFilters.clear();
+                        this.activeFilters.add(c);
+                        this.transform = { x: 0, y: 0, k: 1.05 };
+                    } else if (this.activeFilters.has(c) && this.activeFilters.size === 1) {
+                        CUADERNOS.forEach(item => this.activeFilters.add(item.id));
+                        this.transform = { x: 0, y: 0, k: 0.92 };
+                    } else if (this.activeFilters.has(c)) {
+                        this.activeFilters.delete(c);
                     } else {
                         this.activeFilters.add(c);
-                        btn.classList.add('active');
-                        const cObj = CUADERNOS.find(x => x.id === c);
-                        btn.style.color = `var(${cObj.colorVar})`;
                     }
+                    this.selectedNode = null;
                     this.hideTooltip();
+                    syncFilterButtonsUI();
                 });
             });
             
             const searchInput = this.container.querySelector('.cmap-search input');
             searchInput.addEventListener('input', (e) => {
                 this.searchQuery = e.target.value.toLowerCase().trim();
+                if (this.searchQuery) {
+                    const match = this.nodes.find(n =>
+                        this.activeFilters.has(n.c) &&
+                        (n.label.toLowerCase().includes(this.searchQuery) || n.desc.toLowerCase().includes(this.searchQuery))
+                    );
+                    if (match) {
+                        this.selectedNode = match;
+                        this.showTooltip(match);
+                    }
+                }
             });
             
             this.container.querySelector('.cmap-btn-center').addEventListener('click', () => {
-                this.transform = { x: 0, y: 0, k: 1 };
+                this.transform = { x: 0, y: 0, k: 0.92 };
+                this.selectedNode = null;
+                this.hideTooltip();
             });
             
             this.container.querySelector('.cmap-btn-fs').addEventListener('click', () => {
@@ -720,7 +1001,7 @@
                     this.container.classList.remove('is-fullscreen');
                     document.body.style.overflow = '';
                 }
-                setTimeout(() => this.resize(), 50); // delay for css transition
+                setTimeout(() => this.resize(), 50);
             });
         }
         
@@ -751,7 +1032,6 @@
             );
             
             for (const e of visibleEdges) {
-                // Distancia punto a segmento
                 const l2 = Math.pow(e.sourceNode.x - e.targetNode.x, 2) + Math.pow(e.sourceNode.y - e.targetNode.y, 2);
                 if (l2 === 0) continue;
                 let t = ((x - e.sourceNode.x) * (e.targetNode.x - e.sourceNode.x) + (y - e.sourceNode.y) * (e.targetNode.y - e.sourceNode.y)) / l2;
@@ -776,9 +1056,10 @@
                     node: node,
                     isDragging: true,
                     isPanning: false,
-                    wasDragging: false
+                    downClientX: e.clientX,
+                    downClientY: e.clientY,
+                    moved: false
                 };
-                // Stop its velocity
                 node.vx = 0;
                 node.vy = 0;
             } else {
@@ -788,37 +1069,37 @@
                     isPanning: true,
                     startX: e.clientX - this.transform.x,
                     startY: e.clientY - this.transform.y,
-                    wasDragging: false
+                    downClientX: e.clientX,
+                    downClientY: e.clientY,
+                    moved: false
                 };
             }
         }
 
         onPointerMove(e) {
             const pos = this.getGraphPos(e.clientX, e.clientY);
+            const distMoved = Math.hypot(e.clientX - (this.dragState.downClientX || 0), e.clientY - (this.dragState.downClientY || 0));
             
             if (this.dragState.isDragging && this.dragState.node) {
-                this.dragState.node.x = pos.x;
-                this.dragState.node.y = pos.y;
-                this.dragState.wasDragging = true;
-                this.hideTooltip();
+                if (distMoved > 5) {
+                    this.dragState.moved = true;
+                    this.dragState.node.x = pos.x;
+                    this.dragState.node.y = pos.y;
+                }
             } else if (this.dragState.isPanning) {
-                this.transform.x = e.clientX - this.dragState.startX;
-                this.transform.y = e.clientY - this.dragState.startY;
-                this.dragState.wasDragging = true;
-                this.hideTooltip();
+                if (distMoved > 5) {
+                    this.dragState.moved = true;
+                    this.transform.x = e.clientX - this.dragState.startX;
+                    this.transform.y = e.clientY - this.dragState.startY;
+                }
             } else {
-                // Hover detection
                 const hoveredNode = this.findNodeAt(pos.x, pos.y);
                 if (hoveredNode !== this.hoveredNode) {
                     this.hoveredNode = hoveredNode;
-                    if(this.hoveredNode) {
-                        this.canvas.style.cursor = 'pointer';
-                    } else {
-                        this.canvas.style.cursor = 'grab';
-                    }
+                    this.canvas.style.cursor = this.hoveredNode ? 'pointer' : 'grab';
                 }
                 
-                if(!hoveredNode) {
+                if (!hoveredNode) {
                     this.hoveredEdge = this.findEdgeAt(pos.x, pos.y);
                 } else {
                     this.hoveredEdge = null;
@@ -830,21 +1111,24 @@
             this.dragState.isDragging = false;
             this.dragState.isPanning = false;
             this.dragState.node = null;
-            // wasDragging is reset on click
         }
         
         showTooltip(node) {
+            const badge = this.tooltip.querySelector('.cmap-tooltip-badge');
             const h4 = this.tooltip.querySelector('h4');
             const p = this.tooltip.querySelector('p');
-            const a = this.tooltip.querySelector('a');
-            
-            h4.textContent = node.label;
-            p.textContent = node.desc;
+            const a = this.tooltip.querySelector('a.cmap-goto-btn');
             
             const cObj = CUADERNOS.find(c => c.id === node.c);
-            h4.style.color = `var(${cObj.colorVar})`;
+            badge.textContent = cObj ? cObj.name : `Cuaderno 0${node.c}`;
+            badge.style.color = cObj ? `var(${cObj.colorVar})` : '#38bdf8';
+
+            h4.textContent = node.label;
+            h4.style.color = cObj ? `var(${cObj.colorVar})` : '#fff';
+            p.textContent = node.desc;
             
-            a.href = CUADERNO_LINKS[node.c] || '#';
+            a.href = node.url || CUADERNO_LINKS[node.c] || '#';
+            a.textContent = `Ir al Cuaderno 0${node.c} →`;
             
             this.tooltip.classList.add('visible');
         }
@@ -854,12 +1138,10 @@
         }
     }
 
-    // Insertar estilos
     const styleSheet = document.createElement("style");
     styleSheet.innerText = STYLES;
     document.head.appendChild(styleSheet);
 
-    // Inicializar cuando el DOM esté listo
     document.addEventListener('DOMContentLoaded', () => {
         const target = document.querySelector('.concept-map-target');
         if (target) {
