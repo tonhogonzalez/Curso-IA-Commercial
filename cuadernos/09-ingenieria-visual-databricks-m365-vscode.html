@@ -786,6 +786,135 @@
               <span>🔴 Plano Discontinuo: Umbral Mínimo Exigido (Hurdle Rate)</span>
             </div>
           </div>
+
+          <!-- CONSOLA INTERACTIVA 3: WAR ROOM DE PRICING COMERCIAL, WATERFALL P&L, PARALLEL COORDINATES, SLIDE-OVER DRAWER Y CTRL+K -->
+          <h3>2.3. Consola en Vivo #3: War Room de Pricing Comercial, Puente P&amp;L (Waterfall), Coordenadas Paralelas, Slide-Over Drawer y Paleta <code>Ctrl+K</code></h3>
+          <p>
+            El segundo gran salto cualitativo para tus dashboards de <strong>Banca Comercial y Empresas</strong> es incorporar componentes propios de aplicaciones SaaS financieras de primer nivel: un <strong>Puente de Creación de Valor P&amp;L (Waterfall Chart)</strong> que descompone desde el Tipo Cliente y el coste FTP hasta el EVA Neto, un gráfico de <strong>Coordenadas Paralelas Multicriterio</strong>, un <strong>Anillo Jerárquico Sunburst</strong>, un <strong>Slide-Over Inspector Drawer</strong> lateral con desenfoque gaussiano y una <strong>Paleta de Comandos (<code>Ctrl+K</code>)</strong>. Pruébalo todo aquí mismo en vivo:
+          </p>
+
+          <div class="cyber-terminal-shell" id="war-room-terminal" style="position: relative; overflow: hidden;">
+            <!-- Cabecera del War Room -->
+            <div class="sp-card" style="margin-bottom: 1rem; padding: 0.85rem 1.15rem; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.85rem;">
+              <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+                <span class="tabular-mono" style="font-size: 0.68rem; background: rgba(16, 185, 129, 0.18); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.4); padding: 0.22rem 0.6rem; border-radius: 5px;">
+                  COMMERCIAL DEAL DESK • RAROC &amp; P&amp;L ENGINE
+                </span>
+                <div style="display: flex; gap: 0.25rem; background: rgba(0,0,0,0.45); padding: 0.25rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);">
+                  <button type="button" id="wr-view-waterfall" onclick="setWarRoomView('waterfall')" style="padding: 0.35rem 0.7rem; font-size: 0.73rem; border-radius: 6px; border: none; cursor: pointer; background: #10b981; color: #05070e; font-weight: 700;">1. Puente P&amp;L (Waterfall EVA)</button>
+                  <button type="button" id="wr-view-parallel" onclick="setWarRoomView('parallel')" style="padding: 0.35rem 0.7rem; font-size: 0.73rem; border-radius: 6px; border: none; cursor: pointer; background: transparent; color: #94a3b8; font-weight: 500;">2. Coordenadas Paralelas (6 Ejes)</button>
+                  <button type="button" id="wr-view-sunburst" onclick="setWarRoomView('sunburst')" style="padding: 0.35rem 0.7rem; font-size: 0.73rem; border-radius: 6px; border: none; cursor: pointer; background: transparent; color: #94a3b8; font-weight: 500;">3. Sunburst Cartera Commercial</button>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <button type="button" onclick="toggleWarRoomCmdPalette()" class="tabular-mono" style="padding: 0.38rem 0.75rem; font-size: 0.73rem; border-radius: 7px; background: rgba(99, 102, 241, 0.2); color: #c7d2fe; border: 1px solid rgba(99, 102, 241, 0.45); cursor: pointer;">
+                  ⌘ Paleta de Comandos (Ctrl+K)
+                </button>
+                <button type="button" onclick="openDealDrawer(0)" style="padding: 0.38rem 0.75rem; font-size: 0.73rem; border-radius: 7px; background: rgba(6, 182, 212, 0.2); color: #67e8f9; border: 1px solid rgba(6, 182, 212, 0.45); cursor: pointer; font-weight: 600;">
+                  🔍 Abrir Slide-Over Drawer
+                </button>
+              </div>
+            </div>
+
+            <!-- Sliders de Simulación del Deal Desk (Pricing, FTP, Cross-Sell y Garantías) -->
+            <div class="sp-card" style="margin-bottom: 1rem; padding: 0.75rem 1.15rem; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; font-size: 0.75rem;">
+              <label style="display: flex; align-items: center; gap: 0.45rem; color: #cbd5e1;">
+                <span>💰 Spread Cliente s/ Euríbor:</span>
+                <input id="wr-spread-sl" type="range" min="140" max="380" step="10" value="240" oninput="updateWarRoom()" style="width: 90px; accent-color: #10b981;">
+                <span id="wr-spread-lbl" class="tabular-mono" style="color: #6ee7b7; font-weight: 700;">+240 bps</span>
+              </label>
+              <label style="display: flex; align-items: center; gap: 0.45rem; color: #cbd5e1;">
+                <span>🏦 Coste FTP Tesorería:</span>
+                <input id="wr-ftp-sl" type="range" min="40" max="160" step="5" value="85" oninput="updateWarRoom()" style="width: 85px; accent-color: #f59e0b;">
+                <span id="wr-ftp-lbl" class="tabular-mono" style="color: #fcd34d; font-weight: 700;">-85 bps</span>
+              </label>
+              <label style="display: flex; align-items: center; gap: 0.45rem; color: #cbd5e1;">
+                <span>🤝 Vinculación Cross-Sell (Fees):</span>
+                <input id="wr-fee-sl" type="range" min="20" max="140" step="10" value="65" oninput="updateWarRoom()" style="width: 85px; accent-color: #06b6d4;">
+                <span id="wr-fee-lbl" class="tabular-mono" style="color: #67e8f9; font-weight: 700;">+65 bps</span>
+              </label>
+              <label style="display: flex; align-items: center; gap: 0.45rem; color: #cbd5e1;">
+                <span>🛡️ Aval ICO / Mitigación LGD:</span>
+                <input id="wr-lgd-sl" type="range" min="15" max="65" step="5" value="35" oninput="updateWarRoom()" style="width: 85px; accent-color: #6366f1;">
+                <span id="wr-lgd-lbl" class="tabular-mono" style="color: #a5b4fc; font-weight: 700;">LGD 35%</span>
+              </label>
+            </div>
+
+            <!-- Grilla del War Room: Gráfico ECharts (7 cols) + Cartera de Operaciones Corporativas con Clic para Drawer (5 cols) -->
+            <div style="display: grid; grid-template-columns: repeat(12, 1fr); gap: 1rem;">
+              <div class="sp-card" style="grid-column: span 7; min-width: 300px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+                  <div>
+                    <div id="wr-chart-title" style="font-size: 0.78rem; font-weight: 700; text-transform: uppercase; color: #e2e8f0;">PUENTE DE DESCOMPOSICIÓN P&amp;L COMERCIAL (EN M€)</div>
+                    <div id="wr-chart-sub" style="font-size: 0.7rem; color: #94a3b8;">Desde Ingresos de Intereses y FTP hasta el Valor Económico Añadido (EVA)</div>
+                  </div>
+                  <span id="wr-eva-pill" class="tabular-mono" style="font-size: 0.74rem; font-weight: 700; padding: 0.22rem 0.6rem; border-radius: 999px; background: rgba(16,185,129,0.2); color: #6ee7b7; border: 1px solid rgba(16,185,129,0.4);">
+                    EVA: +18,4 M€
+                  </span>
+                </div>
+                <div id="wr-main-echarts" style="width: 100%; height: 340px;"></div>
+              </div>
+
+              <!-- Lista de Operaciones / Clientes Empresas para abrir el Slide-Over Drawer -->
+              <div class="sp-card" style="grid-column: span 5; min-width: 280px; display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                    <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #e2e8f0;">OPERACIONES EN COMITÉ (CLIC = ABRIR DRAWER)</span>
+                    <span class="tabular-mono" style="font-size: 0.66rem; color: #6ee7b7;">RAROC Live</span>
+                  </div>
+                  <table style="width: 100%; border-collapse: collapse; font-size: 0.74rem;">
+                    <thead>
+                      <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); color: #94a3b8; text-transform: uppercase; font-size: 0.65rem;">
+                        <th style="padding: 0.4rem 0.25rem; text-align: left;">Cliente / Operación</th>
+                        <th style="padding: 0.4rem 0.25rem; text-align: right;">EAD</th>
+                        <th style="padding: 0.4rem 0.25rem; text-align: right;">RAROC</th>
+                        <th style="padding: 0.4rem 0.25rem; text-align: right;">Acción</th>
+                      </tr>
+                    </thead>
+                    <tbody id="wr-deals-tbody"></tbody>
+                  </table>
+                </div>
+                <div style="background: rgba(99, 102, 241, 0.08); border: 1px dashed rgba(99, 102, 241, 0.35); border-radius: 8px; padding: 0.65rem; margin-top: 0.75rem; font-size: 0.73rem; color: #cbd5e1;">
+                  💡 <strong>Tip de Ingeniería UI:</strong> Haz clic en cualquier cliente de la tabla para desplegar el <strong>Slide-Over Inspector Drawer</strong> con desenfoque <code>backdrop-filter: blur(16px)</code> sin abandonar el contexto visual.
+                </div>
+              </div>
+            </div>
+
+            <!-- SLIDE-OVER INSPECTOR DRAWER (OCULTO POR DEFECTO, SE DESLIZA DESDE LA DERECHA) -->
+            <div id="wr-slide-drawer" style="position: absolute; top: 0; right: 0; bottom: 0; width: 390px; max-width: 92%; background: rgba(9, 13, 24, 0.94); backdrop-filter: blur(18px); border-left: 1px solid rgba(99, 102, 241, 0.45); box-shadow: -20px 0 50px rgba(0,0,0,0.8); z-index: 40; transform: translateX(105%); transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1); padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.75rem; margin-bottom: 0.85rem;">
+                  <div>
+                    <span id="drw-tag" class="tabular-mono" style="font-size: 0.65rem; color: #67e8f9; text-transform: uppercase;">EXPEDIENTE DIGITAL STP</span>
+                    <h4 id="drw-title" style="margin: 0.15rem 0 0; font-size: 1rem; color: #fff;">Grupo Industrial Norte S.A.</h4>
+                  </div>
+                  <button type="button" onclick="closeDealDrawer()" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #e2e8f0; border-radius: 6px; padding: 0.25rem 0.55rem; cursor: pointer;">✕</button>
+                </div>
+                <div id="drw-body" style="font-size: 0.78rem; color: #cbd5e1; display: flex; flex-direction: column; gap: 0.65rem;"></div>
+              </div>
+              <div style="display: flex; gap: 0.5rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 0.85rem;">
+                <button type="button" onclick="closeDealDrawer()" style="flex: 1; padding: 0.5rem; border-radius: 7px; border: none; background: #10b981; color: #05070e; font-weight: 700; font-size: 0.76rem; cursor: pointer;">✓ Sancionar Operación STP</button>
+                <button type="button" onclick="closeDealDrawer()" style="padding: 0.5rem 0.85rem; border-radius: 7px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: #cbd5e1; font-size: 0.76rem; cursor: pointer;">Cerrar</button>
+              </div>
+            </div>
+
+            <!-- COMMAND PALETTE MODAL (CTRL+K) -->
+            <div id="wr-cmd-modal" style="display: none; position: absolute; inset: 0; background: rgba(5, 7, 14, 0.82); backdrop-filter: blur(10px); z-index: 50; align-items: center; justify-content: center; padding: 1.5rem;" onclick="if(event.target===this) toggleWarRoomCmdPalette()">
+              <div style="background: #0d1322; border: 1px solid rgba(99, 102, 241, 0.5); border-radius: 12px; width: 100%; max-width: 480px; padding: 1rem; box-shadow: 0 25px 60px rgba(0,0,0,0.85);">
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.6rem; margin-bottom: 0.75rem;">
+                  <span class="tabular-mono" style="font-size: 0.75rem; color: #a5b4fc; font-weight: 700;">⌘ PALETA EJECUTIVA DE COMANDOS RÁPIDOS</span>
+                  <button type="button" onclick="toggleWarRoomCmdPalette()" style="background: transparent; border: none; color: #94a3b8; cursor: pointer;">ESC ✕</button>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.78rem;">
+                  <button type="button" onclick="setWarRoomView('waterfall'); toggleWarRoomCmdPalette();" style="text-align: left; padding: 0.55rem 0.75rem; border-radius: 7px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); color: #f8fafc; cursor: pointer;">📊 Cambiar a Vista 1: Puente P&amp;L Waterfall (Descomposición EVA)</button>
+                  <button type="button" onclick="setWarRoomView('parallel'); toggleWarRoomCmdPalette();" style="text-align: left; padding: 0.55rem 0.75rem; border-radius: 7px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); color: #f8fafc; cursor: pointer;">🕸️ Cambiar a Vista 2: Coordenadas Paralelas Multicriterio (6 Ejes)</button>
+                  <button type="button" onclick="setWarRoomView('sunburst'); toggleWarRoomCmdPalette();" style="text-align: left; padding: 0.55rem 0.75rem; border-radius: 7px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); color: #f8fafc; cursor: pointer;">🎯 Cambiar a Vista 3: Anillo Jerárquico Sunburst de Cartera</button>
+                  <button type="button" onclick="document.getElementById('wr-spread-sl').value=310; document.getElementById('wr-fee-sl').value=110; document.getElementById('wr-lgd-sl').value=20; updateWarRoom(); toggleWarRoomCmdPalette();" style="text-align: left; padding: 0.55rem 0.75rem; border-radius: 7px; background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.3); color: #6ee7b7; cursor: pointer;">🚀 Aplicar Escenario: Optimización Pricing + Cross-Sell TPV + Aval ICO</button>
+                  <button type="button" onclick="openDealDrawer(1); toggleWarRoomCmdPalette();" style="text-align: left; padding: 0.55rem 0.75rem; border-radius: 7px; background: rgba(6,182,212,0.12); border: 1px solid rgba(6,182,212,0.3); color: #67e8f9; cursor: pointer;">🔍 Inspeccionar Expediente Corporativo en Slide-Over Drawer</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -1208,6 +1337,231 @@ html_deck = r"""<!DOCTYPE html>
 final_cell_html = html_deck.replace("__PYSPARK_PAYLOAD__", payload_json)
 displayHTML(final_cell_html)</pre>
           </div>
+
+          <!-- BLOQUE MAESTRO 2: DEAL DESK WAR ROOM CON WATERFALL P&L, PARALLEL COORDINATES, SLIDE-OVER DRAWER Y CTRL+K -->
+          <div class="prompt-block-wrapper pro-version">
+            <div class="prompt-block-header">
+              <h3 class="prompt-block-title">🏛️ Plantilla Maestra #2: Databricks Commercial Deal Desk (`PySpark` → `displayHTML` con Puente P&amp;L Waterfall, Coordenadas Paralelas, Slide-Over Drawer y `Ctrl+K`)</h3>
+              <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Código Deal Desk Completo</button>
+            </div>
+            <p style="font-size: 0.83rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
+              Ideal para <strong>Comités de Pricing Comercial, Seguimiento de Banca de Empresas, Pymes y Admisión de Riesgos</strong>. Incluye descomposición contable Waterfall (desde Tipo Cliente y FTP hasta EVA), gráfico de Coordenadas Paralelas de 6 ejes, Inspector lateral deslizable con desenfoque gaussiano y buscador ejecutivo <code>Ctrl+K</code>:
+            </p>
+            <pre class="copyable-prompt-pre">import json
+from pyspark.sql import types as T
+
+# ==============================================================================
+# 1. CAPA PYSPARK: CARTERA DE OPERACIONES EMPRESAS / COMMERCIAL DEAL DESK
+# ==============================================================================
+deals_rows = [
+    ("CORP-01", "Grupo Industrial Norte S.A.", "Confirming & Circulante", "Web Empresas", 48.0, 265, 85, 72, 0.65, 22, 3.45),
+    ("CORP-02", "Logística TransIbérica S.L.", "Leasing Flota Sostenible ESG", "Híbrido Web+Gestor", 34.0, 290, 90, 60, 0.92, 20, 3.68),
+    ("PYME-03", "AgroAlimentaria del Sur S.A.", "Línea Avalada ICO Exporta", "App Móvil", 19.5, 310, 80, 85, 1.15, 18, 4.12),
+    ("CORP-04", "Tecnologías Cloud Europa S.L.", "Póliza Crédito Multidivisa", "Web Empresas", 27.0, 225, 85, 95, 0.50, 38, 2.88),
+    ("PYME-05", "Distribuciones Levante S.L.", "Factoring Sin Recurso Digital", "App Móvil", 22.0, 275, 82, 78, 1.35, 30, 3.18),
+    ("NEG-06", "Red Franquicias Horeca S.A.", "Anticipo Facturación TPV", "App Móvil", 15.0, 345, 78, 110, 1.85, 35, 3.92)
+]
+
+schema_deals = T.StructType([
+    T.StructField("id", T.StringType()), T.StructField("client", T.StringType()),
+    T.StructField("product", T.StringType()), T.StructField("channel", T.StringType()),
+    T.StructField("ead_m", T.DoubleType()), T.StructField("spread_bps", T.IntegerType()),
+    T.StructField("ftp_bps", T.IntegerType()), T.StructField("fees_bps", T.IntegerType()),
+    T.StructField("pd_pct", T.DoubleType()), T.StructField("lgd_pct", T.IntegerType()),
+    T.StructField("rorwa_pct", T.DoubleType())
+])
+
+df_deals = spark.createDataFrame(deals_rows, schema=schema_deals)
+payload_deals = json.dumps({"deals": [r.asDict() for r in df_deals.collect()], "hurdle": 2.50})
+
+html_war_room = r"""<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+    body { margin: 0; background: #05070E; color: #F8FAFC; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+    .mono { font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums; }
+    .glass-card { background: rgba(14, 20, 34, 0.78); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; backdrop-filter: blur(16px); }
+    .drawer-panel { transform: translateX(105%); transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1); }
+    .drawer-panel.open { transform: translateX(0); }
+  </style>
+</head>
+<body class="p-5">
+  <script id="data-payload">window.DEAL_DATA = __PYSPARK_PAYLOAD__;</script>
+
+  <div class="max-w-[1580px] mx-auto space-y-4 relative">
+    <header class="glass-card px-5 py-3.5 flex flex-wrap justify-between items-center gap-4">
+      <div class="flex items-center gap-3">
+        <span class="px-2.5 py-1 text-[10px] mono uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded">WAR ROOM • PRICING & RAROC</span>
+        <div class="flex gap-1 bg-black/40 p-1 rounded-lg border border-white/10 text-xs">
+          <button id="v-btn-wf" onclick="setView('waterfall')" class="px-3 py-1 rounded bg-emerald-500 text-slate-950 font-semibold">1. Puente P&L (Waterfall)</button>
+          <button id="v-btn-pc" onclick="setView('parallel')" class="px-3 py-1 rounded text-slate-400 hover:text-white">2. Coordenadas Paralelas</button>
+        </div>
+      </div>
+      <div class="flex items-center gap-4 text-xs">
+        <label class="flex items-center gap-2">
+          <span class="text-slate-400">Spread (bps):</span>
+          <input id="sl-sp" type="range" min="-60" max="100" step="10" value="0" oninput="renderAll()" class="w-24 accent-emerald-400">
+          <span id="lb-sp" class="mono text-emerald-300 w-14">Base</span>
+        </label>
+        <button onclick="openCleanTab()" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-medium">↗ Pantalla Completa</button>
+      </div>
+    </header>
+
+    <div class="grid grid-cols-12 gap-4">
+      <div class="glass-card p-4 col-span-12 lg:col-span-7">
+        <h2 id="v-title" class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">DESCOMPOSICIÓN DEL VALOR ECONÓMICO AÑADIDO (WATERFALL P&L)</h2>
+        <div id="chart-box" class="w-full h-[390px]"></div>
+      </div>
+      <div class="glass-card p-4 col-span-12 lg:col-span-5">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">EXPEDIENTES CORPORATIVOS (CLIC = SLIDE-OVER DRAWER)</h2>
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="border-b border-white/10 text-[10px] uppercase text-slate-400">
+              <th class="py-2">Cliente / Producto</th>
+              <th class="py-2 text-right">EAD</th>
+              <th class="py-2 text-right">RORWA</th>
+              <th class="py-2 text-right">EVA</th>
+            </tr>
+          </thead>
+          <tbody id="deals-tbody" class="divide-y divide-white/5"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SLIDE-OVER INSPECTOR DRAWER -->
+    <aside id="inspector-drawer" class="drawer-panel fixed top-0 right-0 bottom-0 w-[400px] bg-slate-950/95 backdrop-blur-xl border-l border-indigo-500/40 p-6 z-50 flex flex-col justify-between shadow-2xl">
+      <div>
+        <div class="flex justify-between items-center border-b border-white/10 pb-3 mb-4">
+          <div>
+            <span class="text-[10px] mono uppercase text-cyan-400">FICHA DE COMITÉ DE CRÉDITO</span>
+            <h3 id="drw-client" class="text-base font-bold text-white mt-0.5">-</h3>
+          </div>
+          <button onclick="closeDrawer()" class="px-2.5 py-1 rounded bg-white/10 text-slate-300">✕</button>
+        </div>
+        <div id="drw-content" class="space-y-3 text-xs text-slate-300"></div>
+      </div>
+      <button onclick="closeDrawer()" class="w-full py-2.5 rounded-lg bg-emerald-500 text-slate-950 font-bold text-xs">✓ Aprobar Condiciones en Comité</button>
+    </aside>
+  </div>
+
+  <script id="app-engine">
+    let viewMode = 'waterfall';
+    const chart = echarts.init(document.getElementById('chart-box'));
+
+    function getComputedDeals() {
+      const deltaSp = parseInt(document.getElementById('sl-sp').value, 10);
+      document.getElementById('lb-sp').textContent = (deltaSp >= 0 ? '+' : '') + deltaSp + ' bps';
+      return window.DEAL_DATA.deals.map(d => {
+        const sp = d.spread_bps + deltaSp;
+        const grossInt = d.ead_m * (sp / 10000);
+        const ftpCost = d.ead_m * (d.ftp_bps / 10000);
+        const feeInc = d.ead_m * (d.fees_bps / 10000);
+        const expLoss = d.ead_m * (d.pd_pct / 100) * (d.lgd_pct / 100);
+        const rwa = d.ead_m * (0.35 + (d.lgd_pct / 100) * 0.6);
+        const netProfit = (grossInt - ftpCost + feeInc - expLoss) * 0.72;
+        const rorwa = (netProfit / rwa) * 100;
+        const capCost = rwa * (window.DEAL_DATA.hurdle / 100);
+        const eva = netProfit - capCost;
+        return { ...d, sp, grossInt, ftpCost, feeInc, expLoss, rwa, netProfit, rorwa, capCost, eva };
+      });
+    }
+
+    function renderAll() {
+      const rows = getComputedDeals();
+      document.getElementById('deals-tbody').innerHTML = rows.map((r, idx) => `
+        <tr onclick="openDrawer(${idx})" class="cursor-pointer hover:bg-white/5 transition">
+          <td class="py-2.5"><div class="font-semibold text-white">${r.client}</div><div class="text-[11px] text-slate-400">${r.product} · ${r.channel}</div></td>
+          <td class="py-2.5 text-right mono">${r.ead_m.toFixed(1)} M€</td>
+          <td class="py-2.5 text-right mono font-bold ${r.rorwa >= 2.5 ? 'text-emerald-400' : 'text-amber-300'}">${r.rorwa.toFixed(2)}%</td>
+          <td class="py-2.5 text-right mono ${r.eva >= 0 ? 'text-cyan-300' : 'text-rose-400'}">${r.eva >= 0 ? '+' : ''}${r.eva.toFixed(2)} M€</td>
+        </tr>
+      `).join('');
+
+      if (viewMode === 'waterfall') {
+        const gInt = rows.reduce((s, r) => s + r.grossInt, 0);
+        const fCost = rows.reduce((s, r) => s + r.ftpCost, 0);
+        const fees = rows.reduce((s, r) => s + r.feeInc, 0);
+        const el = rows.reduce((s, r) => s + r.expLoss, 0);
+        const cap = rows.reduce((s, r) => s + r.capCost, 0);
+        const netBeforeCap = (gInt - fCost + fees - el) * 0.72;
+        const evaTot = netBeforeCap - cap;
+
+        chart.setOption({
+          tooltip: { trigger: 'axis', backgroundColor: 'rgba(9,13,22,0.95)', textStyle: { color: '#fff' } },
+          grid: { top: 28, right: 25, bottom: 38, left: 50 },
+          xAxis: { type: 'category', data: ['Ingresos TIN', 'Coste FTP', 'Comisiones', 'Pérdida EL', 'Beneficio Neto', 'Cargo Capital', 'EVA Neto'], axisLabel: { color: '#94A3B8', fontSize: 10 } },
+          yAxis: { type: 'value', name: 'M€', splitLine: { lineStyle: { color: 'rgba(255,255,255,0.06)' } }, axisLabel: { color: '#94A3B8' } },
+          series: [{
+            type: 'bar', barWidth: '48%',
+            data: [
+              { value: Number(gInt.toFixed(2)), itemStyle: { color: '#06B6D4' } },
+              { value: Number((-fCost).toFixed(2)), itemStyle: { color: '#F59E0B' } },
+              { value: Number(fees.toFixed(2)), itemStyle: { color: '#6366F1' } },
+              { value: Number((-el).toFixed(2)), itemStyle: { color: '#F43F5E' } },
+              { value: Number(netBeforeCap.toFixed(2)), itemStyle: { color: '#38BDF8' } },
+              { value: Number((-cap).toFixed(2)), itemStyle: { color: '#FB7185' } },
+              { value: Number(evaTot.toFixed(2)), itemStyle: { color: '#10B981' } }
+            ],
+            label: { show: true, position: 'top', formatter: '{c} M€', color: '#E2E8F0', fontSize: 10 }
+          }]
+        }, true);
+      } else {
+        chart.setOption({
+          parallelAxis: [
+            { dim: 0, name: 'EAD (M€)' }, { dim: 1, name: 'Spread (bps)' },
+            { dim: 2, name: 'Fees (bps)' }, { dim: 3, name: 'PD (%)' },
+            { dim: 4, name: 'LGD (%)' }, { dim: 5, name: 'RORWA (%)' }
+          ],
+          parallel: { left: '6%', right: '8%', bottom: '12%', top: '14%', parallelAxisDefault: { nameTextStyle: { color: '#94A3B8', fontSize: 10 }, axisLine: { lineStyle: { color: '#334155' } }, axisLabel: { color: '#CBD5E1', fontSize: 10 } } },
+          series: [{
+            type: 'parallel', lineStyle: { width: 3, opacity: 0.8, color: '#06B6D4' },
+            data: rows.map(r => [r.ead_m, r.sp, r.fees_bps, r.pd_pct, r.lgd_pct, Number(r.rorwa.toFixed(2))])
+          }]
+        }, true);
+      }
+    }
+
+    function setView(m) {
+      viewMode = m;
+      document.getElementById('v-btn-wf').className = m === 'waterfall' ? 'px-3 py-1 rounded bg-emerald-500 text-slate-950 font-semibold' : 'px-3 py-1 rounded text-slate-400';
+      document.getElementById('v-btn-pc').className = m === 'parallel' ? 'px-3 py-1 rounded bg-emerald-500 text-slate-950 font-semibold' : 'px-3 py-1 rounded text-slate-400';
+      renderAll();
+    }
+
+    function openDrawer(idx) {
+      const r = getComputedDeals()[idx];
+      document.getElementById('drw-client').textContent = r.client;
+      document.getElementById('drw-content').innerHTML = `
+        <div class="p-3 rounded-lg bg-white/5 border border-white/10 flex justify-between"><span>Producto / Canal:</span><strong class="text-white">${r.product} (${r.channel})</strong></div>
+        <div class="p-3 rounded-lg bg-white/5 border border-white/10 flex justify-between"><span>Exposición (EAD) / RWA:</span><strong class="mono text-cyan-300">${r.ead_m.toFixed(1)} M€ / ${r.rwa.toFixed(1)} M€</strong></div>
+        <div class="p-3 rounded-lg bg-white/5 border border-white/10 flex justify-between"><span>Spread / Coste FTP / Fees:</span><strong class="mono text-emerald-300">+${r.sp} / -${r.ftp_bps} / +${r.fees_bps} bps</strong></div>
+        <div class="p-3 rounded-lg bg-white/5 border border-white/10 flex justify-between"><span>Parámetros Riesgo (PD × LGD):</span><strong class="mono text-amber-300">${r.pd_pct}% × ${r.lgd_pct}%</strong></div>
+        <div class="p-3 rounded-lg bg-emerald-500/15 border border-emerald-500/40 flex justify-between"><span>RORWA Neto / EVA Creado:</span><strong class="mono text-emerald-300">${r.rorwa.toFixed(2)}% (${r.eva >= 0 ? '+' : ''}${r.eva.toFixed(2)} M€)</strong></div>
+      `;
+      document.getElementById('inspector-drawer').classList.add('open');
+    }
+    function closeDrawer() { document.getElementById('inspector-drawer').classList.remove('open'); }
+
+    function openCleanTab() {
+      const clone = document.documentElement.cloneNode(true);
+      clone.querySelector('#chart-box').innerHTML = '';
+      clone.querySelector('#chart-box').removeAttribute('_echarts_instance_');
+      const blob = new Blob(['<!DOCTYPE html><html lang="es" class="dark">' + clone.innerHTML + '</html>'], { type: 'text/html;charset=utf-8' });
+      window.open(URL.createObjectURL(blob), '_blank');
+    }
+
+    window.addEventListener('resize', () => chart.resize());
+    renderAll();
+  </script>
+</body>
+</html>"""
+
+displayHTML(html_war_room.replace("__PYSPARK_PAYLOAD__", payload_deals))</pre>
+          </div>
         </div>
       </section>
 
@@ -1428,21 +1782,337 @@ def build_executive_commercial_excel(filename="Informe_Ejecutivo_Commercial_Digi
 if __name__ == "__main__":
     build_executive_commercial_excel()</pre>
           </div>
+
+          <!-- SUBSECCIÓN 4.2: MATRIZ DE SENSIBILIDAD BIDIMENSIONAL Y MOTOR MULTI-HOJA OPENPYXL -->
+          <h3>4.2. Nivel Banca de Inversión: Matriz de Sensibilidad Bidimensional (Spread × Mora → EVA / RORWA) y Libro Multi-Hoja con Gráficos Nativos</h3>
+          <p>
+            Lo que realmente distingue un Excel corporativo de nivel Dirección Financiera / Comité de Riesgos no es solo una tabla limpia, sino un <strong>libro multi-pestaña interconectado</strong> que incluya: (1) Código de color institucional para entradas manuales (<strong style="color:#3b82f6;">Azul `#0000FF` para Inputs/Supuestos</strong>, <strong>Negro `#0F172A` para Fórmulas</strong> y <strong style="color:#059669;">Verde `#047857` para Vínculos entre hojas</strong>), (2) una <strong>Matriz de Sensibilidad 2D (What-If Matrix)</strong> con escala térmica divergente (`ColorScaleRule`), y (3) <strong>Gráficos nativos editables de Excel</strong> generados sin intervención manual:
+          </p>
+
+          <!-- Vista previa de la Matriz de Sensibilidad 2D en Excel -->
+          <div class="excel-preview-frame">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 0.6rem;">
+              <div>
+                <div style="font-size: 1rem; font-weight: 700; color: #0F172A;">PESTAÑA 2: MATRIZ DE SENSIBILIDAD BIDIMENSIONAL — RORWA NETO (%) SEGÚN SPREAD Y COSTE DE RIESGO</div>
+                <div style="font-size: 0.74rem; color: #64748B;">Celdas dinámicas vinculadas a Supuestos (`$C$4`: Hurdle 2,50%) · Escala de color divergente Rojo-Blanco-Esmeralda</div>
+              </div>
+              <span style="font-size: 0.72rem; font-weight: 700; color: #1d4ed8; background: #dbeafe; padding: 0.2rem 0.6rem; border-radius: 4px;">Convención: Azul = Input | Negro = Fórmula</span>
+            </div>
+            <table class="excel-mock-table" style="text-align: center;">
+              <thead>
+                <tr>
+                  <th style="background: #1E293B;">CoR (bps) \ Spread Comercial</th>
+                  <th style="color: #93c5fd;">+180 bps</th>
+                  <th style="color: #93c5fd;">+210 bps</th>
+                  <th style="color: #93c5fd;">+240 bps (Base)</th>
+                  <th style="color: #93c5fd;">+270 bps</th>
+                  <th style="color: #93c5fd;">+300 bps</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="color: #1d4ed8; font-weight: 700;">30 bps (Escenario Bajo)</td>
+                  <td style="background: #ecfdf5; color: #065f46; font-weight: 600;">2,62%</td>
+                  <td style="background: #d1fae5; color: #065f46; font-weight: 600;">2,98%</td>
+                  <td style="background: #a7f3d0; color: #065f46; font-weight: 700;">3,34%</td>
+                  <td style="background: #6ee7b7; color: #064e3b; font-weight: 700;">3,70%</td>
+                  <td style="background: #34d399; color: #064e3b; font-weight: 700;">4,06%</td>
+                </tr>
+                <tr>
+                  <td style="color: #1d4ed8; font-weight: 700;">55 bps (Escenario Central)</td>
+                  <td style="background: #fef2f2; color: #991b1b;">2,24%</td>
+                  <td style="background: #ecfdf5; color: #065f46; font-weight: 600;">2,60%</td>
+                  <td style="background: #d1fae5; color: #065f46; font-weight: 700; border: 2px solid #0F172A;">2,96% ★</td>
+                  <td style="background: #a7f3d0; color: #065f46; font-weight: 700;">3,32%</td>
+                  <td style="background: #6ee7b7; color: #064e3b; font-weight: 700;">3,68%</td>
+                </tr>
+                <tr>
+                  <td style="color: #1d4ed8; font-weight: 700;">85 bps (Estrés Moderado)</td>
+                  <td style="background: #fee2e2; color: #991b1b; font-weight: 600;">1,79%</td>
+                  <td style="background: #fef2f2; color: #991b1b;">2,15%</td>
+                  <td style="background: #ecfdf5; color: #065f46; font-weight: 600;">2,51%</td>
+                  <td style="background: #d1fae5; color: #065f46; font-weight: 600;">2,87%</td>
+                  <td style="background: #a7f3d0; color: #065f46; font-weight: 700;">3,23%</td>
+                </tr>
+                <tr>
+                  <td style="color: #1d4ed8; font-weight: 700;">120 bps (Estrés Severo)</td>
+                  <td style="background: #fecaca; color: #7f1d1d; font-weight: 700;">1,26%</td>
+                  <td style="background: #fee2e2; color: #991b1b; font-weight: 600;">1,62%</td>
+                  <td style="background: #fef2f2; color: #991b1b;">1,98%</td>
+                  <td style="background: #fef2f2; color: #991b1b;">2,34%</td>
+                  <td style="background: #ecfdf5; color: #065f46; font-weight: 600;">2,70%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="prompt-block-wrapper excel-version">
+            <div class="prompt-block-header">
+              <h4 class="prompt-block-title">🏛️ Plantilla Maestra #3 (Excel Multi-Hoja): Generador `openpyxl` con Pestaña de Sensibilidad 2D, `ColorScaleRule` y Gráfico Nativo Combo</h4>
+              <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Script Multi-Hoja OpenPyXL</button>
+            </div>
+            <pre class="copyable-prompt-pre">from openpyxl import Workbook
+from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
+from openpyxl.formatting.rule import ColorScaleRule, DataBarRule
+from openpyxl.chart import BarChart, LineChart, Reference
+
+def build_investment_grade_workbook(filename="Pack_Comite_Commercial_MultiHoja.xlsx"):
+    wb = Workbook()
+
+    # ==========================================================================
+    # HOJA 1: COCKPIT EJECUTIVO & SUPUESTOS PARAMÉTRICOS
+    # ==========================================================================
+    ws1 = wb.active
+    ws1.title = "01_Executive_Cockpit"
+    ws1.views.sheetView[0].showGridLines = False
+    ws1.column_dimensions["A"].width = 3
+    ws1.row_dimensions[1].height = 14
+
+    f_title = Font(name="Segoe UI", size=14, bold=True, color="0F172A")
+    f_input = Font(name="Segoe UI", size=10, bold=True, color="0000FF")   # Azul institucional = Input
+    f_formula = Font(name="Segoe UI", size=10, bold=False, color="0F172A") # Negro = Fórmula
+    f_hdr = Font(name="Segoe UI", size=10, bold=True, color="FFFFFF")
+    fill_hdr = PatternFill("solid", fgColor="0F172A")
+    fill_param = PatternFill("solid", fgColor="EFF6FF")
+    b_thin = Border(bottom=Side(style="thin", color="CBD5E1"))
+
+    ws1["B2"] = "COCKPIT EJECUTIVO: RENTABILIDAD COMERCIAL (RORWA) Y EMBUDO DIGITAL"
+    ws1["B2"].font = f_title
+
+    # Bloque de Supuestos Globales (Celdas Azules Auditables)
+    ws1["B4"] = "Hurdle Rate Exigido (RORWA):"
+    ws1["C4"] = 0.0250
+    ws1["C4"].font = f_input
+    ws1["C4"].fill = fill_param
+    ws1["C4"].number_format = "0.00%"
+
+    ws1["D4"] = "Densidad Media RWA / EAD:"
+    ws1["E4"] = 0.58
+    ws1["E4"].font = f_input
+    ws1["E4"].fill = fill_param
+    ws1["E4"].number_format = "0.0%"
+
+    ws1["F4"] = "Tasa Impositiva / Eficiencia:"
+    ws1["G4"] = 0.72
+    ws1["G4"].font = f_input
+    ws1["G4"].fill = fill_param
+    ws1["G4"].number_format = "0.0%"
+
+    # ==========================================================================
+    # HOJA 2: MATRIZ DE SENSIBILIDAD 2D (SPREAD X COSTE DE RIESGO -> RORWA Y EVA)
+    # ==========================================================================
+    ws2 = wb.create_sheet(title="02_Sensibilidad_2D")
+    ws2.views.sheetView[0].showGridLines = False
+    ws2.column_dimensions["A"].width = 3
+    ws2["B2"] = "MATRIZ DE SENSIBILIDAD BIDIMENSIONAL: RORWA NETO (%) SEGÚN SPREAD Y COSTE DE RIESGO"
+    ws2["B2"].font = f_title
+
+    spreads_bps = [180, 210, 240, 270, 300, 330]
+    cor_bps_list = [30, 55, 85, 120, 155]
+
+    ws2.cell(row=5, column=2, value="CoR (bps) \\ Spread (bps)").font = f_hdr
+    ws2.cell(row=5, column=2).fill = fill_hdr
+    ws2.row_dimensions[5].height = 26
+
+    for idx, sp in enumerate(spreads_bps, start=3):
+        c = ws2.cell(row=5, column=idx, value=sp / 10000.0)
+        c.font = Font(name="Segoe UI", size=10, bold=True, color="93C5FD")
+        c.fill = fill_hdr
+        c.number_format = '+0.00%'
+        c.alignment = Alignment(horizontal="right", vertical="center")
+        ws2.column_dimensions[chr(64 + idx)].width = 16
+
+    ws2.column_dimensions["B"].width = 28
+
+    for r_offset, cor in enumerate(cor_bps_list):
+        r = 6 + r_offset
+        ws2.row_dimensions[r].height = 23
+        lbl = ws2.cell(row=r, column=2, value=cor / 10000.0)
+        lbl.font = f_input
+        lbl.fill = fill_param
+        lbl.number_format = '0.00% "CoR"'
+        lbl.border = b_thin
+
+        for c_offset, _ in enumerate(spreads_bps):
+            col = 3 + c_offset
+            col_let = chr(64 + col)
+            # Fórmula dinámica en Excel que referencia la cabecera de Spread, la fila de CoR y los supuestos de la Hoja 1
+            cell = ws2.cell(
+                row=r, column=col,
+                value=f"=((({col_let}$5 - $B{r} + 0.0065) * '01_Executive_Cockpit'!$G$4) / '01_Executive_Cockpit'!$E$4)"
+            )
+            cell.font = f_formula
+            cell.number_format = "0.00%"
+            cell.alignment = Alignment(horizontal="right", vertical="center")
+            cell.border = b_thin
+
+    # Escala térmica divergente institucional (Rojo -> Blanco en Hurdle -> Esmeralda)
+    color_scale = ColorScaleRule(
+        start_type="num", start_value=0.012, start_color="FCA5A5",
+        mid_type="num", mid_value=0.025, mid_color="FFFFFF",
+        end_type="num", end_value=0.042, end_color="6EE7B7"
+    )
+    ws2.conditional_formatting.add("C6:H10", color_scale)
+
+    wb.save(filename)
+
+if __name__ == "__main__":
+    build_investment_grade_workbook()</pre>
+          </div>
+
+          <!-- SUBSECCIÓN 4.3: 4 BLOQUES DE CÓDIGO DIRECTO PARA PYTHON IN EXCEL (=PY) -->
+          <h3>4.3. Laboratorio Directo de `Python in Excel (=PY())`: 4 Bloques Listos para Pegar en la Barra de Fórmulas</h3>
+          <p>
+            Si utilizas Microsoft 365 Excel con la función <code>=PY()</code> habilitada, puedes pegar cualquiera de estos 4 bloques directamente dentro de una celda (configurando la salida como <strong>Objeto de Imagen de Excel</strong>) para renderizar visualizaciones estadísticas imposibles en el motor clásico de Excel:
+          </p>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 1rem;">
+            <!-- Bloque =PY #1 -->
+            <div class="prompt-block-wrapper excel-version" style="margin: 0;">
+              <div class="prompt-block-header">
+                <h4 class="prompt-block-title" style="font-size: 0.9rem;">🐍 Bloque `=PY()` #1: Puente P&amp;L Waterfall Institucional</h4>
+                <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Código `=PY()`</button>
+              </div>
+              <pre class="copyable-prompt-pre" style="max-height: 290px;">import matplotlib.pyplot as plt
+import numpy as np
+
+# Lee tu rango de Excel: df = xl("B5:C11", headers=True)
+steps = ["Ingresos TIN", "Coste FTP", "Comisiones", "Gastos Op.", "Dotación CoR", "Cargo Capital", "EVA Neto"]
+vals = [142.0, -48.5, 36.2, -31.0, -18.4, -44.0, 36.3]
+running = [0, 142.0, 93.5, 129.7, 98.7, 80.3, 0]
+colors = ["#06B6D4", "#F59E0B", "#6366F1", "#94A3B8", "#F43F5E", "#FB7185", "#10B981"]
+
+fig, ax = plt.subplots(figsize=(9, 4.2), dpi=160, facecolor="#070B14")
+ax.set_facecolor("#070B14")
+bars = ax.bar(steps, vals, bottom=running, color=colors, width=0.52, edgecolor="#1E293B")
+
+for bar, v, b in zip(bars, vals, running):
+    y_pos = b + v + (2.5 if v >= 0 else -6.5)
+    ax.text(bar.get_x() + bar.get_width()/2, y_pos, f"{v:+.1f} M€",
+            ha="center", color="#F8FAFC", fontsize=8.5, fontweight="bold")
+
+ax.axhline(0, color="#475569", linewidth=0.9)
+ax.set_title("PUENTE DE CREACIÓN DE VALOR COMERCIAL (WATERFALL EVA EN M€)", color="#F8FAFC", fontsize=10, fontweight="bold", pad=12)
+ax.tick_params(colors="#94A3B8", labelsize=8)
+for s in ["top", "right"]: ax.spines[s].set_visible(False)
+for s in ["bottom", "left"]: ax.spines[s].set_color("#334155")
+plt.tight_layout()
+plt.show()</pre>
+            </div>
+
+            <!-- Bloque =PY #2 -->
+            <div class="prompt-block-wrapper excel-version" style="margin: 0;">
+              <div class="prompt-block-header">
+                <h4 class="prompt-block-title" style="font-size: 0.9rem;">🐍 Bloque `=PY()` #2: Mapa de Calor Triangular de Cohortes</h4>
+                <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Código `=PY()`</button>
+              </div>
+              <pre class="copyable-prompt-pre" style="max-height: 290px;">import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
+import pandas as pd
+
+cohorts = ["Ene-26", "Feb-26", "Mar-26", "Abr-26", "May-26", "Jun-26"]
+months = ["M+0", "M+1", "M+2", "M+3", "M+4", "M+5"]
+data = np.array([
+    [100, 88, 82, 79, 76, 74],
+    [100, 90, 85, 81, 79, np.nan],
+    [100, 91, 86, 83, np.nan, np.nan],
+    [100, 93, 89, np.nan, np.nan, np.nan],
+    [100, 94, np.nan, np.nan, np.nan, np.nan],
+    [100, np.nan, np.nan, np.nan, np.nan, np.nan]
+])
+df_c = pd.DataFrame(data, index=cohorts, columns=months)
+
+fig, ax = plt.subplots(figsize=(8.2, 4.2), dpi=160, facecolor="#070B14")
+ax.set_facecolor("#070B14")
+sns.heatmap(df_c, annot=True, fmt=".0f", cmap="YlGnBu", cbar=False, ax=ax,
+            linewidths=2, linecolor="#070B14", annot_kws={"size": 9, "weight": "bold"})
+ax.set_title("RETENCIÓN TRANSACCIONAL POR COHORTES DE ALTA DIGITAL (%)", color="#F8FAFC", fontsize=10, fontweight="bold", pad=12)
+ax.tick_params(colors="#E2E8F0", labelsize=8.5)
+plt.tight_layout()
+plt.show()</pre>
+            </div>
+
+            <!-- Bloque =PY #3 -->
+            <div class="prompt-block-wrapper excel-version" style="margin: 0;">
+              <div class="prompt-block-header">
+                <h4 class="prompt-block-title" style="font-size: 0.9rem;">🐍 Bloque `=PY()` #3: Frontera Eficiente de Markowitz (Riesgo vs. RORWA)</h4>
+                <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Código `=PY()`</button>
+              </div>
+              <pre class="copyable-prompt-pre" style="max-height: 290px;">import matplotlib.pyplot as plt
+import numpy as np
+
+npl_x = np.linspace(0.5, 3.6, 80)
+frontier_y = 1.45 + 1.42 * np.sqrt(npl_x)
+prods = [("Confirming B2B", 0.82, 2.68, 610), ("Circulante Web", 1.10, 2.95, 680),
+         ("Líneas ESG", 1.32, 3.22, 410), ("Preconcedidos App", 2.15, 3.55, 540),
+         ("Onboarding TPV", 3.05, 4.10, 320), ("Leasing Híbrido", 1.85, 2.42, 290)]
+
+fig, ax = plt.subplots(figsize=(8.5, 4.2), dpi=160, facecolor="#070B14")
+ax.set_facecolor("#070B14")
+ax.plot(npl_x, frontier_y, "--", color="#10B981", linewidth=2, label="Frontera Eficiente Óptima")
+ax.axhline(2.50, color="#F43F5E", linestyle=":", linewidth=1.2, label="Hurdle Rate (2,50%)")
+
+for name, x, y, vol in prods:
+    c = "#06B6D4" if y >= 2.5 else "#F59E0B"
+    ax.scatter(x, y, s=vol*0.45, color=c, alpha=0.85, edgecolors="#FFF", linewidth=1.2)
+    ax.annotate(f"{name}\n({y:.2f}%)", (x, y), xytext=(0, 8), textcoords="offset points",
+                ha="center", color="#F8FAFC", fontsize=7.5, fontweight="bold")
+
+ax.set_xlabel("Mora NPL / Riesgo (%) →", color="#94A3B8", fontsize=8.5)
+ax.set_ylabel("↑ RORWA Neto (%)", color="#94A3B8", fontsize=8.5)
+ax.set_title("POSICIONAMIENTO DE CARTERA COMERCIAL FRENTE A LA FRONTERA EFICIENTE", color="#F8FAFC", fontsize=9.5, fontweight="bold")
+ax.tick_params(colors="#94A3B8", labelsize=8)
+ax.legend(facecolor="#0F172A", edgecolor="#334155", labelcolor="#E2E8F0", fontsize=8)
+for s in ["top", "right"]: ax.spines[s].set_visible(False)
+plt.tight_layout()
+plt.show()</pre>
+            </div>
+
+            <!-- Bloque =PY #4 -->
+            <div class="prompt-block-wrapper excel-version" style="margin: 0;">
+              <div class="prompt-block-header">
+                <h4 class="prompt-block-title" style="font-size: 0.9rem;">🐍 Bloque `=PY()` #4: Distribución Time-to-Yes (Percentiles P50 / P90 vs SLA)</h4>
+                <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Código `=PY()`</button>
+              </div>
+              <pre class="copyable-prompt-pre" style="max-height: 290px;">import matplotlib.pyplot as plt
+import numpy as np
+
+np.random.seed(42)
+t_app = np.random.lognormal(mean=1.1, sigma=0.45, size=600)   # Minutos en App STP
+t_web = np.random.lognormal(mean=1.65, sigma=0.55, size=600)  # Minutos en Web
+
+fig, ax = plt.subplots(figsize=(8.5, 4.2), dpi=160, facecolor="#070B14")
+ax.set_facecolor("#070B14")
+ax.hist(t_app, bins=35, range=(0, 18), density=True, alpha=0.55, color="#06B6D4", label="App Móvil STP (P90 = 5,4 min)")
+ax.hist(t_web, bins=35, range=(0, 18), density=True, alpha=0.45, color="#6366F1", label="Web Empresas (P90 = 11,2 min)")
+ax.axvline(10.0, color="#F43F5E", linestyle="--", linewidth=1.8, label="Umbral Fuga SLA (10 min)")
+
+ax.set_title("DISTRIBUCIÓN DE TIME-TO-YES DIGITAL Y UMBRAL CRÍTICO DE ABANDONO", color="#F8FAFC", fontsize=9.5, fontweight="bold")
+ax.set_xlabel("Tiempo hasta Aprobación Firme (Minutos) →", color="#94A3B8", fontsize=8.5)
+ax.set_ylabel("Densidad de Solicitudes", color="#94A3B8", fontsize=8.5)
+ax.tick_params(colors="#94A3B8", labelsize=8)
+ax.legend(facecolor="#0F172A", edgecolor="#334155", labelcolor="#E2E8F0", fontsize=8)
+for s in ["top", "right"]: ax.spines[s].set_visible(False)
+plt.tight_layout()
+plt.show()</pre>
+            </div>
+          </div>
         </div>
       </section>
 
       <!-- =====================================================================
-           SECCIÓN 05: BÓVEDA DE SKILLS PARA VS CODE Y PROMPTS PARA M365 COPILOT
+           SECCIÓN 05: BÓVEDA DE SKILLS VS CODE, EXCEL Y POWERPOINT EJECUTIVO
            ===================================================================== -->
-      <section id="boveda-prompts-skills" class="transcript-section" data-tab-group="prompts-skills">
+      <section id="boveda-prompts-skills" class="transcript-section" data-tab-group="prompts-skills code-shells">
         <div class="section-header">
           <span class="section-number">05</span>
-          <h2 class="section-title">Bóveda de Skills para VS Code y Prompts Directos para M365 Copilot (Excel, PowerPoint y Chat)</h2>
+          <h2 class="section-title">Ingeniería de Presentaciones en PowerPoint (`python-pptx` + M365 Copilot) y Bóveda de Skills para VS Code</h2>
         </div>
         <div class="section-divider"></div>
         <div class="transcript-text">
           <p class="editorial-lead">
-            Todos los artefactos de esta sección ya están creados físicamente en las carpetas <code>skills/</code>, <code>.github/prompts/</code> y <code>.vscode/</code> de este repositorio para que los importes en tu Visual Studio Code, y además incluyen bloques listos para copiar y pegar directamente dentro de <strong>Microsoft 365 Copilot en Excel</strong>, <strong>PowerPoint</strong> y <strong>Copilot Chat</strong>.
+            Un Comité de Dirección o de Riesgos se gana o se pierde en la estructura visual de las diapositivas. En esta sección tienes: (1) el mapa de <strong>Skills instaladas en tu VS Code</strong>, (2) los <strong>Prompts avanzados para Copilot en Excel</strong>, (3) los <strong>4 Blueprints Visuales 16:9 de Consultoría Estratégica para PowerPoint</strong> junto con sus prompts quirúrgicos en M365 Copilot, y (4) un generador automático en Python (<code>python-pptx</code>) para crear presentaciones corporativas editables desde código.
           </p>
 
           <h3>5.1. Mapa de Skills y Slash Commands ya instalados en tu Workspace de VS Code</h3>
@@ -1486,16 +2156,13 @@ if __name__ == "__main__":
           </div>
 
           <!-- PROMPTS PARA M365 COPILOT EN EXCEL -->
-          <h3>5.2. Prompts y Skills Listos para Copiar en Microsoft 365 Copilot (Dentro de Excel)</h3>
+          <h3>5.2. Suite de Prompts y Office Scripts para Microsoft 365 Copilot en Excel</h3>
 
           <div class="prompt-block-wrapper m365-version">
             <div class="prompt-block-header">
-              <h4 class="prompt-block-title">📊 M365 Excel Prompt #1: Python in Excel (`=PY()`) para Visualización Cuantitativa de Canales Web & App</h4>
+              <h4 class="prompt-block-title">📊 M365 Excel Prompt #1: Análisis Avanzado con Python in Excel (`=PY()`) para Canales Web/App y Cartera</h4>
               <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Prompt Excel =PY()</button>
             </div>
-            <p style="font-size: 0.82rem; color: var(--text-secondary);">
-              Pega este prompt en el panel lateral de <strong>Copilot en Excel</strong> (activando el análisis avanzado con Python) para generar matrices de transición de Markov o curvas de sensibilidad con estética institucional:
-            </p>
             <pre class="copyable-prompt-pre">Actúa como un Especialista en Visualización Cuantitativa con Python in Excel (=PY()).
 Usando el rango de datos de la tabla activa:
 1. Prohibido generar gráficos con el estilo por defecto de Matplotlib/Seaborn. Configura el lienzo con fondo oscuro '#070B14' o blanco limpio sin bordes superiores ni derechos (sns.despine()), tipografía limpia y paleta corporativa ('#06B6D4' para App, '#6366F1' para Web, '#10B981' para Conversión y '#F43F5E' para Abandono/Fricción UX).
@@ -1505,20 +2172,29 @@ Usando el rango de datos de la tabla activa:
 3. Devuelve el gráfico de alta resolución (dpi=160) listo para incrustar en la hoja de resumen ejecutivo.</pre>
           </div>
 
+          <div class="prompt-block-wrapper m365-version">
+            <div class="prompt-block-header">
+              <h4 class="prompt-block-title">🧮 M365 Excel Prompt #2: Ingeniería de Fórmulas Dinámicas (`XLOOKUP`, `SUMIFS`, Cohortes y Semáforos Unicode)</h4>
+              <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Prompt Fórmulas Excel</button>
+            </div>
+            <pre class="copyable-prompt-pre">Actúa como un Modelador Financiero Senior en Banca Comercial. Sobre la tabla activa:
+1. Añade una columna calculada "Spread Neto s/ FTP (bps)" que reste el Coste FTP de la TAE Cliente multiplicado por 10.000.
+2. Añade una columna "EVA Generado (€)" aplicando la fórmula: =([@Volumen_EAD] * ([@RORWA_Neto] - $C$4) * [@Densidad_RWA]), donde $C$4 es el Hurdle Rate (2,50%).
+3. Añade una columna visual "Estado Comité" con fórmula condicional que muestre:
+   - "🟢 CREA VALOR (+EVA)" si RORWA >= 2,50% y NPL <= 2,20%
+   - "🟡 VIGILANCIA PRICING" si RORWA está entre 2,00% y 2,49%
+   - "🔴 DESTRUYE CAPITAL" si RORWA < 2,00% o NPL > 3,00%
+4. Aplica formato numérico personalizado `[Color10]"▲ "0.0%;[Red]"▼ "-0.0%;"—"0.0%` a todas las columnas de variación interanual.</pre>
+          </div>
+
           <div class="prompt-block-wrapper excel-version">
             <div class="prompt-block-header">
-              <h4 class="prompt-block-title">⚡ M365 Excel Prompt #2: Generador de Office Script (TypeScript) para Formateo Institucional en 1 Clic</h4>
+              <h4 class="prompt-block-title">⚡ M365 Excel Prompt #3: Office Script (TypeScript) para Formateo Institucional en 1 Clic</h4>
               <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Office Script (Pestaña Automatizar)</button>
             </div>
-            <p style="font-size: 0.82rem; color: var(--text-secondary);">
-              Si estás en <strong>Excel Web o Desktop (M365)</strong> y no puedes ejecutar Python local con <code>openpyxl</code>, abre la pestaña <strong>Automatizar → Nuevo Script</strong>, pega este código TypeScript y pulsa <strong>Ejecutar</strong>. Transformará cualquier tabla en un informe de banca de inversión al instante:
-            </p>
             <pre class="copyable-prompt-pre">function main(workbook: ExcelScript.Workbook) {
   const sheet = workbook.getActiveWorksheet();
-  // 1. Ocultar líneas de cuadrícula base
   sheet.setShowGridlines(false);
-
-  // 2. Margen perimetral de respiración en Columna A y Fila 1
   sheet.getRange("A:A").getFormat().setColumnWidth(22);
   sheet.getRange("1:1").getFormat().setRowHeight(15);
 
@@ -1527,14 +2203,12 @@ Usando el rango de datos de la tabla activa:
   used.getFormat().getFont().setName("Segoe UI");
   used.getFormat().setVerticalAlignment(ExcelScript.VerticalAlignment.center);
 
-  // 3. Formatear cabecera principal (primera fila del rango usado)
   const headerRow = used.getRow(0);
   headerRow.getFormat().setRowHeight(28);
   headerRow.getFormat().getFill().setColor("#0F172A");
   headerRow.getFormat().getFont().setColor("#FFFFFF");
   headerRow.getFormat().getFont().setBold(true);
 
-  // 4. Zebra Striping y alturas en filas de datos
   const rowCount = used.getRowCount();
   for (let r = 1; r < rowCount - 1; r++) {
     const row = used.getRow(r);
@@ -1544,7 +2218,6 @@ Usando el rango de datos de la tabla activa:
     row.getFormat().getRangeBorder(ExcelScript.BorderIndex.edgeBottom).setColor("#E2E8F0");
   }
 
-  // 5. Fila de Totales con doble borde contable inferior
   if (rowCount > 2) {
     const totalRow = used.getRow(rowCount - 1);
     totalRow.getFormat().setRowHeight(26);
@@ -1553,32 +2226,246 @@ Usando el rango de datos de la tabla activa:
     totalRow.getFormat().getRangeBorder(ExcelScript.BorderIndex.edgeTop).setStyle(ExcelScript.BorderLineStyle.continuous);
     totalRow.getFormat().getRangeBorder(ExcelScript.BorderIndex.edgeBottom).setStyle(ExcelScript.BorderLineStyle.double);
   }
-
   used.getFormat().autofitColumns();
 }</pre>
           </div>
 
-          <!-- PROMPTS PARA M365 COPILOT EN POWERPOINT -->
-          <h3>5.3. Prompts Directos para Microsoft 365 Copilot en PowerPoint (Narrativa Ejecutiva & Action Titles)</h3>
+          <!-- SUBSECCIÓN 5.3: INGENIERÍA DE PRESENTACIONES EN POWERPOINT (BLUEPRINTS VISUALES + M365 COPILOT + PYTHON-PPTX) -->
+          <h3>5.3. Ingeniería Visual en PowerPoint: Los 4 Blueprints de Diapositivas de Comité, Prompts M365 Copilot y Generador `python-pptx`</h3>
+          <p>
+            El error más común al usar IA en PowerPoint es pedir «hazme una presentación sobre los resultados comerciales». El resultado son diapositivas con listas interminables de viñetas (<em>bullet points</em>) y títulos vacíos como «Evolución de Ventas». En consultoría estratégica (McKinsey, BCG, Bain) y banca de inversión, cada diapositiva obedece a una <strong>arquitectura geométrica de 3 capas</strong>: (1) <strong>Kicker + Action Title cuantitativo</strong> (una frase con verbo activo y cifra que demuestra la conclusión), (2) <strong>Cuerpo visual dividido en Bento Grid o Gráfico Puente con Callouts</strong>, y (3) <strong>Takeaway / Guardarraíl de Riesgo al pie</strong>.
+          </p>
 
+          <!-- GALERÍA VISUAL DE 4 BLUEPRINTS DE DIAPOSITIVAS 16:9 -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 1.15rem; margin: 1.5rem 0;">
+            <!-- Blueprint Slide 1: Bento Grid Ejecutivo -->
+            <div class="sp-card" style="padding: 1.1rem; border: 1px solid rgba(99,102,241,0.4);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+                <span class="tabular-mono" style="font-size: 0.65rem; color: #38bdf8; text-transform: uppercase;">SLIDE BLUEPRINT #1 • EXECUTIVE BENTO SYNTHESIS</span>
+                <span class="tabular-mono" style="font-size: 0.65rem; color: #94a3b8;">16:9 Widescreen</span>
+              </div>
+              <div style="font-size: 0.88rem; font-weight: 700; color: #fff; line-height: 1.35; margin-bottom: 0.75rem; border-left: 3px solid #06b6d4; padding-left: 0.6rem;">
+                «El canal App impulsa el 64% del nuevo circulante digital (+540 M€) y eleva el RORWA de cartera +38 bps hasta el 3,30%»
+              </div>
+              <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-bottom: 0.65rem;">
+                <div style="background: rgba(0,0,0,0.4); padding: 0.55rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.07);">
+                  <div style="font-size: 0.62rem; color: #94a3b8;">1. PALANCA VOLUMEN</div>
+                  <div class="tabular-mono" style="font-size: 1rem; font-weight: 700; color: #67e8f9;">+18,4% CR</div>
+                  <div style="font-size: 0.65rem; color: #cbd5e1;">Firma en 3 clics reduce abandono un 42%</div>
+                </div>
+                <div style="background: rgba(0,0,0,0.4); padding: 0.55rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.07);">
+                  <div style="font-size: 0.62rem; color: #94a3b8;">2. PALANCA MARGEN</div>
+                  <div class="tabular-mono" style="font-size: 1rem; font-weight: 700; color: #34d399;">3,30% RORWA</div>
+                  <div style="font-size: 0.65rem; color: #cbd5e1;">+80 bps sobre el Hurdle Rate (2,50%)</div>
+                </div>
+                <div style="background: rgba(0,0,0,0.4); padding: 0.55rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.07);">
+                  <div style="font-size: 0.62rem; color: #94a3b8;">3. PALANCA ADMISION</div>
+                  <div class="tabular-mono" style="font-size: 1rem; font-weight: 700; color: #a5b4fc;">78% STP Auto</div>
+                  <div style="font-size: 0.65rem; color: #cbd5e1;">Time-to-Cash P90 en 48 segundos</div>
+                </div>
+              </div>
+              <div style="font-size: 0.68rem; color: #6ee7b7; background: rgba(16,185,129,0.1); padding: 0.35rem 0.6rem; border-radius: 4px;" class="tabular-mono">
+                ✓ Guardarraíl de Riesgo: Mora NPL contenida en 1,69% (-14 bps YoY) con cobertura IFRS 9 del 74%
+              </div>
+            </div>
+
+            <!-- Blueprint Slide 2: Diagnóstico de Fricción Embudo Split -->
+            <div class="sp-card" style="padding: 1.1rem; border: 1px solid rgba(6,182,212,0.4);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+                <span class="tabular-mono" style="font-size: 0.65rem; color: #67e8f9; text-transform: uppercase;">SLIDE BLUEPRINT #2 • DIAGNÓSTICO DE CUELLO DE BOTELLA UX</span>
+                <span class="tabular-mono" style="font-size: 0.65rem; color: #94a3b8;">Split 60% / 40%</span>
+              </div>
+              <div style="font-size: 0.88rem; font-weight: 700; color: #fff; line-height: 1.35; margin-bottom: 0.75rem; border-left: 3px solid #f43f5e; padding-left: 0.6rem;">
+                «El 54% del abandono en Web Empresas ocurre en la subida manual de IVA, drenando 145 M€ de formalización potencial»
+              </div>
+              <div style="display: grid; grid-template-columns: 1.3fr 1fr; gap: 0.6rem; margin-bottom: 0.65rem;">
+                <div style="background: rgba(0,0,0,0.4); padding: 0.55rem; border-radius: 6px; font-size: 0.7rem;">
+                  <div style="display:flex; justify-content:space-between; margin-bottom:3px;"><span>1. Login &amp; Posición</span><span class="tabular-mono">100%</span></div>
+                  <div style="height:6px; background:#06b6d4; border-radius:3px; width:100%; margin-bottom:6px;"></div>
+                  <div style="display:flex; justify-content:space-between; margin-bottom:3px;"><span>2. Simulador Cuota</span><span class="tabular-mono">68%</span></div>
+                  <div style="height:6px; background:#6366f1; border-radius:3px; width:68%; margin-bottom:6px;"></div>
+                  <div style="display:flex; justify-content:space-between; margin-bottom:3px; color:#fda4af;"><span>3. Subida PDF Fiscal (Fricción)</span><span class="tabular-mono">31% (-37 pts)</span></div>
+                  <div style="height:6px; background:#f43f5e; border-radius:3px; width:31%;"></div>
+                </div>
+                <div style="background: rgba(244,63,94,0.1); border: 1px dashed rgba(244,63,94,0.4); padding: 0.55rem; border-radius: 6px; font-size: 0.68rem; color: #fecdd3;">
+                  <strong>Acción Q1:</strong> Sustituir adjunto PDF por consulta directa vía API Agencia Tributaria / CIRBE.<br><br>
+                  <strong style="color:#6ee7b7;">Impacto: +9,2 pts CR (+12,4 M€ Margen)</strong>
+                </div>
+              </div>
+              <div style="font-size: 0.68rem; color: #94a3b8; background: rgba(255,255,255,0.04); padding: 0.35rem 0.6rem; border-radius: 4px;" class="tabular-mono">
+                📌 Decisión solicitada al Comité: Aprobar despliegue de conector automático CIRBE/AEAT en Web Empresas
+              </div>
+            </div>
+          </div>
+
+          <!-- 4 PROMPTS QUIRÚRGICOS PARA M365 COPILOT EN POWERPOINT -->
           <div class="prompt-block-wrapper m365-version">
             <div class="prompt-block-header">
-              <h4 class="prompt-block-title">📽️ M365 PowerPoint Prompt: Storyboarding Ejecutivo con Pirámide de Minto y Action Titles Cuantitativos</h4>
-              <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Prompt PowerPoint</button>
+              <h4 class="prompt-block-title">📽️ M365 PowerPoint Prompt #1: Generador de Deck de Comité Completo con Pirámide de Minto y Action Titles</h4>
+              <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Prompt Deck Completo</button>
             </div>
             <pre class="copyable-prompt-pre">Actúa como un Socio Director de Consultoría Estratégica en Banca Comercial y Canales Digitales.
-Crea una presentación ejecutiva basada en [referencia tu archivo con /ArchivoDatos] aplicando estrictamente estas 4 reglas:
+Crea una presentación ejecutiva de 7 diapositivas basada en /[NombreDeTuArchivo] aplicando estrictamente estas reglas:
 1. PROHIBIDO USAR TÍTULOS DESCRIPTIVOS VACÍOS (como "Evolución de Canales Digitales" o "Análisis de Cartera"). Cada diapositiva DEBE llevar un ACTION TITLE cuantitativo de una frase completa que resuma el hallazgo de negocio (ej: "El canal App impulsa el 68% de la contratación digital y mejora el RORWA en +42 bps frente a Web").
 2. ESTRUCTURA DE CADA DIAPOSITIVA (3 CAPAS):
    - Kicker superior en mayúsculas: Categoría del análisis (ej. EMBUDO DE CONVERSIÓN WEB VS APP | RENTABILIDAD RORWA).
-   - Cuerpo central en 3 bloques de datos (KPI principal + causa raíz de fricción UX o admisión STP + palanca de acción comercial).
-   - Nota al pie con la métrica de control de riesgo (NPL / Coste de Riesgo en bps).
-3. SECUENCIA NARRATIVA OBLIGATORIA EN 5 DIAPOSITIVAS:
-   - Slide 1: Síntesis Ejecutiva (Principio de la Pirámide de Minto: Conclusión -> 3 Argumentos cuantitativos).
+   - Cuerpo central en 3 bloques de datos (KPI principal con cifra exacta + causa raíz de fricción UX o admisión STP + palanca de acción comercial cuantificada en M€).
+   - Nota al pie con la métrica de control de riesgo (NPL / Coste de Riesgo en bps / Consumo RWA).
+3. SECUENCIA NARRATIVA OBLIGATORIA EN 7 DIAPOSITIVAS:
+   - Slide 1: Síntesis Ejecutiva (Principio de la Pirámide de Minto: Conclusión -> 3 Argumentos cuantitativos -> Decisión solicitada al Comité).
    - Slide 2: Embudo de Conversión Omnicanal (Tráfico Web/App -> Simulador -> Fricción UX vs. Rechazo STP -> Formalización).
-   - Slide 3: Matriz de Eficiencia Comercial (Volumen formalizado vs. RORWA Neto y cumplimiento del Hurdle Rate).
-   - Slide 4: Diagnóstico de Fricción Digital (Latencia API, abandono por pantalla y migración hacia gestor híbrido).
-   - Slide 5: Plan de Acción Trimestral con impacto estimado en Margen Operativo Neto (M€) y conversión (%).</pre>
+   - Slide 3: Descomposición del Margen Comercial P&L (Desde Ingresos por Intereses y Coste FTP hasta Comisiones Netas, Dotación CoR y EVA).
+   - Slide 4: Matriz de Eficiencia de Cartera (Volumen formalizado vs. RORWA Neto y cumplimiento del Hurdle Rate de 2,50%).
+   - Slide 5: Diagnóstico de Fricción Digital (Latencia API, abandono por pantalla y migración hacia gestor híbrido).
+   - Slide 6: Seguimiento de Calidad Crediticia y Admisión (Tasa STP, cosechas de mora y distribución Stage 1, 2 y 3 IFRS 9).
+   - Slide 7: Hoja de Ruta Trimestral (Quick Wins en App/Web y campañas de Preconcedidos) con impacto estimado en Margen Neto (M€).</pre>
+          </div>
+
+          <div class="prompt-block-wrapper m365-version">
+            <div class="prompt-block-header">
+              <h4 class="prompt-block-title">🎯 M365 PowerPoint Prompt #2: Reescritura de Diapositiva Actual a Formato Bento + Guion de Defensa ante Comité</h4>
+              <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Prompt Reescritura + Defensa</button>
+            </div>
+            <pre class="copyable-prompt-pre">Reestructura la diapositiva activa siguiendo el estándar de consultoría estratégica Tier-1:
+1. Sustituye el título actual por un Action Title de máximo 18 palabras que incluya el verbo de impacto, la métrica clave y la variación en porcentaje o puntos básicos (bps).
+2. Elimina los párrafos largos y sintetiza el contenido en una tabla ejecutiva de 3 columnas: [Palanca Comercial / Canal] | [Métrica Actual vs. Objetivo] | [Impacto en RORWA / Margen Neto (M€)].
+3. En las Notas del Orador (Speaker Notes) de esta diapositiva, escribe:
+   - Un guion de intervención de 45 segundos enfocado en la decisión de negocio.
+   - Las 2 preguntas más difíciles que formularán el Director de Riesgos (CRO) y el Director Financiero (CFO) sobre estos datos, seguidas de su respuesta cuantitativa blindada.</pre>
+          </div>
+
+          <!-- PLANTILLA MAESTRA #4: GENERADOR AUTOMÁTICO DE POWERPOINT CON PYTHON-PPTX -->
+          <div class="prompt-block-wrapper pro-version">
+            <div class="prompt-block-header">
+              <h4 class="prompt-block-title">🏛️ Plantilla Maestra #4 (`python-pptx`): Generador Automático de Presentaciones Ejecutivas 16:9 desde VS Code / Databricks</h4>
+              <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Script `python-pptx` Completo</button>
+            </div>
+            <p style="font-size: 0.82rem; color: var(--text-secondary);">
+              Cuando quieres que tus datos de Python o Databricks generen directamente un archivo <code>.pptx</code> panorámico con estética oscura de estudio, tarjetas Bento, Action Title, tabla ejecutiva y gráfico nativo editable en PowerPoint sin tocar el ratón (`pip install python-pptx`):
+            </p>
+            <pre class="copyable-prompt-pre">from pptx import Presentation
+from pptx.util import Inches, Pt
+from pptx.dml.color import RGBColor
+from pptx.enum.text import PP_ALIGN
+from pptx.enum.shapes import MSO_SHAPE
+from pptx.chart.data import CategoryChartData
+from pptx.enum.chart import XL_CHART_TYPE
+
+def build_executive_committee_pptx(filename="Comite_Commercial_Digital_Q4.pptx"):
+    prs = Presentation()
+    # 1. Configurar lienzo panorámico 16:9 Widescreen (13.333 x 7.5 pulgadas)
+    prs.slide_width = Inches(13.333)
+    prs.slide_height = Inches(7.5)
+    blank_layout = prs.slide_layouts[6]
+    slide = prs.slides.add_slide(blank_layout)
+
+    # 2. Fondo Oscuro Institucional (#070B14)
+    bg = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, 0, 0, prs.slide_width, prs.slide_height)
+    bg.fill.solid()
+    bg.fill.fore_color.rgb = RGBColor(7, 11, 20)
+    bg.line.fill.background()
+
+    # 3. Kicker + Action Title Cuantitativo (Pirámide de Minto)
+    tb_kicker = slide.shapes.add_textbox(Inches(0.6), Inches(0.35), Inches(12.1), Inches(0.35))
+    p_k = tb_kicker.text_frame.paragraphs[0]
+    p_k.text = "COMITÉ DE DIRECCIÓN COMERCIAL & CANALES DIGITALES (WEB / APP) • Q4 2026"
+    p_k.font.name = "Segoe UI"
+    p_k.font.size = Pt(10)
+    p_k.font.bold = True
+    p_k.font.color.rgb = RGBColor(56, 189, 248)
+
+    tb_title = slide.shapes.add_textbox(Inches(0.6), Inches(0.65), Inches(12.1), Inches(0.85))
+    tf_t = tb_title.text_frame
+    tf_t.word_wrap = True
+    p_t = tf_t.paragraphs[0]
+    p_t.text = "El canal App impulsa el 64% de la contratación digital y eleva el RORWA de cartera +38 bps hasta el 3,30% (+20,5 M€ EVA)"
+    p_t.font.name = "Segoe UI"
+    p_t.font.size = Pt(20)
+    p_t.font.bold = True
+    p_t.font.color.rgb = RGBColor(248, 250, 252)
+
+    # 4. Fila de 4 Tarjetas KPI Bento Grid
+    kpis = [
+        ("SESIONES DIGITALES ACTIVAS", "585.000", "▲ +16,4% YoY · Conversión 17,2%", RGBColor(6, 182, 212)),
+        ("VOLUMEN FORMALIZADO DIGITAL", "2.850 M€", "Aprobación Automática STP: 74%", RGBColor(99, 102, 241)),
+        ("RORWA PONDERADO CARTERA", "3,30%", "+80 bps s/ Hurdle Rate (2,50%)", RGBColor(16, 185, 129)),
+        ("MARGEN NETO CREADO (EVA)", "+36,3 M€", "Mora NPL contenida en 1,62%", RGBColor(56, 189, 248)),
+    ]
+
+    for idx, (label, val, sub, accent_rgb) in enumerate(kpis):
+        left = Inches(0.6 + idx * 3.08)
+        card = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, left, Inches(1.55), Inches(2.92), Inches(1.35))
+        card.fill.solid()
+        card.fill.fore_color.rgb = RGBColor(15, 23, 42)
+        card.line.color.rgb = accent_rgb
+        card.line.width = Pt(1.2)
+
+        tf = card.text_frame
+        tf.word_wrap = True
+        p0 = tf.paragraphs[0]
+        p0.text = label
+        p0.font.size = Pt(8.5)
+        p0.font.bold = True
+        p0.font.color.rgb = RGBColor(148, 163, 184)
+
+        p1 = tf.add_paragraph()
+        p1.text = val
+        p1.font.size = Pt(22)
+        p1.font.bold = True
+        p1.font.color.rgb = RGBColor(255, 255, 255)
+
+        p2 = tf.add_paragraph()
+        p2.text = sub
+        p2.font.size = Pt(9)
+        p2.font.color.rgb = accent_rgb
+
+    # 5. Gráfico Nativo Editable de PowerPoint (Izquierda: Volumen y RORWA por Producto)
+    chart_data = CategoryChartData()
+    chart_data.categories = ["Preconcedidos App", "Circulante Web", "Confirming B2B", "Líneas ESG", "Onboarding TPV"]
+    chart_data.add_series("Volumen Formalizado (M€)", (540, 680, 610, 410, 320))
+    chart_frame = slide.shapes.add_chart(
+        XL_CHART_TYPE.COLUMN_CLUSTERED, Inches(0.6), Inches(3.15), Inches(6.2), Inches(3.6), chart_data
+    )
+    chart = chart_frame.chart
+    chart.has_legend = False
+
+    # 6. Tabla Ejecutiva de Desglose de Rentabilidad y Riesgo (Derecha)
+    rows_data = [
+        ["Línea Comercial / Canal", "Conv. %", "STP %", "RORWA", "NPL %"],
+        ["Preconcedidos (App Móvil)", "18,4%", "78%", "3,55%", "2,15%"],
+        ["Circulante Empresas (Web)", "14,2%", "64%", "2,95%", "1,10%"],
+        ["Confirming Portal B2B", "22,8%", "84%", "2,68%", "0,82%"],
+        ["Líneas Avaladas ESG (Web)", "16,5%", "71%", "3,22%", "1,32%"],
+        ["Onboarding TPV (App Móvil)", "11,6%", "59%", "4,10%", "3,05%"]
+    ]
+    table_shape = slide.shapes.add_table(len(rows_data), 5, Inches(7.05), Inches(3.25), Inches(5.68), Inches(3.4))
+    table = table_shape.table
+    for r_idx, r_vals in enumerate(rows_data):
+        for c_idx, val in enumerate(r_vals):
+            cell = table.cell(r_idx, c_idx)
+            cell.text = val
+            cell.fill.solid()
+            cell.fill.fore_color.rgb = RGBColor(30, 41, 59) if r_idx == 0 else RGBColor(15, 23, 42)
+            p = cell.text_frame.paragraphs[0]
+            p.font.name = "Segoe UI"
+            p.font.size = Pt(9.5)
+            p.font.bold = (r_idx == 0 or c_idx == 3)
+            p.font.color.rgb = RGBColor(110, 231, 183) if (r_idx > 0 and c_idx == 3) else RGBColor(241, 245, 249)
+            p.alignment = PP_ALIGN.LEFT if c_idx == 0 else PP_ALIGN.RIGHT
+
+    # 7. Notas del Orador Automáticas para Defensa en Comité
+    notes_slide = slide.notes_slide
+    notes_slide.notes_text_frame.text = (
+        "GUION DE DEFENSA EN COMITÉ (45s):\n"
+        "1. La migración de originación hacia Preconcedidos App y Confirming B2B ha elevado el RORWA en +38 bps.\n"
+        "2. DEFENSA CRO (Riesgos): Aunque TPV App presenta un NPL del 3,05%, su pricing compensa con un RORWA neto del 4,10%.\n"
+        "3. DECISIÓN SOLICITADA: Aprobar conector automático CIRBE/AEAT en Web Empresas para reducir abandono documental."
+    )
+
+    prs.save(filename)
+
+if __name__ == "__main__":
+    build_executive_committee_pptx()</pre>
           </div>
 
           <!-- FLUJO EN 2 TURNOS PARA M365 COPILOT CHAT / AGENT BUILDER -->
@@ -1620,32 +2507,32 @@ Mantén intacta la parte de PySpark y `window.REPORT_DATA` del turno anterior. R
       </section>
 
       <!-- =====================================================================
-           SECCIÓN 06: DICCIONARIO VISUAL DE 24 TÉRMINOS (DIGITAL, COMMERCIAL, RENTABILIDAD Y RIESGO)
+           SECCIÓN 06: DICCIONARIO VISUAL DE 44 TÉRMINOS (DIGITAL, COMMERCIAL, CIRCULANTE, RENTABILIDAD Y RIESGO)
            ===================================================================== -->
       <section id="diccionario-visual-commercial" class="transcript-section" data-tab-group="glossary-dict">
         <div class="section-header">
           <span class="section-number">06</span>
-          <h2 class="section-title">Diccionario Visual Interactivo: 24 Términos de Canales Digitales (Web/App), Banca Comercial, Rentabilidad y Riesgo</h2>
+          <h2 class="section-title">Diccionario Visual Interactivo (44 Términos): Canales Digitales, Banca Comercial, Circulante, Trade Finance, Pricing y Riesgo</h2>
         </div>
         <div class="section-divider"></div>
         <div class="transcript-text">
           <p class="editorial-lead">
-            Esta referencia interactiva conecta cada métrica de negocio con su <strong>definición ejecutiva</strong>, su <strong>fórmula matemática</strong>, un <strong>caso real en Banca Comercial / Canales Digitales</strong> y el <strong>componente gráfico exacto</strong> que debes pedirle a tu agente para representarla con rigor ante un comité.
+            Esta enciclopedia visual interactiva reúne <strong>44 términos clave de Banca de Empresas, Pymes, Negocios, Canales Digitales, Rentabilidad (P&amp;L) y Riesgo de Crédito</strong>. Cada tarjeta incluye su <strong>definición ejecutiva</strong>, su <strong>fórmula matemática exacta</strong>, un <strong>caso real en Banca Comercial</strong>, el <strong>componente gráfico ideal con su previsualización SVG</strong> y un botón directo para <strong>copiar el prompt específico de ese KPI</strong>.
           </p>
 
           <!-- Buscador y Filtros del Diccionario Visual -->
           <div class="glossary-filter-bar">
-            <input type="text" id="dict-search-input" class="glossary-search-input" placeholder="🔍 Buscar término, sigla o gráfico (ej. Markov, Sankey, RORWA, LTV, STP, Drop-off, IFRS 9)..." oninput="filterDictionaryCards()">
+            <input type="text" id="dict-search-input" class="glossary-search-input" placeholder="🔍 Buscar entre 44 términos (ej. Factoring, Confirming, Descuento, Aval, TPV, MDR, Cash Pooling, FTP, NIM, RAROC, RORWA, Cure Rate, CET1)..." oninput="filterDictionaryCards()">
             <div class="glossary-cat-pills">
-              <button type="button" class="glossary-cat-btn active" onclick="setDictCategory('all', this)">Todos (24)</button>
+              <button type="button" class="glossary-cat-btn active" onclick="setDictCategory('all', this)">Todos (44)</button>
               <button type="button" class="glossary-cat-btn" onclick="setDictCategory('digital', this)">📱 A. Canales Digitales Web/App (7)</button>
-              <button type="button" class="glossary-cat-btn" onclick="setDictCategory('commercial', this)">🚀 B. Commercial & Cliente (7)</button>
-              <button type="button" class="glossary-cat-btn" onclick="setDictCategory('profit', this)">💎 C. Rentabilidad & P&amp;L (5)</button>
-              <button type="button" class="glossary-cat-btn" onclick="setDictCategory('risk', this)">🛡️ D. Riesgo &amp; Admisión STP (5)</button>
+              <button type="button" class="glossary-cat-btn" onclick="setDictCategory('commercial', this)">🚀 B. Commercial, Circulante &amp; Trade (17)</button>
+              <button type="button" class="glossary-cat-btn" onclick="setDictCategory('profit', this)">💎 C. Rentabilidad, Pricing &amp; P&amp;L (10)</button>
+              <button type="button" class="glossary-cat-btn" onclick="setDictCategory('risk', this)">🛡️ D. Riesgo, Admisión STP &amp; Capital (10)</button>
             </div>
           </div>
 
-          <!-- Contenedor de las 24 Tarjetas con Mini-Gráficos SVG -->
+          <!-- Contenedor de las 44 Tarjetas con Mini-Gráficos SVG y Botón Copiar Prompt -->
           <div id="metrics-vault-container" class="metrics-vault-grid"></div>
         </div>
       </section>
@@ -1667,7 +2554,7 @@ Mantén intacta la parte de PySpark y `window.REPORT_DATA` del turno anterior. R
   <button class="back-to-top" aria-label="Volver arriba">↑</button>
 
   <!-- =========================================================================
-       MOTOR JAVASCRIPT DEL CUADERNO 09 (CONSOLAS ECHARTS, 3D SURFACE Y GLOSARIO)
+       MOTOR JAVASCRIPT DEL CUADERNO 09 (CONSOLAS ECHARTS, 3D SURFACE, WAR ROOM Y GLOSARIO)
        ========================================================================= -->
   <script>
     // 1. Conmutador de Pestañas Superiores del Cuaderno
@@ -1685,6 +2572,7 @@ Mantén intacta la parte de PySpark y `window.REPORT_DATA` del turno anterior. R
       setTimeout(() => {
         if (window.demoMainChart) window.demoMainChart.resize();
         if (window.demoRadarChart) window.demoRadarChart.resize();
+        if (window.wrChart) window.wrChart.resize();
         drawTopographicSurface3D();
       }, 60);
     }
@@ -2214,7 +3102,242 @@ Mantén intacta la parte de PySpark y `window.REPORT_DATA` del turno anterior. R
       });
     })();
 
-    // 6. Base de Datos Completa de los 24 Términos del Diccionario Visual (Sección 06)
+    // 5B. Motor Interactivo de la Consola #3: Commercial Deal Desk & Pricing War Room (Sección 02.3)
+    const WAR_ROOM_DEALS = [
+      { id: 0, client: 'Grupo Industrial Norte S.A.', prod: 'Línea Confirming Internacional + Divisa', seg: 'Corporate', ead: 18.5, baseSpread: 245, pd: 0.72, rwaDens: 42, stp: 'Aprobado STP', cov: 'Aval CESCE 70% + Cash Pooling' },
+      { id: 1, client: 'Logística Ibérica & Frío S.L.', prod: 'Leasing Flota Sostenible (ESG Green)', seg: 'Mid-Market', ead: 11.2, baseSpread: 265, pd: 1.05, rwaDens: 38, stp: 'Aprobado STP', cov: 'Reserva de Dominio + Garantía FEI' },
+      { id: 2, client: 'Agroexportadora Levante S.A.', prod: 'Factoring Sin Recurso Exportación', seg: 'Mid-Market', ead: 8.4, baseSpread: 230, pd: 0.90, rwaDens: 46, stp: 'Aprobado STP', cov: 'Seguro de Crédito Comercial' },
+      { id: 3, client: 'Distribuciones Horeca Centro', prod: 'Póliza Crédito Digital + TPV Adquirencia', seg: 'Pymes', ead: 4.8, baseSpread: 310, pd: 1.65, rwaDens: 55, stp: 'Sanción Gestor', cov: 'Aval ICO 80% + Facturación TPV' },
+      { id: 4, client: 'Tecnologías Cloud B2B S.L.', prod: 'Descuento Comercial + Nóminas App', seg: 'Pymes', ead: 3.6, baseSpread: 285, pd: 1.25, rwaDens: 48, stp: 'Aprobado STP', cov: 'Domiciliación Recibos B2B' }
+    ];
+
+    let wrCurrentView = 'waterfall';
+
+    function setWarRoomView(v) {
+      wrCurrentView = v;
+      ['waterfall', 'parallel', 'sunburst'].forEach(k => {
+        const b = document.getElementById('wr-view-' + k);
+        if (!b) return;
+        const active = (k === v);
+        b.style.background = active ? '#10b981' : 'transparent';
+        b.style.color = active ? '#05070e' : '#94a3b8';
+        b.style.fontWeight = active ? '700' : '500';
+      });
+      updateWarRoom();
+    }
+
+    function updateWarRoom() {
+      const spreadEl = document.getElementById('wr-spread-sl');
+      if (!spreadEl) return;
+      const spreadBps = parseInt(spreadEl.value, 10);
+      const ftpBps = parseInt(document.getElementById('wr-ftp-sl').value, 10);
+      const feeBps = parseInt(document.getElementById('wr-fee-sl').value, 10);
+      const lgdPct = parseInt(document.getElementById('wr-lgd-sl').value, 10);
+
+      document.getElementById('wr-spread-lbl').textContent = '+' + spreadBps + ' bps';
+      document.getElementById('wr-ftp-lbl').textContent = '-' + ftpBps + ' bps';
+      document.getElementById('wr-fee-lbl').textContent = '+' + feeBps + ' bps';
+      document.getElementById('wr-lgd-lbl').textContent = 'LGD ' + lgdPct + '%';
+
+      const portfolioVol = 1000; // 1.000 M€ cartera de referencia
+      const grossInt = +(portfolioVol * ((spreadBps + 120) / 10000)).toFixed(1);
+      const ftpCost = +(portfolioVol * (ftpBps / 10000)).toFixed(1);
+      const feeInc = +(portfolioVol * (feeBps / 10000)).toFixed(1);
+      const opexCost = 6.2;
+      const elCost = +(portfolioVol * (0.0115 * (lgdPct / 100))).toFixed(1);
+      const capCharge = +(portfolioVol * 0.45 * (lgdPct / 38) * 0.025).toFixed(1);
+      const netEva = +(grossInt - ftpCost + feeInc - opexCost - elCost - capCharge).toFixed(1);
+
+      const evaPill = document.getElementById('wr-eva-pill');
+      if (evaPill) {
+        evaPill.textContent = `EVA Neto: ${netEva >= 0 ? '+' : ''}${netEva.toLocaleString('es-ES')} M€`;
+        evaPill.style.color = netEva >= 0 ? '#6ee7b7' : '#fda4af';
+      }
+
+      // Poblar tabla interactiva de expedientes
+      const tbody = document.getElementById('wr-deals-tbody');
+      if (tbody) {
+        tbody.innerHTML = WAR_ROOM_DEALS.map(d => {
+          const dealRaroc = Math.max(4.5, ((d.baseSpread + (spreadBps - 240) - ftpBps + feeBps - (d.pd * lgdPct)) / (d.rwaDens * 0.08)) * 0.72);
+          const col = dealRaroc >= 15 ? '#34d399' : (dealRaroc >= 11 ? '#67e8f9' : '#fbbf24');
+          return `
+            <tr onclick="openDealDrawer(${d.id})" style="cursor:pointer; border-bottom: 1px solid rgba(255,255,255,0.06); transition: background 150ms;" onmouseover="this.style.background='rgba(99,102,241,0.16)'" onmouseout="this.style.background='transparent'">
+              <td style="padding: 0.48rem 0.25rem;">
+                <div style="font-weight: 700; color: #f8fafc;">${d.client}</div>
+                <div style="font-size: 0.66rem; color: #94a3b8;">${d.prod}</div>
+              </td>
+              <td style="padding: 0.48rem 0.25rem; text-align: right; color: #cbd5e1;" class="tabular-mono">${d.ead.toFixed(1)}M€</td>
+              <td style="padding: 0.48rem 0.25rem; text-align: right; font-weight: 700; color: ${col};" class="tabular-mono">${dealRaroc.toFixed(1)}%</td>
+              <td style="padding: 0.48rem 0.25rem; text-align: right;"><span style="font-size: 0.66rem; padding: 0.15rem 0.45rem; border-radius: 4px; background: rgba(6,182,212,0.16); color: #67e8f9;">Ficha →</span></td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      if (!window.echarts) return;
+      const chartDom = document.getElementById('wr-main-echarts');
+      if (!chartDom) return;
+      if (!window.wrChart) window.wrChart = echarts.init(chartDom);
+
+      const titleEl = document.getElementById('wr-chart-title');
+      const subEl = document.getElementById('wr-chart-sub');
+
+      if (wrCurrentView === 'waterfall') {
+        titleEl.textContent = '1. PUENTE DE CREACIÓN DE VALOR P&L (WATERFALL EVA EN M€)';
+        subEl.textContent = 'Descomposición desde Ingresos por Intereses y FTP hasta Pérdida Esperada y EVA Neto';
+        const s1 = grossInt;
+        const s2 = +(s1 - ftpCost).toFixed(1);
+        const s3 = +(s2 + feeInc).toFixed(1);
+        const s4 = +(s3 - opexCost).toFixed(1);
+        const s5 = +(s4 - elCost).toFixed(1);
+        window.wrChart.setOption({
+          tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' }, backgroundColor: 'rgba(9,13,22,0.92)', textStyle: { color: '#fff' } },
+          grid: { top: 28, right: 20, bottom: 42, left: 48 },
+          xAxis: { type: 'category', data: ['Ingresos Int.', 'Coste FTP', 'Fees Cross-Sell', 'OPEX Canal', 'Pérdida Esp.', 'Coste Capital', 'EVA NETO'], axisLabel: { color: '#cbd5e1', fontSize: 10, interval: 0 } },
+          yAxis: { type: 'value', name: 'M€', splitLine: { lineStyle: { color: 'rgba(255,255,255,0.06)' } }, axisLabel: { color: '#94a3b8' } },
+          series: [
+            {
+              type: 'bar', stack: 'wf', silent: true,
+              itemStyle: { borderColor: 'transparent', color: 'transparent' },
+              data: [0, s2, s2, s4, s5, Math.max(0, netEva), 0]
+            },
+            {
+              name: 'Impacto P&L', type: 'bar', stack: 'wf', barWidth: '52%',
+              label: { show: true, position: 'top', color: '#f8fafc', fontSize: 10, formatter: p => p.value + 'M' },
+              data: [
+                { value: grossInt, itemStyle: { color: '#06b6d4', borderRadius: [5,5,0,0] } },
+                { value: ftpCost, itemStyle: { color: '#f59e0b', borderRadius: [0,0,5,5] } },
+                { value: feeInc, itemStyle: { color: '#10b981', borderRadius: [5,5,0,0] } },
+                { value: opexCost, itemStyle: { color: '#f43f5e', borderRadius: [0,0,5,5] } },
+                { value: elCost, itemStyle: { color: '#ec4899', borderRadius: [0,0,5,5] } },
+                { value: capCharge, itemStyle: { color: '#8b5cf6', borderRadius: [0,0,5,5] } },
+                { value: netEva, itemStyle: { color: netEva >= 0 ? '#10b981' : '#f43f5e', borderRadius: [5,5,0,0] } }
+              ]
+            }
+          ]
+        }, true);
+      } else if (wrCurrentView === 'parallel') {
+        titleEl.textContent = '2. COORDENADAS PARALELAS MULTICRITERIO (6 EJES DE BANCABILIDAD)';
+        subEl.textContent = 'Comparativa simultánea de Spread, Vinculación, PD, LGD, Densidad RWA y RAROC por operación';
+        window.wrChart.setOption({
+          parallelAxis: [
+            { dim: 0, name: 'EAD (M€)', min: 0, max: 22 },
+            { dim: 1, name: 'Spread (bps)', min: 150, max: 400 },
+            { dim: 2, name: 'Fees (bps)', min: 20, max: 150 },
+            { dim: 3, name: 'PD (%)', min: 0.4, max: 2.2 },
+            { dim: 4, name: 'LGD (%)', min: 10, max: 70 },
+            { dim: 5, name: 'RAROC (%)', min: 8, max: 28 }
+          ],
+          parallel: { left: 45, right: 45, top: 38, bottom: 25, parallelAxisDefault: { nameTextStyle: { color: '#94a3b8', fontSize: 10 }, axisLine: { lineStyle: { color: 'rgba(255,255,255,0.2)' } }, axisLabel: { color: '#cbd5e1', fontSize: 9 } } },
+          series: [{
+            type: 'parallel', lineStyle: { width: 3, opacity: 0.85, color: '#06b6d4' },
+            data: WAR_ROOM_DEALS.map(d => [
+              d.ead,
+              d.baseSpread + (spreadBps - 240),
+              feeBps,
+              d.pd,
+              lgdPct,
+              Number((((d.baseSpread + (spreadBps - 240) - ftpBps + feeBps - (d.pd * lgdPct)) / (d.rwaDens * 0.08)) * 0.72).toFixed(1))
+            ])
+          }]
+        }, true);
+      } else {
+        titleEl.textContent = '3. ANILLO JERÁRQUICO SUNBURST DE CARTERA COMMERCIAL BANKING';
+        subEl.textContent = 'Distribución de volumen por Segmento (Corporate / Mid-Market / Pymes) y Familia de Producto';
+        window.wrChart.setOption({
+          tooltip: { trigger: 'item', formatter: '{b}: {c} M€' },
+          series: [{
+            type: 'sunburst', radius: ['18%', '88%'],
+            label: { rotate: 'radial', color: '#fff', fontSize: 10 },
+            itemStyle: { borderColor: '#05070e', borderWidth: 2, borderRadius: 5 },
+            data: [
+              {
+                name: 'Corporate', itemStyle: { color: '#6366f1' },
+                children: [
+                  { name: 'Confirming B2B', value: 280, itemStyle: { color: '#818cf8' } },
+                  { name: 'Trade & Avales', value: 190, itemStyle: { color: '#4f46e5' } }
+                ]
+              },
+              {
+                name: 'Mid-Market', itemStyle: { color: '#06b6d4' },
+                children: [
+                  { name: 'Factoring s/Rec', value: 220, itemStyle: { color: '#22d3ee' } },
+                  { name: 'Leasing ESG', value: 165, itemStyle: { color: '#0891b2' } }
+                ]
+              },
+              {
+                name: 'Pymes & Neg.', itemStyle: { color: '#10b981' },
+                children: [
+                  { name: 'Preconcedidos App', value: 260, itemStyle: { color: '#34d399' } },
+                  { name: 'Adquirencia TPV', value: 185, itemStyle: { color: '#059669' } }
+                ]
+              }
+            ]
+          }]
+        }, true);
+      }
+    }
+
+    function openDealDrawer(idx) {
+      const d = WAR_ROOM_DEALS[idx] || WAR_ROOM_DEALS[0];
+      const drawer = document.getElementById('wr-slide-drawer');
+      if (!drawer) return;
+      const spreadBps = parseInt(document.getElementById('wr-spread-sl')?.value || 240, 10);
+      const ftpBps = parseInt(document.getElementById('wr-ftp-sl')?.value || 85, 10);
+      const feeBps = parseInt(document.getElementById('wr-fee-sl')?.value || 65, 10);
+      const lgdPct = parseInt(document.getElementById('wr-lgd-sl')?.value || 35, 10);
+      const dealRaroc = Math.max(4.5, ((d.baseSpread + (spreadBps - 240) - ftpBps + feeBps - (d.pd * lgdPct)) / (d.rwaDens * 0.08)) * 0.72);
+
+      document.getElementById('drw-tag').textContent = `${d.seg.toUpperCase()} • ${d.stp.toUpperCase()}`;
+      document.getElementById('drw-title').textContent = d.client;
+      document.getElementById('drw-body').innerHTML = `
+        <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0.7rem;">
+          <div style="font-size: 0.68rem; color: #94a3b8; text-transform: uppercase;">Estructura Comercial Solicitada</div>
+          <div style="font-weight: 700; color: #f8fafc; margin-top: 0.15rem;">${d.prod}</div>
+          <div style="font-size: 0.72rem; color: #67e8f9; margin-top: 0.25rem;">Mitigante / Garantía: ${d.cov}</div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.55rem;">
+          <div style="background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); border-radius: 8px; padding: 0.55rem;">
+            <div style="font-size: 0.65rem; color: #a7f3d0;">RAROC Operación</div>
+            <div class="tabular-mono" style="font-size: 1.15rem; font-weight: 800; color: #34d399;">${dealRaroc.toFixed(1)}%</div>
+          </div>
+          <div style="background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.3); border-radius: 8px; padding: 0.55rem;">
+            <div style="font-size: 0.65rem; color: #c7d2fe;">Exposición (EAD)</div>
+            <div class="tabular-mono" style="font-size: 1.15rem; font-weight: 800; color: #e2e8f0;">${d.ead.toFixed(1)} M€</div>
+          </div>
+        </div>
+        <div style="font-size: 0.74rem; line-height: 1.5; background: rgba(0,0,0,0.35); border-radius: 8px; padding: 0.65rem; border: 1px solid rgba(255,255,255,0.06);">
+          <div>• <strong>Spread Cliente Aplicado:</strong> <span class="tabular-mono">+${d.baseSpread + (spreadBps - 240)} bps</span> (FTP: <span class="tabular-mono">-${ftpBps} bps</span>)</div>
+          <div>• <strong>Ingresos Cross-Sell (TPV/Nóminas/FX):</strong> <span class="tabular-mono">+${feeBps} bps</span></div>
+          <div>• <strong>Parámetros IFRS 9:</strong> PD <span class="tabular-mono">${d.pd.toFixed(2)}%</span> · LGD <span class="tabular-mono">${lgdPct}%</span> · Densidad RWA <span class="tabular-mono">${d.rwaDens}%</span></div>
+        </div>
+      `;
+      drawer.style.transform = 'translateX(0)';
+    }
+
+    function closeDealDrawer() {
+      const drawer = document.getElementById('wr-slide-drawer');
+      if (drawer) drawer.style.transform = 'translateX(105%)';
+    }
+
+    function toggleWarRoomCmdPalette() {
+      const modal = document.getElementById('wr-cmd-modal');
+      if (!modal) return;
+      modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
+    }
+
+    window.addEventListener('keydown', e => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        toggleWarRoomCmdPalette();
+      } else if (e.key === 'Escape') {
+        const modal = document.getElementById('wr-cmd-modal');
+        if (modal && modal.style.display === 'flex') modal.style.display = 'none';
+        closeDealDrawer();
+      }
+    });
+
+    // 6. Base de Datos Completa de los 44 Términos del Diccionario Visual (Sección 06)
     const DICTIONARY_TERMS = [
       // BLOQUE A: CANALES DIGITALES (WEB & APP COMMERCIAL)
       {
@@ -2439,10 +3562,208 @@ Mantén intacta la parte de PySpark y `window.REPORT_DATA` del turno anterior. R
         example: "Una línea con aval público computa con densidad RWA del 20%, mientras que un crédito sin garantía a pyme computa al 75%-85%.",
         chartType: "Barras Comparativas de Densidad RWA / Consumo de Capital",
         svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><rect x="14" y="10" width="180" height="10" fill="rgba(255,255,255,0.08)" rx="2"/><rect x="14" y="10" width="45" height="10" fill="#10b981" rx="2"/><rect x="14" y="28" width="180" height="10" fill="rgba(255,255,255,0.08)" rx="2"/><rect x="14" y="28" width="142" height="10" fill="#6366f1" rx="2"/></svg>`
+      },
+      // NUEVOS 20 TÉRMINOS AVANZADOS DE BANCA COMERCIAL, CIRCULANTE, TRADE FINANCE, PRICING Y RIESGO (#25 AL #44)
+      {
+        num: "25", cat: "commercial", catLabel: "Commercial, Circulante & Trade",
+        title: "Factoring (Con Recurso vs. Sin Recurso) & Cesión de Facturas",
+        def: "Financiación de circulante mediante la cesión de cartera de clientes (deudores comerciales). En la modalidad Sin Recurso, el banco asume el riesgo de insolvencia del deudor final y permite dar de baja el activo del balance de la empresa.",
+        formula: "Rendimiento Efectivo Factoring = (Interés Anticipo + Comisión Cesión) / Saldo Medio Dispuesto",
+        example: "Digitalizar la subida de remesas XML/Facturae en la Web de Empresas elevó la rotación de líneas de Factoring Sin Recurso un +28% y redujo la densidad RWA al evaluar al gran pagador.",
+        chartType: "Barras Apiladas (Con Recurso vs. Sin Recurso) + Línea de Rotación DSO",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><rect x="20" y="22" width="28" height="24" fill="#06b6d4"/><rect x="20" y="10" width="28" height="12" fill="#10b981"/><rect x="90" y="18" width="28" height="28" fill="#06b6d4"/><rect x="90" y="6" width="28" height="12" fill="#10b981"/><rect x="160" y="14" width="28" height="32" fill="#06b6d4"/><rect x="160" y="4" width="28" height="10" fill="#10b981"/></svg>`
+      },
+      {
+        num: "26", cat: "commercial", catLabel: "Commercial, Circulante & Trade",
+        title: "Confirming / Reverse Factoring & Pronto Pago Proveedores",
+        def: "Servicio de gestión de pagos donde la empresa ordenante remite sus facturas confirmadas al banco y sus proveedores pueden elegir anticipar el cobro digitalmente en 1 clic sin consumir su propio CIRBE.",
+        formula: "Tasa de Penetración Pronto Pago (%) = Facturas Anticipadas por Proveedores / Total Pagos Confirmados",
+        example: "Activar notificaciones automáticas por email/App al proveedor con 1 clic de anticipo elevó la tasa de pronto pago del 31% al 54%, generando +190 bps de spread sin coste de adquisición.",
+        chartType: "Diagrama Aluvial: Empresa Cedente → Pool Confirming → Proveedores que Anticipan",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><rect x="10" y="10" width="12" height="34" fill="#6366f1" rx="2"/><rect x="102" y="10" width="12" height="34" fill="#06b6d4" rx="2"/><rect x="196" y="8" width="12" height="20" fill="#10b981" rx="2"/><rect x="196" y="32" width="12" height="14" fill="#64748b" rx="2"/><path d="M22 27 L 102 27" stroke="#06b6d4" stroke-width="16" stroke-opacity="0.35"/><path d="M114 20 L 196 18" stroke="#10b981" stroke-width="11" stroke-opacity="0.45"/><path d="M114 34 L 196 39" stroke="#64748b" stroke-width="7" stroke-opacity="0.35"/></svg>`
+      },
+      {
+        num: "27", cat: "commercial", catLabel: "Commercial, Circulante & Trade",
+        title: "Descuento Comercial (Pagarés, Letras y Recibos SEPA Core/B2B)",
+        def: "Anticipo del importe de efectos comerciales no vencidos (pagarés a la orden/no a la orden y adeudos directos SEPA Norma 19.14 Core o 19.44 B2B) descontando intereses y timbres.",
+        formula: "Líquido Abonado = Nominal Efecto - [ (Nominal × TIN × Días Vencimiento) / 360 ] - Comisiones/Timbres",
+        example: "El módulo de captura fotográfica de pagarés por App Móvil y envío de remesas SEPA B2B (que impide devoluciones arbitrarias del librado) redujo los impagados un 42%.",
+        chartType: "Histograma de Vencimientos (30 / 60 / 90 / 120 Días) + Tasa de Devolución",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><rect x="18" y="18" width="32" height="30" fill="#6366f1" rx="2"/><rect x="68" y="8" width="32" height="40" fill="#06b6d4" rx="2"/><rect x="118" y="14" width="32" height="34" fill="#10b981" rx="2"/><rect x="168" y="28" width="32" height="20" fill="#f59e0b" rx="2"/></svg>`
+      },
+      {
+        num: "28", cat: "commercial", catLabel: "Commercial, Circulante & Trade",
+        title: "Trade Finance: Crédito Documentario (L/C), Remesas & Financiación Import/Export",
+        def: "Instrumentos de comercio exterior donde el banco emisor garantiza el pago al exportador contra presentación de documentos conformes (conocimiento de embarque B/L, factura comercial, packing list).",
+        formula: "Rentabilidad Trade = Comisiones de Apertura/Confirmación + Margen Financiación Divisa (Post-financiación)",
+        example: "El portal digital de seguimiento de Créditos Documentarios (L/C Tracking) con validación documental asistida por IA redujo las discrepancias documentales del 48% al 15%.",
+        chartType: "Grafo de Corredores Internacionales + Barras de Comisiones y Spread FX",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><path d="M20 40 Q 110 -5, 200 40" fill="none" stroke="#06b6d4" stroke-width="2"/><path d="M40 42 Q 110 12, 180 42" fill="none" stroke="#10b981" stroke-width="1.6" stroke-dasharray="3,2"/><circle cx="20" cy="40" r="5" fill="#6366f1"/><circle cx="110" cy="18" r="5" fill="#06b6d4"/><circle cx="200" cy="40" r="5" fill="#10b981"/></svg>`
+      },
+      {
+        num: "29", cat: "commercial", catLabel: "Commercial, Circulante & Trade",
+        title: "Leasing Financiero (Arrendamiento con Opción de Compra) & Renting Operativo",
+        def: "Financiación a medio/largo plazo de bienes de equipo, naves industriales o flotas de vehículos. El Leasing permite amortización fiscal acelerada y tiene menor LGD por la reserva de dominio sobre el bien.",
+        formula: "RORWA Leasing = Margen Neto / [ EAD × Ponderación Reducida por Garantía Real Mobiliaria/Inmobiliaria ]",
+        example: "Integrar un cotizador instantáneo de Leasing de maquinaria en la Web de Empresas con firma digital con proveedor (Vendor Finance) duplicó la originación trimestral.",
+        chartType: "Comparativa de Cuota, Valor Residual y Consumo de Capital (Leasing vs. Préstamo)",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><rect x="20" y="12" width="75" height="12" fill="#10b981" rx="2"/><rect x="20" y="30" width="125" height="12" fill="#6366f1" rx="2"/><circle cx="175" cy="27" r="14" fill="rgba(6,182,212,0.25)" stroke="#06b6d4" stroke-width="2"/></svg>`
+      },
+      {
+        num: "30", cat: "commercial", catLabel: "Commercial, Circulante & Trade",
+        title: "Avales Bancarios, Garantías Técnicas y Líneas de Caución (Riesgo de Firma)",
+        def: "Compromisos por firma (fuera de balance) donde el banco responde ante terceros o Administraciones Públicas por licitaciones, buen fin de obra o garantías comerciales del cliente.",
+        formula: "EAD Riesgo de Firma = Importe Nominal Aval × CCF (Credit Conversion Factor: 20% - 50%)",
+        example: "La emisión digital de avales electrónicos en menos de 2 horas para licitaciones públicas genera comisiones trimestrales recurrentes con un consumo de RWA un 50% inferior al crédito directo.",
+        chartType: "Gráfico de Barras Agrupadas: Riesgo Vivo de Firma vs. Exposición Equivalente (EAD × CCF)",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><rect x="25" y="8" width="30" height="40" fill="rgba(99,102,241,0.35)" stroke="#6366f1"/><rect x="58" y="28" width="30" height="20" fill="#10b981"/><rect x="125" y="12" width="30" height="36" fill="rgba(99,102,241,0.35)" stroke="#6366f1"/><rect x="158" y="30" width="30" height="18" fill="#06b6d4"/></svg>`
+      },
+      {
+        num: "31", cat: "commercial", catLabel: "Commercial, Circulante & Trade",
+        title: "Cash Management, Cash Pooling (Zero/Target Balancing) y Divisas FX",
+        def: "Centralización automática diaria de saldos de múltiples filiales de un grupo empresarial en una cuenta matriz (Header Account) para optimizar la tesorería y evitar descubiertos en filiales.",
+        formula: "Ahorro Financiero Grupo = Σ Saldos Deudores Compensados × (Tipo Descubierto - Tipo Remuneración)",
+        example: "Un grupo empresarial con Cash Pooling activo presenta una retención (Stickiness) del 99,2% y multiplica por 3,4x el volumen de coberturas de tipo de cambio (Forward FX).",
+        chartType: " Árbol Radial de Cuentas Filiales → Cuenta Matriz (Zero Balancing)",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><circle cx="110" cy="12" r="7" fill="#10b981"/><circle cx="45" cy="42" r="5" fill="#06b6d4"/><circle cx="110" cy="42" r="5" fill="#06b6d4"/><circle cx="175" cy="42" r="5" fill="#06b6d4"/><line x1="45" y1="37" x2="105" y2="17" stroke="#67e8f9" stroke-width="1.5"/><line x1="110" y1="37" x2="110" y2="19" stroke="#67e8f9" stroke-width="1.5"/><line x1="175" y1="37" x2="115" y2="17" stroke="#67e8f9" stroke-width="1.5"/></svg>`
+      },
+      {
+        num: "32", cat: "commercial", catLabel: "Commercial, Circulante & Trade",
+        title: "Adquirencia TPV (POS Acquiring), Pasarela E-Commerce & MDR (Merchant Discount Rate)",
+        def: "Servicio de cobro con tarjetas y Bizum en comercios físicos (TPV SmartPOS) y tiendas online (Pasarela Web). El banco ingresa la tasa de descuento comercial (MDR) neta de tasas de intercambio y esquemas.",
+        formula: "Margen Neto Adquirencia = Facturación TPV × (MDR Cobrado % - Interchange Fee % - Scheme Fee %)",
+        example: "Además de las comisiones MDR, el flujo diario de ventas por TPV alimenta en Databricks el motor de Préstamos Preconcedidos con amortización dinámica sobre facturación diaria.",
+        chartType: "Combo Chart: Volumen Facturado TPV (Barras) + Margen MDR Neto en bps (Línea)",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><rect x="20" y="26" width="22" height="22" fill="#06b6d4" rx="2"/><rect x="65" y="20" width="22" height="28" fill="#06b6d4" rx="2"/><rect x="110" y="14" width="22" height="34" fill="#06b6d4" rx="2"/><rect x="155" y="8" width="22" height="40" fill="#10b981" rx="2"/><polyline points="31,20 76,16 121,14 166,10" fill="none" stroke="#fbbf24" stroke-width="2"/></svg>`
+      },
+      {
+        num: "33", cat: "commercial", catLabel: "Commercial, Circulante & Trade",
+        title: "Domiciliación de Nóminas, Seguros Sociales (TGSS) e Impuestos (AEAT)",
+        def: "Ancla transaccional crítica en Banca de Empresas y Pymes: la gestión de remesas de nóminas (Norma 34 SEPA) y el pago de impuestos/cotizaciones garantizan saldos vista estables y visibilidad real de la salud del negocio.",
+        formula: "Ratio de Transaccionalidad Primaria (%) = Clientes con Nóminas + Impuestos + TPV / Cartera Total",
+        example: "Las empresas que emiten sus remesas de nóminas e impuestos desde la Web/App mantienen un saldo medio en cuenta corriente un +140% superior (pasivo sin coste) y un 45% menos de mora.",
+        chartType: " Barras Agrupadas: Saldo Vista Medio y Tasa de Mora según Nivel de Vinculación Operativa",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><rect x="25" y="30" width="32" height="18" fill="#64748b" rx="2"/><rect x="92" y="18" width="32" height="30" fill="#06b6d4" rx="2"/><rect x="160" y="6" width="32" height="42" fill="#10b981" rx="2"/></svg>`
+      },
+      {
+        num: "34", cat: "commercial", catLabel: "Commercial, Circulante & Trade",
+        title: "Financiación Sostenible (ESG Green Loans & Sustainability-Linked Loans - SLL)",
+        def: "Préstamos y líneas de crédito corporativas cuyo tipo de interés (spread) se bonifica o penaliza automáticamente según el cumplimiento de KPIs ambientales o sociales auditados (SPTs).",
+        formula: "TIN Ajustado SLL = Euríbor + Spread Base ± Step-up / Step-down (ej. ±10 a 25 bps por KPI ESG)",
+        example: "Lanzar el simulador Web de Eficiencia Energética e Instalación Fotovoltaica con subvención NextGen e incentivo ESG de -15 bps captó 410 M€ con RORWA del 3,22%.",
+        chartType: "Gráfico de Escalón (Step Line) de Bonificación de Spread por Cumplimiento de KPI ESG",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><polyline points="15,14 80,14 80,26 145,26 145,38 205,38" fill="none" stroke="#10b981" stroke-width="2.5"/><circle cx="80" cy="26" r="4" fill="#34d399"/><circle cx="145" cy="38" r="4" fill="#34d399"/></svg>`
+      },
+      {
+        num: "35", cat: "profit", catLabel: "Rentabilidad, Pricing & P&L",
+        title: "RAROC (Risk-Adjusted Return on Capital) vs. ROE / ROTE",
+        def: "Mientras que el ROE/ROTE mide la rentabilidad contable sobre recursos propios, el RAROC ajusta el beneficio neto por la Pérdida Esperada (EL) y lo divide por el Capital Económico en riesgo (VaR no esperado).",
+        formula: "RAROC (%) = (Ingresos - Coste FTP - OPEX - Pérdida Esperada + Beneficio Capital) / Capital Económico",
+        example: "En el Deal Desk de Banca Corporativa, ninguna operación de más de 1 M€ se aprueba sin superar el RAROC objetivo del 14,5% considerando el cross-sell global del grupo.",
+        chartType: "Puente Waterfall de Descomposición del RAROC por Operación / Cartera",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><rect x="14" y="10" width="26" height="38" fill="#06b6d4" rx="2"/><rect x="52" y="10" width="26" height="12" fill="#f59e0b" rx="2"/><rect x="90" y="14" width="26" height="8" fill="#10b981" rx="2"/><rect x="128" y="14" width="26" height="14" fill="#f43f5e" rx="2"/><rect x="170" y="22" width="32" height="26" fill="#10b981" rx="2"/></svg>`
+      },
+      {
+        num: "36", cat: "profit", catLabel: "Rentabilidad, Pricing & P&L",
+        title: "NIM (Net Interest Margin) & Margen de Clientes (Activo + Pasivo)",
+        def: "Ratio de margen de intereses anualizado dividido entre los Activos Totales Medios rentables (ATM). Desglosa la aportación del diferencial de crédito (Activo) y la remuneración de los depósitos (Pasivo).",
+        formula: "NIM (%) = Margen de Intereses Anualizado (NII) / Activos Rentables Medios (ATM)",
+        example: "En un entorno de bajada de tipos del BCE, defender el NIM Comercial exige aumentar el peso del circulante a corto plazo (Factoring/Descuento) y proteger los saldos vista transaccionales.",
+        chartType: "Gráfico de Tijera (Scissor Chart): Evolución Tipo Activo vs. Coste Pasivo vs. Curva Euríbor",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><path d="M12 18 Q 100 8, 208 14" fill="none" stroke="#10b981" stroke-width="2.2"/><path d="M12 40 Q 100 32, 208 36" fill="none" stroke="#f59e0b" stroke-width="2.2"/><path d="M12 18 Q 100 8, 208 14 L 208 36 Q 100 32, 12 40 Z" fill="rgba(16,185,129,0.15)"/></svg>`
+      },
+      {
+        num: "37", cat: "profit", catLabel: "Rentabilidad, Pricing & P&L",
+        title: "FTP (Funds Transfer Pricing / Tasa Interna de Transferencia) & Prima de Liquidez",
+        def: "Precio interno al que Tesorería compra el pasivo captado por la red comercial o vende la liquidez necesaria para conceder préstamos, según el plazo de repreciación y la prima de liquidez del banco.",
+        formula: "Spread Comercial Activo = TIN Cliente - (FTP Base Curva Swap + Prima de Liquidez Plazo)",
+        example: "Un préstamo a 5 años a tipo fijo exige un FTP con cobertura de riesgo de tipo de interés mayor que una póliza de crédito anual revisable a Euríbor 3 meses.",
+        chartType: "Curva Estructura Temporal de Tipos FTP + Desglose de Prima de Liquidez",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><path d="M15 42 Q 70 22, 205 12" fill="none" stroke="#06b6d4" stroke-width="2"/><path d="M15 46 Q 70 30, 205 22" fill="none" stroke="#6366f1" stroke-width="1.8" stroke-dasharray="3,2"/></svg>`
+      },
+      {
+        num: "38", cat: "profit", catLabel: "Rentabilidad, Pricing & P&L",
+        title: "Cost-to-Serve (Coste de Servir por Canal: Oficina vs. Gestor Remoto vs. App)",
+        def: "Coste unitario operativo de atender y procesar las transacciones e incidencias de un cliente según el modelo de relación (Presencial en sucursal, Gestor Remoto Digital o Autoservicio 100% App/Web).",
+        formula: "Cost-to-Serve Anual (€) = Σ (Nº Operaciones Canal_c × Coste Unitario Actividad ABC_c)",
+        example: "Migrar los certificados de titularidad, duplicados de recibos y anticipos de facturas al autoservicio Web/App reduce el Cost-to-Serve anual de una pyme de 380€ a 64€.",
+        chartType: "Barras Apiladas Comparativas de Coste ABC por Modelo de Atención",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><rect x="20" y="8" width="165" height="10" fill="#f43f5e" rx="2"/><rect x="20" y="23" width="85" height="10" fill="#06b6d4" rx="2"/><rect x="20" y="38" width="32" height="10" fill="#10b981" rx="2"/></svg>`
+      },
+      {
+        num: "39", cat: "profit", catLabel: "Rentabilidad, Pricing & P&L",
+        title: "Payback Period Comercial (Periodo de Recuperación del CAC)",
+        def: "Número de meses que tarda una nueva empresa o comercio captado en generar suficiente margen ordinario neto para recuperar íntegramente su coste de captación, incentivos y alta tecnológica (CAC).",
+        formula: "Payback (Meses) = CAC Total de Captación (€) / Margen Neto Mensual Recurrente del Cliente (€)",
+        example: "Un alta digital con abono de incentivo de 150€ pero vinculada desde el mes 1 con TPV y póliza de crédito alcanza su Payback (Break-even) en el mes 4,2.",
+        chartType: "Curva en J (J-Curve) de Flujo de Caja Acumulado con Punto de Break-Even",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><line x1="10" y1="30" x2="210" y2="30" stroke="#64748b" stroke-dasharray="3,2"/><path d="M15 30 Q 45 50, 85 30 T 205 8" fill="none" stroke="#10b981" stroke-width="2.2"/><circle cx="85" cy="30" r="4.5" fill="#fbbf24"/></svg>`
+      },
+      {
+        num: "40", cat: "commercial", catLabel: "Commercial, Circulante & Trade",
+        title: "SOW (Share of Wallet) & Cuota CIRBE de Financiación",
+        def: "Porcentaje del endeudamiento bancario total de una empresa (reportado mensualmente por la Central de Información de Riesgos del Banco de España - CIRBE) que está contratado con nuestra entidad.",
+        formula: "Cuota CIRBE (%) = (Riesgo Dispuesto + Disponible en Nuestro Banco) / Endeudamiento Total CIRBE",
+        example: "Cruzar en Databricks la cuota CIRBE (< 15%) con empresas de rating excelente (PD < 0,8%) permite lanzar campañas digitales quirúrgicas para ganar cuota a la competencia sin asumir mal riesgo.",
+        chartType: "Matriz 2×2 (Calidad Crediticia Rating vs. Cuota CIRBE Actual = Potencial deAtaque)",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><rect x="20" y="6" width="85" height="20" fill="rgba(16,185,129,0.28)" stroke="#10b981"/><rect x="110" y="6" width="85" height="20" fill="rgba(6,182,212,0.2)" stroke="#06b6d4"/><rect x="20" y="29" width="85" height="20" fill="rgba(245,158,11,0.18)" stroke="#f59e0b"/><rect x="110" y="29" width="85" height="20" fill="rgba(244,63,94,0.18)" stroke="#f43f5e"/></svg>`
+      },
+      {
+        num: "41", cat: "commercial", catLabel: "Commercial, Circulante & Trade",
+        title: "NPS (Net Promoter Score), CSAT Digital & CES (Customer Effort Score)",
+        def: "Tríada de experiencia del cliente en canales digitales: recomendación neta (NPS = % Promotores - % Detractores), satisfacción inmediata tras contratar (CSAT) y esfuerzo percibido para completar la gestión (CES).",
+        formula: "NPS = % Promotores (9-10) - % Detractores (0-6)  [Rango de -100 a +100]",
+        example: "Reducir el esfuerzo percibido (CES) en la renovación digital de pólizas de crédito al pre-rellenar los datos fiscales elevó el NPS del proceso de +18 a +56 puntos.",
+        chartType: "Barra Divergente de Promotores vs. Detractores + Evolución del Índice CES",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><rect x="15" y="18" width="42" height="16" fill="#f43f5e" rx="2"/><rect x="60" y="18" width="38" height="16" fill="#64748b"/><rect x="101" y="18" width="104" height="16" fill="#10b981" rx="2"/></svg>`
+      },
+      {
+        num: "42", cat: "risk", catLabel: "Riesgo, Admisión STP & Capital",
+        title: "Cure Rate (Tasa de Cura) & Roll Rates (Matrices de Transición de Impago)",
+        def: "Probabilidad de que una operación con retraso temprano (1-30 o 31-60 días) o en Stage 2 se regularice (Cure Rate) frente a la probabilidad de que ruede hacia mora subjetiva/objetiva (>90 días = Roll Rate).",
+        formula: "Roll Rate (Bucket k → k+1) = Saldo que avanza a Bucket k+1 en mes t / Saldo en Bucket k en mes t-1",
+        example: "Automatizar avisos preventivos in-app y enlaces de pago inmediato (Pay-by-Link) en el día +5 de impago técnico elevó el Cure Rate a 30 días del 74% al 89%.",
+        chartType: "Diagrama de Flujo de Cubos de Impago (0d → 30d → 60d → 90d+ vs. Cura)",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><rect x="14" y="20" width="32" height="16" fill="#06b6d4" rx="2"/><rect x="74" y="20" width="32" height="16" fill="#f59e0b" rx="2"/><rect x="134" y="20" width="32" height="16" fill="#f43f5e" rx="2"/><path d="M90 20 Q 52 4, 30 20" fill="none" stroke="#10b981" stroke-width="2"/></svg>`
+      },
+      {
+        num: "43", cat: "risk", catLabel: "Riesgo, Admisión STP & Capital",
+        title: "CCF (Credit Conversion Factor) & Uso de Líneas Disponibles No Dispuestas",
+        def: "Parámetro regulatorio que estima qué porcentaje del límite disponible (aún no dispuesto) en pólizas de crédito o tarjetas de empresa llegará a disponerse antes de que el cliente entre en impago (Default).",
+        formula: "EAD Total = Saldo Dispuesto Actual + [ CCF (%) × (Límite Concedido - Saldo Dispuesto) ]",
+        example: "Monitorizar en tiempo real en Databricks incrementos bruscos en el porcentaje de utilización de pólizas de crédito (>85% en 48h) actúa como alerta temprana (Early Warning Signal) antes del primer impago.",
+        chartType: "Barra de Progreso de Límite Concedido: Saldo Dispuesto + Tramo CCF en Riesgo",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><rect x="14" y="18" width="192" height="16" fill="rgba(255,255,255,0.08)" rx="3"/><rect x="14" y="18" width="95" height="16" fill="#6366f1" rx="3"/><rect x="109" y="18" width="48" height="16" fill="#06b6d4"/></svg>`
+      },
+      {
+        num: "44", cat: "risk", catLabel: "Riesgo, Admisión STP & Capital",
+        title: "CET1 (Common Equity Tier 1), Capital Económico y Consumo de Solvencia",
+        def: "Ratio de capital de máxima calidad del banco sobre sus Activos Ponderados por Riesgo (RWA). Cada nueva operación comercial consume o libera puntos básicos (bps) de CET1 según su RORWA y retención de beneficios.",
+        formula: "Generación Orgánica CET1 (bps) = (Beneficio Neto Retenido - Δ RWA × Ratio CET1 Meta) / RWA Total",
+        example: "Una cartera comercial que crece un 12% anual pero mantiene un RORWA superior al 3,10% se autofinancia en capital y aporta +14 bps netos de CET1 al grupo sin ampliar capital.",
+        chartType: "Puente de Evolución de Solvencia CET1 (bps): Resultado Orgánico vs. Crecimiento RWA",
+        svg: `<svg viewBox="0 0 220 54" width="100%" height="54"><rect x="16" y="16" width="34" height="32" fill="#6366f1" rx="2"/><rect x="68" y="8" width="34" height="10" fill="#10b981" rx="2"/><rect x="120" y="8" width="34" height="12" fill="#f59e0b" rx="2"/><rect x="172" y="12" width="34" height="36" fill="#06b6d4" rx="2"/></svg>`
       }
     ];
 
     let currentDictCat = 'all';
+
+    function copyKpiPrompt(num, btnEl) {
+      const item = DICTIONARY_TERMS.find(t => t.num === num);
+      if (!item) return;
+      const promptText = `Actúa como Principal Financial UI/UX Architect en Databricks/HTML. Genera una visualización ejecutiva interactiva en Apache ECharts 5.5 (Modo Oscuro Obsidian #05070E, tipografía tabular-nums) para analizar la métrica "${item.title}" (${item.catLabel}).\n- Fórmula a calcular e mostrar en el subtítulo/tooltip: ${item.formula}\n- Tipo de gráfico requerido: ${item.chartType}\n- Contexto de negocio a simular realista: ${item.example}\nIncluye cross-filtering reactivo, slider de sensibilidad y Action Title dinámico estilo McKinsey.`;
+      navigator.clipboard.writeText(promptText).then(() => {
+        const orig = btnEl.innerHTML;
+        btnEl.innerHTML = '✅ Prompt KPI copiado';
+        btnEl.style.background = 'rgba(16, 185, 129, 0.25)';
+        btnEl.style.color = '#6ee7b7';
+        setTimeout(() => {
+          btnEl.innerHTML = orig;
+          btnEl.style.background = 'rgba(99, 102, 241, 0.16)';
+          btnEl.style.color = '#c7d2fe';
+        }, 1800);
+      });
+    }
 
     function renderDictionaryCards() {
       const container = document.getElementById('metrics-vault-container');
@@ -2482,6 +3803,11 @@ Mantén intacta la parte de PySpark y `window.REPORT_DATA` del turno anterior. R
               <span style="color: #67e8f9;">${item.chartType}</span>
             </div>
             ${item.svg}
+            <div style="margin-top: 0.55rem; display: flex; justify-content: flex-end;">
+              <button type="button" onclick="copyKpiPrompt('${item.num}', this)" style="font-size: 0.7rem; padding: 0.28rem 0.65rem; border-radius: 6px; border: 1px solid rgba(99, 102, 241, 0.4); background: rgba(99, 102, 241, 0.16); color: #c7d2fe; cursor: pointer; font-weight: 600;">
+                📋 Copiar Prompt de este KPI
+              </button>
+            </div>
           </div>
         </article>
       `).join('');
@@ -2501,10 +3827,12 @@ Mantén intacta la parte de PySpark y `window.REPORT_DATA` del turno anterior. R
     window.addEventListener('DOMContentLoaded', () => {
       updateLiveTerminal();
       drawTopographicSurface3D();
+      updateWarRoom();
       renderDictionaryCards();
       window.addEventListener('resize', () => {
         if (window.demoMainChart) window.demoMainChart.resize();
         if (window.demoRadarChart) window.demoRadarChart.resize();
+        if (window.wrChart) window.wrChart.resize();
         drawTopographicSurface3D();
       });
     });
