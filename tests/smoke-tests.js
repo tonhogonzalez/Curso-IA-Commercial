@@ -79,6 +79,7 @@ const requiredFiles = [
   'cuadernos/06-m365-copilot-banca-comercial.html',
   'cuadernos/07-migracion-chatgpt-copilot-m365.html',
   'cuadernos/08-agentes-vscode-ux-dashboards.html',
+  'cuadernos/09-ingenieria-visual-databricks-m365-vscode.html',
   'cuadernos/_template.html'
 ];
 
@@ -96,7 +97,8 @@ const htmlFiles = [
   'cuadernos/01-pep-martorell.html', 'cuadernos/02-javier-ideami.html',
   'cuadernos/03-compendio-tecnico.html', 'cuadernos/04-el-universo-del-transformer.html',
   'cuadernos/05-paradigmas-y-computacion.html', 'cuadernos/06-m365-copilot-banca-comercial.html',
-  'cuadernos/07-migracion-chatgpt-copilot-m365.html', 'cuadernos/08-agentes-vscode-ux-dashboards.html'
+  'cuadernos/07-migracion-chatgpt-copilot-m365.html', 'cuadernos/08-agentes-vscode-ux-dashboards.html',
+  'cuadernos/09-ingenieria-visual-databricks-m365-vscode.html'
 ];
 
 htmlFiles.forEach(file => {
@@ -109,6 +111,9 @@ htmlFiles.forEach(file => {
   assert(content.includes('viewport'), `${file}: tiene meta viewport`);
   assert(content.includes('</html>'), `${file}: cierra tag html`);
   assert(content.includes('manifest.json'), `${file}: enlaza manifest.json`);
+  const openIframes = (content.match(/<iframe\b/gi) || []).length;
+  const closeIframes = (content.match(/<\/iframe>/gi) || []).length;
+  assert(openIframes === closeIframes, `${file}: tags <iframe> balanceados (${openIframes}/${closeIframes})`);
 });
 
 // ============================
@@ -121,7 +126,8 @@ const cuadernoFiles = [
   'cuadernos/01-pep-martorell.html', 'cuadernos/02-javier-ideami.html',
   'cuadernos/03-compendio-tecnico.html', 'cuadernos/04-el-universo-del-transformer.html',
   'cuadernos/05-paradigmas-y-computacion.html', 'cuadernos/06-m365-copilot-banca-comercial.html',
-  'cuadernos/07-migracion-chatgpt-copilot-m365.html', 'cuadernos/08-agentes-vscode-ux-dashboards.html'
+  'cuadernos/07-migracion-chatgpt-copilot-m365.html', 'cuadernos/08-agentes-vscode-ux-dashboards.html',
+  'cuadernos/09-ingenieria-visual-databricks-m365-vscode.html'
 ];
 
 cuadernoFiles.forEach(file => {

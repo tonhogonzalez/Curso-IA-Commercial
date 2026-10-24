@@ -106,20 +106,15 @@
       while (node = walker.nextNode()) {
         const parent = node.parentNode;
         if (!parent || !parent.tagName) continue;
-        const parentTag = parent.tagName.toLowerCase();
         if (
-          parentTag !== 'script' &&
-          parentTag !== 'style' &&
-          parentTag !== 'code' &&
-          parentTag !== 'pre' &&
-          parentTag !== 'a' &&
-          parentTag !== 'button' &&
-          !parent.classList.contains('glossary-term')
+          typeof parent.closest === 'function' &&
+          parent.closest('script, style, code, pre, a, button, svg, option, select, textarea, canvas, h1, h2, h3, h4, .cyber-terminal-shell, .sp-card, .mp-card, .metric-dict-card, .excel-preview-frame, .workspace-tabs-bar, .glossary-filter-bar, .prompt-block-wrapper, .mermaid, .glossary-term')
         ) {
-          regexPattern.lastIndex = 0;
-          if (node.nodeValue.trim().length > 0 && regexPattern.test(node.nodeValue)) {
-            textNodes.push(node);
-          }
+          continue;
+        }
+        regexPattern.lastIndex = 0;
+        if (node.nodeValue.trim().length > 0 && regexPattern.test(node.nodeValue)) {
+          textNodes.push(node);
         }
       }
 

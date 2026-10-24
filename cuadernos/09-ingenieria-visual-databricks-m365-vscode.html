@@ -14,12 +14,15 @@
     /* ==========================================================================
        ESTILOS ESPECÍFICOS DEL CUADERNO 09 (PLAYBOOK & CONSOLAS EN VIVO)
        ========================================================================== */
+    .content-wrapper {
+      max-width: 1180px;
+    }
     .workspace-tabs-bar {
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem;
-      background: rgba(15, 23, 42, 0.75);
-      border: 1px solid rgba(99, 102, 241, 0.3);
+      background: rgba(11, 16, 29, 0.94);
+      border: 1px solid rgba(99, 102, 241, 0.35);
       border-radius: 12px;
       padding: 0.5rem;
       margin: 1.75rem 0;
@@ -39,7 +42,7 @@
       border-radius: 8px;
       font-size: 0.82rem;
       font-weight: 600;
-      color: var(--text-secondary);
+      color: #cbd5e1;
       background: transparent;
       border: 1px solid transparent;
       cursor: pointer;
@@ -47,14 +50,14 @@
       text-align: center;
     }
     .ws-tab-btn:hover {
-      color: var(--text-primary);
-      background: rgba(255, 255, 255, 0.05);
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.08);
     }
     .ws-tab-btn.active {
-      background: linear-gradient(135deg, rgba(99, 102, 241, 0.25) 0%, rgba(6, 182, 212, 0.2) 100%);
-      color: #fff;
-      border-color: rgba(99, 102, 241, 0.5);
-      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.32) 0%, rgba(6, 182, 212, 0.28) 100%);
+      color: #ffffff;
+      border-color: rgba(99, 102, 241, 0.55);
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
     }
 
     /* Contenedores de Prompts y Código Copiable */
@@ -116,6 +119,15 @@
       color: #fff;
       transform: translateY(-1px);
     }
+    :root[data-theme="light"] .copy-action-btn {
+      background: rgba(79, 70, 229, 0.12);
+      color: #4338ca !important;
+      border-color: rgba(79, 70, 229, 0.35);
+    }
+    :root[data-theme="light"] .copy-action-btn:hover {
+      background: #4f46e5;
+      color: #ffffff !important;
+    }
     .copyable-prompt-pre {
       background: #070a12;
       border: 1px solid rgba(255, 255, 255, 0.1);
@@ -150,13 +162,29 @@
     }
     .sp-card {
       position: relative;
-      background: rgba(14, 20, 34, 0.76);
+      background: #0b101e;
+      color: #f1f5f9;
       border-radius: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.09);
       backdrop-filter: blur(16px);
       padding: 1.1rem;
       overflow: hidden;
+      min-width: 0;
       transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1), border-color 220ms ease;
+    }
+    .cyber-terminal-shell p,
+    .sp-card p,
+    .metric-dict-card p,
+    .mp-card p {
+      text-align: left;
+    }
+    .cyber-terminal-shell > div > div {
+      min-width: 0;
+    }
+    @media (max-width: 960px) {
+      .cyber-terminal-shell [style*="grid-column: span"] {
+        grid-column: span 12 !important;
+      }
     }
     .sp-card::before {
       content: "";
@@ -193,8 +221,9 @@
       justify-content: space-between;
       margin: 1.5rem 0;
       padding: 1rem;
-      background: rgba(15, 23, 42, 0.6);
-      border: 1px solid var(--border-medium);
+      background: #0b101e;
+      color: #f1f5f9;
+      border: 1px solid rgba(99, 102, 241, 0.35);
       border-radius: 12px;
     }
     .glossary-search-input {
@@ -234,14 +263,16 @@
       margin-top: 1.25rem;
     }
     .metric-dict-card {
-      background: rgba(14, 20, 34, 0.75);
-      border: 1px solid rgba(255, 255, 255, 0.09);
+      background: #0b101e;
+      color: #f1f5f9;
+      border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 12px;
       padding: 1.25rem;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       gap: 0.85rem;
+      box-shadow: 0 12px 28px -10px rgba(0, 0, 0, 0.45);
       transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1), border-color 200ms ease;
     }
     .metric-dict-card:hover {
@@ -349,8 +380,9 @@
       margin-top: 1rem;
     }
     .mp-card {
-      background: rgba(11, 16, 29, 0.88);
-      border: 1px solid rgba(255, 255, 255, 0.09);
+      background: #0b101d;
+      color: #f1f5f9;
+      border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 12px;
       padding: 1rem;
       display: flex;
@@ -360,16 +392,21 @@
       transition: all 220ms cubic-bezier(0.16, 1, 0.3, 1);
       position: relative;
     }
-    .mp-card.picked {
+    .mp-card:hover {
+      border-color: rgba(6, 182, 212, 0.45);
+      transform: translateY(-2px);
+    }
+    .mp-card.picked,
+    .mp-card.selected {
       border-color: #10b981;
-      background: linear-gradient(180deg, rgba(16, 185, 129, 0.12) 0%, rgba(11, 16, 29, 0.92) 100%);
+      background: linear-gradient(180deg, rgba(16, 185, 129, 0.14) 0%, #0b101d 100%);
       box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.4), 0 12px 28px -8px rgba(16, 185, 129, 0.25);
     }
     .mp-stage {
       background: #050811;
-      border: 1px solid rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 8px;
-      height: 86px;
+      height: 88px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -377,8 +414,68 @@
       overflow: hidden;
       position: relative;
     }
+    .mp-body {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.45rem;
+      flex: 1;
+    }
+    .mp-tag-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.45rem;
+      flex-wrap: wrap;
+    }
+    .mp-id-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-family: 'JetBrains Mono', var(--font-mono), monospace;
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 0.18rem 0.5rem;
+      border-radius: 5px;
+      background: rgba(6, 182, 212, 0.16);
+      color: #67e8f9;
+      border: 1px solid rgba(6, 182, 212, 0.38);
+    }
+    .mp-cat-label {
+      font-size: 0.66rem;
+      font-weight: 700;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .mp-title {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #f8fafc;
+      line-height: 1.3;
+    }
+    .mp-desc {
+      font-size: 0.76rem;
+      color: #cbd5e1;
+      line-height: 1.45;
+      margin-bottom: 0.35rem;
+    }
+    .mp-svg-draw-line {
+      stroke-dasharray: 240;
+      animation: mpDrawPath 2.4s cubic-bezier(0.16, 1, 0.3, 1) infinite alternate;
+    }
+    .mp-pulse-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #f43f5e;
+      display: inline-block;
+      box-shadow: 0 0 0 4px rgba(244, 63, 94, 0.25);
+      animation: mpPulseDot 1.6s infinite;
+    }
     .mp-pick-btn {
-      padding: 0.38rem 0.75rem;
+      width: 100%;
+      padding: 0.42rem 0.75rem;
       border-radius: 6px;
       font-size: 0.73rem;
       font-weight: 700;
@@ -388,7 +485,12 @@
       color: #c7d2fe;
       transition: all 160ms ease;
     }
-    .mp-card.picked .mp-pick-btn {
+    .mp-pick-btn:hover {
+      background: rgba(99, 102, 241, 0.28);
+      color: #ffffff;
+    }
+    .mp-card.picked .mp-pick-btn,
+    .mp-card.selected .mp-pick-btn {
       background: #10b981;
       border-color: #10b981;
       color: #040911;
@@ -597,50 +699,50 @@
             Para que un dashboard HTML o una presentación en una celda de Databricks transmita ingeniería de primer nivel (estilo <em>Linear, Vercel, Koyfin o Bloomberg Terminal</em>), debemos exigir en el prompt especificaciones técnicas deterministas por su nombre exacto:
           </p>
 
-          <div style="overflow-x: auto; margin: 1.5rem 0;">
-            <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
+          <div class="cyber-terminal-shell" style="overflow-x: auto; margin: 1.5rem 0; padding: 1.1rem 1.25rem;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; color: #f1f5f9;">
               <thead>
-                <tr style="background: rgba(99, 102, 241, 0.15); border-bottom: 1px solid rgba(99, 102, 241, 0.4); text-align: left;">
+                <tr style="background: rgba(99, 102, 241, 0.22); border-bottom: 1px solid rgba(99, 102, 241, 0.45); text-align: left; color: #ffffff;">
                   <th style="padding: 0.75rem;">Sistema Técnico</th>
                   <th style="padding: 0.75rem;">Lo que hace un LLM por defecto (Mediocre)</th>
                   <th style="padding: 0.75rem;">Lo que exigimos en nuestros Prompts y Skills (Estándar Estudio)</th>
                 </tr>
               </thead>
               <tbody>
-                <tr style="border-bottom: 1px solid var(--border-subtle);">
+                <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
                   <td style="padding: 0.75rem; font-weight: 700; color: #a5b4fc;">1. Superficies & Iluminación</td>
-                  <td style="padding: 0.75rem; color: var(--text-secondary);">Fondos planos con <code>box-shadow: shadow-xl</code> y bordes gruesos.</td>
+                  <td style="padding: 0.75rem; color: #cbd5e1;">Fondos planos con <code>box-shadow: shadow-xl</code> y bordes gruesos.</td>
                   <td style="padding: 0.75rem;"><strong>Mouse-Tracking Spotlight CSS</strong>: listener global que inyecta <code>--mx</code> y <code>--my</code> con <code>mask-composite: exclude</code> iluminando los bordes de <code>1px</code> cercanos al cursor.</td>
                 </tr>
-                <tr style="border-bottom: 1px solid var(--border-subtle);">
+                <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
                   <td style="padding: 0.75rem; font-weight: 700; color: #67e8f9;">2. Tipografía Numérica</td>
-                  <td style="padding: 0.75rem; color: var(--text-secondary);">Fuente proporcional estándar donde el número <code>1</code> mide distinto que el <code>8</code> (la interfaz «tiembla»).</td>
+                  <td style="padding: 0.75rem; color: #cbd5e1;">Fuente proporcional estándar donde el número <code>1</code> mide distinto que el <code>8</code> (la interfaz «tiembla»).</td>
                   <td style="padding: 0.75rem;">Propiedad obligatoria <code>font-variant-numeric: tabular-nums</code> (<code>JetBrains Mono</code>) en todos los KPIs, tablas, ejes y tooltips + interpolación <code>requestAnimationFrame</code> (<code>easeOutQuart</code>).</td>
                 </tr>
-                <tr style="border-bottom: 1px solid var(--border-subtle);">
+                <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
                   <td style="padding: 0.75rem; font-weight: 700; color: #6ee7b7;">3. Transición de Gráficos</td>
-                  <td style="padding: 0.75rem; color: var(--text-secondary);">Ocultar un <code>div</code> con <code>display: none</code> o destruir/recrear un Chart.js estático.</td>
+                  <td style="padding: 0.75rem; color: #cbd5e1;">Ocultar un <code>div</code> con <code>display: none</code> o destruir/recrear un Chart.js estático.</td>
                   <td style="padding: 0.75rem;"><strong>Morphing Geométrico en Apache ECharts</strong>: mismo <code>id</code> de serie con <code>universalTransition: { enabled: true, divideShape: 'clone' }</code> (las burbujas se fragmentan y vuelan hacia un Treemap o Ranking).</td>
                 </tr>
-                <tr style="border-bottom: 1px solid var(--border-subtle);">
+                <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
                   <td style="padding: 0.75rem; font-weight: 700; color: #fcd34d;">4. Interacción Cruzada</td>
-                  <td style="padding: 0.75rem; color: var(--text-secondary);">Gráficos aislados que solo muestran un tooltip básico al pasar el ratón.</td>
+                  <td style="padding: 0.75rem; color: #cbd5e1;">Gráficos aislados que solo muestran un tooltip básico al pasar el ratón.</td>
                   <td style="padding: 0.75rem;"><strong>Cross-Filtering Reactivo + Cursores Sincronizados</strong>: <code>echarts.connect([c1, c2])</code> + clic en cualquier serie filtra KPIs superiores, gráficas secundarias y tabla con <code>document.startViewTransition()</code>.</td>
                 </tr>
-                <tr style="border-bottom: 1px solid var(--border-subtle);">
+                <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
                   <td style="padding: 0.75rem; font-weight: 700; color: #fda4af;">5. Densidad en Tablas</td>
-                  <td style="padding: 0.75rem; color: var(--text-secondary);">Tabla HTML plana solo con texto y cifras estáticas.</td>
+                  <td style="padding: 0.75rem; color: #cbd5e1;">Tabla HTML plana solo con texto y cifras estáticas.</td>
                   <td style="padding: 0.75rem;"><strong>Tabla Telemétrica con Micro-SVG Sparklines</strong>: cada fila dibuja al vuelo un <code>&lt;svg&gt;&lt;polyline/&gt;&lt;/svg&gt;</code> de los últimos 12 meses + clic para abrir <strong>Slide-Over Inspector Drawer</strong> con gráfico Radar.</td>
                 </tr>
-                <tr style="border-bottom: 1px solid var(--border-subtle);">
+                <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
                   <td style="padding: 0.75rem; font-weight: 700; color: #c084fc;">6. Narrativa en Reuniones</td>
-                  <td style="padding: 0.75rem; color: var(--text-secondary);">Título fijo genérico («Dashboard de Canales Digitales Q4»).</td>
+                  <td style="padding: 0.75rem; color: #cbd5e1;">Título fijo genérico («Dashboard de Canales Digitales Q4»).</td>
                   <td style="padding: 0.75rem;"><strong>Scrollytelling por Pasos + Action Title Dinámico + <code>Ctrl+K</code></strong>: el titular ejecutivo reescribe la conclusión numérica en vivo al mover los sliders de sensibilidad o cambiar de paso con las flechas <code>←</code> / <code>→</code>.</td>
                 </tr>
                 <tr>
                   <td style="padding: 0.75rem; font-weight: 700; color: #38bdf8;">7. Visualización 3D</td>
-                  <td style="padding: 0.75rem; color: var(--text-secondary);">Cilindros o esferas flotantes en Three.js sin ejes ni escala (aspecto de videojuego).</td>
-                  <td style="padding: 0.75rem;"><strong>Superficies Topográficas 3D de Sensibilidad</strong>: malla matemática $(X, Y, Z)$ con ejes cartesianos etiquetados, proyección de curvas de nivel (Hurdle Rate / Umbral SLA) y gradiente cromático institucional.</td>
+                  <td style="padding: 0.75rem; color: #cbd5e1;">Cilindros o esferas flotantes en Three.js sin ejes ni escala (aspecto de videojuego).</td>
+                  <td style="padding: 0.75rem;"><strong>Superficies Topográficas 3D de Sensibilidad</strong>: malla matemática <code>(X, Y, Z)</code> con ejes cartesianos etiquetados, proyección de curvas de nivel (Hurdle Rate / Umbral SLA) y gradiente cromático institucional.</td>
                 </tr>
               </tbody>
             </table>
@@ -649,15 +751,15 @@
           <!-- =================================================================
                SUBSECCIÓN 1.2: CATÁLOGO INTERACTIVO MOTION-PROMPT (#MP-01 A #MP-12)
                ================================================================= -->
-          <h3 id="motion-prompt-catalog-sec" style="margin-top: 2.2rem;">1.2. 🎬 Catálogo Visual Interactivo `motion-prompt` para Dashboards (`#MP-01` a `#MP-12` — Sistema *"Pick &amp; Send"* con Código Real)</h3>
+          <h3 id="motion-prompt-catalog-sec" style="margin-top: 2.2rem;">1.2. 🎬 Catálogo Visual Interactivo <code>motion-prompt</code> para Dashboards (<code>#MP-01</code> a <code>#MP-12</code> — Sistema <em>"Pick &amp; Send"</em> con Código Real)</h3>
           <p>
-            Inspirado en el repositorio <a href="https://github.com/showheyohtaki/motion-prompt" target="_blank" rel="noopener" style="color:#38bdf8;font-weight:600;"><code>showheyohtaki/motion-prompt</code></a>, este catálogo soluciona el **principal motivo por el que los prompts dan resultados pobres en M365 Copilot y VS Code**: cuando le pides a la IA con palabras vagas <em>«haz que se vea moderno y fluido»</em>, la IA inventa un CSS pobre. En cambio, aquí tienes **12 piezas numeradas (`#MP-01` a `#MP-12`) con su animación funcionando en vivo y su receta de código determinista (Zero-CDN, 100% libre de bloqueos de red)**.
+            Inspirado en el repositorio <a href="https://github.com/showheyohtaki/motion-prompt" target="_blank" rel="noopener" style="color:#38bdf8;font-weight:600;"><code>showheyohtaki/motion-prompt</code></a>, este catálogo soluciona el <strong>principal motivo por el que los prompts dan resultados pobres en M365 Copilot y VS Code</strong>: cuando le pides a la IA con palabras vagas <em>«haz que se vea moderno y fluido»</em>, la IA inventa un CSS pobre. En cambio, aquí tienes <strong>12 piezas numeradas (<code>#MP-01</code> a <code>#MP-12</code>) con su animación funcionando en vivo y su receta de código determinista (Zero-CDN, 100% libre de bloqueos de red)</strong>.
           </p>
           <p>
             <strong>Cómo usarlo en tu flujo diario (Databricks → VS Code / M365 Copilot):</strong>
             1) Mira las demostraciones animadas en cada tarjeta (puedes pulsar <code>↻ Probar</code> para repetir el efecto),
             2) Haz clic en <strong><code>+ Pick (Seleccionar)</code></strong> en las piezas que quieras para tu dashboard de hoy, y
-            3) Pulsa el botón verde superior <strong><code>📋 Copiar Prompt Blindado con las Recetas Seleccionadas</code></strong> (o envíalas al Ensamblador de la Sección 07). El prompt copiado lleva **el código CSS y JavaScript exacto de esas piezas ya escrito dentro**, de modo que M365 Copilot o VS Code no tienen que adivinar nada:
+            3) Pulsa el botón verde superior <strong><code>📋 Copiar Prompt Blindado con las Recetas Seleccionadas</code></strong> (o envíalas al Ensamblador de la Sección 07). El prompt copiado lleva <strong>el código CSS y JavaScript exacto de esas piezas ya escrito dentro</strong>, de modo que M365 Copilot o VS Code no tienen que adivinar nada:
           </p>
 
           <!-- BARRA INTERACTIVA PICK & SEND (ESTILO MOTION-PROMPT) -->
@@ -668,11 +770,12 @@
                   🎯 MOTION-PROMPT PICKER BAR • SELECCIONA TUS RECETAS PARA VS CODE / M365 COPILOT
                 </div>
                 <div id="mp-picker-summary" style="font-size: 0.88rem; color: #f8fafc; font-weight: 700; margin-top: 0.2rem;">
-                  6 primitivas seleccionadas: #MP-01, #MP-02, #MP-03, #MP-04, #MP-05, #MP-08
+                  <span id="mp-selected-count">6</span> primitivas seleccionadas (haz clic en cualquier insignia o tarjeta para añadir/quitar):
                 </div>
+                <div id="mp-selected-badges" style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.45rem;"></div>
               </div>
               <div style="display: flex; flex-wrap: wrap; gap: 0.45rem;">
-                <button type="button" onclick="mpSelectPreset('essential')" style="padding: 0.38rem 0.7rem; font-size: 0.72rem; border-radius: 6px; border: 1px solid rgba(6,182,212,0.45); background: rgba(6,182,212,0.15); color: #67e8f9; cursor: pointer; font-weight: 600;">⚡ Pack Esencial M365 Copilot (5)</button>
+                <button type="button" onclick="mpSelectPreset('essential')" style="padding: 0.38rem 0.7rem; font-size: 0.72rem; border-radius: 6px; border: 1px solid rgba(6,182,212,0.45); background: rgba(6,182,212,0.15); color: #67e8f9; cursor: pointer; font-weight: 600;">⚡ Pack Esencial M365 Copilot (6)</button>
                 <button type="button" onclick="mpSelectPreset('all')" style="padding: 0.38rem 0.7rem; font-size: 0.72rem; border-radius: 6px; border: 1px solid rgba(99,102,241,0.45); background: rgba(99,102,241,0.16); color: #c7d2fe; cursor: pointer; font-weight: 600;">🏆 Seleccionar Todas (12)</button>
                 <button type="button" onclick="mpCopyPickedPrompt(this)" style="padding: 0.42rem 0.9rem; font-size: 0.75rem; border-radius: 7px; border: none; background: #10b981; color: #040911; cursor: pointer; font-weight: 800;">📋 Copiar Prompt con Código de las #MP Elegidas</button>
                 <button type="button" onclick="mpSendToWorkbench()" style="padding: 0.42rem 0.8rem; font-size: 0.74rem; border-radius: 7px; border: 1px solid rgba(16,185,129,0.5); background: rgba(16,185,129,0.15); color: #6ee7b7; cursor: pointer; font-weight: 700;">🛠️ Inyectar en Workbench (Sección 07) ↓</button>
@@ -705,7 +808,7 @@
         <div class="section-divider"></div>
         <div class="transcript-text">
           <p>
-            Antes de copiar los prompts o los esqueletos de PySpark, prueba aquí mismo en vivo los dos motores visuales que generarán tus agentes. Mueve el cursor sobre los bordes de las tarjetas para ver el <strong>Spotlight especular</strong>, cambia entre los <strong>4 Pasos Narrativos</strong> (Sankey $\rightarrow$ Morphing Scatter/Treemap $\rightarrow$ Matriz de Markov $\rightarrow$ Frontera Eficiente), filtra por canal (<strong>Omnicanal, App Móvil, Web Empresas</strong>), mueve los sliders de simulación o haz clic en cualquier fila de la tabla:
+            Antes de copiar los prompts o los esqueletos de PySpark, prueba aquí mismo en vivo los dos motores visuales que generarán tus agentes. Mueve el cursor sobre los bordes de las tarjetas para ver el <strong>Spotlight especular</strong>, cambia entre los <strong>4 Pasos Narrativos</strong> (Sankey → Morphing Scatter/Treemap → Matriz de Markov → Frontera Eficiente), filtra por canal (<strong>Omnicanal, App Móvil, Web Empresas</strong>), mueve los sliders de simulación o haz clic en cualquier fila de la tabla:
           </p>
 
           <!-- CONSOLA INTERACTIVA 1: TERMINAL OMNICANAL WEB & APP -->
@@ -1045,18 +1148,18 @@
       <section id="puente-databricks-pyspark" class="transcript-section" data-tab-group="code-shells">
         <div class="section-header">
           <span class="section-number">03</span>
-          <h2 class="section-title">El Puente Real en Databricks: Extractor de Contexto hacia VS Code / M365 Copilot y Plantillas `displayHTML()` 100% Zero-CDN (Nunca en Blanco)</h2>
+          <h2 class="section-title">El Puente Real en Databricks: Extractor de Contexto hacia VS Code / M365 Copilot y Plantillas <code>displayHTML()</code> 100% Zero-CDN (Nunca en Blanco)</h2>
         </div>
         <div class="section-divider"></div>
         <div class="transcript-text">
           <p class="editorial-lead">
-            En un entorno bancario real, las plantillas que dependen de <code>cdn.tailwindcss.com</code> o de CDNs externos sin respaldo **salen en blanco dentro del `<iframe>` de `displayHTML()`** (porque el firewall o la política CSP del navegador bloquea el compilador JIT de Tailwind o deja los contenedores en <code>0px</code> de altura). Aquí tienes las **3 piezas blindadas para tu flujo de trabajo real**: (1) el **Extractor de Contexto PySpark** para llevarte los datos resumidos a VS Code o M365 Copilot en 5 segundos, y (2) las **2 Plantillas Maestras 100% Zero-CDN** con CSS puro embebido y motor gráfico SVG vectorial nativo que **jamás falla ni con internet cortado**.
+            En un entorno bancario real, las plantillas que dependen de <code>cdn.tailwindcss.com</code> o de CDNs externos sin respaldo <strong>salen en blanco dentro del <code>&lt;iframe&gt;</code> de <code>displayHTML()</code></strong> (porque el firewall o la política CSP del navegador bloquea el compilador JIT de Tailwind o deja los contenedores en <code>0px</code> de altura). Aquí tienes las <strong>3 piezas blindadas para tu flujo de trabajo real</strong>: (1) el <strong>Extractor de Contexto PySpark</strong> para llevarte los datos resumidos a VS Code o M365 Copilot en 5 segundos, y (2) las <strong>2 Plantillas Maestras 100% Zero-CDN</strong> con CSS puro embebido y motor gráfico SVG vectorial nativo que <strong>jamás falla ni con internet cortado</strong>.
           </p>
 
           <!-- BLOQUE 3.0: EXTRACTOR DE CONTEXTO DE DATABRICKS PARA VS CODE / M365 COPILOT -->
           <div class="prompt-block-wrapper m365-version">
             <div class="prompt-block-header">
-              <h3 class="prompt-block-title">🧲 Paso 0 (Tu Flujo Diario): Extractor de Contexto en Databricks (`export_ai_context`) para Pegar en VS Code o M365 Copilot</h3>
+              <h3 class="prompt-block-title">🧲 Paso 0 (Tu Flujo Diario): Extractor de Contexto en Databricks (<code>export_ai_context</code>) para Pegar en VS Code o M365 Copilot</h3>
               <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Extractor de Contexto PySpark</button>
             </div>
             <p style="font-size: 0.83rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
@@ -1102,7 +1205,7 @@ def export_ai_context(df, title="Análisis Cartera Comercial", max_rows=30):
           <!-- BLOQUE MAESTRO 1: CELDA COMPLETA PYSPARK -> DISPLAYHTML 100% ZERO-CDN -->
           <div class="prompt-block-wrapper pro-version">
             <div class="prompt-block-header">
-              <h3 class="prompt-block-title">⚡ Plantilla Maestra #1 (100% Zero-CDN Blindada): Celda Databricks (`PySpark` → `displayHTML` + Descarga Correo Base64)</h3>
+              <h3 class="prompt-block-title">⚡ Plantilla Maestra #1 (100% Zero-CDN Blindada): Celda Databricks (<code>PySpark</code> → <code>displayHTML</code> + Descarga Correo Base64)</h3>
               <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Celda PySpark Zero-CDN</button>
             </div>
             <p style="font-size: 0.83rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
@@ -1509,11 +1612,11 @@ displayHTML(banner + final_html)</pre>
           <!-- BLOQUE MAESTRO 2: DEAL DESK WAR ROOM ZERO-CDN CON WATERFALL P&L SVG NATIVO Y SLIDE-OVER DRAWER -->
           <div class="prompt-block-wrapper pro-version">
             <div class="prompt-block-header">
-              <h3 class="prompt-block-title">🏛️ Plantilla Maestra #2 (100% Zero-CDN): Commercial Deal Desk (`PySpark` → `displayHTML` con Puente P&amp;L Waterfall SVG, Slide-Over Drawer y Radar 5D)</h3>
+              <h3 class="prompt-block-title">🏛️ Plantilla Maestra #2 (100% Zero-CDN): Commercial Deal Desk (<code>PySpark</code> → <code>displayHTML</code> con Puente P&amp;L Waterfall SVG, Slide-Over Drawer y Radar 5D)</h3>
               <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Deal Desk Zero-CDN</button>
             </div>
             <p style="font-size: 0.83rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
-              Especial para <strong>Comités de Pricing Comercial, Empresas y Admisión de Riesgos</strong>. Renderiza el Puente Contable P&amp;L (Waterfall desde Ingresos TIN y FTP hasta EVA) y el Inspector Lateral 360° con Radar en **SVG puro sin dependencias externas**:
+              Especial para <strong>Comités de Pricing Comercial, Empresas y Admisión de Riesgos</strong>. Renderiza el Puente Contable P&amp;L (Waterfall desde Ingresos TIN y FTP hasta EVA) y el Inspector Lateral 360° con Radar en <strong>SVG puro sin dependencias externas</strong>:
             </p>
             <pre class="copyable-prompt-pre">import json, base64
 from pyspark.sql import types as T
@@ -1849,7 +1952,7 @@ displayHTML(download_banner + final_portable_html)</pre>
       <section id="excel-institucional-python" class="transcript-section" data-tab-group="code-shells">
         <div class="section-header">
           <span class="section-number">04</span>
-          <h2 class="section-title">Estándar Institucional en Excel: Automatización con `openpyxl`, `Python in Excel (=PY)` y Office Scripts</h2>
+          <h2 class="section-title">Estándar Institucional en Excel: Automatización con <code>openpyxl</code>, <code>Python in Excel (=PY)</code> y Office Scripts</h2>
         </div>
         <div class="section-divider"></div>
         <div class="transcript-text">
@@ -1936,7 +2039,7 @@ displayHTML(download_banner + final_portable_html)</pre>
           <!-- SCRIPT PYTHON OPENPYXL COMPLETO -->
           <div class="prompt-block-wrapper excel-version">
             <div class="prompt-block-header">
-              <h3 class="prompt-block-title">📗 Plantilla Maestra #2: Script Python (`openpyxl`) con Acabado Institucional Completo</h3>
+              <h3 class="prompt-block-title">📗 Plantilla Maestra #2: Script Python (<code>openpyxl</code>) con Acabado Institucional Completo</h3>
               <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Script OpenPyXL</button>
             </div>
             <pre class="copyable-prompt-pre">from openpyxl import Workbook
@@ -2064,7 +2167,7 @@ if __name__ == "__main__":
           <!-- SUBSECCIÓN 4.2: MATRIZ DE SENSIBILIDAD BIDIMENSIONAL Y MOTOR MULTI-HOJA OPENPYXL -->
           <h3>4.2. Nivel Banca de Inversión: Matriz de Sensibilidad Bidimensional (Spread × Mora → EVA / RORWA) y Libro Multi-Hoja con Gráficos Nativos</h3>
           <p>
-            Lo que realmente distingue un Excel corporativo de nivel Dirección Financiera / Comité de Riesgos no es solo una tabla limpia, sino un <strong>libro multi-pestaña interconectado</strong> que incluya: (1) Código de color institucional para entradas manuales (<strong style="color:#3b82f6;">Azul `#0000FF` para Inputs/Supuestos</strong>, <strong>Negro `#0F172A` para Fórmulas</strong> y <strong style="color:#059669;">Verde `#047857` para Vínculos entre hojas</strong>), (2) una <strong>Matriz de Sensibilidad 2D (What-If Matrix)</strong> con escala térmica divergente (`ColorScaleRule`), y (3) <strong>Gráficos nativos editables de Excel</strong> generados sin intervención manual:
+            Lo que realmente distingue un Excel corporativo de nivel Dirección Financiera / Comité de Riesgos no es solo una tabla limpia, sino un <strong>libro multi-pestaña interconectado</strong> que incluya: (1) Código de color institucional para entradas manuales (<strong style="color:#3b82f6;">Azul <code>#0000FF</code> para Inputs/Supuestos</strong>, <strong>Negro <code>#0F172A</code> para Fórmulas</strong> y <strong style="color:#059669;">Verde <code>#047857</code> para Vínculos entre hojas</strong>), (2) una <strong>Matriz de Sensibilidad 2D (What-If Matrix)</strong> con escala térmica divergente (<code>ColorScaleRule</code>), y (3) <strong>Gráficos nativos editables de Excel</strong> generados sin intervención manual:
           </p>
 
           <!-- Vista previa de la Matriz de Sensibilidad 2D en Excel -->
@@ -2072,7 +2175,7 @@ if __name__ == "__main__":
             <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 0.6rem;">
               <div>
                 <div style="font-size: 1rem; font-weight: 700; color: #0F172A;">PESTAÑA 2: MATRIZ DE SENSIBILIDAD BIDIMENSIONAL — RORWA NETO (%) SEGÚN SPREAD Y COSTE DE RIESGO</div>
-                <div style="font-size: 0.74rem; color: #64748B;">Celdas dinámicas vinculadas a Supuestos (`$C$4`: Hurdle 2,50%) · Escala de color divergente Rojo-Blanco-Esmeralda</div>
+                <div style="font-size: 0.74rem; color: #64748B;">Celdas dinámicas vinculadas a Supuestos (<code>$C$4</code>: Hurdle 2,50%) · Escala de color divergente Rojo-Blanco-Esmeralda</div>
               </div>
               <span style="font-size: 0.72rem; font-weight: 700; color: #1d4ed8; background: #dbeafe; padding: 0.2rem 0.6rem; border-radius: 4px;">Convención: Azul = Input | Negro = Fórmula</span>
             </div>
@@ -2126,7 +2229,7 @@ if __name__ == "__main__":
 
           <div class="prompt-block-wrapper excel-version">
             <div class="prompt-block-header">
-              <h4 class="prompt-block-title">🏛️ Plantilla Maestra #3 (Excel Multi-Hoja): Generador `openpyxl` con Pestaña de Sensibilidad 2D, `ColorScaleRule` y Gráfico Nativo Combo</h4>
+              <h4 class="prompt-block-title">🏛️ Plantilla Maestra #3 (Excel Multi-Hoja): Generador <code>openpyxl</code> con Pestaña de Sensibilidad 2D, <code>ColorScaleRule</code> y Gráfico Nativo Combo</h4>
               <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Script Multi-Hoja OpenPyXL</button>
             </div>
             <pre class="copyable-prompt-pre">from openpyxl import Workbook
@@ -2239,7 +2342,7 @@ if __name__ == "__main__":
           </div>
 
           <!-- SUBSECCIÓN 4.3: 4 BLOQUES DE CÓDIGO DIRECTO PARA PYTHON IN EXCEL (=PY) -->
-          <h3>4.3. Laboratorio Directo de `Python in Excel (=PY())`: 4 Bloques Listos para Pegar en la Barra de Fórmulas</h3>
+          <h3>4.3. Laboratorio Directo de <code>Python in Excel (=PY())</code>: 4 Bloques Listos para Pegar en la Barra de Fórmulas</h3>
           <p>
             Si utilizas Microsoft 365 Excel con la función <code>=PY()</code> habilitada, puedes pegar cualquiera de estos 4 bloques directamente dentro de una celda (configurando la salida como <strong>Objeto de Imagen de Excel</strong>) para renderizar visualizaciones estadísticas imposibles en el motor clásico de Excel:
           </p>
@@ -2248,8 +2351,8 @@ if __name__ == "__main__":
             <!-- Bloque =PY #1 -->
             <div class="prompt-block-wrapper excel-version" style="margin: 0;">
               <div class="prompt-block-header">
-                <h4 class="prompt-block-title" style="font-size: 0.9rem;">🐍 Bloque `=PY()` #1: Puente P&amp;L Waterfall Institucional</h4>
-                <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Código `=PY()`</button>
+                <h4 class="prompt-block-title" style="font-size: 0.9rem;">🐍 Bloque <code>=PY()</code> #1: Puente P&amp;L Waterfall Institucional</h4>
+                <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Código <code>=PY()</code></button>
               </div>
               <pre class="copyable-prompt-pre" style="max-height: 290px;">import matplotlib.pyplot as plt
 import numpy as np
@@ -2281,8 +2384,8 @@ plt.show()</pre>
             <!-- Bloque =PY #2 -->
             <div class="prompt-block-wrapper excel-version" style="margin: 0;">
               <div class="prompt-block-header">
-                <h4 class="prompt-block-title" style="font-size: 0.9rem;">🐍 Bloque `=PY()` #2: Mapa de Calor Triangular de Cohortes</h4>
-                <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Código `=PY()`</button>
+                <h4 class="prompt-block-title" style="font-size: 0.9rem;">🐍 Bloque <code>=PY()</code> #2: Mapa de Calor Triangular de Cohortes</h4>
+                <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Código <code>=PY()</code></button>
               </div>
               <pre class="copyable-prompt-pre" style="max-height: 290px;">import matplotlib.pyplot as plt
 import seaborn as sns
@@ -2314,8 +2417,8 @@ plt.show()</pre>
             <!-- Bloque =PY #3 -->
             <div class="prompt-block-wrapper excel-version" style="margin: 0;">
               <div class="prompt-block-header">
-                <h4 class="prompt-block-title" style="font-size: 0.9rem;">🐍 Bloque `=PY()` #3: Frontera Eficiente de Markowitz (Riesgo vs. RORWA)</h4>
-                <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Código `=PY()`</button>
+                <h4 class="prompt-block-title" style="font-size: 0.9rem;">🐍 Bloque <code>=PY()</code> #3: Frontera Eficiente de Markowitz (Riesgo vs. RORWA)</h4>
+                <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Código <code>=PY()</code></button>
               </div>
               <pre class="copyable-prompt-pre" style="max-height: 290px;">import matplotlib.pyplot as plt
 import numpy as np
@@ -2350,8 +2453,8 @@ plt.show()</pre>
             <!-- Bloque =PY #4 -->
             <div class="prompt-block-wrapper excel-version" style="margin: 0;">
               <div class="prompt-block-header">
-                <h4 class="prompt-block-title" style="font-size: 0.9rem;">🐍 Bloque `=PY()` #4: Distribución Time-to-Yes (Percentiles P50 / P90 vs SLA)</h4>
-                <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Código `=PY()`</button>
+                <h4 class="prompt-block-title" style="font-size: 0.9rem;">🐍 Bloque <code>=PY()</code> #4: Distribución Time-to-Yes (Percentiles P50 / P90 vs SLA)</h4>
+                <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Código <code>=PY()</code></button>
               </div>
               <pre class="copyable-prompt-pre" style="max-height: 290px;">import matplotlib.pyplot as plt
 import numpy as np
@@ -2385,7 +2488,7 @@ plt.show()</pre>
       <section id="boveda-prompts-skills" class="transcript-section" data-tab-group="prompts-skills code-shells">
         <div class="section-header">
           <span class="section-number">05</span>
-          <h2 class="section-title">Ingeniería de Presentaciones en PowerPoint (`python-pptx` + M365 Copilot) y Bóveda de Skills para VS Code</h2>
+          <h2 class="section-title">Ingeniería de Presentaciones en PowerPoint (<code>python-pptx</code> + M365 Copilot) y Bóveda de Skills para VS Code</h2>
         </div>
         <div class="section-divider"></div>
         <div class="transcript-text">
@@ -2484,11 +2587,11 @@ plt.show()</pre>
 
           <div class="prompt-block-wrapper excel-version">
             <div class="prompt-block-header">
-              <h4 class="prompt-block-title">⚡ Excel Prompt Directo #3: Súper-Fórmula Dinámica `LET` + `AGRUPARPOR` / `PIVOTBY` (Cuadro de Mando Automático en 1 Sola Celda)</h4>
+              <h4 class="prompt-block-title">⚡ Excel Prompt Directo #3: Súper-Fórmula Dinámica <code>LET</code> + <code>AGRUPARPOR</code> / <code>PIVOTBY</code> (Cuadro de Mando Automático en 1 Sola Celda)</h4>
               <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Prompt Fórmula Matricial</button>
             </div>
             <p style="font-size: 0.8rem; color: var(--text-secondary);">
-              Pega este prompt en Copilot o ChatGPT indicando tus columnas para que te devuelva una única fórmula `LET` de Excel 365 que, al pegarla en una sola celda (ej. `B6`), despliega automáticamente todo un cuadro de mando sin Tablas Dinámicas manuales:
+              Pega este prompt en Copilot o ChatGPT indicando tus columnas para que te devuelva una única fórmula <code>LET</code> de Excel 365 que, al pegarla en una sola celda (ej. <code>B6</code>), despliega automáticamente todo un cuadro de mando sin Tablas Dinámicas manuales:
             </p>
             <pre class="copyable-prompt-pre">Actúa como un Arquitecto de Fórmulas Dinámicas de Excel 365 (en español, usando punto y coma `;` como separador).
 Mi tabla de datos se llama `TablaCartera` y tiene las columnas: `[Segmento]`, `[Canal]`, `[Producto]`, `[Sesiones]`, `[Contratos]`, `[Volumen_M]`, `[RORWA]` y `[NPL]`.
@@ -2524,7 +2627,7 @@ Ordénalos por Margen Potencial Recuperable (€) de mayor a menor.</pre>
           </div>
 
           <!-- SUBSECCIÓN 5.3: INGENIERÍA DE PRESENTACIONES EN POWERPOINT (BLUEPRINTS VISUALES + M365 COPILOT + PYTHON-PPTX) -->
-          <h3>5.3. Ingeniería Visual en PowerPoint: Los 4 Blueprints de Diapositivas de Comité, Prompts M365 Copilot y Generador `python-pptx`</h3>
+          <h3>5.3. Ingeniería Visual en PowerPoint: Los 4 Blueprints de Diapositivas de Comité, Prompts M365 Copilot y Generador <code>python-pptx</code></h3>
           <p>
             El error más común al usar IA en PowerPoint es pedir «hazme una presentación sobre los resultados comerciales». El resultado son diapositivas con listas interminables de viñetas (<em>bullet points</em>) y títulos vacíos como «Evolución de Ventas». En consultoría estratégica (McKinsey, BCG, Bain) y banca de inversión, cada diapositiva obedece a una <strong>arquitectura geométrica de 3 capas</strong>: (1) <strong>Kicker + Action Title cuantitativo</strong> (una frase con verbo activo y cifra que demuestra la conclusión), (2) <strong>Cuerpo visual dividido en Bento Grid o Gráfico Puente con Callouts</strong>, y (3) <strong>Takeaway / Guardarraíl de Riesgo al pie</strong>.
           </p>
@@ -2630,11 +2733,11 @@ Crea una presentación ejecutiva de 7 diapositivas basada en /[NombreDeTuArchivo
           <!-- PLANTILLA MAESTRA #4: GENERADOR AUTOMÁTICO DE POWERPOINT CON PYTHON-PPTX -->
           <div class="prompt-block-wrapper pro-version">
             <div class="prompt-block-header">
-              <h4 class="prompt-block-title">🏛️ Plantilla Maestra #4 (`python-pptx`): Generador Automático de Presentaciones Ejecutivas 16:9 desde VS Code / Databricks</h4>
-              <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Script `python-pptx` Completo</button>
+              <h4 class="prompt-block-title">🏛️ Plantilla Maestra #4 (<code>python-pptx</code>): Generador Automático de Presentaciones Ejecutivas 16:9 desde VS Code / Databricks</h4>
+              <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Script <code>python-pptx</code> Completo</button>
             </div>
             <p style="font-size: 0.82rem; color: var(--text-secondary);">
-              Cuando quieres que tus datos de Python o Databricks generen directamente un archivo <code>.pptx</code> panorámico con estética oscura de estudio, tarjetas Bento, Action Title, tabla ejecutiva y gráfico nativo editable en PowerPoint sin tocar el ratón (`pip install python-pptx`):
+              Cuando quieres que tus datos de Python o Databricks generen directamente un archivo <code>.pptx</code> panorámico con estética oscura de estudio, tarjetas Bento, Action Title, tabla ejecutiva y gráfico nativo editable en PowerPoint sin tocar el ratón (<code>pip install python-pptx</code>):
             </p>
             <pre class="copyable-prompt-pre">from pptx import Presentation
 from pptx.util import Inches, Pt
@@ -2764,7 +2867,7 @@ if __name__ == "__main__":
           <!-- FLUJO EN 2 TURNOS CON RECETAS DE CÓDIGO INCLUIDAS PARA M365 COPILOT CHAT / VS CODE -->
           <h3>5.4. Prompts Blindados con Esqueleto de Código Incluido (Específicos para M365 Copilot y VS Code cuando le pasas el Contexto de Databricks)</h3>
           <p>
-            <strong>Por qué los prompts cortos fracasan en M365 Copilot:</strong> si solo le pides con texto <em>«crea un dashboard moderno con animaciones y gráficos»</em>, M365 Copilot improvisa un HTML pobre de 60 líneas o mete <code>cdn.tailwindcss.com</code> (que el firewall del banco bloquea dejando la pantalla en blanco). En cambio, estos **2 Prompts llevan la receta CSS y JS Zero-CDN ya escrita dentro**, obligando a M365 Copilot o VS Code a usar nuestra ingeniería exacta sobre tus datos de Databricks:
+            <strong>Por qué los prompts cortos fracasan en M365 Copilot:</strong> si solo le pides con texto <em>«crea un dashboard moderno con animaciones y gráficos»</em>, M365 Copilot improvisa un HTML pobre de 60 líneas o mete <code>cdn.tailwindcss.com</code> (que el firewall del banco bloquea dejando la pantalla en blanco). En cambio, estos <strong>2 Prompts llevan la receta CSS y JS Zero-CDN ya escrita dentro</strong>, obligando a M365 Copilot o VS Code a usar nuestra ingeniería exacta sobre tus datos de Databricks:
           </p>
 
           <div class="prompt-block-wrapper pro-version">
@@ -2804,7 +2907,7 @@ AQUÍ TIENES EL CONTEXTO Y DATOS EXTRAÍDOS DE DATABRICKS:
 
           <div class="prompt-block-wrapper m365-version">
             <div class="prompt-block-header">
-              <h4 class="prompt-block-title">🥈 Prompt de Refinamiento Quirúrgico (Nodo 2 `/motion-critic`: Para Mejorar un HTML que te haya quedado flojo sin romper sus datos)</h4>
+              <h4 class="prompt-block-title">🥈 Prompt de Refinamiento Quirúrgico (Nodo 2 <code>/motion-critic</code>: Para Mejorar un HTML que te haya quedado flojo sin romper sus datos)</h4>
               <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Prompt Refinador Nodo 2</button>
             </div>
             <pre class="copyable-prompt-pre">Mantén 100% intactos los datos de `window.REPORT_DATA` y las métricas de negocio del código anterior, pero REESCRIBE la capa visual y de interacción porque ha quedado demasiado básica. Aplica obligatoriamente estas 5 recetas de código deterministas:
@@ -2820,13 +2923,13 @@ AQUÍ TIENES EL CONTEXTO Y DATOS EXTRAÍDOS DE DATABRICKS:
           <!-- =====================================================================
                SUBSECCIÓN 5.5: SLIDES INTERACTIVAS POR DENTRO (MICRO-APP 16:9 + MORPH !!)
                ===================================================================== -->
-          <h3>5.5. Diapositivas PowerPoint Interactivas por Dentro: Simulador Intra-Slide 16:9 en Vivo y Técnica `!!Morph` Nativa</h3>
+          <h3>5.5. Diapositivas PowerPoint Interactivas por Dentro: Simulador Intra-Slide 16:9 en Vivo y Técnica <code>!!Morph</code> Nativa</h3>
           <p>
-            Cuando estás defendiendo una propuesta en un Comité Comercial o de Riesgos, las diapositivas estáticas fallan en cuanto alguien pregunta: <em>«¿Y cómo cambia esa lámina si filtramos solo Pymes en App o si el coste de riesgo sube +30 bps?»</em>. Tienes dos formas de lograr que **cada diapositiva sea interactiva por dentro** sin salir de la lámina:
+            Cuando estás defendiendo una propuesta en un Comité Comercial o de Riesgos, las diapositivas estáticas fallan en cuanto alguien pregunta: <em>«¿Y cómo cambia esa lámina si filtramos solo Pymes en App o si el coste de riesgo sube +30 bps?»</em>. Tienes dos formas de lograr que <strong>cada diapositiva sea interactiva por dentro</strong> sin salir de la lámina:
           </p>
           <ul>
-            <li><strong>Vía A (100% Nativa en `.pptx` sin macros): Nomenclatura `!!objeto` + Transición Transformar (*Morph*) + Botones de Acción Internos</strong>: En PowerPoint, si nombras las barras o tarjetas en el Panel de Selección empezando por doble exclamación (`!!barra_app`, `!!kpi_eva`) y enlazas botones tipo pestaña entre diapositivas gemelas con transición <em>Transformar (0,5 s)</em>, PowerPoint anima los gráficos a 60fps cuando haces clic en cada pestaña durante la reunión.</li>
-            <li><strong>Vía B (Micro-Slide 16:9 Interactiva en HTML / Web Viewer)</strong>: Pruébala aquí mismo en vivo —haz clic en las **3 pestañas internas de la diapositiva**, mueve el **slider de sensibilidad dentro de la propia slide** o pulsa los **botones de objeciones del CRO/CFO** al pie:</li>
+            <li><strong>Vía A (100% Nativa en <code>.pptx</code> sin macros): Nomenclatura <code>!!objeto</code> + Transición Transformar (<em>Morph</em>) + Botones de Acción Internos</strong>: En PowerPoint, si nombras las barras o tarjetas en el Panel de Selección empezando por doble exclamación (<code>!!barra_app</code>, <code>!!kpi_eva</code>) y enlazas botones tipo pestaña entre diapositivas gemelas con transición <em>Transformar (0,5 s)</em>, PowerPoint anima los gráficos a 60fps cuando haces clic en cada pestaña durante la reunión.</li>
+            <li><strong>Vía B (Micro-Slide 16:9 Interactiva en HTML / Web Viewer)</strong>: Pruébala aquí mismo en vivo —haz clic en las <strong>3 pestañas internas de la diapositiva</strong>, mueve el <strong>slider de sensibilidad dentro de la propia slide</strong> o pulsa los <strong>botones de objeciones del CRO/CFO</strong> al pie:</li>
           </ul>
 
           <!-- SIMULADOR DE DIAPOSITIVA 16:9 INTERACTIVA POR DENTRO EN VIVO -->
@@ -2891,7 +2994,7 @@ AQUÍ TIENES EL CONTEXTO Y DATOS EXTRAÍDOS DE DATABRICKS:
 
           <div class="prompt-block-wrapper pro-version">
             <div class="prompt-block-header">
-              <h4 class="prompt-block-title">⚡ Skill `/interactive-ppt`: Prompt para Generar Diapositivas Interactivas por Dentro (HTML 16:9 + PowerPoint Morph `!!`)</h4>
+              <h4 class="prompt-block-title">⚡ Skill <code>/interactive-ppt</code>: Prompt para Generar Diapositivas Interactivas por Dentro (HTML 16:9 + PowerPoint Morph <code>!!</code>)</h4>
               <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Prompt Slide Interactiva</button>
             </div>
             <pre class="copyable-prompt-pre">Actúa como un Arquitecto de Presentaciones Ejecutivas Interactivas (Skill `/interactive-ppt`).
@@ -2908,7 +3011,7 @@ Necesito presentar [TEMA / DATOS DE CARTERA COMERCIAL] en formato panorámico 16
                ===================================================================== -->
           <h3>5.6. Skill para Pintar Infografías Ejecutivas de Alta Densidad (Arquitectura Visual en Vivo + Exportación a Imagen PNG 4K)</h3>
           <p>
-            Cuando quieres explicar en un correo ejecutivo o en una lámina de comité **cómo funciona un flujo completo de negocio** (por ejemplo, el <em>Circuito End-to-End de Originación Digital, Scoring STP, Pricing RAROC y Liquidación en Banca de Empresas</em>), una tabla no transmite la historia. Necesitas una **Infografía Vectorial de Alta Densidad** con nodos conectados, flujo animado de datos/capital, desglose visual de fórmulas y un botón para **descargarla como imagen PNG de alta resolución** y pegarla directamente en Outlook o PowerPoint:
+            Cuando quieres explicar en un correo ejecutivo o en una lámina de comité <strong>cómo funciona un flujo completo de negocio</strong> (por ejemplo, el <em>Circuito End-to-End de Originación Digital, Scoring STP, Pricing RAROC y Liquidación en Banca de Empresas</em>), una tabla no transmite la historia. Necesitas una <strong>Infografía Vectorial de Alta Densidad</strong> con nodos conectados, flujo animado de datos/capital, desglose visual de fórmulas y un botón para <strong>descargarla como imagen PNG de alta resolución</strong> y pegarla directamente en Outlook o PowerPoint:
           </p>
 
           <!-- CONSOLA DE INFOGRAFÍA EJECUTIVA EN VIVO (CON CAMBIO DE TEMA Y EXPORTACIÓN PNG) -->
@@ -2934,7 +3037,7 @@ Necesito presentar [TEMA / DATOS DE CARTERA COMERCIAL] en formato panorámico 16
 
           <div class="prompt-block-wrapper pro-version">
             <div class="prompt-block-header">
-              <h4 class="prompt-block-title">🎨 Skill `/infografia-ejecutiva`: Prompt Maestro para Pintar Infografías Vectoriales SVG/HTML con Exportación a PNG</h4>
+              <h4 class="prompt-block-title">🎨 Skill <code>/infografia-ejecutiva</code>: Prompt Maestro para Pintar Infografías Vectoriales SVG/HTML con Exportación a PNG</h4>
               <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Prompt Infografía Ejecutiva</button>
             </div>
             <pre class="copyable-prompt-pre">Actúa como un Director de Infografía Financiera (estilo Visual Capitalist, Financial Times y McKinsey Visual Insights) usando la Skill `/infografia-ejecutiva`.
@@ -2952,9 +3055,9 @@ REGLAS OBLIGATORIAS DE COMPOSICIÓN VISUAL:
           <!-- =====================================================================
                SUBSECCIÓN 5.7: VÍDEOS EXPLICATIVOS ANIMADOS DE DATOS Y NEGOCIO
                ===================================================================== -->
-          <h3>5.7. Skill para Generar Vídeos Explicativos del Contenido (Reproductor Animado en Vivo con Locución en Español y Grabación `.WEBM`)</h3>
+          <h3>5.7. Skill para Generar Vídeos Explicativos del Contenido (Reproductor Animado en Vivo con Locución en Español y Grabación <code>.WEBM</code>)</h3>
           <p>
-            Cuando envías un informe complejo por correo o Teams, el directivo muchas veces prefiere darle a <strong>«▶ Reproducir Resumen Explicativo (60s)»</strong> y que el propio dashboard le cuente la historia paso a paso mientras las gráficas hacen *morphing* solas, se iluminan los cuellos de botella y aparecen subtítulos ejecutivos sincronizados. Pruébalo en vivo (incluye **locución por voz en español** `Web Speech API` y **grabador a archivo de vídeo `.webm`**):
+            Cuando envías un informe complejo por correo o Teams, el directivo muchas veces prefiere darle a <strong>«▶ Reproducir Resumen Explicativo (60s)»</strong> y que el propio dashboard le cuente la historia paso a paso mientras las gráficas hacen <em>morphing</em> solas, se iluminan los cuellos de botella y aparecen subtítulos ejecutivos sincronizados. Pruébalo en vivo (incluye <strong>locución por voz en español</strong> <code>Web Speech API</code> y <strong>grabador a archivo de vídeo <code>.webm</code></strong>):
           </p>
 
           <!-- REPRODUCTOR DE VÍDEO EXPLICATIVO ANIMADO POR ESCENAS EN VIVO -->
@@ -3007,7 +3110,7 @@ REGLAS OBLIGATORIAS DE COMPOSICIÓN VISUAL:
 
           <div class="prompt-block-wrapper pro-version">
             <div class="prompt-block-header">
-              <h4 class="prompt-block-title">🎬 Skill `/video-explicativo`: Prompt Maestro para Crear Vídeos Explicativos Auto-Narrados (.HTML + Grabación `.WEBM`)</h4>
+              <h4 class="prompt-block-title">🎬 Skill <code>/video-explicativo</code>: Prompt Maestro para Crear Vídeos Explicativos Auto-Narrados (.HTML + Grabación <code>.WEBM</code>)</h4>
               <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Prompt Vídeo Explicativo</button>
             </div>
             <pre class="copyable-prompt-pre">Actúa como un Director de Motion Graphics Financieros y Narrativa de Datos (Skill `/video-explicativo`).
@@ -3162,7 +3265,7 @@ A partir de los siguientes datos/conclusiones: [PEGA AQUÍ TUS DATOS O CONCLUSIO
                ================================================================= -->
           <h3>7.2. 🤖 Motor de Narrador Ejecutivo Automático (Auto-Insights &amp; Red Flags Deterministas en Cliente)</h3>
           <p>
-            Cuando envías un dashboard HTML por correo a un Director Territorial o a un Comité de Riesgos, no basta con que los gráficos cambien al filtrar: el dashboard debe **redactar automáticamente el diagnóstico ejecutivo y señalar los focos rojos (*Red Flags*)** sin depender de una llamada externa a una API de IA (100% offline y determinista dentro del propio HTML).
+            Cuando envías un dashboard HTML por correo a un Director Territorial o a un Comité de Riesgos, no basta con que los gráficos cambien al filtrar: el dashboard debe <strong>redactar automáticamente el diagnóstico ejecutivo y señalar los focos rojos (<em>Red Flags</em>)</strong> sin depender de una llamada externa a una API de IA (100% offline y determinista dentro del propio HTML).
           </p>
           <p>
             <strong>Pruébalo en vivo</strong>: cambia la Territorial/Segmento o ajusta el umbral de Hurdle Rate y observa cómo el motor calcula brechas en puntos básicos, concentración en Stage 2/3 y prescribe la acción comercial exacta:
@@ -3200,7 +3303,7 @@ A partir de los siguientes datos/conclusiones: [PEGA AQUÍ TUS DATOS O CONCLUSIO
 
           <div class="prompt-block-wrapper pro-version">
             <div class="prompt-block-header">
-              <h4 class="prompt-block-title">📋 Patrón JS + Prompt: Motor de Narrativa Ejecutiva Automática (`generateExecutiveNarrative`)</h4>
+              <h4 class="prompt-block-title">📋 Patrón JS + Prompt: Motor de Narrativa Ejecutiva Automática (<code>generateExecutiveNarrative</code>)</h4>
               <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Motor Auto-Insights</button>
             </div>
             <pre class="copyable-prompt-pre">// PATRÓN DETERMINISTA DE AUTO-INSIGHTS Y RED FLAGS EN CLIENTE (SIN LLAMADAS A APIS EXTERNAS)
@@ -3234,8 +3337,8 @@ function generateExecutiveNarrative(slice, hurdleRorwa = 2.50, maxStage2Pct = 7.
                ================================================================= -->
           <h3>7.3. 🧪 Inspector de Esquema &amp; Generador Instantáneo «Trae tus Datos (CSV / Excel → Dashboard HTML para Correo)»</h3>
           <p>
-            ¿Tienes una tabla en Excel o el resultado de una query en Databricks y quieres convertirla **ahora mismo** en un Dashboard HTML interactivo sin abrir ningún editor de código?
-            Pega aquí debajo tus datos separados por comas (CSV), punto y coma (<code>;</code>) o tabuladores (copiados directamente desde Excel con <code>Ctrl+C</code>), o carga uno de los 3 datasets de ejemplo. Todo se procesa **100% en la memoria local de tu navegador** y puedes **descargar el archivo `.HTML` autónomo listo para enviar por correo**:
+            ¿Tienes una tabla en Excel o el resultado de una query en Databricks y quieres convertirla <strong>ahora mismo</strong> en un Dashboard HTML interactivo sin abrir ningún editor de código?
+            Pega aquí debajo tus datos separados por comas (CSV), punto y coma (<code>;</code>) o tabuladores (copiados directamente desde Excel con <code>Ctrl+C</code>), o carga uno de los 3 datasets de ejemplo. Todo se procesa <strong>100% en la memoria local de tu navegador</strong> y puedes <strong>descargar el archivo <code>.HTML</code> autónomo listo para enviar por correo</strong>:
           </p>
 
           <div class="cyber-terminal-shell" style="border: 1px solid rgba(6, 182, 212, 0.45);">
@@ -3281,23 +3384,23 @@ function generateExecutiveNarrative(slice, hurdleRorwa = 2.50, maxStage2Pct = 7.
           <!-- =================================================================
                7.4 PACK INSTALADOR EN 1 CLIC (BOOTSTRAP KIT .PY / .PS1 PARA VS CODE)
                ================================================================= -->
-          <h3>7.4. 📦 Pack Instalador en 1 Clic del Ecosistema VS Code + M365 (`Bootstrap Kit .py / .ps1`)</h3>
+          <h3>7.4. 📦 Pack Instalador en 1 Clic del Ecosistema VS Code + M365 (<code>Bootstrap Kit .py / .ps1</code>)</h3>
           <p>
-            Cuando inicies un nuevo proyecto de análisis en VS Code o cambies de equipo corporativo, no necesitas crear a mano cada carpeta de `.github/prompts/` o `skills/`. Descarga y ejecuta cualquiera de estos dos instaladores autocontenidos para desplegar en **1 segundo** toda la arquitectura de **8 Skills y Slash Commands** en tu directorio de trabajo:
+            Cuando inicies un nuevo proyecto de análisis en VS Code o cambies de equipo corporativo, no necesitas crear a mano cada carpeta de <code>.github/prompts/</code> o <code>skills/</code>. Descarga y ejecuta cualquiera de estos dos instaladores autocontenidos para desplegar en <strong>1 segundo</strong> toda la arquitectura de <strong>8 Skills y Slash Commands</strong> en tu directorio de trabajo:
           </p>
 
           <div class="sp-card" style="padding: 1.25rem; border: 1px solid rgba(99, 102, 241, 0.4); background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 27, 75, 0.6) 100%);">
             <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem;">
               <div>
                 <div class="tabular-mono" style="font-size: 0.7rem; color: #818cf8; letter-spacing: 0.08em;">KIT DE DESPLIEGUE RÁPIDO • 8 SLASH COMMANDS + REGLAS GLOBALES PACEUI</div>
-                <h4 style="margin: 0.25rem 0; color: #f8fafc; font-size: 1.05rem;">Instalador Automático de `.github/prompts/*.prompt.md` y `skills/*/SKILL.md`</h4>
+                <h4 style="margin: 0.25rem 0; color: #f8fafc; font-size: 1.05rem;">Instalador Automático de <code>.github/prompts/*.prompt.md</code> y <code>skills/*/SKILL.md</code></h4>
                 <p style="margin: 0; font-size: 0.8rem; color: #cbd5e1;">
                   Incluye: <code>/databricks-deck</code>, <code>/digital-channels-ui</code>, <code>/motion-critic</code>, <code>/excel-institucional</code>, <code>/interactive-ppt</code>, <code>/infografia-ejecutiva</code> y <code>/video-explicativo</code>.
                 </p>
               </div>
               <div style="display: flex; flex-wrap: wrap; gap: 0.6rem;">
-                <button type="button" onclick="downloadSkillsBootstrap('py')" style="padding: 0.55rem 1rem; border-radius: 8px; border: 1px solid rgba(16,185,129,0.5); background: rgba(16,185,129,0.2); color: #6ee7b7; font-weight: 700; font-size: 0.78rem; cursor: pointer;">🐍 Descargar Instalador Python (`install_skills_pack.py`)</button>
-                <button type="button" onclick="downloadSkillsBootstrap('ps1')" style="padding: 0.55rem 1rem; border-radius: 8px; border: 1px solid rgba(6,182,212,0.5); background: rgba(6,182,212,0.2); color: #67e8f9; font-weight: 700; font-size: 0.78rem; cursor: pointer;">💻 Descargar Instalador PowerShell (`install_skills_pack.ps1`)</button>
+                <button type="button" onclick="downloadSkillsBootstrap('py')" style="padding: 0.55rem 1rem; border-radius: 8px; border: 1px solid rgba(16,185,129,0.5); background: rgba(16,185,129,0.2); color: #6ee7b7; font-weight: 700; font-size: 0.78rem; cursor: pointer;">🐍 Descargar Instalador Python (<code>install_skills_pack.py</code>)</button>
+                <button type="button" onclick="downloadSkillsBootstrap('ps1')" style="padding: 0.55rem 1rem; border-radius: 8px; border: 1px solid rgba(6,182,212,0.5); background: rgba(6,182,212,0.2); color: #67e8f9; font-weight: 700; font-size: 0.78rem; cursor: pointer;">💻 Descargar Instalador PowerShell (<code>install_skills_pack.ps1</code>)</button>
               </div>
             </div>
           </div>
@@ -5363,8 +5466,14 @@ function toggleTheme(){ const h=document.documentElement; h.setAttribute('data-t
 
     function mpSendToWorkbench() {
       buildCustomMasterPrompt();
-      const target = document.getElementById('workbench-operativo-vivo');
-      if (target) target.scrollIntoView({ behavior: 'smooth' });
+      const target = document.getElementById('workbench-operativo');
+      if (target) {
+        if (target.style.display === 'none') {
+          const allBtn = document.querySelector('.ws-tab-btn');
+          filterNotebookSections('all', allBtn);
+        }
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
     }
 
     // =========================================================================

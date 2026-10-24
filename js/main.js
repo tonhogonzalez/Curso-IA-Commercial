@@ -274,7 +274,10 @@
       { id: '03-compendio-tecnico.html', num: '03', title: 'Compendio Técnico de IA Generativa', guest: 'Compendio Especializado' },
       { id: '04-el-universo-del-transformer.html', num: '04', title: 'El Universo del Transformer y LLMs', guest: 'Compendio Docente Avanzado' },
       { id: '05-paradigmas-y-computacion.html', num: '05', title: 'Compendio Integral: Paradigmas al Grounding y Harness', guest: 'Compendio Integral de 7 Módulos' },
-      { id: '06-m365-copilot-banca-comercial.html', num: '06', title: 'Guía Práctica: M365 Copilot en Banca Comercial (Tier 1)', guest: 'Manual de Adopción, Extensibilidad y 150 Prompts' }
+      { id: '06-m365-copilot-banca-comercial.html', num: '06', title: 'Guía Práctica: M365 Copilot en Banca Comercial (Tier 1)', guest: 'Manual de Adopción, Extensibilidad y 150 Prompts' },
+      { id: '07-migracion-chatgpt-copilot-m365.html', num: '07', title: 'Playbook de Migración: De ChatGPT a M365 Copilot', guest: 'Traducción de Flujos, Gobernanza y Prompts' },
+      { id: '08-agentes-vscode-ux-dashboards.html', num: '08', title: 'Agentes en VS Code, Skills y UX de Dashboards', guest: 'Arquitectura Multi-Agente y Diseño Ejecutivo' },
+      { id: '09-ingenieria-visual-databricks-m365-vscode.html', num: '09', title: 'Playbook Maestro: Ingeniería Visual en Databricks, Excel, PPT & VS Code', guest: 'Consolas ECharts, Catálogo #MP-01..#MP-12, 44 KPIs y Workbench' }
     ];
 
     const currentFile = window.location.pathname.split('/').pop();
