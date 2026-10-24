@@ -495,7 +495,63 @@
       border-color: #10b981;
       color: #040911;
     }
-  </style>
+  
+
+    /* ==========================================================================
+       MOTOR QUANTUM MOTION (#002–#009) + HUD MAGNÉTICO DE TELEMETRÍA
+       ========================================================================== */
+    #quantum-terminal {
+      background-color: #06070a;
+      background-image: linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 28px 28px;
+      border: 1px solid rgba(56, 189, 248, 0.28);
+      padding: 1.1rem;
+    }
+    .qt-topbar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.7rem; padding-bottom: 0.85rem; margin-bottom: 0.85rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .qt-brand { display: flex; align-items: center; gap: 0.55rem; font-size: 0.7rem; color: #94a3b8; letter-spacing: 0.06em; }
+    .qt-brand strong { color: #38bdf8; }
+    .qt-live-dot { width: 8px; height: 8px; border-radius: 50%; background: #10b981; animation: qtLive 1.6s infinite; flex-shrink: 0; }
+    @keyframes qtLive { 0% { box-shadow: 0 0 0 0 rgba(16,185,129,0.6); } 70% { box-shadow: 0 0 0 8px rgba(16,185,129,0); } 100% { box-shadow: 0 0 0 0 rgba(16,185,129,0); } }
+    .qt-controls { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+    .qt-btn { font-family: 'JetBrains Mono', var(--font-mono), monospace; font-size: 0.7rem; font-weight: 600; padding: 0.34rem 0.7rem; border-radius: 7px; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.04); color: #cbd5e1; cursor: pointer; transition: all 160ms cubic-bezier(0.16, 1, 0.3, 1); }
+    .qt-btn:hover { border-color: rgba(56,189,248,0.5); color: #ffffff; }
+    .qt-btn.active { background: rgba(56,189,248,0.18); border-color: #38bdf8; color: #e0f2fe; }
+    .qt-btn-xray.active { background: rgba(245,158,11,0.16); border-color: #f59e0b; color: #fde68a; }
+    .qt-btn.qt-btn-sm { font-size: 0.6rem; padding: 0.16rem 0.45rem; }
+    .qt-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 0.75rem; }
+    .qt-span-3 { grid-column: span 3; }
+    .qt-span-5 { grid-column: span 5; }
+    .qt-span-7 { grid-column: span 7; }
+    .qt-card { position: relative; background: rgba(12,15,23,0.88); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 0.75rem 0.8rem; color: #e2e8f0; overflow: hidden; min-width: 0; }
+    .qt-card::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(460px circle at var(--mx, -500px) var(--my, -500px), rgba(56,189,248,0.085), transparent 65%); }
+    .qt-card canvas { display: block; width: 100%; position: relative; cursor: crosshair; }
+    .qt-head { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; margin-bottom: 0.45rem; position: relative; }
+    .qt-title { font-family: 'Space Grotesk', 'Outfit', var(--font-display), sans-serif; font-size: 0.78rem; font-weight: 700; color: #f1f5f9; }
+    .qt-badge { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; font-weight: 700; color: #67e8f9; background: rgba(6,182,212,0.12); border: 1px solid rgba(6,182,212,0.3); padding: 0.1rem 0.4rem; border-radius: 4px; white-space: nowrap; }
+    .qt-label { display: flex; justify-content: space-between; gap: 0.4rem; font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.06em; color: #94a3b8; position: relative; }
+    .qt-label span { font-family: 'JetBrains Mono', monospace; color: #64748b; }
+    .qt-kpi-val { font-family: 'JetBrains Mono', var(--font-mono), monospace; font-size: 1.3rem; font-weight: 800; color: #f8fafc; margin: 0.15rem 0 0.35rem; font-variant-numeric: tabular-nums; position: relative; white-space: nowrap; }
+    .qt-xray { display: none; position: absolute; right: 0.5rem; bottom: 0.45rem; z-index: 3; font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: #fde68a; background: rgba(6,7,10,0.92); border: 1px dashed rgba(245,158,11,0.55); padding: 0.18rem 0.45rem; border-radius: 4px; pointer-events: none; max-width: 92%; }
+    #quantum-terminal.xray-on .qt-xray { display: block; }
+    .qt-laser::after { content: ""; position: absolute; inset: 0; border-radius: 12px; padding: 1.5px; background: conic-gradient(from var(--qt-angle, 0deg), transparent 72%, #f43f5e 96%, #ffffff 100%); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; z-index: 2; }
+    .qt-footnote { margin-top: 0.7rem; font-size: 0.64rem; color: #64748b; text-align: center; }
+    @media (max-width: 960px) {
+      .qt-span-3 { grid-column: span 6; }
+      .qt-span-5, .qt-span-7 { grid-column: span 12; }
+    }
+    #telemetryHud { position: fixed; left: 0; top: 0; width: 290px; z-index: 10000; pointer-events: none; opacity: 0; transition: opacity 140ms ease; background: rgba(9,11,18,0.95); backdrop-filter: blur(14px); border: 1px solid rgba(56,189,248,0.35); border-radius: 10px; padding: 0.65rem 0.75rem; box-shadow: 0 18px 50px rgba(0,0,0,0.6); color: #e2e8f0; font-family: 'Inter', sans-serif; }
+    #telemetryHud.on { opacity: 1; }
+    .qh-top { display: flex; justify-content: space-between; gap: 0.5rem; font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; color: #94a3b8; letter-spacing: 0.04em; }
+    .qh-badge { color: #67e8f9; white-space: nowrap; }
+    .qh-head { display: flex; justify-content: space-between; align-items: baseline; gap: 0.5rem; margin: 0.3rem 0 0.4rem; }
+    .qh-title { font-family: 'JetBrains Mono', monospace; font-size: 0.86rem; font-weight: 800; color: #ffffff; font-variant-numeric: tabular-nums; }
+    .qh-delta { font-family: 'JetBrains Mono', monospace; font-size: 0.64rem; font-weight: 700; white-space: nowrap; }
+    .qh-row { display: flex; justify-content: space-between; gap: 0.6rem; font-size: 0.66rem; padding: 0.16rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); color: #94a3b8; }
+    .qh-row strong { font-family: 'JetBrains Mono', monospace; color: #e2e8f0; font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; }
+    .qh-spark { display: block; width: 100%; height: 44px; margin: 0.4rem 0 0.3rem; }
+    .qh-formula { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: #fde68a; background: rgba(245,158,11,0.08); border-left: 2px solid #f59e0b; padding: 0.22rem 0.4rem; border-radius: 3px; }
+
+</style>
 </head>
 <body>
 
@@ -795,7 +851,123 @@
             </div>
           </div>
         </div>
-      </section>
+      
+
+          <!-- =================================================================
+               SUBSECCIÓN 1.3: MOTOR QUANTUM MOTION (#002–#009) + HUD MAGNÉTICO
+               ================================================================= -->
+          <h3 id="quantum-motion-engine-sec" style="margin-top: 2.4rem;">1.3. ⚛️ Motor «Quantum Motion» en Canvas2D a 60 FPS: Física de Resortes, Campo Dipolar, Pila Isométrica 3D, Atractor Kepleriano y HUD Magnético (<code>#002</code>–<code>#009</code>)</h3>
+          <p>
+            El catálogo <code>#MP-01</code>–<code>#MP-12</code> de la subsección anterior son <strong>recetas ligeras</strong> pensadas para que M365 Copilot no se pierda. Este motor es el <strong>nivel siguiente</strong>: cada animación obedece a una ecuación con función analítica real. Al cambiar de escenario, el código <strong>nunca sobreescribe los datos</strong>: solo modifica <code>target[]</code> y un integrador de resortes subamortiguados interpola posición, velocidad y derivada <code>|du/dt|</code> en cada fotograma. Todas las figuras dibujadas en el lienzo se registran en un <code>CanvasHitRegistry</code> que alimenta un <strong>HUD flotante</strong> con su propio micro-gráfico en vivo.
+          </p>
+          <p>
+            <strong>Pruébalo:</strong> cambia entre los 3 escenarios, activa <code>X-Ray Motion Specs</code> para ver la ecuación de cada panel, pasa el ratón por cualquier barra, nodo, capa u órbita y haz clic en la serie temporal para fijar (<em>Pin</em>) un tramo.
+          </p>
+
+          <div class="cyber-terminal-shell" id="quantum-terminal">
+            <div class="qt-topbar">
+              <div class="qt-brand"><span class="qt-live-dot"></span><span class="tabular-mono">LIVE 60 FPS · QUANTUM TELEMETRY · ESCENARIO: <strong id="qt-status">NOMINAL</strong></span></div>
+              <div class="qt-controls">
+                <button type="button" class="qt-btn active" data-qt-scen="nominal">Nominal</button>
+                <button type="button" class="qt-btn" data-qt-scen="stress">Estrés / Anomalía</button>
+                <button type="button" class="qt-btn" data-qt-scen="regime">Cambio de Régimen</button>
+                <button type="button" class="qt-btn qt-btn-xray" id="qt-xray-btn">🩻 X-Ray Motion Specs</button>
+              </div>
+            </div>
+
+            <div class="qt-grid">
+              <div class="qt-card qt-span-3">
+                <div class="qt-label">Flujo neto medio <span>#004 + #002</span></div>
+                <div class="qt-kpi-val" data-qt-kpi="flow">0</div>
+                <canvas id="qt-k1" style="height: 46px;"></canvas>
+                <div class="qt-xray">#002 · a = −ω²(x − x*) − 2ζωv</div>
+              </div>
+              <div class="qt-card qt-span-3">
+                <div class="qt-label">Conversión por cohorte <span>#004 + #002</span></div>
+                <div class="qt-kpi-val" data-qt-kpi="conv">0</div>
+                <canvas id="qt-k2" style="height: 46px;"></canvas>
+                <div class="qt-xray">#002 · retardo i·Δτ = 40 ms</div>
+              </div>
+              <div class="qt-card qt-span-3" data-qt-laser>
+                <div class="qt-label">Índice de riesgo <span>#004 + #008</span></div>
+                <div class="qt-kpi-val" data-qt-kpi="risk">0</div>
+                <canvas id="qt-k3" style="height: 46px;"></canvas>
+                <div class="qt-xray">#008 · conic-gradient(from θ) si riesgo &gt; 60</div>
+              </div>
+              <div class="qt-card qt-span-3">
+                <div class="qt-label">Latencia extremo a extremo <span>#004 + #007</span></div>
+                <div class="qt-kpi-val" data-qt-kpi="lat">0</div>
+                <canvas id="qt-k4" style="height: 46px;"></canvas>
+                <div class="qt-xray">#007 · |du/dt| = |y_t − y_t−1| / Δt</div>
+              </div>
+
+              <div class="qt-card qt-span-7">
+                <div class="qt-head"><span class="qt-title">VIZ-A · Flujo neto 48 tramos + abanico P05–P95</span><span class="qt-badge" id="qt-pin-label">#002 + #007</span></div>
+                <canvas id="qt-vA" style="height: 250px;"></canvas>
+                <div class="qt-xray">#002 resortes en cascada · #007 estela ∝ |du/dt| · rosa = impulso de anomalía</div>
+              </div>
+              <div class="qt-card qt-span-5">
+                <div class="qt-head"><span class="qt-title">VIZ-B · Topología + campo dipolar</span><span class="qt-badge">#003 + #005</span></div>
+                <canvas id="qt-vB" style="height: 250px;"></canvas>
+                <div class="qt-xray">θ = atan2(Δy, Δx) + π/2·sin(r) · E = Σ R²/d² ≥ τ</div>
+              </div>
+
+              <div class="qt-card qt-span-5">
+                <div class="qt-head"><span class="qt-title">VIZ-C · Pila arquitectónica isométrica</span><button type="button" class="qt-btn qt-btn-sm" id="qt-explode-btn">Explode Z-Axis</button></div>
+                <canvas id="qt-vC" style="height: 230px;"></canvas>
+                <div class="qt-xray">#006 · P = ((X − Y)·cos30°, (X + Y)·sin30° − Z)</div>
+              </div>
+              <div class="qt-card qt-span-7">
+                <div class="qt-head"><span class="qt-title">VIZ-F · Atractor kepleriano de operaciones + radar de resiliencia</span><span class="qt-badge">#009</span></div>
+                <canvas id="qt-vF" style="height: 230px;"></canvas>
+                <div class="qt-xray">#009 · r(θ) = a(1 − e²)/(1 + e·cosθ) · θ̇ ∝ 1/r²</div>
+              </div>
+            </div>
+            <div class="qt-footnote tabular-mono">Pasa el ratón por cualquier barra, punto, nodo, capa, órbita o eje del radar · clic en VIZ-A = fijar tramo en todo el panel</div>
+          </div>
+
+          <div class="prompt-block-wrapper pro-version">
+            <div class="prompt-block-header">
+              <h4 class="prompt-block-title">⚛️ Skill <code>/quantum-motion-dashboards</code>: blueprint + kernel obligatorio para VS Code, Cursor o Claude</h4>
+              <div style="display: flex; gap: 0.45rem; flex-wrap: wrap;">
+                <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Skill completa</button>
+                <button type="button" class="copy-action-btn" onclick="downloadQuantumSkill()">⬇️ Descargar SKILL.md</button>
+              </div>
+            </div>
+            <pre id="quantum-skill-pre" class="copyable-prompt-pre">---
+name: quantum-motion-dashboards
+description: Genera terminales de telemetría ejecutiva y dashboards de alta densidad a 60fps usando física procedural en Canvas2D (ecuaciones motion-prompt #002-#009), pilas de arquitectura 3D isométricas y un HUD magnético flotante con micro-gráficos en vivo.
+---
+
+# SKILL: QUANTUM MOTION DASHBOARDS (60FPS PROCEDURAL TELEMETRY ENGINE)
+
+Actúa como un Principal Staff Creative Technologist y Arquitecto de Sistemas de Visualización Cuantitativa. Tu objetivo es generar un dashboard o terminal de telemetría de grado institucional (100% funcional, en un único archivo autónomo o módulo completo sin código omitido ni placeholders) adaptado al dominio que pida el usuario.
+
+## 1. REGLAS INQUEBRANTABLES (ANTI-LAZY GENERATION)
+
+1. **PROHIBIDO usar librerías de gráficos estáticas o transiciones CSS simples** para los datos. Todo gráfico debe renderizarse en `&lt;canvas&gt;` a 60 FPS reales mediante `requestAnimationFrame` y escalado Retina (`devicePixelRatio`).
+2. **PROHIBIDO usar tooltips nativos (`title=&quot;...&quot;`) o estáticos.** Absolutamente todas las barras, puntos de curva, nodos de red, capas 3D, celdas de matriz y filas de tabla deben registrar sus coordenadas en `CanvasHitRegistry` y disparar el **Floating Magnetic Telemetry HUD** al pasar el ratón por encima.
+3. **PROHIBIDO sobreescribir datos bruscamente al cambiar de filtro o escenario.** Todo cambio de escenario modifica únicamente `target[]` y el motor `SpringChannel` interpola `x[]`, `v[]` y la derivada instantánea `|du/dt|` en tiempo real.
+4. **CERO comentarios tipo `// ... resto del código` o `// implementar aquí`.** Escribe todas las funciones de principio a fin.
+
+## 2. CATÁLOGO DE ECUACIONES PROCEDURALES (`#002` A `#009`)
+
+- **`#002 Underdamped Spring Cascade`:** $a_i = -\omega^2(y_i - y_i^*) - 2\zeta\omega v_i$ con desfase por índice $i \cdot \Delta\tau$.
+- **`#003 Magnetic Dipole Vector Field`:** $\theta(x,y) = \text{atan2}(y - y_c, x - x_c) + \frac{\pi}{2}\sin(r)$.
+- **`#004 Kinetic Cryptographic Scramble`:** Decodificación hexadecimal (`0123456789ABCDEF`) de 350ms con decaimiento lineal $p = t/T$.
+- **`#005 Liquid Metaball Iso-Field`:** $E(x,y) = \sum_{k} \frac{R_k^2}{(x-x_k)^2 + (y-y_k)^2} \ge \tau$.
+- **`#006 3D Isometric Z-Layer Stack`:** Proyección isométrica $(X - Y)\cos 30^\circ, (X + Y)\sin 30^\circ - Z$ con `Explode Z-Axis` y elevación individual en hover.
+- **`#007 Velocity Smear Derivative`:** Estela proporcional a $\left\|\frac{du}{dt}\right\| = \frac{\|y_t - y_{t-1}\|}{\Delta t}$.
+- **`#008 Dual Conic Perimeter Laser`:** `conic-gradient(from var(--angle), transparent 72%, #f43f5e 96%, #fff 100%)` rotando a 60 FPS en alertas críticas.
+- **`#009 Keplerian Phase-Space Orbit`:** $r(\theta) = \frac{a(1-e^2)}{1 + e\cos\theta}, \quad \dot{\theta} \propto \frac{1}{r^2}$ + Radar Poligonal de 6 ejes.
+
+## 3. KERNEL MATEMÁTICO BASE
+
+Incluye siempre `setupCanvas(canvas)`, `class SpringChannel`, `class CanvasHitRegistry`, `function projectIso(x, y, z, originX, originY)` y `showHud(clientX, clientY, payload)` con el micro-canvas `&lt;canvas width=&quot;260&quot; height=&quot;44&quot;&gt;` dentro del `#telemetryHud`.
+</pre>
+          </div>
+
+</section>
 
       <!-- =====================================================================
            SECCIÓN 02: LABORATORIO INTERACTIVO EN VIVO (CONSOLAS FUNCIONALES)
@@ -6338,6 +6510,598 @@ Write-Host "✅ Estructura .github/prompts y reglas globales Zero-CDN + motion-p
         a.click();
       }
     }
+
+    
+
+    // =========================================================================
+    // SECCIÓN 1.3: MOTOR QUANTUM MOTION (#002–#009) + HUD MAGNÉTICO DE TELEMETRÍA
+    // Kernel del blueprint: setupCanvas · SpringChannel · CanvasHitRegistry · projectIso
+    // =========================================================================
+    function initQuantumMotionEngine() {
+      'use strict';
+      const root = document.getElementById('quantum-terminal');
+      if (!root) return;
+
+      // ---- 1. Escalado Retina High-DPI sin deformación ----
+      function setupCanvas(canvas) {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const rect = canvas.getBoundingClientRect();
+        const w = Math.max(10, Math.floor(rect.width));
+        const h = Math.max(10, Math.floor(rect.height));
+        if (canvas.width !== w * dpr || canvas.height !== h * dpr) {
+          canvas.width = w * dpr;
+          canvas.height = h * dpr;
+        }
+        const ctx = canvas.getContext('2d');
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        return { ctx, w, h };
+      }
+
+      // ---- 2. Resortes subamortiguados (#002) + derivada |du/dt| (#007) ----
+      class SpringChannel {
+        constructor(size, omega = 14, zeta = 0.28) {
+          this.x = new Float32Array(size);
+          this.v = new Float32Array(size);
+          this.target = new Float32Array(size);
+          this.derivative = new Float32Array(size);
+          this.omega = omega;
+          this.zeta = zeta;
+        }
+        step(dt) {
+          const dtClamped = Math.min(dt, 0.033);
+          for (let i = 0; i < this.x.length; i++) {
+            const prev = this.x[i];
+            const force = -Math.pow(this.omega, 2) * (this.x[i] - this.target[i]) - 2 * this.zeta * this.omega * this.v[i];
+            this.v[i] += force * dtClamped;
+            this.x[i] += this.v[i] * dtClamped;
+            this.derivative[i] = Math.abs(this.x[i] - prev) / (dtClamped || 0.016);
+          }
+        }
+      }
+
+      // ---- 3. Registro espacial de colisiones (rect / circle / poly) ----
+      function pointInPoly(x, y, pts) {
+        let inside = false;
+        for (let i = 0, j = pts.length - 1; i < pts.length; j = i++) {
+          const xi = pts[i].px, yi = pts[i].py, xj = pts[j].px, yj = pts[j].py;
+          if (((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)) inside = !inside;
+        }
+        return inside;
+      }
+      class CanvasHitRegistry {
+        constructor(canvas, onHover, onLeave) {
+          this.canvas = canvas;
+          this.regions = [];
+          this.onHover = onHover;
+          this.onLeave = onLeave;
+          this.mouse = { x: -999, y: -999, clientX: 0, clientY: 0, inside: false };
+          canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            this.mouse.x = e.clientX - rect.left;
+            this.mouse.y = e.clientY - rect.top;
+            this.mouse.clientX = e.clientX;
+            this.mouse.clientY = e.clientY;
+            this.mouse.inside = true;
+            this.checkHits(onHover, onLeave);
+          });
+          canvas.addEventListener('mouseleave', () => {
+            this.mouse.inside = false;
+            onLeave();
+          });
+        }
+        clear() { this.regions.length = 0; }
+        addRect(x, y, w, h, payload) { this.regions.push({ type: 'rect', x, y, w, h, payload }); }
+        addCircle(x, y, r, payload) { this.regions.push({ type: 'circle', x, y, r, payload }); }
+        addPoly(points, payload) { this.regions.push({ type: 'poly', points, payload }); }
+        checkHits(onHover, onLeave) {
+          if (!this.mouse.inside) return onLeave();
+          for (let i = this.regions.length - 1; i >= 0; i--) {
+            const reg = this.regions[i];
+            let hit;
+            if (reg.type === 'rect') hit = this.mouse.x >= reg.x && this.mouse.x <= reg.x + reg.w && this.mouse.y >= reg.y && this.mouse.y <= reg.y + reg.h;
+            else if (reg.type === 'circle') hit = Math.hypot(this.mouse.x - reg.x, this.mouse.y - reg.y) <= reg.r;
+            else hit = pointInPoly(this.mouse.x, this.mouse.y, reg.points);
+            if (hit) return onHover(this.mouse.clientX, this.mouse.clientY, reg.payload, reg);
+          }
+          onLeave();
+        }
+      }
+
+      // ---- 4. Proyección isométrica 3D (#006) ----
+      function projectIso(x, y, z, originX, originY) {
+        const angle = Math.PI / 6;
+        return { px: originX + (x - y) * Math.cos(angle), py: originY + (x + y) * Math.sin(angle) - z };
+      }
+
+      // ---- Utilidades ----
+      const COL = { cyan: '#38bdf8', indigo: '#6366f1', emerald: '#10b981', amber: '#f59e0b', rose: '#f43f5e' };
+      const MONO = "'JetBrains Mono', Consolas, monospace";
+      const GLYPHS = '0123456789ABCDEF';
+      const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+      const fmt = (v, d = 1) => Number(v).toLocaleString('es-ES', { minimumFractionDigits: d, maximumFractionDigits: d });
+      const pad = (n) => String(n).padStart(2, '0');
+      const avg = (a) => { let s = 0; for (let i = 0; i < a.length; i++) s += a[i]; return s / (a.length || 1); };
+      const std = (a) => { const m = avg(a); let s = 0; for (let i = 0; i < a.length; i++) s += (a[i] - m) * (a[i] - m); return Math.sqrt(s / (a.length || 1)); };
+      const median = (a) => { const s = Array.from(a).sort((p, q) => p - q); return s[Math.floor(s.length / 2)]; };
+      const hhmm = (i) => pad(Math.floor(i * 30 / 60)) + ':' + pad((i * 30) % 60);
+      function rng(seed) { let s = seed >>> 0; return () => { s = (Math.imul(s, 1664525) + 1013904223) >>> 0; return s / 4294967296; }; }
+      function hexA(hex, a) { const n = parseInt(hex.slice(1), 16); return 'rgba(' + (n >> 16) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + a + ')'; }
+      function riskColor(r) { return r > 0.6 ? COL.rose : r > 0.4 ? COL.amber : COL.emerald; }
+      function win8(arr, i) { const out = []; for (let k = Math.max(0, i - 7); k <= i; k++) out.push(arr[k]); return out; }
+      function synth(seed, last, amp) { const r = rng(seed); const out = []; for (let j = 0; j < 7; j++) out.push(last + amp * (r() * 2 - 1) - amp * 0.5 * (1 - j / 7)); out.push(last); return out; }
+
+      // ---- Escenarios (solo cambian target[]; el resorte hace el resto) ----
+      const N = 48;
+      const SCEN = {
+        nominal: { label: 'NOMINAL', seed: 7, level: 180, amp: 18, trend: 0.25, noise: 6, band: 14, risk: 32, lat: [38, 62, 74, 36], conv: [18.4, 21.2, 16.8, 24.1, 19.6, 22.3], anomalies: [], nodeRisk: [0.15, 0.2, 0.1, 0.25, 0.18, 0.12, 0.2, 0.15], radar: [0.86, 0.82, 0.9, 0.78, 0.84, 0.88], fraud: 0.18 },
+        stress: { label: 'ESTRÉS / ANOMALÍA', seed: 19, level: 150, amp: 26, trend: -0.4, noise: 14, band: 34, risk: 78, lat: [72, 148, 196, 84], conv: [11.2, 13.9, 9.4, 15.6, 12.1, 10.8], anomalies: [14, 15, 29, 30, 31, 41], nodeRisk: [0.2, 0.85, 0.3, 0.92, 0.4, 0.25, 0.7, 0.35], radar: [0.52, 0.44, 0.61, 0.38, 0.57, 0.49], fraud: 0.62 },
+        regime: { label: 'CAMBIO DE RÉGIMEN', seed: 31, level: 205, amp: 14, trend: 1.1, noise: 8, band: 20, risk: 48, lat: [44, 80, 98, 40], conv: [22.8, 26.4, 20.1, 28.9, 24.7, 25.6], anomalies: [24], nodeRisk: [0.3, 0.35, 0.5, 0.4, 0.55, 0.3, 0.45, 0.6], radar: [0.74, 0.79, 0.7, 0.81, 0.68, 0.76], fraud: 0.34 }
+      };
+      const NODES = [
+        { n: 'Edge WAF', x: 0.07, y: 0.5 }, { n: 'BFF', x: 0.27, y: 0.22 }, { n: 'App Shell', x: 0.27, y: 0.78 },
+        { n: 'MFE Pagos', x: 0.52, y: 0.12 }, { n: 'MFE Posición', x: 0.52, y: 0.5 }, { n: 'MFE Contratación', x: 0.52, y: 0.86 },
+        { n: 'Motor STP', x: 0.77, y: 0.3 }, { n: 'Core Bancario', x: 0.93, y: 0.66 }
+      ];
+      const EDGES = [[0, 1], [0, 2], [1, 3], [1, 4], [2, 4], [2, 5], [3, 6], [4, 6], [5, 6], [6, 7], [4, 7]];
+      const LAYERS = [
+        { n: 'Core API / Motor STP', c: COL.indigo, lat: 2 }, { n: 'Micro-Frontends', c: COL.cyan, lat: 3 },
+        { n: 'Web App Shell', c: COL.emerald, lat: 1 }, { n: 'Edge CDN / WAF', c: COL.amber, lat: 0 }
+      ];
+      const RADAR_AXES = ['Disponibilidad', 'Latencia', 'Capacidad', 'Seguridad', 'Recuperación', 'Calidad dato'];
+      const COHORTS = ['Particulares', 'Autónomos', 'Micropymes', 'Pymes', 'Empresas', 'Corporativa'];
+      const PHASES = ['Edge / TLS', 'BFF', 'Core / STP', 'Render'];
+      const PHASE_COL = [COL.cyan, COL.indigo, COL.amber, COL.rose];
+      const OPS = [];
+      (function () { const r = rng(99); for (let k = 0; k < 14; k++) OPS.push({ id: 'OP-' + (48120 + Math.floor(r() * 9000)), amount: 0.08 + r() * 4.2, baseE: 0.08 + r() * 0.35, aFrac: 0.5 + r() * 0.5, orient: r() * Math.PI * 2, theta: r() * Math.PI * 2, sus: r(), trail: [] }); })();
+
+      function buildTargets(key) {
+        const s = SCEN[key]; const r = rng(s.seed);
+        const mean = [], lo = [], hi = [], imp = [], hist = [];
+        for (let i = 0; i < N; i++) {
+          const an = s.anomalies.includes(i);
+          const v = s.level + s.trend * (i - 24) + s.amp * Math.sin(i / 5.5) + s.noise * (r() * 2 - 1) - (an ? s.amp * 1.6 : 0);
+          const b = s.band * (0.7 + 0.6 * r());
+          mean.push(v); lo.push(v - b); hi.push(v + b); imp.push(an ? 16 + r() * 12 : r() * 4);
+        }
+        for (let i = 0; i < 24; i++) hist.push(Math.max(4, (mean[i * 2] + mean[i * 2 + 1]) / 2 - 90 + 20 * Math.sin(i / 3.2) + (s.anomalies.includes(i * 2) ? 45 : 0)));
+        return { mean, lo, hi, imp, hist };
+      }
+
+      const sMean = new SpringChannel(N), sLo = new SpringChannel(N), sHi = new SpringChannel(N), sImp = new SpringChannel(N, 12, 0.35);
+      const sHist = new SpringChannel(24), sConv = new SpringChannel(6), sRisk = new SpringChannel(1, 9, 0.32), sLat = new SpringChannel(4, 11, 0.3);
+      const sNodes = new SpringChannel(8, 8, 0.4), sRadar = new SpringChannel(6, 10, 0.3), sEcc = new SpringChannel(OPS.length, 6, 0.5), sLayer = new SpringChannel(4, 12, 0.45);
+      const SPRINGS = [sMean, sLo, sHi, sImp, sHist, sConv, sRisk, sLat, sNodes, sRadar, sEcc, sLayer];
+
+      // Cascada #002: el objetivo de cada índice se libera con retardo i·Δτ
+      const cascades = [];
+      function cascade(ch, arr, delay) {
+        for (let k = cascades.length - 1; k >= 0; k--) if (cascades[k].ch === ch) cascades.splice(k, 1);
+        cascades.push({ ch, arr: Float32Array.from(arr), t0: performance.now(), delay });
+      }
+      function runCascades(now) {
+        for (let k = cascades.length - 1; k >= 0; k--) {
+          const c = cascades[k]; let done = true;
+          for (let i = 0; i < c.arr.length; i++) { if (now - c.t0 >= i * c.delay) c.ch.target[i] = c.arr[i]; else done = false; }
+          if (done) cascades.splice(k, 1);
+        }
+      }
+
+      const state = { scen: 'nominal', explode: false, pinned: null, hover: {}, t: 0, laserAngle: 0, scrambleUntil: 0, target: null, started: false };
+      const statusEl = document.getElementById('qt-status');
+      const pinLabel = document.getElementById('qt-pin-label');
+      const laserCard = root.querySelector('[data-qt-laser]');
+      const kpiEls = {}; root.querySelectorAll('[data-qt-kpi]').forEach(el => { kpiEls[el.dataset.qtKpi] = el; });
+
+      function applyScenario(key) {
+        const s = SCEN[key]; const T = buildTargets(key);
+        state.scen = key; state.target = T;
+        cascade(sMean, T.mean, 18); cascade(sLo, T.lo, 18); cascade(sHi, T.hi, 18); cascade(sImp, T.imp, 18);
+        cascade(sHist, T.hist, 25); cascade(sConv, s.conv, 40);
+        sRisk.target[0] = s.risk;
+        s.lat.forEach((v, i) => { sLat.target[i] = v; });
+        s.nodeRisk.forEach((v, i) => { sNodes.target[i] = v; });
+        s.radar.forEach((v, i) => { sRadar.target[i] = v; });
+        OPS.forEach((o, i) => { sEcc.target[i] = clamp(o.baseE + s.fraud * o.sus * 0.9, 0.05, 0.88); });
+        state.scrambleUntil = performance.now() + 350;
+        if (statusEl) statusEl.textContent = s.label;
+        root.querySelectorAll('[data-qt-scen]').forEach(b => b.classList.toggle('active', b.dataset.qtScen === key));
+      }
+
+      // ---- HUD magnético flotante con micro-canvas ----
+      const hud = document.createElement('div');
+      hud.id = 'telemetryHud';
+      hud.innerHTML = '<div class="qh-top"><span data-h="tag"></span><span class="qh-badge" data-h="badge"></span></div>' +
+        '<div class="qh-head"><span class="qh-title" data-h="title"></span><span class="qh-delta" data-h="delta"></span></div>' +
+        '<div data-h="rows"></div><canvas class="qh-spark"></canvas><div class="qh-formula" data-h="formula"></div>';
+      document.body.appendChild(hud);
+      const H = {}; hud.querySelectorAll('[data-h]').forEach(el => { H[el.dataset.h] = el; });
+      const hudSpark = hud.querySelector('canvas');
+      const hp = { x: 0, y: 0, tx: 0, ty: 0, cx: 0, cy: 0, on: false, owner: null, key: null, last: 0 };
+
+      function hudTarget() {
+        const W = hud.offsetWidth || 290, Hh = hud.offsetHeight || 210;
+        let tx = hp.cx + 18, ty = hp.cy + 18;
+        if (tx + W > window.innerWidth - 8) tx = hp.cx - W - 18;
+        if (ty + Hh > window.innerHeight - 8) ty = hp.cy - Hh - 18;
+        hp.tx = Math.max(8, tx); hp.ty = Math.max(8, ty);
+      }
+      function drawSpark(data, color) {
+        const { ctx, w, h } = setupCanvas(hudSpark);
+        ctx.clearRect(0, 0, w, h);
+        if (!data || data.length < 2) return;
+        let mn = Infinity, mx = -Infinity; data.forEach(v => { mn = Math.min(mn, v); mx = Math.max(mx, v); });
+        const rg = (mx - mn) || 1;
+        const X = i => 3 + i * (w - 10) / (data.length - 1), Y = v => h - 5 - (v - mn) / rg * (h - 12);
+        const grd = ctx.createLinearGradient(0, 0, 0, h); grd.addColorStop(0, hexA(color, 0.35)); grd.addColorStop(1, hexA(color, 0));
+        ctx.beginPath(); ctx.moveTo(X(0), h); data.forEach((v, i) => ctx.lineTo(X(i), Y(v))); ctx.lineTo(X(data.length - 1), h); ctx.closePath(); ctx.fillStyle = grd; ctx.fill();
+        ctx.beginPath(); data.forEach((v, i) => (i ? ctx.lineTo(X(i), Y(v)) : ctx.moveTo(X(i), Y(v)))); ctx.strokeStyle = color; ctx.lineWidth = 1.6; ctx.stroke();
+        const ex = X(data.length - 1), ey = Y(data[data.length - 1]);
+        ctx.fillStyle = hexA(color, 0.3); ctx.beginPath(); ctx.arc(ex, ey, 6, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(ex, ey, 2.4, 0, Math.PI * 2); ctx.fill();
+      }
+      function renderHud(p) {
+        H.tag.textContent = p.tag; H.badge.textContent = p.badge; H.title.textContent = p.title;
+        H.delta.textContent = p.delta; H.delta.style.color = p.deltaColor || COL.cyan;
+        H.rows.innerHTML = p.rows.map(r => '<div class="qh-row"><span>' + r[0] + '</span><strong>' + r[1] + '</strong></div>').join('');
+        H.formula.textContent = p.formula;
+        drawSpark(p.spark, p.sparkColor || COL.cyan);
+      }
+      function showHud(clientX, clientY, p, owner) {
+        hp.cx = clientX; hp.cy = clientY; hp.owner = owner;
+        const now = performance.now();
+        if (p.key !== hp.key || now - hp.last > 120) { renderHud(p); hp.key = p.key; hp.last = now; }
+        if (!hp.on) { hp.on = true; hud.classList.add('on'); hudTarget(); hp.x = hp.tx; hp.y = hp.ty; }
+      }
+      function hideHud(owner) {
+        if (owner && hp.owner !== owner) return;
+        hp.on = false; hp.key = null; hud.classList.remove('on');
+      }
+
+      const cv = {}, regs = {};
+      ['k1', 'k2', 'k3', 'k4', 'vA', 'vB', 'vC', 'vF'].forEach(id => {
+        cv[id] = document.getElementById('qt-' + id);
+        regs[id] = new CanvasHitRegistry(cv[id],
+          (cx, cy, payload) => { state.hover[id] = payload.idx; showHud(cx, cy, payload, id); },
+          () => { state.hover[id] = null; hideHud(id); });
+      });
+
+      // ---- KPI 1: histograma 24 tramos (#002) ----
+      function drawK1() {
+        const { ctx, w, h } = setupCanvas(cv.k1); const reg = regs.k1; ctx.clearRect(0, 0, w, h); reg.clear();
+        const bw = w / 24;
+        for (let i = 0; i < 24; i++) {
+          const v = Math.max(0, sHist.x[i]); const f = clamp(v / 170, 0, 1); const bh = f * (h - 4);
+          const pinned = state.pinned != null && Math.floor(state.pinned / 2) === i;
+          ctx.fillStyle = pinned ? COL.emerald : state.hover.k1 === i ? '#e0f2fe' : hexA(COL.cyan, 0.3 + 0.5 * f);
+          ctx.fillRect(i * bw + 1, h - bh, Math.max(1, bw - 2), bh);
+          const d = (v - avg(sHist.x)) / (avg(sHist.x) || 1) * 100;
+          reg.addRect(i * bw, 0, bw, h, {
+            key: 'k1-' + i, idx: i, tag: 'KPI-1 // HORA ' + pad(i) + ':00', badge: '#002 + #004',
+            title: fmt(v) + ' M€ / hora', delta: (d >= 0 ? '+' : '') + fmt(d) + ' % vs media', deltaColor: d >= 0 ? COL.emerald : COL.rose,
+            rows: [['Operaciones liquidadas', fmt(v * 14.2, 0)], ['Ticket medio', fmt(v / 14.2 * 1000, 0) + ' k€'], ['Velocidad resorte v', fmt(sHist.v[i], 1) + ' u/s'], ['Tramos fijados', pinned ? '📌 Sí (VIZ-A)' : 'No']],
+            spark: win8(sHist.x, i), sparkColor: COL.cyan, formula: 'a = −ω²(x − x*) − 2ζωv · ω=14 · ζ=0.28'
+          });
+        }
+      }
+      // ---- KPI 2: cohortes con cascada (#002) ----
+      function drawK2() {
+        const { ctx, w, h } = setupCanvas(cv.k2); const reg = regs.k2; ctx.clearRect(0, 0, w, h); reg.clear();
+        const bw = w / 6; const m = avg(sConv.x);
+        for (let i = 0; i < 6; i++) {
+          const v = Math.max(0, sConv.x[i]); const bh = clamp(v / 32, 0, 1) * (h - 4);
+          ctx.fillStyle = state.hover.k2 === i ? '#e0e7ff' : v >= m ? hexA(COL.emerald, 0.75) : hexA(COL.indigo, 0.7);
+          ctx.fillRect(i * bw + 3, h - bh, bw - 6, bh);
+          reg.addRect(i * bw, 0, bw, h, {
+            key: 'k2-' + i, idx: i, tag: 'KPI-2 // COHORTE ' + COHORTS[i].toUpperCase(), badge: '#002 cascada',
+            title: fmt(v) + ' % conversión', delta: (v - m >= 0 ? '+' : '') + fmt(v - m) + ' pp vs media', deltaColor: v >= m ? COL.emerald : COL.rose,
+            rows: [['Solicitudes digitales', fmt(1200 + i * 340, 0)], ['Aprobación STP', fmt(clamp(v * 3.4, 0, 96), 1) + ' %'], ['Retardo cascada i·Δτ', (i * 40) + ' ms'], ['Velocidad resorte v', fmt(sConv.v[i], 2)]],
+            spark: synth(31 + i, v, 2.5), sparkColor: COL.indigo, formula: 'a_i = −ω²(y_i − y_i*) − 2ζωv_i · Δτ = 40 ms'
+          });
+        }
+      }
+      // ---- KPI 3: medidor de riesgo + láser cónico (#008) ----
+      function drawK3() {
+        const { ctx, w, h } = setupCanvas(cv.k3); const reg = regs.k3; ctx.clearRect(0, 0, w, h); reg.clear();
+        const risk = clamp(sRisk.x[0], 0, 100); const cx = w / 2, cy = h - 3, R = Math.min(h - 8, w / 2 - 6);
+        ctx.lineCap = 'round'; ctx.lineWidth = 7;
+        ctx.strokeStyle = 'rgba(255,255,255,0.08)'; ctx.beginPath(); ctx.arc(cx, cy, R, Math.PI, 2 * Math.PI); ctx.stroke();
+        ctx.strokeStyle = riskColor(risk / 100); ctx.beginPath(); ctx.arc(cx, cy, R, Math.PI, Math.PI + Math.PI * risk / 100); ctx.stroke();
+        const th = Math.PI + Math.PI * 0.6; ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(244,63,94,0.8)';
+        ctx.beginPath(); ctx.moveTo(cx + Math.cos(th) * (R - 8), cy + Math.sin(th) * (R - 8)); ctx.lineTo(cx + Math.cos(th) * (R + 6), cy + Math.sin(th) * (R + 6)); ctx.stroke();
+        const na = Math.PI + Math.PI * risk / 100; ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 1.6;
+        ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx + Math.cos(na) * (R - 10), cy + Math.sin(na) * (R - 10)); ctx.stroke();
+        ctx.lineCap = 'butt';
+        const hot = Array.from(sNodes.x).filter(v => v > 0.6).length, eHot = Array.from(sEcc.x).filter(v => v > 0.6).length;
+        reg.addRect(0, 0, w, h, {
+          key: 'k3', idx: 0, tag: 'KPI-3 // ÍNDICE DE RIESGO AGREGADO', badge: '#008',
+          title: fmt(risk, 1) + ' pts', delta: risk > 60 ? 'LÁSER #008 ACTIVO' : 'Dentro de apetito', deltaColor: riskColor(risk / 100),
+          rows: [['Umbral láser perimetral', '60,0 pts'], ['Nodos en contagio (>0,6)', hot + ' / 8'], ['Operaciones e > 0,6', eHot + ' / ' + OPS.length], ['Ángulo láser θ', fmt(state.laserAngle, 0) + '°']],
+          spark: synth(77, risk, 9), sparkColor: riskColor(risk / 100), formula: 'conic-gradient(from θ, transparent 72%, #f43f5e 96%, #fff)'
+        });
+      }
+      // ---- KPI 4: fases de latencia + derivada (#007) ----
+      function drawK4() {
+        const { ctx, w, h } = setupCanvas(cv.k4); const reg = regs.k4; ctx.clearRect(0, 0, w, h); reg.clear();
+        const total = avg(sLat.x) * 4; const scale = (w - 2) / 700; let x = 1; const y = h / 2 - 2, bh = 14;
+        for (let i = 0; i < 4; i++) {
+          const v = Math.max(0, sLat.x[i]); const sw = v * scale;
+          ctx.fillStyle = state.hover.k4 === i ? '#ffffff' : hexA(PHASE_COL[i], 0.8); ctx.fillRect(x, y, Math.max(1, sw - 1.5), bh);
+          const d = clamp(sLat.derivative[i] / 25, 0, y - 2);
+          if (d > 0.5) { ctx.fillStyle = hexA(COL.amber, 0.85); ctx.fillRect(x, y - d - 2, Math.max(1, sw - 1.5), d); }
+          reg.addRect(x, 0, Math.max(4, sw), h, {
+            key: 'k4-' + i, idx: i, tag: 'KPI-4 // FASE ' + PHASES[i].toUpperCase(), badge: '#007',
+            title: fmt(v, 0) + ' ms', delta: fmt(v / (total || 1) * 100, 1) + ' % del total', deltaColor: PHASE_COL[i],
+            rows: [['Latencia total E2E', fmt(total, 0) + ' ms'], ['Derivada |du/dt|', fmt(sLat.derivative[i], 1) + ' ms/s'], ['SLO de la fase', [60, 90, 120, 60][i] + ' ms'], ['Estado', v > [60, 90, 120, 60][i] ? '⚠️ Fuera de SLO' : '✅ En SLO']],
+            spark: synth(55 + i, v, v * 0.15), sparkColor: PHASE_COL[i], formula: '|du/dt| = |y_t − y_t−1| / Δt'
+          });
+          x += sw;
+        }
+        ctx.strokeStyle = 'rgba(244,63,94,0.7)'; ctx.setLineDash([2, 2]); ctx.beginPath(); ctx.moveTo(1 + 400 * scale, 2); ctx.lineTo(1 + 400 * scale, h - 2); ctx.stroke(); ctx.setLineDash([]);
+      }
+
+      // ---- VIZ-A: serie temporal + abanico + estela de velocidad (#002 + #007) ----
+      function payloadA(i) {
+        const v = sMean.x[i]; const med = median(state.target.mean); const d = (v - med) / (med || 1) * 100;
+        const z = (v - avg(sMean.x)) / (std(sMean.x) || 1);
+        return {
+          key: 'a-' + i, idx: i, tag: 'VIZ-A // TRAMO #' + (i + 1) + ' (' + hhmm(i) + ' UTC)', badge: '#002 + #007',
+          title: '€' + fmt(v) + ' M flujo neto', delta: (d >= 0 ? '+' : '') + fmt(d) + ' % vs P50', deltaColor: d >= 0 ? COL.emerald : COL.rose,
+          rows: [['Banda P05–P95', '€' + fmt(sLo.x[i]) + ' — €' + fmt(sHi.x[i]) + ' M'], ['Derivada |du/dt|', fmt(sMean.derivative[i], 1) + ' u/s'], ['Impulso de anomalía', fmt(sImp.x[i], 1) + ' pts (z = ' + (z >= 0 ? '+' : '') + fmt(z, 2) + 'σ)'], ['Corte temporal', state.pinned === i ? '📌 Fijado' : 'Clic para fijar']],
+          spark: win8(sMean.x, i), sparkColor: COL.cyan, formula: 'x → x* · ω=14 · ζ=0.28 · v=' + fmt(sMean.v[i], 1)
+        };
+      }
+      function drawA() {
+        const { ctx, w, h } = setupCanvas(cv.vA); const reg = regs.vA; ctx.clearRect(0, 0, w, h); reg.clear();
+        const L = 36, R = 8, T = 10, B = 46, ph = h - T - B, pw = w - L - R, step = pw / N;
+        const yMin = 60, yMax = 300;
+        const X = i => L + (i + 0.5) * step, Y = v => T + ph - (clamp(v, yMin - 60, yMax + 60) - yMin) / (yMax - yMin) * ph;
+        ctx.font = '9px ' + MONO; ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+        for (let g = 0; g <= 4; g++) {
+          const v = yMin + g * (yMax - yMin) / 4, y = Y(v);
+          ctx.strokeStyle = 'rgba(255,255,255,0.06)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(L, y); ctx.lineTo(w - R, y); ctx.stroke();
+          ctx.fillStyle = '#64748b'; ctx.fillText(fmt(v, 0), L - 6, y);
+        }
+        ctx.save(); ctx.beginPath(); ctx.rect(L, T, pw, ph); ctx.clip();
+        const fan = ctx.createLinearGradient(0, T, 0, T + ph); fan.addColorStop(0, 'rgba(56,189,248,0.22)'); fan.addColorStop(1, 'rgba(99,102,241,0.05)');
+        ctx.beginPath(); for (let i = 0; i < N; i++) ctx.lineTo(X(i), Y(sHi.x[i])); for (let i = N - 1; i >= 0; i--) ctx.lineTo(X(i), Y(sLo.x[i])); ctx.closePath(); ctx.fillStyle = fan; ctx.fill();
+        for (let i = 1; i < N; i++) {
+          const d = sMean.derivative[i]; if (d < 8) continue;
+          ctx.strokeStyle = hexA(COL.amber, clamp(d / 400, 0.08, 0.55)); ctx.lineWidth = 2 + clamp(d / 60, 0, 10);
+          ctx.beginPath(); ctx.moveTo(X(i - 1), Y(sMean.x[i - 1])); ctx.lineTo(X(i), Y(sMean.x[i])); ctx.stroke();
+        }
+        ctx.strokeStyle = COL.cyan; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(X(0), Y(sMean.x[0]));
+        for (let i = 1; i < N; i++) ctx.quadraticCurveTo(X(i - 1), Y(sMean.x[i - 1]), (X(i - 1) + X(i)) / 2, (Y(sMean.x[i - 1]) + Y(sMean.x[i])) / 2);
+        ctx.lineTo(X(N - 1), Y(sMean.x[N - 1])); ctx.stroke();
+        ctx.restore();
+        const ib = h - B + 8, ibH = 22;
+        for (let i = 0; i < N; i++) {
+          const v = clamp(sImp.x[i], 0, 30), bh = v / 30 * ibH;
+          ctx.fillStyle = v > 12 ? COL.rose : 'rgba(99,102,241,0.45)'; ctx.fillRect(X(i) - step * 0.35, ib + ibH - bh, step * 0.7, bh);
+        }
+        ctx.fillStyle = '#64748b'; ctx.textBaseline = 'alphabetic'; ctx.font = '8px ' + MONO;
+        [0, 12, 24, 36, 47].forEach((i, k) => { ctx.textAlign = k === 0 ? 'left' : k === 4 ? 'right' : 'center'; ctx.fillText(hhmm(i), X(i), h - 2); });
+        ctx.textAlign = 'right'; ctx.fillText('IMPULSO', L - 4, ib + ibH - 2);
+        if (state.pinned != null) {
+          const px = X(state.pinned); ctx.strokeStyle = COL.emerald; ctx.setLineDash([4, 3]); ctx.lineWidth = 1.2;
+          ctx.beginPath(); ctx.moveTo(px, T); ctx.lineTo(px, ib + ibH); ctx.stroke(); ctx.setLineDash([]);
+        }
+        const hv = state.hover.vA;
+        if (hv != null) {
+          const px = X(hv), py = Y(sMean.x[hv]); ctx.strokeStyle = 'rgba(255,255,255,0.22)'; ctx.lineWidth = 1;
+          ctx.beginPath(); ctx.moveTo(px, T); ctx.lineTo(px, T + ph); ctx.stroke();
+          ctx.fillStyle = '#ffffff'; ctx.strokeStyle = COL.cyan; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(px, py, 4, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        }
+        for (let i = 0; i < N; i++) reg.addRect(X(i) - step / 2, T, step, h - T, payloadA(i));
+      }
+
+      // ---- VIZ-B: topología + campo dipolar + metaballs (#003 + #005) ----
+      function drawB() {
+        const { ctx, w, h } = setupCanvas(cv.vB); const reg = regs.vB; ctx.clearRect(0, 0, w, h); reg.clear();
+        const pos = NODES.map(n => ({ x: 16 + n.x * (w - 32), y: 14 + n.y * (h - 34) }));
+        const Rk = NODES.map((n, k) => 4 + 34 * Math.pow(clamp(sNodes.x[k], 0, 1), 1.6));
+        const field = (x, y) => { let E = 0; for (let k = 0; k < 8; k++) { const dx = x - pos[k].x, dy = y - pos[k].y; E += (Rk[k] * Rk[k]) / (dx * dx + dy * dy + 1); } return E; };
+        const cell = 7;
+        for (let gy = 0; gy < h; gy += cell) for (let gx = 0; gx < w; gx += cell) {
+          const E = field(gx + cell / 2, gy + cell / 2);
+          if (E >= 1) { ctx.fillStyle = E < 1.3 ? 'rgba(244,63,94,0.34)' : hexA(COL.rose, clamp(0.06 + (E - 1) * 0.03, 0.06, 0.2)); ctx.fillRect(gx, gy, cell - 1, cell - 1); }
+        }
+        const m = reg.mouse; let ax, ay;
+        if (m.inside) { ax = m.x; ay = m.y; } else { let b = 0; for (let k = 1; k < 8; k++) if (sNodes.x[k] > sNodes.x[b]) b = k; ax = pos[b].x; ay = pos[b].y; }
+        for (let j = 0; j < 7; j++) for (let i = 0; i < 13; i++) {
+          const x = (i + 0.5) * w / 13, y = (j + 0.5) * h / 7, dx = x - ax, dy = y - ay, r = Math.hypot(dx, dy);
+          const th = Math.atan2(dy, dx) + Math.PI / 2 * Math.sin(r / 38 - state.t * 1.2);
+          const E = field(x, y), len = 7;
+          ctx.strokeStyle = E > 0.6 ? 'rgba(244,63,94,0.75)' : hexA(COL.cyan, clamp(0.25 + 30 / (r + 1), 0.25, 0.7)); ctx.lineWidth = 1.2;
+          ctx.beginPath(); ctx.moveTo(x - Math.cos(th) * len / 2, y - Math.sin(th) * len / 2); ctx.lineTo(x + Math.cos(th) * len / 2, y + Math.sin(th) * len / 2); ctx.stroke();
+          ctx.fillStyle = ctx.strokeStyle; ctx.beginPath(); ctx.arc(x + Math.cos(th) * len / 2, y + Math.sin(th) * len / 2, 1.1, 0, Math.PI * 2); ctx.fill();
+        }
+        EDGES.forEach((e, ei) => {
+          const p = pos[e[0]], q = pos[e[1]], risk = Math.max(sNodes.x[e[0]], sNodes.x[e[1]]), c = riskColor(risk);
+          ctx.strokeStyle = hexA(c, 0.35); ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke();
+          ctx.fillStyle = c;
+          for (let k = 0; k < 3; k++) { const f = (state.t * (0.25 + (1 - risk) * 0.45) + k / 3 + ei * 0.13) % 1; ctx.beginPath(); ctx.arc(p.x + (q.x - p.x) * f, p.y + (q.y - p.y) * f, 1.8, 0, Math.PI * 2); ctx.fill(); }
+        });
+        ctx.font = '600 9px Inter, sans-serif'; ctx.textBaseline = 'alphabetic';
+        NODES.forEach((n, k) => {
+          const r = clamp(sNodes.x[k], 0, 1), rad = 6 + r * 5, p = pos[k];
+          ctx.fillStyle = '#0b101d'; ctx.beginPath(); ctx.arc(p.x, p.y, rad + 3, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = riskColor(r); ctx.beginPath(); ctx.arc(p.x, p.y, rad, 0, Math.PI * 2); ctx.fill();
+          if (state.hover.vB === k) { ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(p.x, p.y, rad + 5, 0, Math.PI * 2); ctx.stroke(); }
+          ctx.textAlign = n.x < 0.12 ? 'left' : n.x > 0.85 ? 'right' : 'center';
+          ctx.fillStyle = '#cbd5e1'; ctx.fillText(n.n, n.x < 0.12 ? p.x - 8 : n.x > 0.85 ? p.x + 8 : p.x, p.y + rad + 12);
+          const deg = EDGES.filter(e => e[0] === k || e[1] === k).length;
+          reg.addCircle(p.x, p.y, 15, {
+            key: 'b-' + k, idx: k, tag: 'VIZ-B // NODO ' + n.n.toUpperCase(), badge: '#003 + #005',
+            title: fmt(r * 100, 1) + ' % riesgo de contagio', delta: r > 0.6 ? 'NODO CRÍTICO' : r > 0.4 ? 'Vigilancia' : 'Saludable', deltaColor: riskColor(r),
+            rows: [['Latencia p95', fmt(80 + r * 420, 0) + ' ms'], ['Throughput', fmt(1200 * (1 - r * 0.6), 0) + ' req/s'], ['Conexiones del grafo', String(deg)], ['Radio metaball R_k', fmt(Rk[k], 1) + ' px']],
+            spark: synth(200 + k, r * 100, 12), sparkColor: riskColor(r), formula: 'θ = atan2(Δy, Δx) + π/2·sin(r/38) · E = Σ R²/d² ≥ 1'
+          });
+        });
+      }
+
+      // ---- VIZ-C: pila isométrica 3D (#006) ----
+      function drawC() {
+        const { ctx, w, h } = setupCanvas(cv.vC); const reg = regs.vC; ctx.clearRect(0, 0, w, h); reg.clear();
+        const S = Math.min(w * 0.46 / 1.732, h * 0.36), thick = 7, gap = state.explode ? 32 : 13;
+        const ox = S * 0.866 + 14, oy = h - S - thick - 10, total = avg(sLat.x) * 4, risk = sRisk.x[0];
+        for (let i = 0; i < 4; i++) sLayer.target[i] = i * gap + (state.hover.vC === i ? 14 : 0);
+        for (let i = 0; i < 4; i++) {
+          const z = sLayer.x[i], Ly = LAYERS[i], hov = state.hover.vC === i;
+          const p0 = projectIso(0, 0, z, ox, oy), p1 = projectIso(S, 0, z, ox, oy), p2 = projectIso(S, S, z, ox, oy), p3 = projectIso(0, S, z, ox, oy);
+          const poly = (pts, fill) => { ctx.beginPath(); pts.forEach((p, k) => (k ? ctx.lineTo(p.px, p.py) : ctx.moveTo(p.px, p.py))); ctx.closePath(); ctx.fillStyle = fill; ctx.fill(); };
+          const dn = p => ({ px: p.px, py: p.py + thick });
+          poly([p3, p2, dn(p2), dn(p3)], hexA(Ly.c, 0.16)); poly([p2, p1, dn(p1), dn(p2)], hexA(Ly.c, 0.09));
+          poly([p0, p1, p2, p3], hexA(Ly.c, hov ? 0.42 : 0.2));
+          ctx.strokeStyle = Ly.c; ctx.lineWidth = hov ? 1.6 : 1; ctx.beginPath(); [p0, p1, p2, p3].forEach((p, k) => (k ? ctx.lineTo(p.px, p.py) : ctx.moveTo(p.px, p.py))); ctx.closePath(); ctx.stroke();
+          ctx.strokeStyle = hexA(Ly.c, 0.18); ctx.lineWidth = 0.8;
+          [0.25, 0.5, 0.75].forEach(f => {
+            let a = projectIso(S * f, 0, z, ox, oy), b = projectIso(S * f, S, z, ox, oy); ctx.beginPath(); ctx.moveTo(a.px, a.py); ctx.lineTo(b.px, b.py); ctx.stroke();
+            a = projectIso(0, S * f, z, ox, oy); b = projectIso(S, S * f, z, ox, oy); ctx.beginPath(); ctx.moveTo(a.px, a.py); ctx.lineTo(b.px, b.py); ctx.stroke();
+          });
+          const lat = sLat.x[Ly.lat], lx = p1.px + 12;
+          ctx.strokeStyle = hexA(Ly.c, 0.5); ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(p1.px + 2, p1.py); ctx.lineTo(lx - 3, p1.py); ctx.stroke();
+          ctx.font = '600 9.5px "Space Grotesk", Outfit, sans-serif'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillStyle = Ly.c;
+          ctx.fillText(Ly.n, lx, p1.py); const tw = ctx.measureText(Ly.n).width;
+          ctx.font = '9px ' + MONO; ctx.fillStyle = '#94a3b8'; ctx.fillText(' · ' + fmt(lat, 0) + ' ms', lx + tw, p1.py);
+          const zh = i * gap;
+          const hit = [projectIso(0, 0, zh, ox, oy), projectIso(S, 0, zh, ox, oy), projectIso(S, S, zh, ox, oy), projectIso(0, S, zh, ox, oy)];
+          const cache = clamp(97 - risk * 0.25 - i * 2, 40, 99), err = Math.pow(risk / 100, 2) * (1 + i * 0.4);
+          reg.addPoly(hit, {
+            key: 'c-' + i, idx: i, tag: 'VIZ-C // CAPA L' + i + ' (Z-STACK)', badge: '#006',
+            title: Ly.n, delta: fmt(lat, 0) + ' ms', deltaColor: Ly.c,
+            rows: [['Peso en latencia E2E', fmt(lat / (total || 1) * 100, 1) + ' %'], ['Cache hit ratio', fmt(cache, 1) + ' %'], ['Tasa de error 5xx', fmt(err, 2) + ' %'], ['Elevación Z', fmt(z, 1) + ' px']],
+            spark: synth(300 + i, lat, lat * 0.12), sparkColor: Ly.c, formula: 'P = ((X−Y)·cos30°, (X+Y)·sin30° − Z) · Z=' + fmt(z, 1)
+          });
+        }
+      }
+
+      // ---- VIZ-F: atractor kepleriano + radar 6 ejes (#009) ----
+      function drawF(dt) {
+        const { ctx, w, h } = setupCanvas(cv.vF); const reg = regs.vF; ctx.clearRect(0, 0, w, h); reg.clear();
+        const split = w * 0.6, cx = split * 0.5, cy = h / 2, aMax = Math.min(split * 0.46, h * 0.46);
+        ctx.save(); ctx.beginPath(); ctx.rect(0, 0, split, h); ctx.clip();
+        ctx.strokeStyle = 'rgba(255,255,255,0.05)'; ctx.setLineDash([2, 4]); ctx.lineWidth = 1;
+        [0.33, 0.66, 1].forEach(f => { ctx.beginPath(); ctx.arc(cx, cy, aMax * f, 0, Math.PI * 2); ctx.stroke(); }); ctx.setLineDash([]);
+        const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, 24); g.addColorStop(0, 'rgba(244,63,94,0.55)'); g.addColorStop(1, 'rgba(244,63,94,0)');
+        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(cx, cy, 24, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = COL.rose; ctx.beginPath(); ctx.arc(cx, cy, 4.5, 0, Math.PI * 2); ctx.fill();
+        ctx.font = '8px ' + MONO; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic'; ctx.fillStyle = '#fda4af'; ctx.fillText('NÚCLEO STP · BLOQUEO', cx, cy + 34);
+        OPS.forEach((o, k) => {
+          const e = clamp(sEcc.x[k], 0.02, 0.9), a = aMax * o.aFrac / (1 + e);
+          const rOf = th => a * (1 - e * e) / (1 + e * Math.cos(th));
+          const thdot = 0.55 * Math.min(9, Math.pow(a / rOf(o.theta), 2));
+          o.theta = (o.theta + thdot * dt) % (Math.PI * 2);
+          const r = rOf(o.theta), ang = o.theta + o.orient, x = cx + r * Math.cos(ang), y = cy + r * Math.sin(ang);
+          const c = e > 0.6 ? COL.rose : e > 0.4 ? COL.amber : COL.cyan;
+          ctx.strokeStyle = hexA(c, 0.12); ctx.lineWidth = 1; ctx.beginPath();
+          for (let s = 0; s <= 48; s++) { const th = s / 48 * Math.PI * 2, rr = rOf(th), xx = cx + rr * Math.cos(th + o.orient), yy = cy + rr * Math.sin(th + o.orient); if (s) ctx.lineTo(xx, yy); else ctx.moveTo(xx, yy); }
+          ctx.stroke();
+          o.trail.push([x, y]); if (o.trail.length > 12) o.trail.shift();
+          for (let t = 1; t < o.trail.length; t++) { ctx.strokeStyle = hexA(c, t / o.trail.length * 0.6); ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(o.trail[t - 1][0], o.trail[t - 1][1]); ctx.lineTo(o.trail[t][0], o.trail[t][1]); ctx.stroke(); }
+          ctx.fillStyle = c; ctx.beginPath(); ctx.arc(x, y, 2.5 + o.amount * 0.6, 0, Math.PI * 2); ctx.fill();
+          if (state.hover.vF === 'op' + k) { ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 1.4; ctx.beginPath(); ctx.arc(x, y, 7 + o.amount * 0.6, 0, Math.PI * 2); ctx.stroke(); }
+          const decision = (e > 0.7 && r < a * 0.45) ? '⛔ BLOQUEO STP' : e > 0.5 ? '⚠️ Revisión manual' : '✅ Aprobación STP';
+          reg.addCircle(x, y, 10, {
+            key: 'f-' + k, idx: 'op' + k, tag: 'VIZ-F // ' + o.id, badge: '#009',
+            title: '€' + fmt(o.amount, 2) + ' M', delta: 'Fraud score ' + fmt(e * 100, 0), deltaColor: c,
+            rows: [['Excentricidad e', fmt(e, 3)], ['Radio orbital r', fmt(r, 1) + ' px'], ['Velocidad angular θ̇', fmt(thdot, 2) + ' rad/s'], ['Decisión', decision]],
+            spark: o.trail.map(p => Math.hypot(p[0] - cx, p[1] - cy)), sparkColor: c, formula: 'r(θ) = a(1−e²)/(1+e·cosθ) · θ̇ ∝ 1/r² · e=' + fmt(e, 2)
+          });
+        });
+        ctx.restore();
+        ctx.strokeStyle = 'rgba(255,255,255,0.08)'; ctx.beginPath(); ctx.moveTo(split, 10); ctx.lineTo(split, h - 10); ctx.stroke();
+        const rx = split + (w - split) / 2, ry = h / 2 + 4, RR = Math.max(20, Math.min((w - split) / 2 - 46, h / 2 - 26));
+        const pt = (k, f) => { const a = -Math.PI / 2 + k * Math.PI / 3; return [rx + Math.cos(a) * RR * f, ry + Math.sin(a) * RR * f]; };
+        ctx.strokeStyle = 'rgba(255,255,255,0.08)'; ctx.lineWidth = 1;
+        [0.33, 0.66, 1].forEach(f => { ctx.beginPath(); for (let k = 0; k < 6; k++) { const p = pt(k, f); if (k) ctx.lineTo(p[0], p[1]); else ctx.moveTo(p[0], p[1]); } ctx.closePath(); ctx.stroke(); });
+        for (let k = 0; k < 6; k++) { const p = pt(k, 1); ctx.beginPath(); ctx.moveTo(rx, ry); ctx.lineTo(p[0], p[1]); ctx.stroke(); }
+        const ra = avg(sRadar.x), rc = ra < 0.6 ? COL.amber : COL.emerald;
+        ctx.beginPath(); for (let k = 0; k < 6; k++) { const p = pt(k, clamp(sRadar.x[k], 0, 1.1)); if (k) ctx.lineTo(p[0], p[1]); else ctx.moveTo(p[0], p[1]); } ctx.closePath();
+        ctx.fillStyle = hexA(rc, 0.18); ctx.fill(); ctx.strokeStyle = rc; ctx.lineWidth = 1.5; ctx.stroke();
+        ctx.font = '8.5px Inter, sans-serif';
+        for (let k = 0; k < 6; k++) {
+          const v = sRadar.x[k], p = pt(k, clamp(v, 0, 1.1)), lp = pt(k, 1.16);
+          ctx.fillStyle = state.hover.vF === 'r' + k ? '#ffffff' : rc; ctx.beginPath(); ctx.arc(p[0], p[1], state.hover.vF === 'r' + k ? 4 : 2.6, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = '#94a3b8'; ctx.textAlign = Math.abs(lp[0] - rx) < 4 ? 'center' : lp[0] > rx ? 'left' : 'right'; ctx.textBaseline = lp[1] < ry - RR * 0.9 ? 'bottom' : lp[1] > ry + RR * 0.9 ? 'top' : 'middle';
+          ctx.fillText(RADAR_AXES[k], lp[0], lp[1]);
+          reg.addCircle(p[0], p[1], 10, {
+            key: 'r-' + k, idx: 'r' + k, tag: 'VIZ-F // RADAR · ' + RADAR_AXES[k].toUpperCase(), badge: '#002',
+            title: fmt(v * 100, 1) + ' / 100', delta: (v - 0.8 >= 0 ? '+' : '') + fmt((v - 0.8) * 100, 1) + ' vs SLO', deltaColor: v >= 0.8 ? COL.emerald : v >= 0.6 ? COL.amber : COL.rose,
+            rows: [['Objetivo SLO', '80,0'], ['Media de resiliencia', fmt(ra * 100, 1)], ['Velocidad resorte v', fmt(sRadar.v[k], 3)], ['Escenario', SCEN[state.scen].label]],
+            spark: synth(400 + k, v * 100, 6), sparkColor: rc, formula: 'a = −ω²(x − x*) − 2ζωv · ω=10 · ζ=0.30'
+          });
+        }
+      }
+
+      // ---- KPIs con scramble criptográfico (#004) ----
+      function kpiStrings(useTarget) {
+        const T = state.target, s = SCEN[state.scen];
+        const flow = state.pinned != null ? (useTarget ? T.mean[state.pinned] : sMean.x[state.pinned]) : (useTarget ? avg(T.mean) : avg(sMean.x));
+        const conv = useTarget ? avg(s.conv) : avg(sConv.x);
+        const risk = useTarget ? s.risk : sRisk.x[0];
+        const lat = useTarget ? s.lat.reduce((a, b) => a + b, 0) : avg(sLat.x) * 4;
+        return { flow: '€' + fmt(flow) + ' M', conv: fmt(conv) + ' %', risk: fmt(risk, 0) + ' pts', lat: fmt(lat, 0) + ' ms' };
+      }
+      function updateKpis(now) {
+        const scr = now < state.scrambleUntil, strs = kpiStrings(scr), p = scr ? 1 - (state.scrambleUntil - now) / 350 : 1;
+        Object.keys(kpiEls).forEach(k => {
+          let s = strs[k];
+          if (scr) s = s.replace(/[0-9]/g, ch => (Math.random() > p ? GLYPHS[Math.floor(Math.random() * 16)] : ch));
+          if (kpiEls[k].textContent !== s) kpiEls[k].textContent = s;
+        });
+      }
+
+      // ---- Controles ----
+      root.querySelectorAll('[data-qt-scen]').forEach(b => b.addEventListener('click', () => applyScenario(b.dataset.qtScen)));
+      const xrayBtn = document.getElementById('qt-xray-btn');
+      if (xrayBtn) xrayBtn.addEventListener('click', () => { const on = root.classList.toggle('xray-on'); xrayBtn.classList.toggle('active', on); });
+      const explodeBtn = document.getElementById('qt-explode-btn');
+      if (explodeBtn) explodeBtn.addEventListener('click', () => { state.explode = !state.explode; explodeBtn.classList.toggle('active', state.explode); explodeBtn.textContent = state.explode ? 'Collapse Z-Axis' : 'Explode Z-Axis'; });
+      cv.vA.addEventListener('click', (e) => {
+        const rect = cv.vA.getBoundingClientRect(), L = 36, pw = rect.width - 44;
+        const idx = Math.floor((e.clientX - rect.left - L) / (pw / N));
+        if (idx < 0 || idx >= N) return;
+        state.pinned = state.pinned === idx ? null : idx;
+        if (pinLabel) pinLabel.textContent = state.pinned != null ? '📌 PIN · ' + hhmm(idx) + ' UTC' : '#002 + #007';
+        hp.key = null;
+      });
+      root.addEventListener('mousemove', (e) => {
+        root.querySelectorAll('.qt-card').forEach(c => { const r = c.getBoundingClientRect(); c.style.setProperty('--mx', (e.clientX - r.left) + 'px'); c.style.setProperty('--my', (e.clientY - r.top) + 'px'); });
+      });
+
+      // ---- Bucle principal a 60 FPS (pausa fuera de pantalla) ----
+      let visible = false, last = performance.now();
+      function start() { if (!state.started) { state.started = true; applyScenario('nominal'); } }
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver((entries) => { visible = entries[0].isIntersecting; if (visible) start(); }, { rootMargin: '150px' }).observe(root);
+      } else { visible = true; start(); }
+
+      function frame(now) {
+        const dt = Math.min((now - last) / 1000, 0.05); last = now;
+        if (visible && state.started && !document.hidden) {
+          state.t += dt;
+          runCascades(now);
+          SPRINGS.forEach(s => s.step(dt));
+          drawK1(); drawK2(); drawK3(); drawK4(); drawA(); drawB(); drawC(); drawF(dt);
+          updateKpis(now);
+          if (laserCard) {
+            state.laserAngle = (state.laserAngle + dt * 240) % 360;
+            laserCard.classList.toggle('qt-laser', sRisk.x[0] > 60);
+            laserCard.style.setProperty('--qt-angle', state.laserAngle + 'deg');
+          }
+          Object.keys(regs).forEach(id => { const r = regs[id]; if (r.mouse.inside) r.checkHits(r.onHover, r.onLeave); });
+          if (hp.on) { hudTarget(); hp.x += (hp.tx - hp.x) * 0.28; hp.y += (hp.ty - hp.y) * 0.28; hud.style.transform = 'translate3d(' + hp.x.toFixed(1) + 'px,' + hp.y.toFixed(1) + 'px,0)'; }
+        }
+        requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+
+      window.downloadQuantumSkill = function () {
+        const pre = document.getElementById('quantum-skill-pre');
+        const blob = new Blob([pre ? pre.textContent : ''], { type: 'text/markdown;charset=utf-8' });
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'SKILL.md'; a.click();
+      };
+    } if (document.readyState === "loading") { document.addEventListener("DOMContentLoaded", initQuantumMotionEngine); } else { initQuantumMotionEngine(); }
 
     window.addEventListener('DOMContentLoaded', () => {
       if (typeof renderMpCatalog === 'function') renderMpCatalog();
