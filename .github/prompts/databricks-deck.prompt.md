@@ -1,28 +1,26 @@
 ---
 name: databricks-deck
-description: Genera una celda completa de Databricks (PySpark -> displayHTML) con Scrollytelling en 3 pasos, Morphing Geométrico en ECharts, Action Title dinámico, Spotlight CSS y escape a Pantalla Completa (Blob URL).
+description: Genera una celda completa de Databricks (PySpark -> displayHTML) 100% blindada Zero-CDN (nunca sale en blanco), con CSS puro, Motor Gráfico Dual (SVG Nativo + ECharts), Simulador What-If, Auto-Insights y Descarga .HTML para correo.
 argument: sparkColumnsOrTable
 ---
 
-Actúa como un Principal Design Engineer y Arquitecto de Datos PySpark en Databricks.
+Actúa como un Principal Design Engineer y Arquitecto de Datos PySpark en Databricks para Banca Comercial y Corporativa.
 
-# Referencia de Habilidad Obligatoria
+# Referencias Obligatorias
 - Lee y aplica íntegramente: #file:skills/databricks-scrolly-deck/SKILL.md
+- Lee las primitivas de animación y diseño: #file:skills/aesthetic-motion-critic/SKILL.md
 
 # Objetivo
-Construir un bloque de código Python para **1 única celda de Databricks** a partir de la estructura de datos o tabla indicada en `${input:sparkColumnsOrTable}` (o el script abierto en el editor).
+Construir un bloque de código Python para **1 única celda de Databricks** (o un archivo `.html` autónomo si el usuario ya pegó los datos extraídos de Databricks) a partir de `${input:sparkColumnsOrTable}`.
 
-# Restricciones Técnicas No Negociables
-1. **Puente PySpark -> HTML sin f-strings**:
-   - Declara la plantilla HTML como `html_deck = r"""<!DOCTYPE html>..."""` (raw string) para no escapar llaves `{}` en CSS ni JS.
-   - Agrega los datos en PySpark antes de `.collect()`, generando vectores de 12 periodos (`F.collect_list`) para Sparklines y estructuras `nodes`/`links` si procede un Sankey.
-   - Inyecta el JSON mediante `html_deck.replace("__PYSPARK_PAYLOAD__", payload_json)` con un serializador seguro para `Decimal` y `Date`, y renderiza con `displayHTML()`.
-2. **Arquitectura Visual de Estudio (Estética Cyber-Terminal)**:
-   - Lienzo oscuro `#05070E`, tarjetas `.sp-card` con iluminación especular reactiva al ratón (`--mx`, `--my` y `mask-composite: exclude`).
-   - Tipografía `Inter` + `JetBrains Mono` con `font-variant-numeric: tabular-nums` en todos los números, KPIs, tablas y ejes.
-3. **Coreografía Dirigida por Pasos (Step-Driven Deck)**:
-   - Barra superior con al menos **3 pasos narrativos** navegables con clic y flechas del teclado (`ArrowLeft` / `ArrowRight`).
-   - **Action Title dinámico** estilo consultoría ejecutiva que reescribe la conclusión cuantitativa al cambiar de paso, mover los sliders de sensibilidad o filtrar un segmento.
-   - **Morphing Geométrico Universal**: comparte el mismo `id` de serie en Apache ECharts con `universalTransition: { enabled: true, divideShape: 'clone' }` para transformar las vistas en vivo.
-4. **Escape del Sandbox de Databricks (Pantalla Completa Fiable)**:
-   - Guarda la plantilla HTML base en memoria antes de inicializar ECharts (o reconstruye el HTML limpio con el JSON inyectado) para que el botón `↗ Pantalla Completa` abra un `Blob URL` (`URL.createObjectURL`) en una pestaña nueva a `100dvh` con todos los gráficos 100% operativos.
+# Reglas Críticas Anti-Fallos en Entorno Bancario
+1. **CERO DEPENDENCIA DE TAILWIND CDN (`cdn.tailwindcss.com` PROHIBIDO)**:
+   - Declara todo el sistema de diseño en un bloque `<style>` puro con variables `:root` (Dark `#070a12`) y `html.light` (Light `#f8fafc`), `font-variant-numeric: tabular-nums`, `.sp-card` con iluminación Spotlight y contenedores de gráficos con altura explícita (`height: 350px`).
+2. **MOTOR GRÁFICO INFALIBLE (NUNCA PANTALLA EN BLANCO)**:
+   - Incluye renderizadores **SVG Vectoriales Nativos** (Barras + Línea, Waterfall P&L, Scatter Riesgo-Retorno y Sparklines de 12 meses) con animación `#MP-01` / `#MP-03` para que el dashboard funcione al 100% incluso si el firewall del banco bloquea CDNs externos. Si usas ECharts, envuélvelo en `if (typeof echarts !== 'undefined')` con fallback automático al motor SVG nativo.
+3. **INTERACTIVIDAD EJECUTIVA OBLIGATORIA**:
+   - **Action Title Dinámico + Narrador Automático (`#MP-10`)**: Banner superior que calcula la brecha contra el Hurdle Rate (RORWA 2,50%) y redacta las alertas de Stage 2 / STP al filtrar.
+   - **Buscador Instantáneo + Pestañas de Segmento + Ordenación de Tabla (`▲▼`)**.
+   - **Simulador What-If en Vivo (`#MP-09`)**: Sliders de Spread (bps) y Mora/Fricción que recalculan KPIs (con contador interpolado `#MP-02`), gráficos y tabla en tiempo real.
+   - **Slide-Over Inspector 360° (`#MP-08`)**: Al hacer clic en cualquier fila o barra, despliega el panel lateral con Radar SVG de 5 ejes y desglose de la operación/segmento.
+   - **Empaquetador Base64 para Correo + Exportación CSV/PDF**: Botón para descargar el `.html` autónomo, botón para bajar la vista filtrada a Excel (`.csv` con BOM UTF-8 `\uFEFF` y `;`) y botón de cambio de tema Claro/Oscuro (`☀️ / 🌙`).

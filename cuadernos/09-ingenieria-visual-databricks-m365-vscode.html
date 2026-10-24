@@ -325,6 +325,74 @@
       border-top: 1px solid #0F172A;
       border-bottom: 3px double #0F172A;
     }
+
+    /* ==========================================================================
+       CATÁLOGO INTERACTIVO MOTION-PROMPT (#MP-01 A #MP-12)
+       ========================================================================== */
+    @keyframes mpSpringPop {
+      0% { opacity: 0; transform: translateY(14px) scale(0.95); }
+      70% { opacity: 1; transform: translateY(-2px) scale(1.015); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes mpDrawPath {
+      0% { stroke-dashoffset: 240; }
+      100% { stroke-dashoffset: 0; }
+    }
+    @keyframes mpPulseDot {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.45); opacity: 0.55; }
+    }
+    .mp-catalog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(295px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .mp-card {
+      background: rgba(11, 16, 29, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 12px;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.75rem;
+      transition: all 220ms cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    }
+    .mp-card.picked {
+      border-color: #10b981;
+      background: linear-gradient(180deg, rgba(16, 185, 129, 0.12) 0%, rgba(11, 16, 29, 0.92) 100%);
+      box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.4), 0 12px 28px -8px rgba(16, 185, 129, 0.25);
+    }
+    .mp-stage {
+      background: #050811;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 8px;
+      height: 86px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.5rem;
+      overflow: hidden;
+      position: relative;
+    }
+    .mp-pick-btn {
+      padding: 0.38rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.73rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1px solid rgba(99, 102, 241, 0.45);
+      background: rgba(99, 102, 241, 0.16);
+      color: #c7d2fe;
+      transition: all 160ms ease;
+    }
+    .mp-card.picked .mp-pick-btn {
+      background: #10b981;
+      border-color: #10b981;
+      color: #040911;
+    }
   </style>
 </head>
 <body>
@@ -576,6 +644,52 @@
                 </tr>
               </tbody>
             </table>
+          </div>
+
+          <!-- =================================================================
+               SUBSECCIÓN 1.2: CATÁLOGO INTERACTIVO MOTION-PROMPT (#MP-01 A #MP-12)
+               ================================================================= -->
+          <h3 id="motion-prompt-catalog-sec" style="margin-top: 2.2rem;">1.2. 🎬 Catálogo Visual Interactivo `motion-prompt` para Dashboards (`#MP-01` a `#MP-12` — Sistema *"Pick &amp; Send"* con Código Real)</h3>
+          <p>
+            Inspirado en el repositorio <a href="https://github.com/showheyohtaki/motion-prompt" target="_blank" rel="noopener" style="color:#38bdf8;font-weight:600;"><code>showheyohtaki/motion-prompt</code></a>, este catálogo soluciona el **principal motivo por el que los prompts dan resultados pobres en M365 Copilot y VS Code**: cuando le pides a la IA con palabras vagas <em>«haz que se vea moderno y fluido»</em>, la IA inventa un CSS pobre. En cambio, aquí tienes **12 piezas numeradas (`#MP-01` a `#MP-12`) con su animación funcionando en vivo y su receta de código determinista (Zero-CDN, 100% libre de bloqueos de red)**.
+          </p>
+          <p>
+            <strong>Cómo usarlo en tu flujo diario (Databricks → VS Code / M365 Copilot):</strong>
+            1) Mira las demostraciones animadas en cada tarjeta (puedes pulsar <code>↻ Probar</code> para repetir el efecto),
+            2) Haz clic en <strong><code>+ Pick (Seleccionar)</code></strong> en las piezas que quieras para tu dashboard de hoy, y
+            3) Pulsa el botón verde superior <strong><code>📋 Copiar Prompt Blindado con las Recetas Seleccionadas</code></strong> (o envíalas al Ensamblador de la Sección 07). El prompt copiado lleva **el código CSS y JavaScript exacto de esas piezas ya escrito dentro**, de modo que M365 Copilot o VS Code no tienen que adivinar nada:
+          </p>
+
+          <!-- BARRA INTERACTIVA PICK & SEND (ESTILO MOTION-PROMPT) -->
+          <div class="cyber-terminal-shell" style="padding: 1.15rem; border: 1px solid rgba(16, 185, 129, 0.45); background: linear-gradient(135deg, rgba(6, 10, 20, 0.96) 0%, rgba(13, 28, 36, 0.9) 100%);">
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.85rem; padding-bottom: 0.9rem; border-bottom: 1px solid rgba(255,255,255,0.1);">
+              <div>
+                <div class="tabular-mono" style="font-size: 0.68rem; color: #34d399; font-weight: 700; letter-spacing: 0.08em;">
+                  🎯 MOTION-PROMPT PICKER BAR • SELECCIONA TUS RECETAS PARA VS CODE / M365 COPILOT
+                </div>
+                <div id="mp-picker-summary" style="font-size: 0.88rem; color: #f8fafc; font-weight: 700; margin-top: 0.2rem;">
+                  6 primitivas seleccionadas: #MP-01, #MP-02, #MP-03, #MP-04, #MP-05, #MP-08
+                </div>
+              </div>
+              <div style="display: flex; flex-wrap: wrap; gap: 0.45rem;">
+                <button type="button" onclick="mpSelectPreset('essential')" style="padding: 0.38rem 0.7rem; font-size: 0.72rem; border-radius: 6px; border: 1px solid rgba(6,182,212,0.45); background: rgba(6,182,212,0.15); color: #67e8f9; cursor: pointer; font-weight: 600;">⚡ Pack Esencial M365 Copilot (5)</button>
+                <button type="button" onclick="mpSelectPreset('all')" style="padding: 0.38rem 0.7rem; font-size: 0.72rem; border-radius: 6px; border: 1px solid rgba(99,102,241,0.45); background: rgba(99,102,241,0.16); color: #c7d2fe; cursor: pointer; font-weight: 600;">🏆 Seleccionar Todas (12)</button>
+                <button type="button" onclick="mpCopyPickedPrompt(this)" style="padding: 0.42rem 0.9rem; font-size: 0.75rem; border-radius: 7px; border: none; background: #10b981; color: #040911; cursor: pointer; font-weight: 800;">📋 Copiar Prompt con Código de las #MP Elegidas</button>
+                <button type="button" onclick="mpSendToWorkbench()" style="padding: 0.42rem 0.8rem; font-size: 0.74rem; border-radius: 7px; border: 1px solid rgba(16,185,129,0.5); background: rgba(16,185,129,0.15); color: #6ee7b7; cursor: pointer; font-weight: 700;">🛠️ Inyectar en Workbench (Sección 07) ↓</button>
+              </div>
+            </div>
+
+            <!-- GRILLA DE 12 TARJETAS INTERACTIVAS MOTION-PROMPT -->
+            <div id="mp-catalog-container" class="mp-catalog-grid"></div>
+
+            <!-- VISOR DE CÓDIGO DE LAS RECETAS SELECCIONADAS -->
+            <div style="margin-top: 1rem; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 0.85rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.4rem;">
+                <span class="tabular-mono" style="font-size: 0.72rem; color: #67e8f9; font-weight: 700;">🔍 VISTA PREVIA DEL PAQUETE TÉCNICO QUE SE INYECTA AL AGENTE (CÓDIGO REAL ZERO-CDN DE TUS #MP SELECCIONADOS):</span>
+                <button type="button" onclick="document.getElementById('mp-live-recipe-pre').style.display = document.getElementById('mp-live-recipe-pre').style.display === 'none' ? 'block' : 'none'" style="font-size: 0.7rem; padding: 0.22rem 0.6rem; border-radius: 5px; background: rgba(255,255,255,0.07); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.12); cursor: pointer;">Mostrar / Ocultar Código Inyectado</button>
+              </div>
+              <pre id="mp-live-recipe-pre" class="copyable-prompt-pre" style="max-height: 250px; font-size: 0.73rem; display: block;"></pre>
+            </div>
           </div>
         </div>
       </section>
@@ -926,447 +1040,491 @@
       </section>
 
       <!-- =====================================================================
-           SECCIÓN 03: EL PUENTE DETERMINISTA DATABRICKS (PYSPARK -> DISPLAYHTML)
+           SECCIÓN 03: EL PUENTE DETERMINISTA DATABRICKS (PYSPARK -> VS CODE / M365 / DISPLAYHTML ZERO-CDN)
            ===================================================================== -->
       <section id="puente-databricks-pyspark" class="transcript-section" data-tab-group="code-shells">
         <div class="section-header">
           <span class="section-number">03</span>
-          <h2 class="section-title">El Puente Determinista en Databricks: De PySpark a `displayHTML()` sin Colisión de Llaves y con Pantalla Completa Real</h2>
+          <h2 class="section-title">El Puente Real en Databricks: Extractor de Contexto hacia VS Code / M365 Copilot y Plantillas `displayHTML()` 100% Zero-CDN (Nunca en Blanco)</h2>
         </div>
         <div class="section-divider"></div>
         <div class="transcript-text">
           <p class="editorial-lead">
-            Cuando trabajas en un notebook de Databricks sin motores de plantillas externos, existen tres cuellos de botella técnicos que arruinan el código generado por IA: (1) la colisión de llaves <code>{ }</code> al usar f-strings de Python sobre reglas CSS y objetos JS, (2) pasar tablas planas sin vectores precalculados, y (3) el bloqueo del modo pantalla completa dentro del <code>&lt;iframe&gt;</code> de <code>displayHTML()</code>.
+            En un entorno bancario real, las plantillas que dependen de <code>cdn.tailwindcss.com</code> o de CDNs externos sin respaldo **salen en blanco dentro del `<iframe>` de `displayHTML()`** (porque el firewall o la política CSP del navegador bloquea el compilador JIT de Tailwind o deja los contenedores en <code>0px</code> de altura). Aquí tienes las **3 piezas blindadas para tu flujo de trabajo real**: (1) el **Extractor de Contexto PySpark** para llevarte los datos resumidos a VS Code o M365 Copilot en 5 segundos, y (2) las **2 Plantillas Maestras 100% Zero-CDN** con CSS puro embebido y motor gráfico SVG vectorial nativo que **jamás falla ni con internet cortado**.
           </p>
 
-          <div class="tech-note-box">
-            <div class="tech-note-title">🛠️ Las 3 Soluciones de Ingeniería que Blindan tu Celda de Databricks</div>
-            <ul style="margin-left: 1.25rem; font-size: 0.88rem; line-height: 1.65;">
-              <li><strong>1. Raw String <code>r"""..."""</code> + <code>.replace("__PYSPARK_PAYLOAD__", payload_json)</code></strong>: Al prohibir <code>f"""..."""</code>, el agente puede escribir CSS complejo (<code>@keyframes</code>, pseudo-elementos) y JS moderno (desestructuración de objetos) sin escapar dobles llaves <code>{{ }}</code>.</li>
-              <li><strong>2. Pre-agregación Vectorial con <code>F.collect_list()</code> y Serializador Decimal</strong>: PySpark empaqueta las series de 12 meses como arrays nativos antes de llamar a <code>.collect()</code>, reduciendo el peso del JSON a pocos kilobytes.</li>
-              <li><strong>3. Escape Fiable del Sandbox (Corrección del Bug de Canvas en Blanco)</strong>: Si haces <code>document.documentElement.innerHTML</code> después de que ECharts se ha inicializado, el nuevo <code>Blob</code> recibe etiquetas <code>&lt;canvas&gt;</code> muertas sin contexto 2D/WebGL. En nuestra plantilla maestra guardamos la fuente original en <code>window.__CLEAN_SOURCE_HTML__</code> o disparamos una reinicialización limpia al abrir la nueva pestaña con <code>URL.createObjectURL(new Blob(...))</code>.</li>
-            </ul>
-          </div>
-
-          <!-- BLOQUE MAESTRO 1: CELDA COMPLETA PYSPARK -> DISPLAYHTML -->
-          <div class="prompt-block-wrapper pro-version">
+          <!-- BLOQUE 3.0: EXTRACTOR DE CONTEXTO DE DATABRICKS PARA VS CODE / M365 COPILOT -->
+          <div class="prompt-block-wrapper m365-version">
             <div class="prompt-block-header">
-              <h3 class="prompt-block-title">⚡ Plantilla Maestra #1: Celda Completa Databricks (`PySpark` → `displayHTML` con Scrollytelling, Sankey, Markov y Morphing)</h3>
-              <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Código PySpark + HTML</button>
+              <h3 class="prompt-block-title">🧲 Paso 0 (Tu Flujo Diario): Extractor de Contexto en Databricks (`export_ai_context`) para Pegar en VS Code o M365 Copilot</h3>
+              <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Extractor de Contexto PySpark</button>
             </div>
             <p style="font-size: 0.83rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
-              Copia y pega este bloque en <strong>una única celda de Python en Databricks</strong>. En tu proyecto real, solo tienes que sustituir el DataFrame de ejemplo <code>df_canales</code> por tu tabla Delta o vista SQL:
+              Cuando estás analizando tablas en Databricks y quieres pasarle el contexto a <strong>VS Code</strong> o a <strong>M365 Copilot</strong> para que te construya el dashboard o informe, ejecuta esta función sobre tu DataFrame ya agregado (<code>export_ai_context(df_resumen)</code>). Te imprimirá en pantalla el bloque exacto (esquema + rangos + JSON limpio sin errores de <code>Decimal</code> ni fechas) listo para copiar y pegar:
             </p>
             <pre class="copyable-prompt-pre">import json
 from decimal import Decimal
 from datetime import date, datetime
 from pyspark.sql import functions as F
-from pyspark.sql import types as T
 
-# ==============================================================================
-# 1. CAPA PYSPARK: EXTRACCIÓN Y PRE-CÁLCULO VECTORIAL (CANALES WEB & APP + CARTERA)
-# ==============================================================================
-sample_rows = [
-    # id, nombre_linea, canal, sesiones_miles, conv_pct, drop_ux_pct, stp_pct, vol_m, rorwa_pct, npl_pct, latencia_ms, serie_12m, radar_5d
-    ("APP-PRE", "Préstamos Preconcedidos App", "App Móvil", 185.0, 18.4, 9.2, 78.0, 540.0, 3.55, 2.15, 165, [38,41,44,46,50,54,58,62,66,71,76,82], [94,92,88,95,86]),
-    ("WEB-CORP", "Financiación Circulante Web", "Web Empresas", 92.0, 14.2, 16.5, 64.0, 680.0, 2.95, 1.10, 310, [48,50,52,55,58,61,64,67,71,75,79,85], [84,88,92,82,89]),
-    ("B2B-CONF", "Confirming & Supply Chain", "Portal Web / API", 64.0, 22.8, 6.8, 84.0, 610.0, 2.68, 0.82, 140, [55,57,60,62,65,68,70,73,76,79,82,86], [96,80,95,94,92]),
-    ("APP-TPV", "Onboarding Autónomos & TPV", "App Móvil", 140.0, 11.6, 24.0, 59.0, 320.0, 4.10, 3.05, 230, [22,25,24,28,31,34,37,39,42,45,48,52], [79,95,64,85,77]),
-    ("HYB-LEAS", "Leasing Maquinaria & Vehículos", "Híbrido Web + Gestor", 48.0, 12.9, 19.4, 55.0, 290.0, 2.48, 1.80, 380, [30,31,32,33,35,34,36,38,39,40,42,44], [75,72,82,70,76]),
-    ("WEB-ESG", "Líneas Transición Verde / ICO", "Web Empresas", 56.0, 16.5, 11.8, 71.0, 410.0, 3.22, 1.32, 260, [20,26,32,38,44,50,56,62,68,74,80,87], [90,85,90,88,89])
-]
-
-schema = T.StructType([
-    T.StructField("id", T.StringType()),
-    T.StructField("name", T.StringType()),
-    T.StructField("channel", T.StringType()),
-    T.StructField("sessions_k", T.DoubleType()),
-    T.StructField("conv_pct", T.DoubleType()),
-    T.StructField("drop_ux_pct", T.DoubleType()),
-    T.StructField("stp_pct", T.DoubleType()),
-    T.StructField("vol", T.DoubleType()),
-    T.StructField("rorwa", T.DoubleType()),
-    T.StructField("npl", T.DoubleType()),
-    T.StructField("latency_ms", T.IntegerType()),
-    T.StructField("trend", T.ArrayType(T.IntegerType())),
-    T.StructField("radar", T.ArrayType(T.IntegerType()))
-])
-
-df_canales = spark.createDataFrame(sample_rows, schema=schema)
-segments_list = [row.asDict() for row in df_canales.collect()]
-
-# Enlaces Sankey (Origen Tráfico -> Simulador -> Resolución Comercial/Riesgo)
-sankey_nodes = [
-    {"name": "Tráfico Digital (585k Sesiones)"},
-    {"name": "App Móvil (325k)"},
-    {"name": "Web Empresas & API (260k)"},
-    {"name": "Simulador Iniciado (390k)"},
-    {"name": "Contratación Formalizada (2.850 M€)"},
-    {"name": "Abandono Fricción UX / Latencia"},
-    {"name": "Filtro Admisión Riesgo (No STP)"}
-]
-sankey_links = [
-    {"source": "Tráfico Digital (585k Sesiones)", "target": "App Móvil (325k)", "value": 325},
-    {"source": "Tráfico Digital (585k Sesiones)", "target": "Web Empresas & API (260k)", "value": 260},
-    {"source": "App Móvil (325k)", "target": "Simulador Iniciado (390k)", "value": 225},
-    {"source": "App Móvil (325k)", "target": "Abandono Fricción UX / Latencia", "value": 100},
-    {"source": "Web Empresas & API (260k)", "target": "Simulador Iniciado (390k)", "value": 165},
-    {"source": "Web Empresas & API (260k)", "target": "Abandono Fricción UX / Latencia", "value": 95},
-    {"source": "Simulador Iniciado (390k)", "target": "Contratación Formalizada (2.850 M€)", "value": 255},
-    {"source": "Simulador Iniciado (390k)", "target": "Filtro Admisión Riesgo (No STP)", "value": 85},
-    {"source": "Simulador Iniciado (390k)", "target": "Abandono Fricción UX / Latencia", "value": 50}
-]
-
-def spark_json_default(obj):
-    if isinstance(obj, Decimal): return float(obj)
+def _spark_safe_json(obj):
+    if isinstance(obj, Decimal): return round(float(obj), 4)
     if isinstance(obj, (date, datetime)): return obj.isoformat()
     return str(obj)
 
-payload_json = json.dumps({
-    "meta": {"period": "Q4 2026", "hurdle_rorwa": 2.50},
-    "segments": segments_list,
-    "sankey": {"nodes": sankey_nodes, "links": sankey_links}
-}, default=spark_json_default)
+def export_ai_context(df, title="Análisis Cartera Comercial", max_rows=30):
+    """
+    Ejecuta esta función sobre tu DataFrame agregado en Databricks.
+    Copia el texto que imprime en consola y pégalo junto con tu Prompt en VS Code o M365 Copilot.
+    """
+    fields_info = [f"{f.name} ({f.dataType.simpleString().upper()})" for f in df.schema.fields]
+    rows_dict = [r.asDict(recursive=True) for r in df.limit(max_rows).collect()]
+    payload = {
+        "meta": {"title": title, "rows_exported": len(rows_dict), "hurdle_rorwa": 2.50},
+        "columns": [f.name for f in df.schema.fields],
+        "rows": rows_dict
+    }
+    json_str = json.dumps(payload, default=_spark_safe_json, ensure_ascii=False)
+    print("==========================================================================")
+    print("📋 COPIA DESDE AQUÍ Y PÉGALO EN VS CODE O M365 COPILOT:")
+    print("==========================================================================")
+    print(f"OBJETIVO: Construir Dashboard Ejecutivo HTML Zero-CDN para '{title}'")
+    print(f"ESQUEMA_COLUMNAS: {', '.join(fields_info)}")
+    print("\nDATOS_PRECALCULADOS (Inyectar íntegramente en window.REPORT_DATA):")
+    print(json_str)
+    print("==========================================================================")
+
+# Ejemplo de uso en tu notebook de Databricks:
+# df_agregado = spark.sql("SELECT territorial, producto, SUM(ead_m) AS ead_m, AVG(rorwa) AS rorwa, AVG(npl) AS npl FROM comercial.cartera GROUP BY 1, 2")
+# export_ai_context(df_agregado, title="Comité de Seguimiento Cartera Empresas Q4")</pre>
+          </div>
+
+          <!-- BLOQUE MAESTRO 1: CELDA COMPLETA PYSPARK -> DISPLAYHTML 100% ZERO-CDN -->
+          <div class="prompt-block-wrapper pro-version">
+            <div class="prompt-block-header">
+              <h3 class="prompt-block-title">⚡ Plantilla Maestra #1 (100% Zero-CDN Blindada): Celda Databricks (`PySpark` → `displayHTML` + Descarga Correo Base64)</h3>
+              <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Celda PySpark Zero-CDN</button>
+            </div>
+            <p style="font-size: 0.83rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
+              <strong>Por qué esta plantilla NUNCA sale en blanco:</strong> No usa <code>cdn.tailwindcss.com</code> ni depende de internet. Lleva todo su CSS Grid puro incrustado, alturas garantizadas en píxeles y un <strong>Motor Vectorial SVG Nativo</strong> que dibuja el Embudo Multicanal, la Matriz de Eficiencia (RORWA vs Conversión), el Ranking con Barras y los Sparklines a 60fps incluso en clústeres bancarios totalmente aislados de internet:
+            </p>
+            <pre class="copyable-prompt-pre">import json, base64
+from decimal import Decimal
+from datetime import date, datetime
+from pyspark.sql import types as T
 
 # ==============================================================================
-# 2. MOTOR HTML DE PRESENTACIÓN INTERACTIVA (RAW STRING SIN F-STRINGS)
+# 1. CAPA PYSPARK: AGREGA TU TABLA REAL O PRUEBA DIRECTAMENTE ESTE BLOQUE
 # ==============================================================================
-html_deck = r"""<!DOCTYPE html>
-<html lang="es" class="dark">
-<head>
-  <meta charset="UTF-8">
-  <title>Commercial & Digital Intelligence Deck</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
-    :root { --bg-canvas: #05070E; --card-bg: rgba(14, 20, 34, 0.75); }
+sample_rows = [
+    ("APP-PRE", "Préstamos Preconcedidos App", "App Móvil", 185.0, 18.4, 78.0, 540.0, 3.55, 2.15, [38,41,44,46,50,54,58,62,66,71,76,82]),
+    ("WEB-CORP", "Financiación Circulante Web", "Web Empresas", 92.0, 14.2, 64.0, 680.0, 2.95, 1.10, [48,50,52,55,58,61,64,67,71,75,79,85]),
+    ("B2B-CONF", "Confirming &amp; Supply Chain B2B", "Portal Web", 64.0, 22.8, 84.0, 610.0, 2.68, 0.82, [55,57,60,62,65,68,70,73,76,79,82,86]),
+    ("APP-TPV", "Onboarding Autónomos &amp; TPV", "App Móvil", 140.0, 11.6, 59.0, 320.0, 4.10, 3.05, [22,25,24,28,31,34,37,39,42,45,48,52]),
+    ("HYB-LEAS", "Leasing Maquinaria &amp; Flota", "Híbrido Gestor", 48.0, 12.9, 55.0, 290.0, 2.38, 1.80, [30,31,32,33,35,34,36,38,39,40,42,44]),
+    ("WEB-ESG", "Líneas Transición Verde / ICO", "Web Empresas", 56.0, 16.5, 71.0, 410.0, 3.22, 1.32, [20,26,32,38,44,50,56,62,68,74,80,87])
+]
+
+schema = T.StructType([
+    T.StructField("id", T.StringType()), T.StructField("name", T.StringType()),
+    T.StructField("channel", T.StringType()), T.StructField("sessions_k", T.DoubleType()),
+    T.StructField("conv_pct", T.DoubleType()), T.StructField("stp_pct", T.DoubleType()),
+    T.StructField("vol", T.DoubleType()), T.StructField("rorwa", T.DoubleType()),
+    T.StructField("npl", T.DoubleType()), T.StructField("trend", T.ArrayType(T.IntegerType()))
+])
+
+df_canales = spark.createDataFrame(sample_rows, schema=schema)
+def _json_safe(o):
+    if isinstance(o, Decimal): return float(o)
+    if isinstance(o, (date, datetime)): return o.isoformat()
+    return str(o)
+
+payload_json = json.dumps({
+    "period": "Q4 2026", "hurdle": 2.50,
+    "segments": [r.asDict() for r in df_canales.collect()]
+}, default=_json_safe)
+
+# ==============================================================================
+# 2. PLANTILLA HTML 100% ZERO-CDN (FUNCIONA SIN INTERNET Y EN SANDBOX ESTRICTO)
+# ==============================================================================
+html_deck = r"""&lt;!DOCTYPE html&gt;
+&lt;html lang="es"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;title&gt;Terminal Ejecutivo Commercial &amp; Canales Digitales (Zero-CDN)&lt;/title&gt;
+  &lt;style&gt;
+    :root {
+      --bg: #060913; --card: #0e1526; --card-hover: #141e33; --border: rgba(255,255,255,0.09);
+      --text: #f8fafc; --muted: #94a3b8; --cyan: #06b6d4; --indigo: #6366f1; --emerald: #10b981; --rose: #f43f5e; --amber: #f59e0b;
+    }
+    html.light {
+      --bg: #f1f5f9; --card: #ffffff; --card-hover: #f8fafc; --border: #cbd5e1;
+      --text: #0f172a; --muted: #475569;
+    }
     * { box-sizing: border-box; }
-    body {
-      margin: 0; font-family: 'Inter', sans-serif; background-color: var(--bg-canvas);
-      background-image: radial-gradient(circle at 12% 8%, rgba(99, 102, 241, 0.14) 0%, transparent 42%),
-                        radial-gradient(circle at 88% 12%, rgba(6, 182, 212, 0.11) 0%, transparent 38%);
-      color: #F1F5F9; overflow-x: hidden;
-    }
-    .mono { font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums; }
+    body { margin: 0; padding: 18px; background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+    .mono { font-family: 'JetBrains Mono', Consolas, monospace; font-variant-numeric: tabular-nums; }
+    .shell { max-width: 1560px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
     .sp-card {
-      position: relative; background: var(--card-bg); border-radius: 14px;
-      border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(16px);
-      overflow: hidden; transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .sp-card::before {
-      content: ""; position: absolute; inset: 0;
-      background: radial-gradient(460px circle at var(--mx, -500px) var(--my, -500px), rgba(6, 182, 212, 0.12), transparent 40%);
-      pointer-events: none; z-index: 1;
+      position: relative; background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 14px 16px; overflow: hidden;
+      transition: transform 180ms cubic-bezier(0.16,1,0.3,1), border-color 180ms ease;
     }
     .sp-card::after {
-      content: ""; position: absolute; inset: 0; border-radius: 14px; padding: 1px;
-      background: radial-gradient(240px circle at var(--mx, -500px) var(--my, -500px), rgba(99, 102, 241, 0.65), transparent 40%);
+      content: ""; position: absolute; inset: 0; border-radius: 12px; padding: 1px;
+      background: radial-gradient(240px circle at var(--mx, -400px) var(--my, -400px), rgba(6,182,212,0.55), transparent 45%);
       -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; z-index: 2;
+      -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none;
     }
-  </style>
-</head>
-<body class="p-4 lg:p-6 select-none">
-  <!-- 1. PAYLOAD AISLADO -->
-  <script id="data-payload">window.SPARK_DATA = __PYSPARK_PAYLOAD__;</script>
+    .topbar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; }
+    .btn-group { display: inline-flex; gap: 4px; background: rgba(0,0,0,0.25); padding: 4px; border-radius: 8px; border: 1px solid var(--border); }
+    .btn { padding: 6px 12px; border-radius: 6px; border: 1px solid transparent; background: transparent; color: var(--muted); font-size: 12px; font-weight: 600; cursor: pointer; }
+    .btn.active { background: var(--indigo); color: #fff; }
+    .btn-action { background: rgba(16,185,129,0.16); border: 1px solid rgba(16,185,129,0.45); color: #34d399; }
+    .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .main-grid { display: grid; grid-template-columns: 7fr 5fr; gap: 14px; }
+    @media (max-width: 1024px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } .main-grid { grid-template-columns: 1fr; } }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    th, td { padding: 8px 6px; border-bottom: 1px solid var(--border); }
+    tr.row-item { cursor: pointer; transition: background 140ms ease; }
+    tr.row-item:hover { background: rgba(6,182,212,0.08); }
+    tr.row-item.selected { background: rgba(99,102,241,0.22); }
+    @media print { .no-print { display: none !important; } body { background: #fff; color: #000; } }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;script id="data-payload"&gt;window.SPARK_DATA = __PYSPARK_PAYLOAD__;&lt;/script&gt;
 
-  <div class="max-w-[1600px] mx-auto flex flex-col justify-between min-h-[820px] gap-4">
-    <!-- BARRA DE NAVEGACIÓN POR PASOS + CONTROLES -->
-    <header class="sp-card px-5 py-3.5 flex flex-wrap items-center justify-between gap-4">
-      <div class="flex items-center gap-3">
-        <span class="px-2 py-0.5 text-[10px] mono uppercase tracking-widest bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 rounded">
-          DATABRICKS DECK • <span id="slide-counter">PASO 1 DE 3</span>
-        </span>
-        <div class="flex items-center gap-1 bg-black/40 p-1 rounded-lg border border-white/10 text-xs">
-          <button id="step-btn-1" onclick="goToStep(1)" class="px-3 py-1 rounded-md bg-indigo-600 text-white font-medium transition">1. Embudo Sankey Web/App</button>
-          <button id="step-btn-2" onclick="goToStep(2)" class="px-3 py-1 rounded-md text-slate-400 hover:text-white transition">2. Cuadrante Eficiencia (Morph)</button>
-          <button id="step-btn-3" onclick="goToStep(3)" class="px-3 py-1 rounded-md text-slate-400 hover:text-white transition">3. Treemap Margen Neto</button>
-        </div>
-      </div>
-      <div class="flex items-center gap-4">
-        <div class="flex items-center gap-2 text-xs">
-          <span class="text-slate-400 uppercase">Mejora UX</span>
-          <input id="sl-ux" type="range" min="-20" max="30" step="5" value="0" class="w-20 accent-cyan-400" oninput="updateEngine()">
-          <span id="lbl-ux" class="mono text-cyan-300 w-10 text-right">0%</span>
-        </div>
-        <div class="flex items-center gap-2 text-xs">
-          <span class="text-slate-400 uppercase">Tipos</span>
-          <input id="sl-rate" type="range" min="-100" max="150" step="10" value="0" class="w-20 accent-indigo-400" oninput="updateEngine()">
-          <span id="lbl-rate" class="mono text-indigo-300 w-14 text-right">0 bps</span>
-        </div>
-        <button onclick="openCleanFullscreen()" class="px-3 py-1.5 text-xs font-medium bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg transition">
-          ↗ Pantalla Completa
-        </button>
-      </div>
-    </header>
+  &lt;div class="shell"&gt;
+    &lt;!-- BARRA DE CONTROL Y SIMULACIÓN EN VIVO --&gt;
+    &lt;header class="sp-card topbar no-print"&gt;
+      &lt;div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;"&gt;
+        &lt;span class="mono" style="font-size:11px;padding:3px 8px;border-radius:5px;background:rgba(6,182,212,0.18);color:#38bdf8;font-weight:700;"&gt;ZERO-CDN ENGINE&lt;/span&gt;
+        &lt;div class="btn-group"&gt;
+          &lt;button id="step-1" class="btn active" onclick="setStep(1)"&gt;1. Cuadrante Eficiencia (RORWA vs Conv)&lt;/button&gt;
+          &lt;button id="step-2" class="btn" onclick="setStep(2)"&gt;2. Ranking EVA &amp; Margen Neto&lt;/button&gt;
+          &lt;button id="step-3" class="btn" onclick="setStep(3)"&gt;3. Embudo Conversión Digital&lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-size:12px;"&gt;
+        &lt;label style="display:flex;align-items:center;gap:6px;"&gt;
+          &lt;span style="color:var(--muted);"&gt;Impulso UX:&lt;/span&gt;
+          &lt;input id="sl-ux" type="range" min="-20" max="35" step="5" value="0" oninput="render()" style="width:85px;accent-color:#06b6d4;"&gt;
+          &lt;span id="lbl-ux" class="mono" style="color:#38bdf8;font-weight:700;min-width:38px;"&gt;0%&lt;/span&gt;
+        &lt;/label&gt;
+        &lt;label style="display:flex;align-items:center;gap:6px;"&gt;
+          &lt;span style="color:var(--muted);"&gt;Spread (bps):&lt;/span&gt;
+          &lt;input id="sl-rate" type="range" min="-80" max="140" step="10" value="0" oninput="render()" style="width:85px;accent-color:#10b981;"&gt;
+          &lt;span id="lbl-rate" class="mono" style="color:#34d399;font-weight:700;min-width:52px;"&gt;0 bps&lt;/span&gt;
+        &lt;/label&gt;
+        &lt;button class="btn btn-action" onclick="exportCsv()"&gt;📊 Exportar CSV&lt;/button&gt;
+        &lt;button class="btn" style="border-color:var(--border);color:var(--text);" onclick="document.documentElement.classList.toggle('light');render();"&gt;☀️/🌙 Tema&lt;/button&gt;
+        &lt;button class="btn" style="background:var(--indigo);color:#fff;" onclick="openFullscreenBlob()"&gt;↗ Pantalla Completa&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
 
-    <!-- ACTION TITLE DINÁMICO -->
-    <div class="px-1">
-      <div class="text-[11px] mono uppercase tracking-widest text-cyan-400">INTELIGENCIA COMERCIAL & CANALES DIGITALES (WEB / APP)</div>
-      <h1 id="action-title" class="text-xl lg:text-2xl font-semibold text-white tracking-tight mt-0.5">Sincronizando telemetría...</h1>
-    </div>
+    &lt;!-- BANNER DE AUTO-INSIGHTS Y ACTION TITLE DINÁMICO --&gt;
+    &lt;div id="narrative-banner" class="sp-card" style="border-left: 4px solid #10b981; padding: 12px 16px;"&gt;
+      &lt;div class="mono" style="font-size:11px;color:#38bdf8;text-transform:uppercase;letter-spacing:0.06em;"&gt;DIAGNÓSTICO EJECUTIVO AUTOMÁTICO • COMITÉ COMERCIAL&lt;/div&gt;
+      &lt;div id="action-title" style="font-size:18px;font-weight:800;margin-top:3px;"&gt;Sincronizando datos...&lt;/div&gt;
+      &lt;div id="action-sub" style="font-size:12px;color:var(--muted);margin-top:3px;"&gt;&lt;/div&gt;
+    &lt;/div&gt;
 
-    <!-- 4 TARJETAS KPI -->
-    <section class="grid grid-cols-4 gap-3.5">
-      <div class="sp-card p-4">
-        <div class="flex justify-between items-center">
-          <span class="text-[11px] uppercase tracking-wider text-slate-400">Sesiones Digitales</span>
-          <span id="filter-badge" onclick="selectSeg(null)" class="hidden cursor-pointer text-[10px] mono bg-rose-500/20 text-rose-300 px-2 py-0.5 rounded">Reset ✕</span>
-        </div>
-        <div id="kpi-sess" class="text-2xl font-semibold mono text-white mt-1.5">0k</div>
-        <div class="text-[11px] text-emerald-400 mono mt-1">Conversión Media: <span id="kpi-conv">0%</span></div>
-      </div>
-      <div class="sp-card p-4">
-        <span class="text-[11px] uppercase tracking-wider text-slate-400">Volumen Formalizado</span>
-        <div id="kpi-vol" class="text-2xl font-semibold mono text-white mt-1.5">0 M€</div>
-        <div class="text-[11px] text-cyan-300 mono mt-1">Aprobación Automática STP: <span id="kpi-stp">0%</span></div>
-      </div>
-      <div class="sp-card p-4">
-        <span class="text-[11px] uppercase tracking-wider text-slate-400">RORWA Ponderado</span>
-        <div id="kpi-rorwa" class="text-2xl font-semibold mono text-emerald-400 mt-1.5">0.00%</div>
-        <div class="text-[11px] text-slate-400 mt-1">Hurdle Objetivo: <span class="mono text-white">2.50%</span></div>
-      </div>
-      <div class="sp-card p-4">
-        <span class="text-[11px] uppercase tracking-wider text-slate-400">Margen Operativo Neto</span>
-        <div id="kpi-net" class="text-2xl font-semibold mono text-cyan-300 mt-1.5">0.0 M€</div>
-        <div class="text-[11px] text-slate-400 mt-1">Mora Cartera (NPL): <span id="kpi-npl" class="mono text-amber-300">0.00%</span></div>
-      </div>
-    </section>
+    &lt;!-- 4 TARJETAS KPI CON INTERPOLACIÓN A 60FPS --&gt;
+    &lt;section class="kpi-grid"&gt;
+      &lt;div class="sp-card"&gt;
+        &lt;div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);text-transform:uppercase;"&gt;
+          &lt;span&gt;1. Sesiones Digitales&lt;/span&gt;
+          &lt;span id="reset-pill" onclick="selectRow(null)" style="display:none;cursor:pointer;color:#fb7185;font-weight:700;"&gt;✕ Quitar Filtro&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div id="kpi-sess" class="mono" style="font-size:26px;font-weight:800;margin-top:4px;"&gt;0k&lt;/div&gt;
+        &lt;div class="mono" style="font-size:11px;color:#34d399;margin-top:4px;"&gt;▲ Conversión Media: &lt;span id="kpi-conv"&gt;0%&lt;/span&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class="sp-card"&gt;
+        &lt;div style="font-size:11px;color:var(--muted);text-transform:uppercase;"&gt;2. Volumen Formalizado&lt;/div&gt;
+        &lt;div id="kpi-vol" class="mono" style="font-size:26px;font-weight:800;margin-top:4px;"&gt;0 M€&lt;/div&gt;
+        &lt;div class="mono" style="font-size:11px;color:#38bdf8;margin-top:4px;"&gt;Aprobación STP Auto: &lt;span id="kpi-stp"&gt;0%&lt;/span&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class="sp-card"&gt;
+        &lt;div style="font-size:11px;color:var(--muted);text-transform:uppercase;"&gt;3. RORWA Ponderado&lt;/div&gt;
+        &lt;div id="kpi-rorwa" class="mono" style="font-size:26px;font-weight:800;color:#34d399;margin-top:4px;"&gt;0.00%&lt;/div&gt;
+        &lt;div class="mono" style="font-size:11px;color:var(--muted);margin-top:4px;"&gt;Hurdle Rate Objetivo: &lt;strong&gt;2,50%&lt;/strong&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class="sp-card"&gt;
+        &lt;div style="font-size:11px;color:var(--muted);text-transform:uppercase;"&gt;4. Creación de Valor (EVA Neto)&lt;/div&gt;
+        &lt;div id="kpi-eva" class="mono" style="font-size:26px;font-weight:800;color:#38bdf8;margin-top:4px;"&gt;0.0 M€&lt;/div&gt;
+        &lt;div class="mono" style="font-size:11px;color:#fbbf24;margin-top:4px;"&gt;Mora Cartera (NPL): &lt;span id="kpi-npl"&gt;0.00%&lt;/span&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
 
-    <!-- LIENZO PRINCIPAL + TABLA CON SPARKLINES -->
-    <section class="grid grid-cols-12 gap-4 flex-1">
-      <div class="sp-card p-4 col-span-12 lg:col-span-7 flex flex-col justify-between">
-        <div class="flex justify-between items-center mb-2">
-          <h2 id="chart-title" class="text-xs font-semibold uppercase tracking-wider text-slate-200">FLUJO SANKEY OMNICANAL</h2>
-          <div class="flex gap-1.5 text-[11px] mono">
-            <button onclick="goToStep(state.step > 1 ? state.step - 1 : 3)" class="px-2.5 py-1 rounded bg-white/5 text-slate-300 border border-white/10">←</button>
-            <button onclick="goToStep(state.step < 3 ? state.step + 1 : 1)" class="px-2.5 py-1 rounded bg-indigo-600 text-white">→</button>
-          </div>
-        </div>
-        <div id="main-canvas" class="w-full h-[380px]"></div>
-      </div>
-      <div class="sp-card p-4 col-span-12 lg:col-span-5 flex flex-col justify-between">
-        <div>
-          <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-200 mb-2">DESGLOSE TELEMÉTRICO (CLIC PARA FILTRAR)</h2>
-          <table class="w-full text-left border-collapse text-xs">
-            <thead>
-              <tr class="border-b border-white/10 text-[10px] uppercase text-slate-400">
-                <th class="py-1.5">Línea / Canal</th>
-                <th class="py-1.5 text-right">Conv.</th>
-                <th class="py-1.5 text-right">Vol.</th>
-                <th class="py-1.5 text-right">RORWA</th>
-                <th class="py-1.5 text-center">12M</th>
-              </tr>
-            </thead>
-            <tbody id="seg-tbody" class="divide-y divide-white/[0.05]"></tbody>
-          </table>
-        </div>
-        <div id="mini-trend" class="w-full h-[130px] mt-2"></div>
-      </div>
-    </section>
-  </div>
+    &lt;!-- GRILLA CENTRAL: LIENZO VECTORIAL SVG INFALIBLE + TABLA INTERACTIVA --&gt;
+    &lt;section class="main-grid"&gt;
+      &lt;div class="sp-card" style="display:flex;flex-direction:column;justify-content:space-between;min-height:390px;"&gt;
+        &lt;div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"&gt;
+          &lt;strong id="chart-heading" style="font-size:12px;text-transform:uppercase;letter-spacing:0.05em;"&gt;1. MATRIZ DE EFICIENCIA COMERCIAL (CONVERSIÓN VS RORWA)&lt;/strong&gt;
+          &lt;span class="mono" style="font-size:11px;color:var(--muted);"&gt;Haz clic en cualquier elemento para filtrar&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div id="svg-chart-stage" style="width:100%;height:340px;"&gt;&lt;/div&gt;
+      &lt;/div&gt;
 
-  <script id="app-engine">
-    document.addEventListener('mousemove', e => {
-      document.querySelectorAll('.sp-card').forEach(c => {
+      &lt;div class="sp-card" style="display:flex;flex-direction:column;justify-content:space-between;"&gt;
+        &lt;div&gt;
+          &lt;div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"&gt;
+            &lt;strong style="font-size:12px;text-transform:uppercase;letter-spacing:0.05em;"&gt;DESGLOSE TELEMÉTRICO (CLIC = CROSS-FILTER)&lt;/strong&gt;
+            &lt;span class="mono" style="font-size:11px;color:#818cf8;"&gt;Tendencia 12M&lt;/span&gt;
+          &lt;/div&gt;
+          &lt;table&gt;
+            &lt;thead&gt;
+              &lt;tr style="color:var(--muted);font-size:10px;text-transform:uppercase;"&gt;
+                &lt;th style="text-align:left;"&gt;Línea / Canal&lt;/th&gt;
+                &lt;th style="text-align:right;"&gt;Conv.&lt;/th&gt;
+                &lt;th style="text-align:right;"&gt;Vol.&lt;/th&gt;
+                &lt;th style="text-align:right;"&gt;RORWA&lt;/th&gt;
+                &lt;th style="text-align:center;"&gt;12M&lt;/th&gt;
+              &lt;/tr&gt;
+            &lt;/thead&gt;
+            &lt;tbody id="seg-tbody"&gt;&lt;/tbody&gt;
+          &lt;/table&gt;
+        &lt;/div&gt;
+        &lt;div id="mini-curve-box" style="margin-top:10px;padding-top:8px;border-top:1px solid var(--border);"&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+  &lt;/div&gt;
+
+  &lt;script id="app-engine"&gt;
+    document.addEventListener('mousemove', e =&gt; {
+      document.querySelectorAll('.sp-card').forEach(c =&gt; {
         const r = c.getBoundingClientRect();
-        c.style.setProperty('--mx', `${e.clientX - r.left}px`);
-        c.style.setProperty('--my', `${e.clientY - r.top}px`);
+        c.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+        c.style.setProperty('--my', (e.clientY - r.top) + 'px');
       });
     });
 
-    let state = { step: 1, uxBoost: 0, rateBps: 0, selectedId: null };
-    const mainChart = echarts.init(document.getElementById('main-canvas'));
-    const miniChart = echarts.init(document.getElementById('mini-trend'));
-    const palette = ['#06B6D4', '#6366F1', '#10B981', '#F59E0B', '#EC4899', '#8B5CF6'];
+    let state = { step: 1, selectedId: null };
+    const COLORS = ['#06b6d4', '#6366f1', '#10b981', '#f59e0b', '#ec4899', '#8b5cf6'];
 
-    function animateCounter(id, target, dec = 1, suffix = '') {
+    function animateNum(id, target, dec = 1, suf = '') {
       const el = document.getElementById(id);
-      const start = parseFloat(el.dataset.v || 0);
+      if (!el) return;
+      const start = parseFloat(el.dataset.v || '0');
       el.dataset.v = target;
       const t0 = performance.now();
-      function tick(now) {
-        const p = Math.min((now - t0) / 480, 1);
+      function frame(now) {
+        const p = Math.min(1, (now - t0) / 420);
         const ease = 1 - Math.pow(1 - p, 4);
-        const cur = start + (target - start) * ease;
-        el.textContent = cur.toLocaleString('es-ES', { minimumFractionDigits: dec, maximumFractionDigits: dec }) + suffix;
-        if (p < 1) requestAnimationFrame(tick);
+        const v = start + (target - start) * ease;
+        el.textContent = v.toLocaleString('es-ES', { minimumFractionDigits: dec, maximumFractionDigits: dec }) + suf;
+        if (p &lt; 1) requestAnimationFrame(frame);
       }
-      requestAnimationFrame(tick);
+      requestAnimationFrame(frame);
     }
 
-    function sparkSvg(arr, color) {
-      const w = 64, h = 20, min = Math.min(...arr), max = Math.max(...arr);
-      const pts = arr.map((v, i) => `${((i / (arr.length - 1)) * w).toFixed(1)},${(h - ((v - min) / (max - min || 1)) * (h - 4) - 2).toFixed(1)}`).join(' ');
-      return `<svg width="${w}" height="${h}"><polyline fill="none" stroke="${color}" stroke-width="1.8" points="${pts}"/></svg>`;
+    function sparkline(arr, col) {
+      const w = 66, h = 20, min = Math.min(...arr), max = Math.max(...arr), sp = (max - min) || 1;
+      const pts = arr.map((v, i) =&gt; ((i / (arr.length - 1)) * (w - 6) + 3).toFixed(1) + ',' + (h - 3 - ((v - min) / sp) * (h - 6)).toFixed(1)).join(' ');
+      return `&lt;svg width="${w}" height="${h}"&gt;&lt;polyline fill="none" stroke="${col}" stroke-width="2" stroke-linecap="round" points="${pts}"/&gt;&lt;/svg&gt;`;
     }
 
-    function computeData() {
-      return window.SPARK_DATA.segments.map(s => {
-        const adjConv = Math.max(2, s.conv_pct * (1 + state.uxBoost / 100));
-        const adjVol = s.vol * (1 + (state.uxBoost * 0.006));
-        const adjRorwa = Math.max(0.4, s.rorwa + (state.rateBps * 0.004));
-        const netM = adjVol * (adjRorwa / 100) * 0.65;
-        return { ...s, adjConv, adjVol, adjRorwa, netM };
+    function getRows() {
+      const ux = parseInt(document.getElementById('sl-ux').value, 10) || 0;
+      const rate = parseInt(document.getElementById('sl-rate').value, 10) || 0;
+      document.getElementById('lbl-ux').textContent = (ux &gt; 0 ? '+' : '') + ux + '%';
+      document.getElementById('lbl-rate').textContent = (rate &gt; 0 ? '+' : '') + rate + ' bps';
+      return window.SPARK_DATA.segments.map((s, idx) =&gt; {
+        const adjConv = Math.max(2, s.conv_pct * (1 + ux * 0.008));
+        const adjVol = s.vol * (1 + ux * 0.005);
+        const adjRorwa = Math.max(0.5, s.rorwa + rate * 0.004);
+        const eva = adjVol * ((adjRorwa - window.SPARK_DATA.hurdle) / 100) * 0.55;
+        return { ...s, adjConv, adjVol, adjRorwa, eva, color: COLORS[idx % COLORS.length] };
       });
     }
 
-    function updateEngine() {
-      state.uxBoost = parseInt(document.getElementById('sl-ux').value, 10);
-      state.rateBps = parseInt(document.getElementById('sl-rate').value, 10);
-      document.getElementById('lbl-ux').textContent = (state.uxBoost > 0 ? '+' : '') + state.uxBoost + '%';
-      document.getElementById('lbl-rate').textContent = (state.rateBps > 0 ? '+' : '') + state.rateBps + ' bps';
-      document.getElementById('filter-badge').classList.toggle('hidden', !state.selectedId);
+    function render() {
+      const all = getRows();
+      const active = state.selectedId ? all.filter(d =&gt; d.id === state.selectedId) : all;
+      document.getElementById('reset-pill').style.display = state.selectedId ? 'inline' : 'none';
 
-      const all = computeData();
-      const active = state.selectedId ? all.filter(d => d.id === state.selectedId) : all;
-      const totSess = active.reduce((s, d) => s + d.sessions_k, 0);
-      const totVol = active.reduce((s, d) => s + d.adjVol, 0);
-      const wConv = active.reduce((s, d) => s + d.adjConv * d.sessions_k, 0) / totSess;
-      const wStp = active.reduce((s, d) => s + d.stp_pct * d.adjVol, 0) / totVol;
-      const wRorwa = active.reduce((s, d) => s + d.adjRorwa * d.adjVol, 0) / totVol;
-      const wNpl = active.reduce((s, d) => s + d.npl * d.adjVol, 0) / totVol;
-      const totNet = active.reduce((s, d) => s + d.netM, 0);
+      const totSess = active.reduce((s, d) =&gt; s + d.sessions_k, 0);
+      const totVol = active.reduce((s, d) =&gt; s + d.adjVol, 0);
+      const wConv = active.reduce((s, d) =&gt; s + d.adjConv * d.sessions_k, 0) / totSess;
+      const wStp = active.reduce((s, d) =&gt; s + d.stp_pct * d.adjVol, 0) / totVol;
+      const wRorwa = active.reduce((s, d) =&gt; s + d.adjRorwa * d.adjVol, 0) / totVol;
+      const wNpl = active.reduce((s, d) =&gt; s + d.npl * d.adjVol, 0) / totVol;
+      const totEva = active.reduce((s, d) =&gt; s + d.eva, 0);
 
-      animateCounter('kpi-sess', totSess, 0, 'k');
-      animateCounter('kpi-vol', totVol, 0, ' M€');
-      animateCounter('kpi-rorwa', wRorwa, 2, '%');
-      animateCounter('kpi-net', totNet, 1, ' M€');
+      animateNum('kpi-sess', totSess, 0, 'k');
+      animateNum('kpi-vol', totVol, 0, ' M€');
+      animateNum('kpi-rorwa', wRorwa, 2, '%');
+      animateNum('kpi-eva', totEva, 1, ' M€');
       document.getElementById('kpi-conv').textContent = wConv.toFixed(1) + '%';
       document.getElementById('kpi-stp').textContent = wStp.toFixed(0) + '%';
       document.getElementById('kpi-npl').textContent = wNpl.toFixed(2) + '%';
 
-      const titleEl = document.getElementById('action-title');
-      if (state.step === 1) {
-        titleEl.textContent = `Los canales digitales procesan ${totSess.toFixed(0)}k sesiones con una conversión media del ${wConv.toFixed(1)}% (${totVol.toFixed(0)} M€ formalizados)`;
-      } else if (state.step === 2) {
-        titleEl.textContent = `Bajo simulación (${state.uxBoost >= 0 ? '+' : ''}${state.uxBoost}% UX / ${state.rateBps >= 0 ? '+' : ''}${state.rateBps} bps), el RORWA alcanza el ${wRorwa.toFixed(2)}% (+${(wRorwa - 2.5).toFixed(2)}% vs. Hurdle)`;
-      } else {
-        titleEl.textContent = `La cartera digital genera ${totNet.toFixed(1)} M€ de Margen Operativo Neto con un ${wStp.toFixed(0)}% de admisión automática STP`;
-      }
+      const deltaBps = Math.round((wRorwa - window.SPARK_DATA.hurdle) * 100);
+      document.getElementById('narrative-banner').style.borderLeftColor = deltaBps &gt;= 0 ? '#10b981' : '#f43f5e';
+      document.getElementById('action-title').textContent =
+        `${state.selectedId ? active[0].name : 'Cartera Consolidada'}: ${totVol.toFixed(0)} M€ formalizados con RORWA del ${wRorwa.toFixed(2)}% (${deltaBps &gt;= 0 ? '+' : ''}${deltaBps} bps vs Hurdle) y EVA de ${totEva &gt;= 0 ? '+' : ''}${totEva.toFixed(1)} M€`;
+      document.getElementById('action-sub').textContent =
+        `Conversión digital media del ${wConv.toFixed(1)}% · Admisión automática STP en ${wStp.toFixed(0)}% · Mora NPL contenida en ${wNpl.toFixed(2)}%`;
 
-      document.getElementById('seg-tbody').innerHTML = all.map(d => `
-        <tr onclick="selectSeg('${d.id}')" class="cursor-pointer transition hover:bg-white/[0.05] ${state.selectedId === d.id ? 'bg-indigo-500/20' : ''}">
-          <td class="py-2 font-medium text-white">${d.name}</td>
-          <td class="py-2 text-right mono text-cyan-300">${d.adjConv.toFixed(1)}%</td>
-          <td class="py-2 text-right mono text-slate-300">${d.adjVol.toFixed(0)} M€</td>
-          <td class="py-2 text-right mono font-semibold ${d.adjRorwa >= 2.5 ? 'text-emerald-400' : 'text-amber-300'}">${d.adjRorwa.toFixed(2)}%</td>
-          <td class="py-2 text-center">${sparkSvg(d.trend, '#06B6D4')}</td>
-        </tr>
+      document.getElementById('seg-tbody').innerHTML = all.map(d =&gt; `
+        &lt;tr class="row-item ${state.selectedId === d.id ? 'selected' : ''}" onclick="selectRow('${d.id}')"&gt;
+          &lt;td&gt;&lt;strong style="color:var(--text);"&gt;${d.name}&lt;/strong&gt;&lt;div style="font-size:10px;color:var(--muted);"&gt;${d.channel}&lt;/div&gt;&lt;/td&gt;
+          &lt;td class="mono" style="text-align:right;color:#38bdf8;"&gt;${d.adjConv.toFixed(1)}%&lt;/td&gt;
+          &lt;td class="mono" style="text-align:right;"&gt;${d.adjVol.toFixed(0)} M€&lt;/td&gt;
+          &lt;td class="mono" style="text-align:right;font-weight:700;color:${d.adjRorwa &gt;= 2.5 ? '#34d399' : '#fbbf24'};"&gt;${d.adjRorwa.toFixed(2)}%&lt;/td&gt;
+          &lt;td style="text-align:center;"&gt;${sparkline(d.trend, d.color)}&lt;/td&gt;
+        &lt;/tr&gt;
       `).join('');
 
+      renderMainSvgChart(all);
+      renderMiniTrendSvg(active);
+    }
+
+    function renderMainSvgChart(rows) {
+      const box = document.getElementById('svg-chart-stage');
+      const heading = document.getElementById('chart-heading');
+      const W = 740, H = 330;
+
       if (state.step === 1) {
-        mainChart.setOption({
-          tooltip: { trigger: 'item', backgroundColor: 'rgba(9,13,22,0.92)', textStyle: { color: '#fff' } },
-          series: [{
-            type: 'sankey', emphasis: { focus: 'adjacency' }, nodeAlign: 'left',
-            lineStyle: { color: 'gradient', curveness: 0.5, opacity: 0.45 },
-            label: { color: '#E2E8F0', fontSize: 11 },
-            data: window.SPARK_DATA.sankey.nodes, links: window.SPARK_DATA.sankey.links
-          }]
-        }, true);
+        heading.textContent = '1. CUADRANTE DE EFICIENCIA: CONVERSIÓN DIGITAL (X) VS RORWA NETO (Y)';
+        const hurdleY = H - 45 - ((2.5 - 1.5) / 3.2) * (H - 80);
+        const circles = rows.map(d =&gt; {
+          const cx = 65 + ((d.adjConv - 8) / 20) * (W - 110);
+          const cy = H - 45 - ((d.adjRorwa - 1.5) / 3.2) * (H - 80);
+          const r = Math.max(12, Math.sqrt(d.adjVol) * 0.95);
+          const op = (!state.selectedId || state.selectedId === d.id) ? 0.88 : 0.22;
+          return `&lt;g style="cursor:pointer;" onclick="selectRow('${d.id}')"&gt;
+            &lt;circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="${r.toFixed(1)}" fill="${d.color}" fill-opacity="${op}" stroke="#fff" stroke-width="1.5"/&gt;
+            &lt;text x="${cx.toFixed(1)}" y="${(cy - r - 6).toFixed(1)}" fill="var(--text)" font-size="11" font-weight="700" text-anchor="middle"&gt;${d.name}&lt;/text&gt;
+            &lt;text x="${cx.toFixed(1)}" y="${(cy + 4).toFixed(1)}" fill="#fff" font-size="10" font-family="monospace" font-weight="700" text-anchor="middle"&gt;${d.adjRorwa.toFixed(2)}%&lt;/text&gt;
+          &lt;/g&gt;`;
+        }).join('');
+        box.innerHTML = `&lt;svg viewBox="0 0 ${W} ${H}" width="100%" height="100%"&gt;
+          &lt;line x1="55" y1="${H-45}" x2="${W-25}" y2="${H-45}" stroke="rgba(148,163,184,0.3)"/&gt;
+          &lt;line x1="55" y1="25" x2="55" y2="${H-45}" stroke="rgba(148,163,184,0.3)"/&gt;
+          &lt;line x1="55" y1="${hurdleY.toFixed(1)}" x2="${W-25}" y2="${hurdleY.toFixed(1)}" stroke="#10b981" stroke-dasharray="5 4" stroke-width="1.5"/&gt;
+          &lt;text x="${W-30}" y="${(hurdleY - 6).toFixed(1)}" fill="#34d399" font-size="10" font-family="monospace" text-anchor="end"&gt;Hurdle Rate RORWA 2,50%&lt;/text&gt;
+          &lt;text x="${W/2}" y="${H-10}" fill="#94a3b8" font-size="11" text-anchor="middle"&gt;Tasa de Conversión Digital (%) →&lt;/text&gt;
+          &lt;text x="16" y="20" fill="#94a3b8" font-size="11"&gt;↑ RORWA (%)&lt;/text&gt;
+          ${circles}
+        &lt;/svg&gt;`;
       } else if (state.step === 2) {
-        mainChart.setOption({
-          tooltip: { backgroundColor: 'rgba(9,13,22,0.92)', textStyle: { color: '#fff' },
-            formatter: p => `<b>${p.data.name}</b><br/>Conversión: ${p.data.value[0].toFixed(1)}%<br/>RORWA: ${p.data.value[1].toFixed(2)}%<br/>Volumen: ${p.data.value[2].toFixed(0)} M€`
-          },
-          grid: { top: 28, right: 35, bottom: 38, left: 52 },
-          xAxis: { name: 'Conversión Digital (%) →', nameLocation: 'middle', nameGap: 25, type: 'value', splitLine: { lineStyle: { color: 'rgba(255,255,255,0.06)' } }, axisLabel: { color: '#94A3B8' } },
-          yAxis: { name: '↑ RORWA (%)', type: 'value', splitLine: { lineStyle: { color: 'rgba(255,255,255,0.06)' } }, axisLabel: { color: '#94A3B8' } },
-          series: [{
-            id: 'morph-series', type: 'scatter', universalTransition: { enabled: true, divideShape: 'clone' },
-            symbolSize: val => Math.sqrt(val[2]) * 2.1,
-            data: all.map((d, i) => ({
-              name: d.name, segId: d.id, value: [d.adjConv, d.adjRorwa, d.adjVol],
-              itemStyle: { color: palette[i % palette.length], opacity: (!state.selectedId || state.selectedId === d.id) ? 0.92 : 0.25 }
-            })),
-            label: { show: true, formatter: '{b}', position: 'top', color: '#F1F5F9', fontSize: 10 }
-          }]
-        }, true);
+        heading.textContent = '2. RANKING DE VOLUMEN FORMALIZADO (M€) Y CREACIÓN DE VALOR (EVA)';
+        const maxV = Math.max(...rows.map(r =&gt; r.adjVol), 1);
+        const bars = rows.map((d, i) =&gt; {
+          const y = 24 + i * 48;
+          const bw = ((d.adjVol / maxV) * (W - 290)).toFixed(1);
+          const op = (!state.selectedId || state.selectedId === d.id) ? 1 : 0.28;
+          return `&lt;g style="cursor:pointer;opacity:${op};" onclick="selectRow('${d.id}')"&gt;
+            &lt;text x="195" y="${y + 18}" fill="var(--text)" font-size="12" font-weight="600" text-anchor="end"&gt;${d.name}&lt;/text&gt;
+            &lt;rect x="208" y="${y + 3}" width="${bw}" height="24" rx="5" fill="${d.color}"/&gt;
+            &lt;text x="${216 + Number(bw)}" y="${y + 19}" fill="var(--text)" font-size="11.5" font-family="monospace" font-weight="700"&gt;${d.adjVol.toFixed(0)} M€ (EVA ${d.eva &gt;= 0 ? '+' : ''}${d.eva.toFixed(1)} M€)&lt;/text&gt;
+          &lt;/g&gt;`;
+        }).join('');
+        box.innerHTML = `&lt;svg viewBox="0 0 ${W} ${H}" width="100%" height="100%"&gt;${bars}&lt;/svg&gt;`;
       } else {
-        mainChart.setOption({
-          tooltip: { formatter: '{b}: {c} M€ Margen Neto' },
-          series: [{
-            id: 'morph-series', type: 'treemap', universalTransition: { enabled: true, divideShape: 'clone' },
-            roam: false, breadcrumb: { show: false },
-            itemStyle: { borderColor: '#05070E', borderWidth: 3, gapWidth: 3, borderRadius: 8 },
-            data: all.map((d, i) => ({
-              name: `${d.name}\n+${d.netM.toFixed(1)} M€`, segId: d.id, value: Number(d.netM.toFixed(2)),
-              itemStyle: { color: palette[i % palette.length] }
-            }))
-          }]
-        }, true);
+        heading.textContent = '3. EMBUDO DE CONVERSIÓN DIGITAL OMNICANAL (SESIONES → SIMULADOR → STP → CONTRATO)';
+        const totS = rows.reduce((s, r) =&gt; s + r.sessions_k, 0);
+        const simS = Math.round(totS * 0.67);
+        const stpS = Math.round(simS * 0.72);
+        const wonV = Math.round(rows.reduce((s, r) =&gt; s + r.adjVol, 0));
+        const stages = [
+          { label: '1. Tráfico Digital Activo', val: totS.toFixed(0) + 'k Sesiones (100%)', pct: 1.0, col: '#6366f1' },
+          { label: '2. Simulador FEIN Iniciado', val: simS + 'k Simulaciones (67%)', pct: 0.74, col: '#06b6d4' },
+          { label: '3. Scoring Admisión STP Aprobado', val: stpS + 'k Pre-aprobados (48%)', pct: 0.54, col: '#8b5cf6' },
+          { label: '4. Formalización Digital Firmada', val: wonV + ' M€ Desembolsados', pct: 0.38, col: '#10b981' }
+        ];
+        const traps = stages.map((st, idx) =&gt; {
+          const y = 26 + idx * 72;
+          const wBar = st.pct * (W - 140);
+          const x = (W - wBar) / 2;
+          return `&lt;g&gt;
+            &lt;rect x="${x.toFixed(1)}" y="${y}" width="${wBar.toFixed(1)}" height="52" rx="8" fill="${st.col}" fill-opacity="0.85"/&gt;
+            &lt;text x="${W/2}" y="${y + 23}" fill="#fff" font-size="12" font-weight="700" text-anchor="middle"&gt;${st.label}&lt;/text&gt;
+            &lt;text x="${W/2}" y="${y + 41}" fill="#e2e8f0" font-size="12" font-family="monospace" font-weight="700" text-anchor="middle"&gt;${st.val}&lt;/text&gt;
+          &lt;/g&gt;`;
+        }).join('');
+        box.innerHTML = `&lt;svg viewBox="0 0 ${W} ${H}" width="100%" height="100%"&gt;${traps}&lt;/svg&gt;`;
       }
+    }
 
+    function renderMiniTrendSvg(activeRows) {
       const months = ['E','F','M','A','M','J','J','A','S','O','N','D'];
-      const curve = months.map((_, i) => active.reduce((acc, d) => acc + d.trend[i], 0));
-      miniChart.setOption({
-        grid: { top: 10, right: 10, bottom: 20, left: 35 },
-        xAxis: { type: 'category', data: months, axisLabel: { color: '#64748B', fontSize: 10 } },
-        yAxis: { type: 'value', splitLine: { lineStyle: { color: 'rgba(255,255,255,0.04)' } }, axisLabel: { color: '#64748B', fontSize: 10 } },
-        series: [{ type: 'line', smooth: 0.35, symbol: 'none', lineStyle: { width: 2.5, color: '#06B6D4' }, areaStyle: { color: 'rgba(6,182,212,0.18)' }, data: curve }]
-      });
+      const curve = months.map((_, i) =&gt; activeRows.reduce((s, d) =&gt; s + d.trend[i], 0));
+      const min = Math.min(...curve), max = Math.max(...curve), sp = (max - min) || 1;
+      const W = 460, H = 90;
+      const pts = curve.map((v, i) =&gt; `${(24 + (i / 11) * (W - 48)).toFixed(1)},${(H - 22 - ((v - min) / sp) * (H - 38)).toFixed(1)}`).join(' ');
+      document.getElementById('mini-curve-box').innerHTML = `
+        &lt;div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:4px;"&gt;
+          &lt;span&gt;EVOLUCIÓN MENSUAL ACUMULADA (12 MESES)&lt;/span&gt;
+          &lt;span class="mono" style="color:#38bdf8;font-weight:700;"&gt;Último mes: ${curve[11]} pts&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;svg viewBox="0 0 ${W} ${H}" width="100%" height="86"&gt;
+          &lt;polyline fill="none" stroke="#06b6d4" stroke-width="2.5" stroke-linecap="round" points="${pts}"/&gt;
+          ${months.map((m, i) =&gt; `&lt;text x="${(24 + (i / 11) * (W - 48)).toFixed(1)}" y="${H - 4}" fill="#94a3b8" font-size="9.5" font-family="monospace" text-anchor="middle"&gt;${m}&lt;/text&gt;`).join('')}
+        &lt;/svg&gt;
+      `;
     }
 
-    function goToStep(n) {
+    function setStep(n) {
       state.step = n;
-      document.getElementById('slide-counter').textContent = `PASO ${n} DE 3`;
-      [1, 2, 3].forEach(i => {
-        document.getElementById('step-btn-' + i).className = (i === n)
-          ? 'px-3 py-1 rounded-md bg-indigo-600 text-white font-medium transition'
-          : 'px-3 py-1 rounded-md text-slate-400 hover:text-white transition';
-      });
-      updateEngine();
+      [1, 2, 3].forEach(i =&gt; document.getElementById('step-' + i).classList.toggle('active', i === n));
+      render();
+    }
+    function selectRow(id) { state.selectedId = (state.selectedId === id) ? null : id; render(); }
+
+    function exportCsv() {
+      const rows = getRows();
+      const lines = ['ID;Linea_Comercial;Canal;Sesiones_Miles;Conversion_Pct;Volumen_M_EUR;RORWA_Pct;EVA_M_EUR',
+        ...rows.map(r =&gt; `${r.id};"${r.name}";"${r.channel}";${r.sessions_k};${r.adjConv.toFixed(2)};${r.adjVol.toFixed(1)};${r.adjRorwa.toFixed(2)};${r.eva.toFixed(2)}`)
+      ];
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob(['\uFEFF' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8;' }));
+      a.download = 'Informe_Comercial_Databricks.csv';
+      a.click();
     }
 
-    function selectSeg(id) { state.selectedId = (state.selectedId === id) ? null : id; updateEngine(); }
-    mainChart.on('click', p => { if (p.data && p.data.segId) selectSeg(p.data.segId); });
-
-    // ESCAPE FIABLE A PANTALLA COMPLETA (Recrea los contenedores limpios sin arrastrar canvas muertos)
-    function openCleanFullscreen() {
-      const cloneDoc = document.documentElement.cloneNode(true);
-      cloneDoc.querySelector('#main-canvas').innerHTML = '';
-      cloneDoc.querySelector('#main-canvas').removeAttribute('_echarts_instance_');
-      cloneDoc.querySelector('#mini-trend').innerHTML = '';
-      cloneDoc.querySelector('#mini-trend').removeAttribute('_echarts_instance_');
-      const blob = new Blob(['<!DOCTYPE html><html lang="es" class="dark">' + cloneDoc.innerHTML + '</html>'], { type: 'text/html;charset=utf-8' });
-      window.open(URL.createObjectURL(blob), '_blank');
+    function openFullscreenBlob() {
+      const htmlStr = '&lt;!DOCTYPE html&gt;\n&lt;html&gt;' + document.documentElement.innerHTML + '&lt;/html&gt;';
+      window.open(URL.createObjectURL(new Blob([htmlStr], { type: 'text/html;charset=utf-8' })), '_blank');
     }
 
-    window.addEventListener('resize', () => { mainChart.resize(); miniChart.resize(); });
-    updateEngine();
-  </script>
-</body>
-</html>"""
+    render();
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;"""
 
-final_cell_html = html_deck.replace("__PYSPARK_PAYLOAD__", payload_json)
-displayHTML(final_cell_html)</pre>
+final_html = html_deck.replace("__PYSPARK_PAYLOAD__", payload_json)
+b64 = base64.b64encode(final_html.encode("utf-8")).decode("utf-8")
+banner = f"""
+&lt;div style="background:#08101f;border:1px solid #10b981;padding:10px 16px;border-radius:10px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;font-family:sans-serif;color:#fff;"&gt;
+  &lt;span style="font-size:12px;"&gt;✅ &lt;strong&gt;Terminal Zero-CDN Compilado ({len(final_html)//1024} KB)&lt;/strong&gt; · Funciona 100% sin internet ni CDNs bloqueados&lt;/span&gt;
+  &lt;a href="data:text/html;base64,{b64}" download="Terminal_Comercial_ZeroCDN.html" style="background:#10b981;color:#040911;padding:6px 14px;border-radius:6px;font-weight:700;font-size:12px;text-decoration:none;"&gt;📥 Descargar .HTML para Enviar por Correo&lt;/a&gt;
+&lt;/div&gt;
+"""
+displayHTML(banner + final_html)</pre>
           </div>
 
-          <!-- BLOQUE MAESTRO 2: DEAL DESK WAR ROOM CON WATERFALL P&L, PARALLEL COORDINATES, SLIDE-OVER DRAWER Y CTRL+K -->
+          <!-- BLOQUE MAESTRO 2: DEAL DESK WAR ROOM ZERO-CDN CON WATERFALL P&L SVG NATIVO Y SLIDE-OVER DRAWER -->
           <div class="prompt-block-wrapper pro-version">
             <div class="prompt-block-header">
-              <h3 class="prompt-block-title">🏛️ Plantilla Maestra #2: Databricks Commercial Deal Desk (`PySpark` → `displayHTML` con Puente P&amp;L Waterfall, Coordenadas Paralelas, Slide-Over Drawer y `Ctrl+K`)</h3>
-              <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Código Deal Desk Completo</button>
+              <h3 class="prompt-block-title">🏛️ Plantilla Maestra #2 (100% Zero-CDN): Commercial Deal Desk (`PySpark` → `displayHTML` con Puente P&amp;L Waterfall SVG, Slide-Over Drawer y Radar 5D)</h3>
+              <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Deal Desk Zero-CDN</button>
             </div>
             <p style="font-size: 0.83rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
-              Ideal para <strong>Comités de Pricing Comercial, Seguimiento de Banca de Empresas, Pymes y Admisión de Riesgos</strong>. Incluye descomposición contable Waterfall (desde Tipo Cliente y FTP hasta EVA), gráfico de Coordenadas Paralelas de 6 ejes, Inspector lateral deslizable con desenfoque gaussiano y buscador ejecutivo <code>Ctrl+K</code>:
+              Especial para <strong>Comités de Pricing Comercial, Empresas y Admisión de Riesgos</strong>. Renderiza el Puente Contable P&amp;L (Waterfall desde Ingresos TIN y FTP hasta EVA) y el Inspector Lateral 360° con Radar en **SVG puro sin dependencias externas**:
             </p>
-            <pre class="copyable-prompt-pre">import json
+            <pre class="copyable-prompt-pre">import json, base64
 from pyspark.sql import types as T
 
-# ==============================================================================
-# 1. CAPA PYSPARK: CARTERA DE OPERACIONES EMPRESAS / COMMERCIAL DEAL DESK
-# ==============================================================================
 deals_rows = [
-    ("CORP-01", "Grupo Industrial Norte S.A.", "Confirming & Circulante", "Web Empresas", 48.0, 265, 85, 72, 0.65, 22, 3.45),
-    ("CORP-02", "Logística TransIbérica S.L.", "Leasing Flota Sostenible ESG", "Híbrido Web+Gestor", 34.0, 290, 90, 60, 0.92, 20, 3.68),
-    ("PYME-03", "AgroAlimentaria del Sur S.A.", "Línea Avalada ICO Exporta", "App Móvil", 19.5, 310, 80, 85, 1.15, 18, 4.12),
-    ("CORP-04", "Tecnologías Cloud Europa S.L.", "Póliza Crédito Multidivisa", "Web Empresas", 27.0, 225, 85, 95, 0.50, 38, 2.88),
-    ("PYME-05", "Distribuciones Levante S.L.", "Factoring Sin Recurso Digital", "App Móvil", 22.0, 275, 82, 78, 1.35, 30, 3.18),
-    ("NEG-06", "Red Franquicias Horeca S.A.", "Anticipo Facturación TPV", "App Móvil", 15.0, 345, 78, 110, 1.85, 35, 3.92)
+    ("CORP-01", "Grupo Industrial Norte S.A.", "Confirming &amp; Circulante", "Web Empresas", 48.0, 265, 85, 72, 0.65, 22),
+    ("CORP-02", "Logística TransIbérica S.L.", "Leasing Flota Sostenible ESG", "Híbrido Gestor", 34.0, 290, 90, 60, 0.92, 20),
+    ("PYME-03", "AgroAlimentaria del Sur S.A.", "Línea Avalada ICO Exporta", "App Móvil", 19.5, 310, 80, 85, 1.15, 18),
+    ("CORP-04", "Tecnologías Cloud Europa S.L.", "Póliza Crédito Multidivisa", "Web Empresas", 27.0, 225, 85, 95, 0.50, 38),
+    ("PYME-05", "Distribuciones Levante S.L.", "Factoring Sin Recurso Digital", "App Móvil", 22.0, 275, 82, 78, 1.35, 30),
+    ("NEG-06", "Red Franquicias Horeca S.A.", "Anticipo Facturación TPV", "App Móvil", 15.0, 345, 78, 110, 1.85, 35)
 ]
 
 schema_deals = T.StructType([
@@ -1374,95 +1532,102 @@ schema_deals = T.StructType([
     T.StructField("product", T.StringType()), T.StructField("channel", T.StringType()),
     T.StructField("ead_m", T.DoubleType()), T.StructField("spread_bps", T.IntegerType()),
     T.StructField("ftp_bps", T.IntegerType()), T.StructField("fees_bps", T.IntegerType()),
-    T.StructField("pd_pct", T.DoubleType()), T.StructField("lgd_pct", T.IntegerType()),
-    T.StructField("rorwa_pct", T.DoubleType())
+    T.StructField("pd_pct", T.DoubleType()), T.StructField("lgd_pct", T.IntegerType())
 ])
 
 df_deals = spark.createDataFrame(deals_rows, schema=schema_deals)
 payload_deals = json.dumps({"deals": [r.asDict() for r in df_deals.collect()], "hurdle": 2.50})
 
-html_war_room = r"""<!DOCTYPE html>
-<html lang="es" class="dark">
-<head>
-  <meta charset="UTF-8">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
-    body { margin: 0; background: #05070E; color: #F8FAFC; font-family: 'Inter', sans-serif; overflow-x: hidden; }
-    .mono { font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums; }
-    .glass-card { background: rgba(14, 20, 34, 0.78); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; backdrop-filter: blur(16px); }
-    .drawer-panel { transform: translateX(105%); transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1); }
-    .drawer-panel.open { transform: translateX(0); }
-  </style>
-</head>
-<body class="p-5">
-  <script id="data-payload">window.DEAL_DATA = __PYSPARK_PAYLOAD__;</script>
+html_war_room = r"""&lt;!DOCTYPE html&gt;
+&lt;html lang="es"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;title&gt;Commercial Deal Desk &amp; Pricing War Room (Zero-CDN)&lt;/title&gt;
+  &lt;style&gt;
+    :root { --bg: #05070e; --card: #0e1424; --border: rgba(255,255,255,0.09); --text: #f8fafc; --muted: #94a3b8; }
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 18px; background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; overflow-x: hidden; }
+    .mono { font-family: 'JetBrains Mono', Consolas, monospace; font-variant-numeric: tabular-nums; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 15px; }
+    .grid-main { display: grid; grid-template-columns: 7fr 5fr; gap: 14px; margin-top: 14px; }
+    @media (max-width: 980px) { .grid-main { grid-template-columns: 1fr; } }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    th, td { padding: 9px 6px; border-bottom: 1px solid var(--border); }
+    tr.deal-row { cursor: pointer; transition: background 150ms ease; }
+    tr.deal-row:hover { background: rgba(16,185,129,0.1); }
+    .drawer {
+      position: fixed; top: 0; right: 0; bottom: 0; width: 390px; max-width: 92vw;
+      background: rgba(9,13,24,0.97); backdrop-filter: blur(20px); border-left: 1px solid #6366f1;
+      padding: 20px; transform: translateX(105%); transition: transform 280ms cubic-bezier(0.16,1,0.3,1);
+      z-index: 999; display: flex; flex-direction: column; justify-content: space-between; box-shadow: -20px 0 50px rgba(0,0,0,0.8);
+    }
+    .drawer.open { transform: translateX(0); }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;script id="data-payload"&gt;window.DEAL_DATA = __PYSPARK_PAYLOAD__;&lt;/script&gt;
 
-  <div class="max-w-[1580px] mx-auto space-y-4 relative">
-    <header class="glass-card px-5 py-3.5 flex flex-wrap justify-between items-center gap-4">
-      <div class="flex items-center gap-3">
-        <span class="px-2.5 py-1 text-[10px] mono uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded">WAR ROOM • PRICING & RAROC</span>
-        <div class="flex gap-1 bg-black/40 p-1 rounded-lg border border-white/10 text-xs">
-          <button id="v-btn-wf" onclick="setView('waterfall')" class="px-3 py-1 rounded bg-emerald-500 text-slate-950 font-semibold">1. Puente P&L (Waterfall)</button>
-          <button id="v-btn-pc" onclick="setView('parallel')" class="px-3 py-1 rounded text-slate-400 hover:text-white">2. Coordenadas Paralelas</button>
-        </div>
-      </div>
-      <div class="flex items-center gap-4 text-xs">
-        <label class="flex items-center gap-2">
-          <span class="text-slate-400">Spread (bps):</span>
-          <input id="sl-sp" type="range" min="-60" max="100" step="10" value="0" oninput="renderAll()" class="w-24 accent-emerald-400">
-          <span id="lb-sp" class="mono text-emerald-300 w-14">Base</span>
-        </label>
-        <button onclick="openCleanTab()" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-medium">↗ Pantalla Completa</button>
-      </div>
-    </header>
+  &lt;div style="max-width:1540px;margin:0 auto;"&gt;
+    &lt;header class="card" style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;"&gt;
+      &lt;div&gt;
+        &lt;span class="mono" style="font-size:10px;background:rgba(16,185,129,0.18);color:#34d399;padding:3px 8px;border-radius:4px;font-weight:700;"&gt;DEAL DESK WAR ROOM • ZERO-CDN SVG&lt;/span&gt;
+        &lt;h1 id="wr-headline" style="margin:5px 0 0;font-size:18px;"&gt;Puente de Creación de Valor P&amp;L (Waterfall EVA) y Admisión Corporativa&lt;/h1&gt;
+      &lt;/div&gt;
+      &lt;div style="display:flex;align-items:center;gap:14px;font-size:12px;"&gt;
+        &lt;label style="display:flex;align-items:center;gap:6px;"&gt;
+          &lt;span style="color:var(--muted);"&gt;Simular Spread (bps):&lt;/span&gt;
+          &lt;input id="sl-sp" type="range" min="-60" max="100" step="10" value="0" oninput="renderAll()" style="width:100px;accent-color:#10b981;"&gt;
+          &lt;span id="lb-sp" class="mono" style="color:#34d399;font-weight:700;min-width:55px;"&gt;0 bps&lt;/span&gt;
+        &lt;/label&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
 
-    <div class="grid grid-cols-12 gap-4">
-      <div class="glass-card p-4 col-span-12 lg:col-span-7">
-        <h2 id="v-title" class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">DESCOMPOSICIÓN DEL VALOR ECONÓMICO AÑADIDO (WATERFALL P&L)</h2>
-        <div id="chart-box" class="w-full h-[390px]"></div>
-      </div>
-      <div class="glass-card p-4 col-span-12 lg:col-span-5">
-        <h2 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">EXPEDIENTES CORPORATIVOS (CLIC = SLIDE-OVER DRAWER)</h2>
-        <table class="w-full text-left text-xs border-collapse">
-          <thead>
-            <tr class="border-b border-white/10 text-[10px] uppercase text-slate-400">
-              <th class="py-2">Cliente / Producto</th>
-              <th class="py-2 text-right">EAD</th>
-              <th class="py-2 text-right">RORWA</th>
-              <th class="py-2 text-right">EVA</th>
-            </tr>
-          </thead>
-          <tbody id="deals-tbody" class="divide-y divide-white/5"></tbody>
-        </table>
-      </div>
-    </div>
+    &lt;div class="grid-main"&gt;
+      &lt;div class="card"&gt;
+        &lt;div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"&gt;
+          &lt;strong style="font-size:12px;text-transform:uppercase;"&gt;PUENTE CONTABLE WATERFALL P&amp;L (M€)&lt;/strong&gt;
+          &lt;span id="eva-badge" class="mono" style="font-size:12px;font-weight:700;color:#34d399;"&gt;EVA Total: +0,0 M€&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div id="waterfall-svg-box" style="width:100%;height:340px;"&gt;&lt;/div&gt;
+      &lt;/div&gt;
 
-    <!-- SLIDE-OVER INSPECTOR DRAWER -->
-    <aside id="inspector-drawer" class="drawer-panel fixed top-0 right-0 bottom-0 w-[400px] bg-slate-950/95 backdrop-blur-xl border-l border-indigo-500/40 p-6 z-50 flex flex-col justify-between shadow-2xl">
-      <div>
-        <div class="flex justify-between items-center border-b border-white/10 pb-3 mb-4">
-          <div>
-            <span class="text-[10px] mono uppercase text-cyan-400">FICHA DE COMITÉ DE CRÉDITO</span>
-            <h3 id="drw-client" class="text-base font-bold text-white mt-0.5">-</h3>
-          </div>
-          <button onclick="closeDrawer()" class="px-2.5 py-1 rounded bg-white/10 text-slate-300">✕</button>
-        </div>
-        <div id="drw-content" class="space-y-3 text-xs text-slate-300"></div>
-      </div>
-      <button onclick="closeDrawer()" class="w-full py-2.5 rounded-lg bg-emerald-500 text-slate-950 font-bold text-xs">✓ Aprobar Condiciones en Comité</button>
-    </aside>
-  </div>
+      &lt;div class="card"&gt;
+        &lt;strong style="font-size:12px;text-transform:uppercase;display:block;margin-bottom:8px;"&gt;OPERACIONES EN COMITÉ (CLIC EN FILA = ABRIR DRAWER 360°)&lt;/strong&gt;
+        &lt;table&gt;
+          &lt;thead&gt;
+            &lt;tr style="color:var(--muted);font-size:10px;text-transform:uppercase;"&gt;
+              &lt;th style="text-align:left;"&gt;Cliente / Producto&lt;/th&gt;
+              &lt;th style="text-align:right;"&gt;EAD&lt;/th&gt;
+              &lt;th style="text-align:right;"&gt;RORWA&lt;/th&gt;
+              &lt;th style="text-align:right;"&gt;EVA&lt;/th&gt;
+            &lt;/tr&gt;
+          &lt;/thead&gt;
+          &lt;tbody id="deals-tbody"&gt;&lt;/tbody&gt;
+        &lt;/table&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
 
-  <script id="app-engine">
-    let viewMode = 'waterfall';
-    const chart = echarts.init(document.getElementById('chart-box'));
+  &lt;aside id="inspector-drawer" class="drawer"&gt;
+    &lt;div&gt;
+      &lt;div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);padding-bottom:10px;margin-bottom:12px;"&gt;
+        &lt;div&gt;
+          &lt;div class="mono" style="font-size:10px;color:#38bdf8;"&gt;FICHA 360° DE COMITÉ DE CRÉDITO&lt;/div&gt;
+          &lt;h3 id="drw-client" style="margin:3px 0 0;font-size:16px;"&gt;-&lt;/h3&gt;
+        &lt;/div&gt;
+        &lt;button onclick="closeDrawer()" style="background:rgba(255,255,255,0.1);border:none;color:#fff;padding:5px 10px;border-radius:6px;cursor:pointer;"&gt;✕&lt;/button&gt;
+      &lt;/div&gt;
+      &lt;div id="drw-radar" style="width:100%;height:175px;margin-bottom:10px;"&gt;&lt;/div&gt;
+      &lt;div id="drw-content" style="display:flex;flex-direction:column;gap:8px;font-size:12px;"&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;button onclick="closeDrawer()" style="width:100%;padding:10px;border-radius:8px;border:none;background:#10b981;color:#040911;font-weight:800;cursor:pointer;"&gt;✓ Aprobar Operación en Comité&lt;/button&gt;
+  &lt;/aside&gt;
 
+  &lt;script id="app-engine"&gt;
     function getComputedDeals() {
-      const deltaSp = parseInt(document.getElementById('sl-sp').value, 10);
-      document.getElementById('lb-sp').textContent = (deltaSp >= 0 ? '+' : '') + deltaSp + ' bps';
-      return window.DEAL_DATA.deals.map(d => {
+      const deltaSp = parseInt(document.getElementById('sl-sp').value, 10) || 0;
+      document.getElementById('lb-sp').textContent = (deltaSp &gt;= 0 ? '+' : '') + deltaSp + ' bps';
+      return window.DEAL_DATA.deals.map(d =&gt; {
         const sp = d.spread_bps + deltaSp;
         const grossInt = d.ead_m * (sp / 10000);
         const ftpCost = d.ead_m * (d.ftp_bps / 10000);
@@ -1479,95 +1644,98 @@ html_war_room = r"""<!DOCTYPE html>
 
     function renderAll() {
       const rows = getComputedDeals();
-      document.getElementById('deals-tbody').innerHTML = rows.map((r, idx) => `
-        <tr onclick="openDrawer(${idx})" class="cursor-pointer hover:bg-white/5 transition">
-          <td class="py-2.5"><div class="font-semibold text-white">${r.client}</div><div class="text-[11px] text-slate-400">${r.product} · ${r.channel}</div></td>
-          <td class="py-2.5 text-right mono">${r.ead_m.toFixed(1)} M€</td>
-          <td class="py-2.5 text-right mono font-bold ${r.rorwa >= 2.5 ? 'text-emerald-400' : 'text-amber-300'}">${r.rorwa.toFixed(2)}%</td>
-          <td class="py-2.5 text-right mono ${r.eva >= 0 ? 'text-cyan-300' : 'text-rose-400'}">${r.eva >= 0 ? '+' : ''}${r.eva.toFixed(2)} M€</td>
-        </tr>
+      document.getElementById('deals-tbody').innerHTML = rows.map((r, idx) =&gt; `
+        &lt;tr class="deal-row" onclick="openDrawer(${idx})"&gt;
+          &lt;td&gt;&lt;strong style="color:#fff;"&gt;${r.client}&lt;/strong&gt;&lt;div style="font-size:11px;color:#94a3b8;"&gt;${r.product} · ${r.channel}&lt;/div&gt;&lt;/td&gt;
+          &lt;td class="mono" style="text-align:right;"&gt;${r.ead_m.toFixed(1)} M€&lt;/td&gt;
+          &lt;td class="mono" style="text-align:right;font-weight:700;color:${r.rorwa &gt;= 2.5 ? '#34d399' : '#fbbf24'};"&gt;${r.rorwa.toFixed(2)}%&lt;/td&gt;
+          &lt;td class="mono" style="text-align:right;color:${r.eva &gt;= 0 ? '#38bdf8' : '#fb7185'};"&gt;${r.eva &gt;= 0 ? '+' : ''}${r.eva.toFixed(2)} M€&lt;/td&gt;
+        &lt;/tr&gt;
       `).join('');
 
-      if (viewMode === 'waterfall') {
-        const gInt = rows.reduce((s, r) => s + r.grossInt, 0);
-        const fCost = rows.reduce((s, r) => s + r.ftpCost, 0);
-        const fees = rows.reduce((s, r) => s + r.feeInc, 0);
-        const el = rows.reduce((s, r) => s + r.expLoss, 0);
-        const cap = rows.reduce((s, r) => s + r.capCost, 0);
-        const netBeforeCap = (gInt - fCost + fees - el) * 0.72;
-        const evaTot = netBeforeCap - cap;
+      const gInt = rows.reduce((s, r) =&gt; s + r.grossInt, 0);
+      const fCost = rows.reduce((s, r) =&gt; s + r.ftpCost, 0);
+      const fees = rows.reduce((s, r) =&gt; s + r.feeInc, 0);
+      const el = rows.reduce((s, r) =&gt; s + r.expLoss, 0);
+      const cap = rows.reduce((s, r) =&gt; s + r.capCost, 0);
+      const netBeforeCap = (gInt - fCost + fees - el) * 0.72;
+      const evaTot = netBeforeCap - cap;
+      document.getElementById('eva-badge').textContent = `EVA Total: ${evaTot &gt;= 0 ? '+' : ''}${evaTot.toFixed(2)} M€`;
 
-        chart.setOption({
-          tooltip: { trigger: 'axis', backgroundColor: 'rgba(9,13,22,0.95)', textStyle: { color: '#fff' } },
-          grid: { top: 28, right: 25, bottom: 38, left: 50 },
-          xAxis: { type: 'category', data: ['Ingresos TIN', 'Coste FTP', 'Comisiones', 'Pérdida EL', 'Beneficio Neto', 'Cargo Capital', 'EVA Neto'], axisLabel: { color: '#94A3B8', fontSize: 10 } },
-          yAxis: { type: 'value', name: 'M€', splitLine: { lineStyle: { color: 'rgba(255,255,255,0.06)' } }, axisLabel: { color: '#94A3B8' } },
-          series: [{
-            type: 'bar', barWidth: '48%',
-            data: [
-              { value: Number(gInt.toFixed(2)), itemStyle: { color: '#06B6D4' } },
-              { value: Number((-fCost).toFixed(2)), itemStyle: { color: '#F59E0B' } },
-              { value: Number(fees.toFixed(2)), itemStyle: { color: '#6366F1' } },
-              { value: Number((-el).toFixed(2)), itemStyle: { color: '#F43F5E' } },
-              { value: Number(netBeforeCap.toFixed(2)), itemStyle: { color: '#38BDF8' } },
-              { value: Number((-cap).toFixed(2)), itemStyle: { color: '#FB7185' } },
-              { value: Number(evaTot.toFixed(2)), itemStyle: { color: '#10B981' } }
-            ],
-            label: { show: true, position: 'top', formatter: '{c} M€', color: '#E2E8F0', fontSize: 10 }
-          }]
-        }, true);
-      } else {
-        chart.setOption({
-          parallelAxis: [
-            { dim: 0, name: 'EAD (M€)' }, { dim: 1, name: 'Spread (bps)' },
-            { dim: 2, name: 'Fees (bps)' }, { dim: 3, name: 'PD (%)' },
-            { dim: 4, name: 'LGD (%)' }, { dim: 5, name: 'RORWA (%)' }
-          ],
-          parallel: { left: '6%', right: '8%', bottom: '12%', top: '14%', parallelAxisDefault: { nameTextStyle: { color: '#94A3B8', fontSize: 10 }, axisLine: { lineStyle: { color: '#334155' } }, axisLabel: { color: '#CBD5E1', fontSize: 10 } } },
-          series: [{
-            type: 'parallel', lineStyle: { width: 3, opacity: 0.8, color: '#06B6D4' },
-            data: rows.map(r => [r.ead_m, r.sp, r.fees_bps, r.pd_pct, r.lgd_pct, Number(r.rorwa.toFixed(2))])
-          }]
-        }, true);
-      }
-    }
-
-    function setView(m) {
-      viewMode = m;
-      document.getElementById('v-btn-wf').className = m === 'waterfall' ? 'px-3 py-1 rounded bg-emerald-500 text-slate-950 font-semibold' : 'px-3 py-1 rounded text-slate-400';
-      document.getElementById('v-btn-pc').className = m === 'parallel' ? 'px-3 py-1 rounded bg-emerald-500 text-slate-950 font-semibold' : 'px-3 py-1 rounded text-slate-400';
-      renderAll();
+      const steps = [
+        { label: 'Ingresos TIN', val: gInt, col: '#06b6d4' },
+        { label: 'Coste FTP', val: -fCost, col: '#f59e0b' },
+        { label: 'Comisiones', val: fees, col: '#6366f1' },
+        { label: 'Pérdida EL', val: -el, col: '#f43f5e' },
+        { label: 'Beneficio Neto', val: netBeforeCap, col: '#38bdf8' },
+        { label: 'Cargo Capital', val: -cap, col: '#fb7185' },
+        { label: 'EVA NETO', val: evaTot, col: '#10b981' }
+      ];
+      const W = 720, H = 320, maxAbs = Math.max(...steps.map(s =&gt; Math.abs(s.val)), 1) * 1.25;
+      const zeroY = H * 0.58;
+      const barsSvg = steps.map((s, i) =&gt; {
+        const x = 38 + i * 94;
+        const bh = Math.max(6, (Math.abs(s.val) / maxAbs) * (H * 0.44));
+        const y = s.val &gt;= 0 ? zeroY - bh : zeroY;
+        return `&lt;g&gt;
+          &lt;rect x="${x}" y="${y.toFixed(1)}" width="56" height="${bh.toFixed(1)}" rx="5" fill="${s.col}"/&gt;
+          &lt;text x="${x + 28}" y="${(s.val &gt;= 0 ? y - 7 : y + bh + 13).toFixed(1)}" fill="#f8fafc" font-size="11" font-family="monospace" font-weight="700" text-anchor="middle"&gt;${s.val &gt;= 0 ? '+' : ''}${s.val.toFixed(2)}M&lt;/text&gt;
+          &lt;text x="${x + 28}" y="${H - 12}" fill="#94a3b8" font-size="10.5" text-anchor="middle"&gt;${s.label}&lt;/text&gt;
+        &lt;/g&gt;`;
+      }).join('');
+      document.getElementById('waterfall-svg-box').innerHTML = `&lt;svg viewBox="0 0 ${W} ${H}" width="100%" height="100%"&gt;
+        &lt;line x1="25" y1="${zeroY}" x2="${W-20}" y2="${zeroY}" stroke="rgba(255,255,255,0.2)" stroke-dasharray="4 3"/&gt;
+        ${barsSvg}
+      &lt;/svg&gt;`;
     }
 
     function openDrawer(idx) {
       const r = getComputedDeals()[idx];
       document.getElementById('drw-client').textContent = r.client;
+      // Radar SVG 5 ejes en vivo
+      const scores = [
+        Math.min(100, Math.round(r.rorwa * 25)),
+        Math.min(100, Math.round((400 - r.ftp_bps) / 3.5)),
+        Math.min(100, Math.round(r.fees_bps * 0.85)),
+        Math.min(100, Math.round((2.5 - r.pd_pct) * 42)),
+        Math.min(100, Math.round(100 - r.lgd_pct))
+      ];
+      const labels = ['RORWA', 'Eficiencia FTP', 'Cross-Sell', 'Calidad PD', 'Cobertura Garantía'];
+      const cx = 160, cy = 88, R = 62;
+      const polyPts = scores.map((sc, i) =&gt; {
+        const ang = -Math.PI / 2 + (i * 2 * Math.PI) / 5;
+        const rad = (sc / 100) * R;
+        return `${(cx + Math.cos(ang) * rad).toFixed(1)},${(cy + Math.sin(ang) * rad).toFixed(1)}`;
+      }).join(' ');
+      const axisLines = labels.map((lb, i) =&gt; {
+        const ang = -Math.PI / 2 + (i * 2 * Math.PI) / 5;
+        const x2 = cx + Math.cos(ang) * R, y2 = cy + Math.sin(ang) * R;
+        const lx = cx + Math.cos(ang) * (R + 18), ly = cy + Math.sin(ang) * (R + 14);
+        return `&lt;line x1="${cx}" y1="${cy}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="rgba(255,255,255,0.12)"/&gt;
+                &lt;text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" fill="#94a3b8" font-size="9.5" text-anchor="middle"&gt;${lb}&lt;/text&gt;`;
+      }).join('');
+      document.getElementById('drw-radar').innerHTML = `&lt;svg viewBox="0 0 320 175" width="100%" height="100%"&gt;
+        &lt;circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="rgba(255,255,255,0.1)"/&gt;
+        &lt;circle cx="${cx}" cy="${cy}" r="${R*0.6}" fill="none" stroke="rgba(255,255,255,0.08)" stroke-dasharray="3 2"/&gt;
+        ${axisLines}
+        &lt;polygon points="${polyPts}" fill="rgba(6,182,212,0.28)" stroke="#06b6d4" stroke-width="2"/&gt;
+      &lt;/svg&gt;`;
       document.getElementById('drw-content').innerHTML = `
-        <div class="p-3 rounded-lg bg-white/5 border border-white/10 flex justify-between"><span>Producto / Canal:</span><strong class="text-white">${r.product} (${r.channel})</strong></div>
-        <div class="p-3 rounded-lg bg-white/5 border border-white/10 flex justify-between"><span>Exposición (EAD) / RWA:</span><strong class="mono text-cyan-300">${r.ead_m.toFixed(1)} M€ / ${r.rwa.toFixed(1)} M€</strong></div>
-        <div class="p-3 rounded-lg bg-white/5 border border-white/10 flex justify-between"><span>Spread / Coste FTP / Fees:</span><strong class="mono text-emerald-300">+${r.sp} / -${r.ftp_bps} / +${r.fees_bps} bps</strong></div>
-        <div class="p-3 rounded-lg bg-white/5 border border-white/10 flex justify-between"><span>Parámetros Riesgo (PD × LGD):</span><strong class="mono text-amber-300">${r.pd_pct}% × ${r.lgd_pct}%</strong></div>
-        <div class="p-3 rounded-lg bg-emerald-500/15 border border-emerald-500/40 flex justify-between"><span>RORWA Neto / EVA Creado:</span><strong class="mono text-emerald-300">${r.rorwa.toFixed(2)}% (${r.eva >= 0 ? '+' : ''}${r.eva.toFixed(2)} M€)</strong></div>
+        &lt;div style="padding:9px;border-radius:8px;background:rgba(255,255,255,0.04);display:flex;justify-content:space-between;"&gt;&lt;span&gt;Producto / Canal:&lt;/span&gt;&lt;strong&gt;${r.product} (${r.channel})&lt;/strong&gt;&lt;/div&gt;
+        &lt;div style="padding:9px;border-radius:8px;background:rgba(255,255,255,0.04);display:flex;justify-content:space-between;"&gt;&lt;span&gt;Exposición EAD / RWA:&lt;/span&gt;&lt;strong class="mono" style="color:#38bdf8;"&gt;${r.ead_m.toFixed(1)} M€ / ${r.rwa.toFixed(1)} M€&lt;/strong&gt;&lt;/div&gt;
+        &lt;div style="padding:9px;border-radius:8px;background:rgba(255,255,255,0.04);display:flex;justify-content:space-between;"&gt;&lt;span&gt;Spread / FTP / Comisiones:&lt;/span&gt;&lt;strong class="mono" style="color:#34d399;"&gt;+${r.sp} / -${r.ftp_bps} / +${r.fees_bps} bps&lt;/strong&gt;&lt;/div&gt;
+        &lt;div style="padding:9px;border-radius:8px;background:rgba(16,185,129,0.14);border:1px solid rgba(16,185,129,0.4);display:flex;justify-content:space-between;"&gt;&lt;span&gt;RORWA Neto / EVA:&lt;/span&gt;&lt;strong class="mono" style="color:#34d399;"&gt;${r.rorwa.toFixed(2)}% (${r.eva &gt;= 0 ? '+' : ''}${r.eva.toFixed(2)} M€)&lt;/strong&gt;&lt;/div&gt;
       `;
       document.getElementById('inspector-drawer').classList.add('open');
     }
     function closeDrawer() { document.getElementById('inspector-drawer').classList.remove('open'); }
-
-    function openCleanTab() {
-      const clone = document.documentElement.cloneNode(true);
-      clone.querySelector('#chart-box').innerHTML = '';
-      clone.querySelector('#chart-box').removeAttribute('_echarts_instance_');
-      const blob = new Blob(['<!DOCTYPE html><html lang="es" class="dark">' + clone.innerHTML + '</html>'], { type: 'text/html;charset=utf-8' });
-      window.open(URL.createObjectURL(blob), '_blank');
-    }
-
-    window.addEventListener('resize', () => chart.resize());
     renderAll();
-  </script>
-</body>
-</html>"""
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;"""
 
-displayHTML(html_war_room.replace("__PYSPARK_PAYLOAD__", payload_deals))</pre>
+final_wr = html_war_room.replace("__PYSPARK_PAYLOAD__", payload_deals)
+displayHTML(final_wr)</pre>
           </div>
 
           <!-- SUBSECCIÓN 3.4: DE LA CELDA DE DATABRICKS AL CORREO ELECTRÓNICO (EJECUCIÓN 100% LOCAL FILE://) -->
@@ -1585,7 +1753,7 @@ displayHTML(html_war_room.replace("__PYSPARK_PAYLOAD__", payload_deals))</pre>
               <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Kit Databricks-a-Correo</button>
             </div>
             <pre class="copyable-prompt-pre"># ==============================================================================
-# KIT DATABRICKS -> CORREO ELECTRÓNICO (EJECUCIÓN 100% LOCAL EN EL PC DEL RECEPTOR)
+# KIT DATABRICKS -&gt; CORREO ELECTRÓNICO (EJECUCIÓN 100% LOCAL EN EL PC DEL RECEPTOR)
 # Añade este bloque al final de cualquier celda PySpark antes de displayHTML()
 # ==============================================================================
 import base64
@@ -1595,32 +1763,32 @@ import base64
 #    - Imprimir / Guardar vista actual como PDF Ejecutivo A4 Horizontal
 #    - Auto-descargar copia portable del propio archivo .html con el estado actual
 local_receiver_toolbar_html = r"""
-<style>
+&lt;style&gt;
   @media print {
     body { background: #070B14 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
     .no-print-bar { display: none !important; }
     @page { size: A4 landscape; margin: 8mm; }
   }
-</style>
-<div class="no-print-bar" style="position:fixed; bottom:14px; right:18px; z-index:9999; display:flex; gap:8px; background:rgba(9,13,24,0.92); backdrop-filter:blur(12px); padding:8px 12px; border-radius:10px; border:1px solid rgba(99,102,241,0.4); box-shadow:0 12px 30px rgba(0,0,0,0.65); font-family:Inter,sans-serif;">
-  <button onclick="exportActiveDataToExcelCSV()" style="padding:6px 11px; border-radius:6px; border:1px solid rgba(16,185,129,0.45); background:rgba(16,185,129,0.18); color:#6ee7b7; font-size:11px; font-weight:600; cursor:pointer;">
+&lt;/style&gt;
+&lt;div class="no-print-bar" style="position:fixed; bottom:14px; right:18px; z-index:9999; display:flex; gap:8px; background:rgba(9,13,24,0.92); backdrop-filter:blur(12px); padding:8px 12px; border-radius:10px; border:1px solid rgba(99,102,241,0.4); box-shadow:0 12px 30px rgba(0,0,0,0.65); font-family:Inter,sans-serif;"&gt;
+  &lt;button onclick="exportActiveDataToExcelCSV()" style="padding:6px 11px; border-radius:6px; border:1px solid rgba(16,185,129,0.45); background:rgba(16,185,129,0.18); color:#6ee7b7; font-size:11px; font-weight:600; cursor:pointer;"&gt;
     📊 Exportar Datos a Excel (.CSV)
-  </button>
-  <button onclick="window.print()" style="padding:6px 11px; border-radius:6px; border:1px solid rgba(6,182,212,0.45); background:rgba(6,182,212,0.18); color:#67e8f9; font-size:11px; font-weight:600; cursor:pointer;">
+  &lt;/button&gt;
+  &lt;button onclick="window.print()" style="padding:6px 11px; border-radius:6px; border:1px solid rgba(6,182,212,0.45); background:rgba(6,182,212,0.18); color:#67e8f9; font-size:11px; font-weight:600; cursor:pointer;"&gt;
     🖨️ Guardar Vista en PDF
-  </button>
-  <button onclick="downloadStandaloneCopy()" style="padding:6px 11px; border-radius:6px; border:1px solid rgba(99,102,241,0.45); background:rgba(99,102,241,0.2); color:#c7d2fe; font-size:11px; font-weight:600; cursor:pointer;">
+  &lt;/button&gt;
+  &lt;button onclick="downloadStandaloneCopy()" style="padding:6px 11px; border-radius:6px; border:1px solid rgba(99,102,241,0.45); background:rgba(99,102,241,0.2); color:#c7d2fe; font-size:11px; font-weight:600; cursor:pointer;"&gt;
     💾 Guardar Copia .HTML Local
-  </button>
-</div>
-<script>
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;script&gt;
   function exportActiveDataToExcelCSV() {
-    const rows = (window.REPORT_DATA && (window.REPORT_DATA.products || window.REPORT_DATA.deals)) || [];
+    const rows = (window.REPORT_DATA &amp;&amp; (window.REPORT_DATA.products || window.REPORT_DATA.deals)) || [];
     if (!rows.length) { alert('No hay filas en REPORT_DATA para exportar.'); return; }
-    const headers = Object.keys(rows[0]).filter(k => typeof rows[0][k] !== 'object');
+    const headers = Object.keys(rows[0]).filter(k =&gt; typeof rows[0][k] !== 'object');
     const csvLines = [
       headers.join(';'),
-      ...rows.map(r => headers.map(h => {
+      ...rows.map(r =&gt; headers.map(h =&gt; {
         const val = r[h] ?? '';
         return typeof val === 'number' ? String(val).replace('.', ',') : `"${String(val).replace(/"/g, '""')}"`;
       }).join(';'))
@@ -1635,39 +1803,39 @@ local_receiver_toolbar_html = r"""
 
   function downloadStandaloneCopy() {
     const clone = document.documentElement.cloneNode(true);
-    clone.querySelectorAll('[_echarts_instance_]').forEach(el => {
+    clone.querySelectorAll('[_echarts_instance_]').forEach(el =&gt; {
       el.innerHTML = '';
       el.removeAttribute('_echarts_instance_');
     });
-    const htmlStr = '<!DOCTYPE html>\n<html lang="es" class="dark">\n' + clone.innerHTML + '\n</html>';
+    const htmlStr = '&lt;!DOCTYPE html&gt;\n&lt;html lang="es" class="dark"&gt;\n' + clone.innerHTML + '\n&lt;/html&gt;';
     const blob = new Blob([htmlStr], { type: 'text/html;charset=utf-8' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
     a.download = 'Dashboard_Ejecutivo_Local_' + new Date().toISOString().slice(0,10) + '.html';
     a.click();
   }
-</script>
+&lt;/script&gt;
 """
 
 # 2. Inyectar el JSON de PySpark y la barra de herramientas local dentro del HTML final
 final_portable_html = (
     html_template
     .replace("__PYSPARK_PAYLOAD__", payload_json)
-    .replace("</body>", local_receiver_toolbar_html + "\n</body>")
+    .replace("&lt;/body&gt;", local_receiver_toolbar_html + "\n&lt;/body&gt;")
 )
 
 # 3. Codificar el archivo .html completo en Base64 para descargarlo en 1 clic desde Databricks
 b64_html = base64.b64encode(final_portable_html.encode("utf-8")).decode("utf-8")
 download_banner = f"""
-<div style="background:#090d16; border:1px solid rgba(16,185,129,0.45); padding:10px 16px; border-radius:10px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; font-family:Inter,sans-serif; color:#f8fafc;">
-  <div style="font-size:12px;">
-    ✅ <strong>Dashboard compilado con datos embebidos ({len(final_portable_html)//1024} KB)</strong> · Listo para enviar por Outlook/Teams y abrir en local (<code>file://</code>)
-  </div>
-  <a href="data:text/html;base64,{b64_html}" download="Dashboard_Commercial_Banking_Portable.html"
-     style="background:#10b981; color:#05070e; font-weight:700; font-size:12px; padding:7px 14px; border-radius:7px; text-decoration:none;">
+&lt;div style="background:#090d16; border:1px solid rgba(16,185,129,0.45); padding:10px 16px; border-radius:10px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; font-family:Inter,sans-serif; color:#f8fafc;"&gt;
+  &lt;div style="font-size:12px;"&gt;
+    ✅ &lt;strong&gt;Dashboard compilado con datos embebidos ({len(final_portable_html)//1024} KB)&lt;/strong&gt; · Listo para enviar por Outlook/Teams y abrir en local (&lt;code&gt;file://&lt;/code&gt;)
+  &lt;/div&gt;
+  &lt;a href="data:text/html;base64,{b64_html}" download="Dashboard_Commercial_Banking_Portable.html"
+     style="background:#10b981; color:#05070e; font-weight:700; font-size:12px; padding:7px 14px; border-radius:7px; text-decoration:none;"&gt;
     📥 Descargar .HTML para Enviar por Correo
-  </a>
-</div>
+  &lt;/a&gt;
+&lt;/div&gt;
 """
 
 displayHTML(download_banner + final_portable_html)</pre>
@@ -2593,40 +2761,60 @@ if __name__ == "__main__":
     build_executive_committee_pptx()</pre>
           </div>
 
-          <!-- FLUJO EN 2 TURNOS PARA M365 COPILOT CHAT / AGENT BUILDER -->
-          <h3>5.4. Flujo en 2 Turnos para M365 Copilot Chat / VS Code (Para Evitar Recortes de Código)</h3>
+          <!-- FLUJO EN 2 TURNOS CON RECETAS DE CÓDIGO INCLUIDAS PARA M365 COPILOT CHAT / VS CODE -->
+          <h3>5.4. Prompts Blindados con Esqueleto de Código Incluido (Específicos para M365 Copilot y VS Code cuando le pasas el Contexto de Databricks)</h3>
+          <p>
+            <strong>Por qué los prompts cortos fracasan en M365 Copilot:</strong> si solo le pides con texto <em>«crea un dashboard moderno con animaciones y gráficos»</em>, M365 Copilot improvisa un HTML pobre de 60 líneas o mete <code>cdn.tailwindcss.com</code> (que el firewall del banco bloquea dejando la pantalla en blanco). En cambio, estos **2 Prompts llevan la receta CSS y JS Zero-CDN ya escrita dentro**, obligando a M365 Copilot o VS Code a usar nuestra ingeniería exacta sobre tus datos de Databricks:
+          </p>
 
           <div class="prompt-block-wrapper pro-version">
             <div class="prompt-block-header">
-              <h4 class="prompt-block-title">🥇 Turno 1 (Arquitecto de Datos y Estructura Desacoplada)</h4>
-              <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Prompt Turno 1</button>
+              <h4 class="prompt-block-title">🥇 Prompt Directo para M365 Copilot / VS Code (Con Esqueleto Zero-CDN Incluido — Pega tu Contexto de Databricks al Final)</h4>
+              <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Prompt con Esqueleto Blindado</button>
             </div>
-            <pre class="copyable-prompt-pre">Actúa como un Arquitecto Principal de Datos en Databricks (PySpark) y Desarrollador Frontend.
-Tengo una tabla con las siguientes columnas: [PEGA AQUÍ TUS COLUMNAS O DESCRIPCIÓN DE DATOS].
+            <pre class="copyable-prompt-pre">Actúa como un Principal Financial UI Engineer. Voy a pasarte al final el esquema y los datos agregados que he extraído de Databricks.
+Tu objetivo es devolverme UN ÚNICO ARCHIVO `.html` 100% funcional, autónomo y Zero-CDN (PROHIBIDO usar `cdn.tailwindcss.com` o librerías externas que puedan ser bloqueadas por el firewall del banco).
 
-PASO 1 (SOLO ARQUITECTURA DE DATOS Y ESQUELETO BASE):
-1. Escribe la agregación en PySpark que calcule los KPIs principales, empaquete las series temporales de 12 periodos con `F.collect_list()` y construya los nodos/enlaces (`nodes` y `links`) para un diagrama de flujo Sankey.
-2. Serializa todo en un único JSON (`payload_json`) manejando tipos `Decimal` y `Date`.
-3. Declara un bloque `html_template = r"""<!DOCTYPE html>..."""` (PROHIBIDO usar f-strings en el HTML) con:
-   - Tailwind CSS CDN + Apache ECharts 5.5 CDN + Lucide Icons CDN.
-   - El bloque aislado `<script id="data-payload">window.REPORT_DATA = __PYSPARK_PAYLOAD__;</script>`.
-   - Las tarjetas de KPIs con clase `tabular-nums` y los contenedores vacíos de las gráficas conectados a `window.REPORT_DATA`.
-4. Termina con `displayHTML(html_template.replace("__PYSPARK_PAYLOAD__", payload_json))`.</pre>
+REGLAS ESTRICTAS DE CONSTRUCCIÓN:
+1. Usa OBLIGATORIAMENTE este bloque `&lt;style&gt;` base (no lo resumas ni lo cambies por estilos básicos):
+```css
+:root { --bg:#060913; --card:#0e1526; --border:rgba(255,255,255,0.09); --text:#f8fafc; --muted:#94a3b8; --cyan:#06b6d4; --indigo:#6366f1; --emerald:#10b981; --rose:#f43f5e; --amber:#f59e0b; }
+html.light { --bg:#f1f5f9; --card:#ffffff; --border:#cbd5e1; --text:#0f172a; --muted:#475569; }
+* { box-sizing:border-box; }
+body { margin:0; padding:20px; background:var(--bg); color:var(--text); font-family:'Segoe UI',system-ui,sans-serif; }
+.mono { font-family:'JetBrains Mono',Consolas,monospace; font-variant-numeric:tabular-nums; }
+.sp-card { position:relative; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:15px; overflow:hidden; transition:transform 180ms cubic-bezier(0.16,1,0.3,1); }
+.sp-card::after { content:""; position:absolute; inset:0; border-radius:12px; padding:1px; background:radial-gradient(240px circle at var(--mx,-400px) var(--my,-400px), rgba(6,182,212,0.55), transparent 45%); -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite:xor; mask-composite:exclude; pointer-events:none; }
+.kpi-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:12px; margin:14px 0; }
+.main-grid { display:grid; grid-template-columns:7fr 5fr; gap:14px; }
+table { width:100%; border-collapse:collapse; font-size:12px; }
+th, td { padding:8px 6px; border-bottom:1px solid var(--border); }
+```
+2. Incrusta mis datos de Databricks en `&lt;script id="data-payload"&gt;window.REPORT_DATA = [...];&lt;/script&gt;`.
+3. En `&lt;script id="app-engine"&gt;`, implementa en Vanilla JS + SVG Puro (100% libre de CDNs):
+   - `#MP-02`: Contadores interpolados con `requestAnimationFrame` (`easeOutQuart`) para las 4 tarjetas KPI superiores.
+   - `#MP-05`: Conmutador de 3 vistas gráficas renderizadas en `&lt;svg viewBox="0 0 720 320"&gt;` nativo: (Vista 1: Barras + Línea de Rentabilidad, Vista 2: Puente Waterfall / Ranking con DataBars, Vista 3: Matriz Cuadrante X vs Y con línea de Hurdle Rate).
+   - `#MP-03` &amp; `#MP-08`: Tabla interactiva con buscador instantáneo, ordenación de columnas, micro-sparklines `&lt;svg&gt;&lt;polyline/&gt;&lt;/svg&gt;` y clic en fila para desplegar un Drawer lateral derecho con desglose 360°.
+   - `#MP-09` &amp; `#MP-10`: 2 sliders de sensibilidad What-If en la cabecera que recalculen en vivo los KPIs, el gráfico SVG y el Banner de Diagnóstico Ejecutivo Automático (`#narrative-banner`).
+   - `#MP-11`: Botón `☀️/🌙` para alternar `html.light` y botón `📊 Exportar CSV` con BOM UTF-8 (`\uFEFF`).
+
+AQUÍ TIENES EL CONTEXTO Y DATOS EXTRAÍDOS DE DATABRICKS:
+[PEGA AQUÍ LA SALIDA DE export_ai_context(df) O TUS COLUMNAS/DATOS]</pre>
           </div>
 
-          <div class="prompt-block-wrapper pro-version">
+          <div class="prompt-block-wrapper m365-version">
             <div class="prompt-block-header">
-              <h4 class="prompt-block-title">🥈 Turno 2 (Crítico Estético, ECharts Morphing, Spotlight y Controles en Vivo)</h4>
-              <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Prompt Turno 2</button>
+              <h4 class="prompt-block-title">🥈 Prompt de Refinamiento Quirúrgico (Nodo 2 `/motion-critic`: Para Mejorar un HTML que te haya quedado flojo sin romper sus datos)</h4>
+              <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Prompt Refinador Nodo 2</button>
             </div>
-            <pre class="copyable-prompt-pre">Actúa ahora como un Principal Design Engineer (Nodo 2: Crítico Estético y Refinador de Motion).
-Mantén intacta la parte de PySpark y `window.REPORT_DATA` del turno anterior. Reescribe únicamente el interior de `html_template = r"""..."""` para incorporar obligatoriamente estos 6 sistemas avanzados:
-1. SHADER SPOTLIGHT CSS (`.sp-card`): listener `mousemove` que inyecta `--mx` y `--my` con `mask-composite: exclude` iluminando los bordes de 1px.
-2. CONTADORES INTERPOLADOS A 60FPS: función `requestAnimationFrame` con curva `easeOutQuart` (550ms) y `font-variant-numeric: tabular-nums` en todos los números.
-3. MORPHING GEOMÉTRICO EN ECHARTS: conmutador de vistas que comparta el mismo `id` de serie con `universalTransition: { enabled: true, divideShape: 'clone' }` (pasando de Cuadrante Scatter a Treemap Jerárquico y Ranking de Barras) + Matriz de Calor de Markov.
-4. CROSS-FILTERING REACTIVO + TABLA CON SPARKLINES SVG: hacer clic en cualquier elemento del gráfico filtra los KPIs superiores, actualiza la curva secundaria, filtra la tabla inferior (que debe incluir curvas `<svg><polyline/></svg>` de 12 meses en cada fila) y muestra el botón "Limpiar filtro ✕".
-5. SIMULADOR DE SENSIBILIDAD + ACTION TITLE DINÁMICO: añade 2 sliders en la cabecera que recalculen en vivo las métricas y reescriban el titular ejecutivo (`#action-title`) con la nueva conclusión numérica.
-6. ESCAPE A PANTALLA COMPLETA (BLOB URL): botón `↗ Pantalla Completa` que clone el HTML limpiando las instancias de ECharts y lo abra en una pestaña nueva con `URL.createObjectURL(new Blob(...))`.</pre>
+            <pre class="copyable-prompt-pre">Mantén 100% intactos los datos de `window.REPORT_DATA` y las métricas de negocio del código anterior, pero REESCRIBE la capa visual y de interacción porque ha quedado demasiado básica. Aplica obligatoriamente estas 5 recetas de código deterministas:
+
+1. ELIMINA cualquier dependencia de `cdn.tailwindcss.com`. Usa CSS Grid nativo en `&lt;style&gt;` con tema oscuro `#060913` y soporte `html.light` (`#f8fafc`).
+2. INYECTA iluminación Spotlight en cada tarjeta `.sp-card` con este listener exacto:
+   `document.addEventListener('mousemove', e =&gt; document.querySelectorAll('.sp-card').forEach(c =&gt; { const r = c.getBoundingClientRect(); c.style.setProperty('--mx', (e.clientX-r.left)+'px'); c.style.setProperty('--my', (e.clientY-r.top)+'px'); }));`
+3. REEMPLAZA cualquier gráfico vacío o dependiente de CDN externo por un motor `&lt;svg viewBox="0 0 720 330"&gt;` nativo con 3 pestañas conmutables (1. Comparativa Barras/Línea, 2. Puente P&amp;L / Ranking EVA, 3. Cuadrante Scatter Riesgo vs Retorno) donde hacer clic en una barra o burbuja filtre toda la pantalla (`selectSegment(id)`).
+4. AÑADE en la cabecera un buscador instantáneo (`oninput`), 2 sliders de simulación What-If (Spread bps y Mora/Fricción) y un Banner de Auto-Insights que redacte automáticamente las alertas de negocio al filtrar.
+5. AÑADE en cada fila de la tabla un micro-sparkline `&lt;svg width="64" height="20"&gt;&lt;polyline .../&gt;&lt;/svg&gt;` y haz que al pulsar una fila se abra un Slide-Over Drawer lateral con el desglose completo.</pre>
           </div>
 
           <!-- =====================================================================
@@ -2758,7 +2946,7 @@ REGLAS OBLIGATORIAS DE COMPOSICIÓN VISUAL:
    - Nivel Superior: Kicker + Titular Ejecutivo con la conclusión cuantitativa + 3 Píldoras de KPIs Globales.
    - Nivel Central (Diagrama de Arquitectura / Flujo): 5 bloques conectados de izquierda a derecha mostrando entradas, transformación/filtros, tasas de paso (%) y fugas/costes en color semántico (`#06B6D4` Cian, `#6366F1` Índigo, `#10B981` Esmeralda, `#F43F5E` Coral).
    - Nivel Inferior (Anatomía Matemática y Negocio): Desglose visual de la ecuación financiera y comparativa "Antes vs. Después".
-3. BOTÓN DE EXPORTACIÓN A PNG 4K: Incluye una función JavaScript que serialice el `<svg>` con `XMLSerializer()`, lo pinte en un `<canvas>` escalado a `2x` (Retina) y descargue el archivo `.png` listo para pegar en un correo de Outlook o en PowerPoint.</pre>
+3. BOTÓN DE EXPORTACIÓN A PNG 4K: Incluye una función JavaScript que serialice el `&lt;svg&gt;` con `XMLSerializer()`, lo pinte en un `&lt;canvas&gt;` escalado a `2x` (Retina) y descargue el archivo `.png` listo para pegar en un correo de Outlook o en PowerPoint.</pre>
           </div>
 
           <!-- =====================================================================
@@ -4332,10 +4520,32 @@ function generateExecutiveNarrative(slice, hurdleRorwa = 2.50, maxStage2Pct = 7.
     function copyKpiPrompt(num, btnEl) {
       const item = DICTIONARY_TERMS.find(t => t.num === num);
       if (!item) return;
-      const promptText = `Actúa como Principal Financial UI/UX Architect en Databricks/HTML. Genera una visualización ejecutiva interactiva en Apache ECharts 5.5 (Modo Oscuro Obsidian #05070E, tipografía tabular-nums) para analizar la métrica "${item.title}" (${item.catLabel}).\n- Fórmula a calcular e mostrar en el subtítulo/tooltip: ${item.formula}\n- Tipo de gráfico requerido: ${item.chartType}\n- Contexto de negocio a simular realista: ${item.example}\nIncluye cross-filtering reactivo, slider de sensibilidad y Action Title dinámico estilo McKinsey.`;
+      const promptText = `Actúa como Principal Financial UI/UX Architect (Estándar Zero-CDN Bancario + Catálogo motion-prompt).
+Genera un único archivo HTML autocontenido (100% Zero-CDN, sin librerías externas que puedan bloquearse en red corporativa o Databricks displayHTML) para analizar en Comité de Dirección la métrica #${item.num}: "${item.title}" (${item.catLabel}).
+
+1. CONTEXTO Y FÓRMULA FINANCIERA OBLIGATORIA:
+- Definición técnica: ${item.def}
+- Fórmula explícita en subtítulo y cálculo JS: ${item.formula}
+- Visualización principal en SVG nativo interactivo: ${item.chartType}
+- Caso de negocio simulado en window.REPORT_DATA: ${item.example}
+
+2. PRIMOS VISUALES MOTION-PROMPT A INCLUIR CON ESTE CÓDIGO EXACTO:
+- #MP-01 (Specular Spotlight Card): tarjetas .sp-card con radial-gradient(500px circle at var(--mouse-x) var(--mouse-y), rgba(56,189,248,0.13), transparent 40%).
+- #MP-02 (Tabular Counter): cifras con font-variant-numeric: tabular-nums y animación requestAnimationFrame easeOutQuart.
+- #MP-08 (Executive Auto-Narrator): banner superior con Action Title dinámico cuantificado en bps y detector de Red Flags.
+- #MP-09 (What-If Stress Slider): control <input type="range"> que recalcule "${item.title}" en tiempo real a 60fps.
+- #MP-12 (Theme Switcher + Export): botón Dark/Light (html[data-theme="light"]) y exportación a Excel (.CSV con BOM \\uFEFF).
+
+3. ESQUELETO BASE ZERO-CDN A UTILIZAR:
+<style>
+  :root { --bg:#060913; --card:#0d1323; --border:rgba(255,255,255,0.08); --text:#f8fafc; --muted:#94a3b8; }
+  html[data-theme="light"] { --bg:#f8fafc; --card:#ffffff; --border:rgba(15,23,42,0.12); --text:#0f172a; --muted:#475569; }
+  .num { font-family:'JetBrains Mono',monospace; font-variant-numeric:tabular-nums; }
+</style>
+Entrega el código HTML completo en un único bloque sin truncar ninguna función.`;
       navigator.clipboard.writeText(promptText).then(() => {
         const orig = btnEl.innerHTML;
-        btnEl.innerHTML = '✅ Prompt KPI copiado';
+        btnEl.innerHTML = '✅ Prompt Zero-CDN + #MP copiado';
         btnEl.style.background = 'rgba(16, 185, 129, 0.25)';
         btnEl.style.color = '#6ee7b7';
         setTimeout(() => {
@@ -4895,6 +5105,269 @@ function generateExecutiveNarrative(slice, hurdleRorwa = 2.50, maxStage2Pct = 7.
     }
 
     // =========================================================================
+    // SECCIÓN 1.2: MOTOR DEL CATÁLOGO INTERACTIVO MOTION-PROMPT (#MP-01 a #MP-12)
+    // =========================================================================
+    const MOTION_PROMPT_CATALOG = [
+      {
+        id: 'MP-01',
+        name: 'Specular Spotlight Card',
+        cat: 'Superficie & Iluminación',
+        desc: 'Iluminación radial CSS que persigue el cursor a 60fps sobre bordes hairline 1px.',
+        stageHtml: `<div class="mp-demo-spotlight" onmousemove="const r=this.getBoundingClientRect();this.style.setProperty('--mx',(event.clientX-r.left)+'px');this.style.setProperty('--my',(event.clientY-r.top)+'px');" style="width:88%;padding:12px 14px;border-radius:10px;border:1px solid rgba(56,189,248,0.35);background:radial-gradient(180px circle at var(--mx,90px) var(--my,35px),rgba(56,189,248,0.22),rgba(13,19,35,0.95) 70%);cursor:crosshair;"><div style="font-size:10px;color:#67e8f9;font-family:monospace;">PASA EL CURSOR AQUÍ</div><div style="font-size:15px;font-weight:800;color:#fff;margin-top:2px;">RORWA 3,18% <span style="color:#34d399;font-size:11px;">+68 bps</span></div></div>`,
+        recipe: `/* #MP-01: Specular Spotlight Card (CSS + JS) */
+.sp-card { position:relative; overflow:hidden; background:var(--card,#0d1323); border:1px solid var(--border,rgba(255,255,255,0.08)); border-radius:12px; }
+.sp-card::before { content:""; position:absolute; inset:0; pointer-events:none; background:radial-gradient(500px circle at var(--mouse-x,-500px) var(--mouse-y,-500px), rgba(56,189,248,0.13), transparent 40%); }
+// JS: document.querySelectorAll('.sp-card').forEach(c => c.addEventListener('mousemove', e => { const r=c.getBoundingClientRect(); c.style.setProperty('--mouse-x',(e.clientX-r.left)+'px'); c.style.setProperty('--mouse-y',(e.clientY-r.top)+'px'); }));`
+      },
+      {
+        id: 'MP-02',
+        name: 'Tabular Counter 60fps',
+        cat: 'Tipografía & Cifras',
+        desc: 'Interpolación numérica easeOutQuart con ancho fijo tabular-nums sin temblor horizontal.',
+        stageHtml: `<div style="text-align:center;"><div class="tabular-mono" id="mp02-live-num" style="font-size:22px;font-weight:800;color:#34d399;">4.180,5 M€</div><button type="button" onclick="const el=document.getElementById('mp02-live-num');const t0=performance.now();(function step(now){const p=Math.min((now-t0)/650,1);const e=1-Math.pow(1-p,4);el.textContent=(4180.5*e).toLocaleString('es-ES',{minimumFractionDigits:1,maximumFractionDigits:1})+' M€';if(p<1)requestAnimationFrame(step);})(t0);" style="margin-top:6px;font-size:10px;padding:3px 9px;border-radius:5px;background:rgba(16,185,129,0.2);color:#6ee7b7;border:1px solid rgba(16,185,129,0.4);cursor:pointer;">▶ Probar easeOutQuart</button></div>`,
+        recipe: `/* #MP-02: Tabular Counter easeOutQuart (60fps) */
+.num { font-family:'JetBrains Mono',monospace; font-variant-numeric:tabular-nums; }
+function animateValue(el, start, end, dur=650, dec=1, suf='') {
+  const t0 = performance.now();
+  (function step(now){
+    const p = Math.min((now - t0)/dur, 1), ease = 1 - Math.pow(1 - p, 4);
+    el.textContent = (start + (end - start)*ease).toLocaleString('es-ES',{minimumFractionDigits:dec,maximumFractionDigits:dec}) + suf;
+    if(p < 1) requestAnimationFrame(step);
+  })(t0);
+}`
+      },
+      {
+        id: 'MP-03',
+        name: 'Staggered Grid Reveal',
+        cat: 'Coreografía de Entrada',
+        desc: 'Cascada secuencial de tarjetas KPI con desfase --stagger-idx * 55ms y curva spring.',
+        stageHtml: `<div id="mp03-stage" style="display:flex;gap:6px;align-items:center;">
+          <div style="padding:8px 10px;background:rgba(6,182,212,0.18);border:1px solid #06b6d4;border-radius:7px;font-size:11px;font-weight:700;color:#67e8f9;">KPI 1</div>
+          <div style="padding:8px 10px;background:rgba(99,102,241,0.18);border:1px solid #6366f1;border-radius:7px;font-size:11px;font-weight:700;color:#c7d2fe;">KPI 2</div>
+          <div style="padding:8px 10px;background:rgba(16,185,129,0.18);border:1px solid #10b981;border-radius:7px;font-size:11px;font-weight:700;color:#6ee7b7;">KPI 3</div>
+        </div>`,
+        recipe: `/* #MP-03: Staggered Grid Cascade */
+@keyframes mpFadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+.stagger-item { animation: mpFadeUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) backwards; animation-delay: calc(var(--i, 0) * 55ms); }`
+      },
+      {
+        id: 'MP-04',
+        name: 'Segmented Morphing Pill',
+        cat: 'Navegación & Controles',
+        desc: 'Conmutador ejecutivo de vistas con indicador activo de alto contraste y transición suave.',
+        stageHtml: `<div style="display:inline-flex;background:#090d18;padding:3px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);">
+          <button type="button" onclick="this.parentElement.querySelectorAll('button').forEach(b=>{b.style.background='transparent';b.style.color='#94a3b8'});this.style.background='#06b6d4';this.style.color='#05070e';" style="background:#06b6d4;color:#05070e;border:none;padding:4px 9px;border-radius:6px;font-size:10px;font-weight:700;cursor:pointer;">Cuadrante</button>
+          <button type="button" onclick="this.parentElement.querySelectorAll('button').forEach(b=>{b.style.background='transparent';b.style.color='#94a3b8'});this.style.background='#06b6d4';this.style.color='#05070e';" style="background:transparent;color:#94a3b8;border:none;padding:4px 9px;border-radius:6px;font-size:10px;font-weight:700;cursor:pointer;">Ranking EVA</button>
+          <button type="button" onclick="this.parentElement.querySelectorAll('button').forEach(b=>{b.style.background='transparent';b.style.color='#94a3b8'});this.style.background='#06b6d4';this.style.color='#05070e';" style="background:transparent;color:#94a3b8;border:none;padding:4px 9px;border-radius:6px;font-size:10px;font-weight:700;cursor:pointer;">Embudo STP</button>
+        </div>`,
+        recipe: `/* #MP-04: Segmented Morphing Pill Switcher */
+.seg-group { display:inline-flex; background:rgba(15,23,42,0.75); padding:3px; border-radius:9px; border:1px solid var(--border); gap:3px; }
+.seg-btn { border:none; background:transparent; color:var(--muted); padding:5px 11px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer; transition:all 0.2s cubic-bezier(0.16,1,0.3,1); }
+.seg-btn.active { background:#06b6d4; color:#041019; }`
+      },
+      {
+        id: 'MP-05',
+        name: 'Zero-CDN SVG Animated Chart',
+        cat: 'Motor Gráfico Nativo',
+        desc: 'Trazado vectorial SVG con stroke-dashoffset y barras reactivas que nunca quedan en blanco.',
+        stageHtml: `<svg viewBox="0 0 200 62" width="90%" height="62">
+          <rect x="16" y="28" width="22" height="26" rx="3" fill="rgba(6,182,212,0.35)"/>
+          <rect x="52" y="18" width="22" height="36" rx="3" fill="rgba(6,182,212,0.55)"/>
+          <rect x="88" y="12" width="22" height="42" rx="3" fill="rgba(16,185,129,0.65)"/>
+          <rect x="124" y="22" width="22" height="32" rx="3" fill="rgba(99,102,241,0.55)"/>
+          <rect x="160" y="8" width="22" height="46" rx="3" fill="#10b981"/>
+          <path class="mp-svg-draw-line" d="M27,26 L63,16 L99,10 L135,20 L171,7" fill="none" stroke="#38bdf8" stroke-width="2.5"/>
+        </svg>`,
+        recipe: `/* #MP-05: Zero-CDN Native SVG Chart + Stroke Draw */
+@keyframes svgDraw { from { stroke-dashoffset: 600; } to { stroke-dashoffset: 0; } }
+.svg-line-anim { stroke-dasharray: 600; animation: svgDraw 1.2s cubic-bezier(0.16,1,0.3,1) forwards; }
+// Garantiza renderizado al 100% en Databricks displayHTML y redes bancarias sin CDN externo.`
+      },
+      {
+        id: 'MP-06',
+        name: 'IFRS 9 Risk Pulse Ring',
+        cat: 'Alertas & Semáforos',
+        desc: 'Anillo pulsante para exposiciones en Vigilancia Especial (Stage 2) o incumplimiento Hurdle.',
+        stageHtml: `<div style="display:flex;align-items:center;gap:10px;background:rgba(244,63,94,0.12);border:1px solid rgba(244,63,94,0.4);padding:8px 14px;border-radius:999px;">
+          <span class="mp-pulse-dot"></span>
+          <span class="tabular-mono" style="font-size:11px;font-weight:700;color:#fda4af;">Stage 2: 11,4% (+3,9 pp s/ límite)</span>
+        </div>`,
+        recipe: `/* #MP-06: IFRS 9 Risk Pulse Ring */
+@keyframes riskPulse { 0% { box-shadow: 0 0 0 0 rgba(244,63,94,0.65); } 70% { box-shadow: 0 0 0 9px rgba(244,63,94,0); } 100% { box-shadow: 0 0 0 0 rgba(244,63,94,0); } }
+.risk-pulse-dot { width:9px; height:9px; border-radius:50%; background:#f43f5e; display:inline-block; animation:riskPulse 1.8s infinite; }`
+      },
+      {
+        id: 'MP-07',
+        name: 'Slide-Over 360° Inspector',
+        cat: 'Drill-Down & Detalle',
+        desc: 'Cajón lateral con backdrop-filter blur y Radar SVG de 5 ejes al pulsar cualquier fila.',
+        stageHtml: `<div style="display:flex;align-items:center;gap:8px;width:88%;background:#090d18;border:1px solid rgba(99,102,241,0.4);border-radius:8px;padding:8px 10px;">
+          <svg viewBox="0 0 50 50" width="38" height="38"><polygon points="25,5 44,18 37,41 13,41 6,18" fill="rgba(6,182,212,0.25)" stroke="#06b6d4" stroke-width="1.5"/></svg>
+          <div style="font-size:10px;line-height:1.35;"><div style="color:#c7d2fe;font-weight:700;">FICHA 360° CLIENTE</div><div style="color:#94a3b8;">Radar RAROC · CIRBE · Cross-Sell</div></div>
+        </div>`,
+        recipe: `/* #MP-07: Slide-Over 360° Inspector Drawer */
+.drawer-360 { position:fixed; top:0; right:0; width:390px; height:100vh; background:var(--card,#0d1323); border-left:1px solid var(--border); box-shadow:-16px 0 40px rgba(0,0,0,0.65); transform:translateX(102%); transition:transform 0.32s cubic-bezier(0.16,1,0.3,1); z-index:999; padding:20px; overflow-y:auto; }
+.drawer-360.open { transform:translateX(0); }`
+      },
+      {
+        id: 'MP-08',
+        name: 'Executive Auto-Narrator',
+        cat: 'Narrativa McKinsey',
+        desc: 'Motor determinista que redacta el Action Title cuantificado en bps y detecta Red Flags al filtrar.',
+        stageHtml: `<div style="width:90%;background:rgba(16,185,129,0.1);border-left:3px solid #10b981;padding:7px 10px;border-radius:6px;font-size:10px;line-height:1.35;color:#e2e8f0;">
+          <div style="color:#34d399;font-weight:800;font-family:monospace;">🟢 AUTO-INSIGHT COMITÉ</div>
+          RORWA en <strong>3,18%</strong> (+68 bps vs Hurdle) · EVA <strong>+28,4 M€</strong>
+        </div>`,
+        recipe: `/* #MP-08: Executive Auto-Narrator (Action Title + Red Flags) */
+function updateExecutiveNarrative(rows, hurdle=2.50) {
+  const rorwa = rows.reduce((a,r)=>a+r.rorwa,0)/Math.max(rows.length,1);
+  const bps = Math.round((rorwa - hurdle)*100);
+  document.getElementById('exec-narrative').innerHTML = \`<strong>\${bps>=0?'🟢 CREACIÓN DE VALOR':'🔴 ALERTA RORWA'}:</strong> Cartera en \${rorwa.toFixed(2)}% (\${bps>=0?'+':''}\${bps} bps vs Hurdle \${hurdle.toFixed(2)}%).\`;
+}`
+      },
+      {
+        id: 'MP-09',
+        name: 'What-If Stress Slider 60fps',
+        cat: 'Simulación Comité',
+        desc: 'Deslizador táctil de sensibilidad (Spread bps / Conversión STP) que recalcula EVA y gráficos en vivo.',
+        stageHtml: `<div style="width:86%;text-align:center;">
+          <div style="display:flex;justify-content:space-between;font-size:10px;color:#cbd5e1;margin-bottom:4px;"><span>Shock Spread:</span><strong id="mp09-lbl" class="tabular-mono" style="color:#67e8f9;">+25 bps → RORWA 3,19%</strong></div>
+          <input type="range" min="-50" max="75" value="25" oninput="const v=Number(this.value);document.getElementById('mp09-lbl').textContent=(v>=0?'+':'')+v+' bps → RORWA '+(2.94+v*0.01).toFixed(2).replace('.',',')+'%';" style="width:100%;accent-color:#06b6d4;cursor:pointer;">
+        </div>`,
+        recipe: `/* #MP-09: What-If Stress Slider 60fps */
+// Conecta <input type="range" id="sim-spread" min="-50" max="100" value="0" oninput="recalcDashboard()">
+// Recalcula en memoria RORWA_sim = RORWA_base + (spreadBps * 0.01) y repinta KPIs + SVG sin recargar.`
+      },
+      {
+        id: 'MP-10',
+        name: 'Inline Sparkline & Micro-Bar',
+        cat: 'Tablas de Alta Densidad',
+        desc: 'Micro-curva SVG de tendencia 12M y barra proporcional integradas dentro de cada celda de tabla.',
+        stageHtml: `<div style="display:flex;align-items:center;gap:12px;background:#090d18;padding:7px 12px;border-radius:7px;border:1px solid rgba(255,255,255,0.08);">
+          <span class="tabular-mono" style="font-size:11px;color:#e2e8f0;font-weight:700;">1.120 M€</span>
+          <svg width="68" height="22"><polyline fill="none" stroke="#10b981" stroke-width="2" points="2,18 15,14 28,15 41,9 54,11 66,4"/><circle cx="66" cy="4" r="2.5" fill="#10b981"/></svg>
+        </div>`,
+        recipe: `/* #MP-10: Inline SVG Sparkline Generator */
+function sparklineSvg(arr, color='#10b981') {
+  const min = Math.min(...arr), max = Math.max(...arr) || 1;
+  const pts = arr.map((v,i) => \`\${4 + i*10},\${20 - ((v-min)/(max-min||1))*15}\`).join(' ');
+  return \`<svg width="68" height="24"><polyline fill="none" stroke="\${color}" stroke-width="1.8" points="\${pts}"/></svg>\`;
+}`
+      },
+      {
+        id: 'MP-11',
+        name: 'Interactive Sort & Search Bar',
+        cat: 'Exploración Tabular',
+        desc: 'Cabeceras de tabla ordenables (▲▼) y buscador instantáneo por cliente, territorial o producto.',
+        stageHtml: `<div style="width:88%;display:flex;gap:6px;align-items:center;background:#090d18;padding:6px 10px;border-radius:7px;border:1px solid rgba(6,182,212,0.35);font-size:10px;color:#94a3b8;">
+          <span>🔍 Filtrar cartera...</span>
+          <span style="margin-left:auto;color:#38bdf8;font-family:monospace;font-weight:700;">RORWA ▼</span>
+        </div>`,
+        recipe: `/* #MP-11: Interactive Table Sort (▲▼) & Instant Filter */
+let sortCol = 'rorwa', sortAsc = false;
+function sortRows(col) { sortAsc = (sortCol === col) ? !sortAsc : false; sortCol = col; renderTable(); }`
+      },
+      {
+        id: 'MP-12',
+        name: 'Theme Switcher + Portable Export',
+        cat: 'Portabilidad Bancaria',
+        desc: 'Conmutador OLED Dark / Paper Light para proyector de comité + descarga Excel CSV y HTML Base64.',
+        stageHtml: `<div style="display:flex;gap:6px;">
+          <span style="font-size:10px;padding:5px 8px;border-radius:6px;background:rgba(255,255,255,0.08);color:#f8fafc;border:1px solid rgba(255,255,255,0.15);">🌓 Dark / Light</span>
+          <span style="font-size:10px;padding:5px 8px;border-radius:6px;background:rgba(16,185,129,0.18);color:#6ee7b7;border:1px solid rgba(16,185,129,0.4);">📊 .CSV / .HTML</span>
+        </div>`,
+        recipe: `/* #MP-12: Dual Theme Switcher (OLED Dark / Paper Light) + CSV UTF-8 BOM */
+html[data-theme="light"] { --bg:#f8fafc; --card:#ffffff; --border:rgba(15,23,42,0.12); --text:#0f172a; --muted:#475569; }
+function toggleTheme(){ const h=document.documentElement; h.setAttribute('data-theme', h.getAttribute('data-theme')==='light'?'dark':'light'); }`
+      }
+    ];
+
+    let mpSelectedSet = new Set(['MP-01', 'MP-02', 'MP-05', 'MP-08', 'MP-09', 'MP-12']);
+
+    function renderMpCatalog() {
+      const grid = document.getElementById('mp-catalog-container');
+      if (!grid) return;
+      grid.innerHTML = MOTION_PROMPT_CATALOG.map(item => {
+        const sel = mpSelectedSet.has(item.id);
+        return `
+          <article class="mp-card ${sel ? 'selected' : ''}" id="mp-card-${item.id}">
+            <div class="mp-stage">${item.stageHtml}</div>
+            <div class="mp-body">
+              <div class="mp-tag-row">
+                <span class="mp-id-badge">#${item.id}</span>
+                <span class="mp-cat-label">${item.cat}</span>
+              </div>
+              <div class="mp-title">${item.name}</div>
+              <div class="mp-desc">${item.desc}</div>
+              <button type="button" class="mp-pick-btn" onclick="toggleMpPick('${item.id}')">
+                ${sel ? '✅ Incluido en tu Prompt (Clic para quitar)' : '➕ Añadir #' + item.id + ' al Prompt'}
+              </button>
+            </div>
+          </article>
+        `;
+      }).join('');
+      updateMpPickerSummary();
+    }
+
+    function toggleMpPick(id) {
+      if (mpSelectedSet.has(id)) {
+        mpSelectedSet.delete(id);
+      } else {
+        mpSelectedSet.add(id);
+      }
+      renderMpCatalog();
+      buildCustomMasterPrompt();
+    }
+
+    function mpSelectPreset(mode) {
+      if (mode === 'all') {
+        mpSelectedSet = new Set(MOTION_PROMPT_CATALOG.map(x => x.id));
+      } else if (mode === 'none') {
+        mpSelectedSet = new Set();
+      } else {
+        mpSelectedSet = new Set(['MP-01', 'MP-02', 'MP-05', 'MP-08', 'MP-09', 'MP-12']);
+      }
+      renderMpCatalog();
+      buildCustomMasterPrompt();
+    }
+
+    function updateMpPickerSummary() {
+      const countEl = document.getElementById('mp-selected-count');
+      const badgesEl = document.getElementById('mp-selected-badges');
+      const preEl = document.getElementById('mp-live-recipe-pre');
+      const picked = MOTION_PROMPT_CATALOG.filter(x => mpSelectedSet.has(x.id));
+      if (countEl) countEl.textContent = picked.length;
+      if (badgesEl) {
+        badgesEl.innerHTML = picked.length
+          ? picked.map(x => `<span class="mp-id-badge" style="cursor:pointer;" onclick="toggleMpPick('${x.id}')" title="Quitar #${x.id}">#${x.id} ${x.name} ✕</span>`).join('')
+          : `<span style="font-size:0.74rem;color:#64748b;">Ningún componente seleccionado. Haz clic en las tarjetas de arriba para añadir recetas CSS/JS.</span>`;
+      }
+      if (preEl) {
+        preEl.textContent = picked.map(x => x.recipe).join('\n\n');
+      }
+    }
+
+    function mpCopyPickedPrompt(btn) {
+      const picked = MOTION_PROMPT_CATALOG.filter(x => mpSelectedSet.has(x.id));
+      const recipes = picked.map(x => x.recipe).join('\n\n');
+      const fullPrompt = `Actúa como Principal Financial UI/UX Architect. Genera un Dashboard Ejecutivo HTML 100% Zero-CDN (sin dependencias externas que fallen en red bancaria o Databricks displayHTML) aplicando obligatoriamente estos ${picked.length} componentes deterministas del catálogo motion-prompt:\n\n` +
+        picked.map(x => `- #${x.id} (${x.name}): ${x.desc}`).join('\n') +
+        `\n\nRECETAS DE CÓDIGO CSS/JS OBLIGATORIAS A INYECTAR LITERALMENTE EN TU RESPUESTA:\n\`\`\`css\n${recipes}\n\`\`\`\n\nPega a continuación el bloque JSON exportado con export_ai_context(df) desde Databricks o usa datos realistas de Banca de Empresas (EAD, RWA, RORWA, Stage 2 IFRS 9, Confirming y Tasa STP).`;
+      navigator.clipboard.writeText(fullPrompt).then(() => {
+        if (!btn) return;
+        const orig = btn.innerHTML;
+        btn.innerHTML = '✅ Prompt + Recetas #MP Copiado';
+        setTimeout(() => { btn.innerHTML = orig; }, 1900);
+      });
+    }
+
+    function mpSendToWorkbench() {
+      buildCustomMasterPrompt();
+      const target = document.getElementById('workbench-operativo-vivo');
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // =========================================================================
     // SECCIÓN 07: MOTOR DEL WORKBENCH OPERATIVO EN VIVO
     // =========================================================================
 
@@ -4925,32 +5398,37 @@ function generateExecutiveNarrative(slice, hurdleRorwa = 2.50, maxStage2Pct = 7.
       const modExport = document.getElementById('pb-mod-export')?.checked;
 
       const envHeader = {
-        email_html: 'Actúa como un Principal Design Engineer y Especialista en Visualización Financiera (estándar Linear / Stripe / PaceUI).\nGenera un único archivo `dashboard_ejecutivo_local.html` 100% autocontenido y portable (para enviar adjunto por correo electrónico y ejecutarse con doble clic en local sin servidor backend).',
-        databricks_pyspark: 'Actúa como un Principal Data & Design Engineer especialista en Databricks (PySpark) y Apache ECharts 5.5.\nGenera una celda completa de PySpark que agregue los datos en el clúster, inyecte el JSON en una plantilla cruda `r"""..."""` mediante `.replace("__PYSPARK_PAYLOAD__", payload_json)`, lo renderice con `displayHTML()` y añada el botón de descarga `.HTML` en Base64 para envío por correo.',
-        excel_365: 'Actúa como un Director de Modelización Financiera experto en Microsoft 365 Copilot en Excel y Fórmulas de Matriz Dinámica de Excel 365.\nRESTRICCIÓN ESTRICTA: PROHIBIDO usar macros VBA (`.xlsm`). Todo debe resolverse con fórmulas nativas (`LET`, `LAMBDA`, `FILTRAR`, `AGRUPARPOR`, `PIVOTBY`), formato condicional y barras in-cell.',
-        ppt_interactive: 'Actúa como un Principal Presentation Designer experto en Comités de Dirección de Banca Comercial y Riesgos.\nConstruye una Diapositiva Ejecutiva 16:9 Interactiva por Dentro (con pestañas intra-slide conmutables, simulador de sensibilidad en vivo para el comité y nomenclatura `!!objeto` para transición Morph en PowerPoint).',
-        svg_infographic: 'Actúa como un Director de Infografía Financiera e Ilustración Vectorial Técnica.\nGenera un Póster Infográfico Vectorial en SVG puro (`viewBox="0 0 1200 680"`) de alta densidad informativa con estética oscura institucional, diagramas de flujo, fórmulas explícitas y botón de exportación a PNG Retina 2x.'
+        email_html: 'Actúa como Principal Design Engineer (Estándar Zero-CDN Bancario + Catálogo motion-prompt).\nGenera un único archivo `dashboard_ejecutivo_local.html` 100% autocontenido, Zero-CDN (sin depender de `cdn.tailwindcss.com` ni librerías externas que puedan bloquearse en el firewall del banco), listo para enviar por correo y abrir con doble clic.',
+        databricks_pyspark: 'Actúa como Principal Data & Design Engineer especialista en Databricks (PySpark) y `displayHTML()` Zero-CDN.\nGenera una celda completa de PySpark que pre-agregue el DataFrame de Spark a <= 25 filas JSON, lo inyecte mediante `.replace("__PYSPARK_PAYLOAD__", payload_json)` dentro de una cadena cruda `r"""..."""` 100% Zero-CDN (con gráficos SVG nativos que jamás salgan en blanco en el iframe de Databricks) e incluya botón de descarga `.HTML` en Base64.',
+        excel_365: 'Actúa como Director de Modelización Financiera experto en Microsoft 365 Copilot en Excel y Fórmulas de Matriz Dinámica de Excel 365.\nRESTRICCIÓN ESTRICTA: PROHIBIDO usar macros VBA (`.xlsm`). Resuelve todo con fórmulas nativas (`LET`, `LAMBDA`, `FILTRAR`, `AGRUPARPOR`, `PIVOTBY`), formato condicional e indicadores in-cell.',
+        ppt_interactive: 'Actúa como Principal Presentation Designer experto en Comités de Dirección de Banca Comercial y Riesgos.\nConstruye una Diapositiva Ejecutiva 16:9 Interactiva por Dentro (100% Zero-CDN, con pestañas intra-slide conmutables, simulador de sensibilidad en vivo para preguntas del CRO/CFO y nomenclatura `!!objeto` para transición Morph).',
+        svg_infographic: 'Actúa como Director de Infografía Financiera e Ilustración Vectorial Técnica.\nGenera un Póster Infográfico Vectorial en SVG puro (`viewBox="0 0 1200 680"`) de alta densidad informativa con estética oscura institucional, diagramas de flujo, fórmulas explícitas y botón de exportación a PNG Retina 2x.'
       }[env];
 
       const rules = [];
       if (mod3Blocks) {
-        rules.push('1. ARQUITECTURA DE 3 BLOQUES DESACOPLADOS Y DESIGN TOKENS PACEUI:\n   - Bloque 1 (`<style>`): Fondo multicapa por luminancia (`#060913` -> `#0d1322`), bordes hairline `1px solid rgba(255,255,255,0.08)`, iluminación especular `.sp-card` y `font-variant-numeric: tabular-nums` obligatorio en toda cifra.\n   - Bloque 2 (`<script id="data-payload">`): Objeto inmutable `window.REPORT_DATA = {...}` separado de la lógica visual.\n   - Bloque 3 (`<script id="app-engine">`): Funciones puras de renderizado e hidratación del DOM con curvas `cubic-bezier(0.16, 1, 0.3, 1)`.');
+        rules.push('1. ARQUITECTURA ZERO-CDN DE 3 BLOQUES DESACOPLADOS:\n   - Bloque 1 (`<style>`): CSS Grid/Flexbox nativo embebido, variables Dark/Light (`--bg:#060913`, `--card:#0d1323`), bordes hairline `1px solid rgba(255,255,255,0.08)` y `font-variant-numeric: tabular-nums` en toda cifra.\n   - Bloque 2 (`<script id="data-payload">`): Objeto `window.REPORT_DATA = {...}` con datos reales o del contexto exportado de Databricks.\n   - Bloque 3 (`<script id="app-engine">`): Motor reactivo Vanilla JS sin dependencias externas.');
       }
       if (modNarrative) {
-        rules.push('2. MOTOR DE NARRADOR EJECUTIVO AUTOMÁTICO (AUTO-INSIGHTS & RED FLAGS):\n   - Incluye en la parte superior un banner dinámico (`#executive-auto-narrative`) gobernado por una función determinista `generateExecutiveNarrative(filteredRows)` que se recalcule al filtrar cualquier dimensión.\n   - Debe redactar automáticamente: (a) Action Title cuantificado con brecha en bps frente al Hurdle Rate, (b) Semáforo de creación de EVA, y (c) Detector de Red Flags (concentración en Stage 2/3, caída en tasa STP o deterioro de margen).');
+        rules.push('2. MOTOR DE NARRADOR EJECUTIVO AUTOMÁTICO (#MP-08 AUTO-INSIGHTS & RED FLAGS):\n   - Incluye el banner `#exec-narrative` gobernado por `updateExecutiveNarrative(rows)` que recalcule en vivo: (a) Action Title cuantificado con brecha en bps frente al Hurdle Rate (2,50%), (b) Semáforo EVA, y (c) Detector de Red Flags IFRS 9 Stage 2.');
       }
       if (modEcharts) {
-        rules.push('3. MOTOR APACHE ECHARTS 5.5 CONECTADO Y MULTIVISTA:\n   - Sincroniza todos los lienzos mediante `echarts.connect([chart1, chart2])`.\n   - Implementa conmutación fluida con `universalTransition: { enabled: true, divideShape: "clone" }`, tooltips con glassmorphism (`backdrop-filter: blur(8px)`) y degradados `echarts.graphic.LinearGradient`.');
+        rules.push('3. MOTOR GRÁFICO VECTORIAL MULTIVISTA ZERO-CDN (#MP-04 + #MP-05):\n   - Incluye conmutador Segmented Pill con al menos 3 vistas en SVG nativo interactivo (Vista 1: Matriz Cuadrante RORWA vs Crecimiento, Vista 2: Ranking Horizontal de Creación de EVA, Vista 3: Embudo Omnicanal STP) con tooltips flotantes.');
       }
       if (modWhatif) {
-        rules.push('4. SIMULADOR DE SENSIBILIDAD WHAT-IF EN VIVO:\n   - Incorpora controles deslizantes (`<input type="range">`) para simular variaciones de Spread Comercial (+/- bps), Coste de Riesgo / PD y Conversión Digital, recalculando KPIs y gráficos a 60fps sin recargar.');
+        rules.push('4. SIMULADOR DE SENSIBILIDAD WHAT-IF A 60FPS (#MP-09):\n   - Incluye deslizadores `<input type="range">` para simular shocks de Spread Comercial (+/- bps) y Penetración Digital STP, recalculando KPIs, tabla y gráficos SVG en tiempo real.');
       }
       if (modDrawer) {
-        rules.push('5. PANEL LATERAL DE INSPECCIÓN 360° (SLIDE-OVER DRAWER) + PALETA CTRL+K:\n   - Al hacer clic en cualquier fila de la tabla o barra del gráfico, despliega un Drawer lateral con `backdrop-filter: blur(16px)` mostrando el desglose granular del cliente/segmento, e incluye buscador rápido `Ctrl+K`.');
+        rules.push('5. INSPECTOR LATERAL 360° SLIDE-OVER (#MP-07) + ORDENACIÓN TABULAR (#MP-11):\n   - Al pulsar cualquier fila de la tabla o elemento del gráfico, abre un Drawer lateral con Ficha 360° y gráfico Radar SVG de 5 ejes.');
       }
       if (modExport) {
-        rules.push('6. BARRA FLOTANTE DEL RECEPTOR LOCAL (ENVÍO POR CORREO):\n   - Añade en la esquina superior derecha los botones funcionales: `📊 Exportar Vista a Excel (.CSV)` (con BOM UTF-8 `\\uFEFF` y separador `;`), `🖨️ Guardar Vista en PDF` (`@media print`) y `💾 Guardar Copia .HTML`.');
+        rules.push('6. CONMUTADOR DARK/LIGHT + BARRA DE EXPORTACIÓN PORTABLE (#MP-12):\n   - Incluye botón `🌓 Dark / Light` (`html[data-theme="light"]`), `📊 Exportar a Excel (.CSV)` con BOM UTF-8 `\\uFEFF` y `🖨️ Guardar Vista PDF`.');
       }
+
+      const pickedMp = MOTION_PROMPT_CATALOG.filter(x => mpSelectedSet.has(x.id));
+      const mpBlock = pickedMp.length
+        ? `\n===================================================================\nRECETAS DETERMINISTAS MOTION-PROMPT SELECCIONADAS (${pickedMp.map(x=>'#'+x.id).join(', ')}):\nCopia e integra literalmente estos bloques CSS/JS en tu código:\n\n${pickedMp.map(x => x.recipe).join('\n\n')}\n===================================================================\n`
+        : '';
 
       const promptText = `${envHeader}
 
@@ -4958,16 +5436,16 @@ function generateExecutiveNarrative(slice, hurdleRorwa = 2.50, maxStage2Pct = 7.
 CONTEXTO Y OBJETIVO DEL COMITÉ EJECUTIVO:
 ${goal}
 
-ESQUEMA DETERMINISTA DE DATOS DE ENTRADA (COLUMNAS REALES):
+ESQUEMA DETERMINISTA DE DATOS / CONTEXTO DATABRICKS:
 ${schema}
 ===================================================================
 
 ESPECIFICACIONES TÉCNICAS OBLIGATORIAS (NO OMITIR NINGÚN BLOQUE):
 ${rules.join('\n\n')}
-
+${mpBlock}
 RESTRICCIONES NEGATIVAS ESTRICTAS:
-- PROHIBIDO usar sombras difusas anticuadas (\`shadow-xl\`), fondos grises planos (\`#f3f4f6\`) o \`transition: all 0.3s ease\`.
-- PROHIBIDO truncar el código con comentarios tipo \`// ... resto del código aquí\`. Entrega el código 100% completo, funcional y listo para producción.`;
+- PROHIBIDO usar <script src="https://cdn.tailwindcss.com"> o depender de CDNs externos que dejen el lienzo en blanco en red corporativa.
+- PROHIBIDO truncar el código con comentarios tipo "// ... resto del código". Entrega el archivo completo y 100% operativo.`;
 
       const out = document.getElementById('pb-generated-prompt');
       if (out) out.textContent = promptText;
@@ -5159,12 +5637,32 @@ Oficina Fisica Tradicional;110;19.8;4.2;390;21.2;165`
     }
 
     function parseRawCsvText(raw) {
-      const lines = raw.trim().split(/\r?\n/).filter(l => l.trim().length > 0);
-      if (lines.length < 2) return null;
-      const first = lines[0];
+      // Soporta CSV (; o ,), TSV (Excel) y tablas ASCII con tuberías de Databricks df.show() (| col1 | col2 |)
+      const rawLines = raw.trim().split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 0 && !/^\+[-+]+\+$/.test(l) && !/^[-|=+]+$/.test(l));
+      if (rawLines.length < 2) return null;
+      const isPipeTable = rawLines[0].startsWith('|') && rawLines[0].endsWith('|');
+      if (isPipeTable) {
+        const splitPipe = line => line.replace(/^\|/, '').replace(/\|$/, '').split('|').map(c => c.trim());
+        const headers = splitPipe(rawLines[0]);
+        const rows = rawLines.slice(1).map(line => {
+          const vals = splitPipe(line);
+          const obj = {};
+          headers.forEach((h, i) => {
+            const rawVal = vals[i] !== undefined ? vals[i] : '';
+            const normalized = rawVal.replace(/\s/g, '').replace(',', '.');
+            const num = Number(normalized);
+            obj[h] = (rawVal !== '' && !isNaN(num)) ? num : rawVal;
+          });
+          return obj;
+        });
+        const numCols = headers.filter(h => rows.every(r => typeof r[h] === 'number'));
+        const dimCol = headers.find(h => !numCols.includes(h)) || headers[0];
+        return { headers, rows, dimCol, numCols };
+      }
+      const first = rawLines[0];
       const sep = first.includes('\t') ? '\t' : (first.split(';').length >= first.split(',').length ? ';' : ',');
       const headers = first.split(sep).map(h => h.trim());
-      const rows = lines.slice(1).map(line => {
+      const rows = rawLines.slice(1).map(line => {
         const vals = line.split(sep).map(v => v.trim());
         const obj = {};
         headers.forEach((h, i) => {
@@ -5242,16 +5740,33 @@ Oficina Fisica Tradicional;110;19.8;4.2;390;21.2;165`
 
     function renderCsvLiveChart() {
       const dom = document.getElementById('csv-live-echart');
-      if (!dom || typeof echarts === 'undefined' || !parsedCsvState.rows.length) return;
-      if (!window.csvLiveChartInstance) {
-        window.csvLiveChartInstance = echarts.init(dom);
-      }
+      if (!dom || !parsedCsvState.rows.length) return;
       const { rows, dimCol, numCols } = parsedCsvState;
       const categories = rows.map(r => String(r[dimCol]));
       const col1 = numCols[0] || '';
       const col2 = numCols[1] || col1;
       const subEl = document.getElementById('csv-chart-subtitle');
       if (subEl) subEl.textContent = `${dimCol.toUpperCase()} → ${col1.replace(/_/g, ' ')} vs ${col2.replace(/_/g, ' ')}`;
+
+      // Fallback SVG Zero-CDN si ECharts no está disponible
+      if (typeof echarts === 'undefined') {
+        const max1 = Math.max(...rows.map(r => Number(r[col1]) || 0), 1);
+        const w = 520, h = 240, padL = 40, padB = 38, bw = Math.min(44, Math.floor((w - padL - 20) / rows.length) - 10);
+        dom.innerHTML = `<svg viewBox="0 0 ${w} ${h}" width="100%" height="100%">
+          ${rows.map((r, i) => {
+            const v = Number(r[col1]) || 0;
+            const bh = Math.max(4, ((v / max1) * (h - padB - 30)));
+            const x = padL + i * ((w - padL - 10) / rows.length) + 8;
+            const y = h - padB - bh;
+            return `<g><rect x="${x}" y="${y}" width="${bw}" height="${bh}" rx="4" fill="#06b6d4"/><text x="${x + bw / 2}" y="${y - 5}" fill="#f8fafc" font-size="10" font-family="monospace" text-anchor="middle">${v.toLocaleString('es-ES')}</text><text x="${x + bw / 2}" y="${h - 16}" fill="#94a3b8" font-size="9" text-anchor="middle">${String(r[dimCol]).slice(0, 12)}</text></g>`;
+          }).join('')}
+        </svg>`;
+        return;
+      }
+
+      if (!window.csvLiveChartInstance) {
+        window.csvLiveChartInstance = echarts.init(dom);
+      }
 
       if (currentCsvChartType === 'treemap') {
         window.csvLiveChartInstance.setOption({
@@ -5335,60 +5850,268 @@ Oficina Fisica Tradicional;110;19.8;4.2;390;21.2;165`
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${title}</title>
-<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"><\/script>
 <style>
-  :root { background:#060913; color:#f8fafc; font-family:'Inter',system-ui,sans-serif; }
-  body { margin:0; padding:24px 32px; background:#060913; color:#f8fafc; }
-  .tabular { font-family:'JetBrains Mono',monospace; font-variant-numeric:tabular-nums; }
-  .top-bar { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:16px; margin-bottom:20px; }
-  .btn { background:rgba(16,185,129,0.18); border:1px solid rgba(16,185,129,0.45); color:#6ee7b7; padding:7px 13px; border-radius:7px; font-size:12px; font-weight:700; cursor:pointer; }
-  .kpi-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; margin-bottom:20px; }
-  .card { background:#0d1323; border:1px solid rgba(255,255,255,0.09); border-radius:12px; padding:16px; }
-  .main-grid { display:grid; grid-template-columns:7fr 5fr; gap:16px; }
+  :root { --bg:#060913; --card:#0d1323; --border:rgba(255,255,255,0.09); --text:#f8fafc; --muted:#94a3b8; --cyan:#06b6d4; --emerald:#10b981; --indigo:#6366f1; --amber:#f59e0b; --rose:#f43f5e; }
+  html[data-theme="light"] { --bg:#f8fafc; --card:#ffffff; --border:rgba(15,23,42,0.12); --text:#0f172a; --muted:#475569; }
+  * { box-sizing:border-box; }
+  body { margin:0; padding:22px 28px; background:var(--bg); color:var(--text); font-family:'Inter',system-ui,-apple-system,sans-serif; transition:background 200ms,color 200ms; }
+  .tabular { font-family:'JetBrains Mono',Consolas,monospace; font-variant-numeric:tabular-nums; }
+  .top-bar { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; border-bottom:1px solid var(--border); padding-bottom:14px; margin-bottom:14px; }
+  .btn { background:rgba(16,185,129,0.16); border:1px solid rgba(16,185,129,0.42); color:var(--text); padding:7px 12px; border-radius:8px; font-size:12px; font-weight:700; cursor:pointer; transition:all 160ms; }
+  .btn:hover { transform:translateY(-1px); border-color:var(--cyan); }
+  .btn.active { background:rgba(6,182,212,0.22); border-color:var(--cyan); color:#38bdf8; }
+  .sp-card { position:relative; overflow:hidden; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:15px; transition:transform 200ms cubic-bezier(0.16,1,0.3,1),border-color 200ms; }
+  .sp-card::before { content:""; position:absolute; inset:0; pointer-events:none; background:radial-gradient(460px circle at var(--mx,-500px) var(--my,-500px), rgba(56,189,248,0.13), transparent 40%); }
+  .kpi-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin-bottom:14px; }
+  .controls-bar { display:flex; flex-wrap:wrap; gap:12px; align-items:center; justify-content:space-between; margin-bottom:14px; padding:10px 14px; background:var(--card); border:1px solid var(--border); border-radius:10px; }
+  .main-grid { display:grid; grid-template-columns:repeat(12,1fr); gap:14px; }
+  .col-7 { grid-column:span 7; } .col-5 { grid-column:span 5; }
+  @media (max-width:980px) { .col-7, .col-5 { grid-column:span 12; } }
   table { width:100%; border-collapse:collapse; font-size:12px; }
-  th, td { padding:8px 10px; border-bottom:1px solid rgba(255,255,255,0.07); }
-  @media print { .no-print { display:none !important; } body { background:#fff; color:#000; } }
+  th, td { padding:8px 9px; border-bottom:1px solid var(--border); }
+  th { color:var(--muted); font-size:11px; text-transform:uppercase; cursor:pointer; user-select:none; }
+  tr.row-item:hover { background:rgba(56,189,248,0.08); cursor:pointer; }
+  .drawer { position:fixed; top:0; right:0; bottom:0; width:380px; max-width:92vw; background:var(--card); border-left:1px solid var(--cyan); box-shadow:-20px 0 50px rgba(0,0,0,0.65); z-index:99; transform:translateX(105%); transition:transform 280ms cubic-bezier(0.16,1,0.3,1); padding:20px; display:flex; flex-direction:column; justify-content:space-between; }
+  .drawer.open { transform:translateX(0); }
+  @media print { .no-print { display:none !important; } body { background:#fff !important; color:#000 !important; } .sp-card { border:1px solid #cbd5e1 !important; } }
 </style>
 </head>
 <body>
 <script id="data-payload">window.REPORT_DATA = ${payloadJson};<\/script>
 <div class="top-bar">
   <div>
-    <div class="tabular" style="font-size:11px;color:#38bdf8;letter-spacing:0.08em;">DASHBOARD AUTÓNOMO LOCAL • ARQUITECTURA DE 3 BLOQUES</div>
-    <h1 style="margin:4px 0 0;font-size:20px;">${title}</h1>
+    <div class="tabular" style="font-size:11px;color:#38bdf8;letter-spacing:0.08em;">TERMINAL EJECUTIVO ZERO-CDN • ESTÁNDAR TIER 1 BANKING (#MP-01..#MP-12)</div>
+    <h1 style="margin:3px 0 0;font-size:20px;">${title}</h1>
   </div>
-  <div class="no-print" style="display:flex;gap:8px;">
-    <button class="btn" onclick="exportCsv()">📊 Exportar a Excel (.CSV)</button>
-    <button class="btn" style="background:rgba(6,182,212,0.18);border-color:rgba(6,182,212,0.45);color:#67e8f9;" onclick="window.print()">🖨️ Guardar Vista PDF</button>
+  <div class="no-print" style="display:flex;flex-wrap:wrap;gap:8px;">
+    <button class="btn" onclick="toggleTheme()">☀️/🌙 Tema [T]</button>
+    <button class="btn" onclick="exportCsv()">📊 Exportar CSV</button>
+    <button class="btn" onclick="window.print()">🖨️ Imprimir / PDF</button>
   </div>
 </div>
+
+<!-- Banner Narrativo Auto-Insights (#MP-08) -->
+<div id="narrative-banner" class="sp-card" style="margin-bottom:14px;border-left:4px solid #10b981;padding:12px 16px;font-size:13px;"></div>
+
+<!-- Tarjetas KPI con Contadores Tabulares (#MP-01 + #MP-02) -->
 <div id="kpis" class="kpi-grid"></div>
-<div class="main-grid">
-  <div class="card"><div id="chart" style="width:100%;height:360px;"></div></div>
-  <div class="card" style="overflow-x:auto;"><div id="table-box"></div></div>
+
+<!-- Barra de Controles: Buscador + Simulador What-If (#MP-09) + Selector de Geometría SVG (#MP-05) -->
+<div class="controls-bar no-print">
+  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+    <input id="q-search" type="search" placeholder="🔍 Filtrar por nombre o segmento..." oninput="renderDashboard()" style="background:var(--bg);color:var(--text);border:1px solid var(--border);padding:6px 11px;border-radius:7px;font-size:12px;min-width:220px;">
+    <span id="active-filter-pill" style="display:none;font-size:11px;background:rgba(6,182,212,0.2);color:#38bdf8;padding:4px 9px;border-radius:99px;cursor:pointer;" onclick="selectedDim=null;renderDashboard()">Filtro activo ✕</span>
+  </div>
+  <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+    <label style="font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px;">
+      <span>⚡ Simulador Sensibilidad What-If:</span>
+      <input id="stress-slider" type="range" min="-25" max="35" value="0" oninput="renderDashboard()">
+      <strong id="stress-lbl" class="tabular" style="color:#34d399;min-width:48px;">0%</strong>
+    </label>
+    <div style="display:flex;gap:4px;">
+      <button id="vbtn-combo" class="btn active" onclick="setView('combo')">📊 Combo SVG</button>
+      <button id="vbtn-rank" class="btn" onclick="setView('rank')">🏆 Ranking</button>
+      <button id="vbtn-matrix" class="btn" onclick="setView('matrix')">🎯 Matriz 2D</button>
+    </div>
+  </div>
 </div>
+
+<div class="main-grid">
+  <div class="sp-card col-7">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+      <strong id="chart-title" style="font-size:13px;">Visualización Vectorial Zero-CDN (Clic en elemento para Cross-Filtering)</strong>
+      <span class="tabular" style="font-size:11px;color:var(--muted);">100% Offline SVG Engine</span>
+    </div>
+    <div id="svg-chart-stage" style="width:100%;height:340px;"></div>
+  </div>
+  <div class="sp-card col-5" style="overflow-x:auto;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+      <strong style="font-size:13px;">Tabla Telemétrica (Clic en cabecera ordena · Clic en fila abre Ficha 360°)</strong>
+    </div>
+    <div id="table-box"></div>
+  </div>
+</div>
+
+<!-- Slide-Over Inspector Drawer 360° (#MP-10) -->
+<aside id="drawer-360" class="drawer no-print">
+  <div>
+    <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);padding-bottom:10px;margin-bottom:12px;">
+      <div>
+        <div class="tabular" style="font-size:10px;color:#38bdf8;">INSPECTOR 360° • AUDITORÍA DE REGISTRO</div>
+        <h3 id="drw-title" style="margin:3px 0 0;font-size:16px;">-</h3>
+      </div>
+      <button class="btn" onclick="closeDrawer()">✕</button>
+    </div>
+    <div id="drw-body" style="display:flex;flex-direction:column;gap:8px;font-size:12px;"></div>
+  </div>
+  <button class="btn" style="width:100%;text-align:center;" onclick="closeDrawer()">✓ Cerrar Inspector</button>
+</aside>
+
 <script id="app-engine">
   const D = window.REPORT_DATA;
-  const topNums = D.numCols.slice(0, 4);
-  document.getElementById('kpis').innerHTML = topNums.map(col => {
-    const vals = D.rows.map(r => Number(r[col]) || 0);
-    const isRate = /pct|rate|rorwa|raroc|mora|npl|stp|index/i.test(col);
-    const v = isRate ? vals.reduce((a,b)=>a+b,0)/vals.length : vals.reduce((a,b)=>a+b,0);
-    return '<div class="card"><div style="font-size:11px;color:#94a3b8;text-transform:uppercase;">'+col.replace(/_/g,' ')+'</div><div class="tabular" style="font-size:24px;font-weight:800;color:#38bdf8;margin-top:4px;">'+v.toLocaleString('es-ES',{maximumFractionDigits:2})+'</div></div>';
-  }).join('');
-  document.getElementById('table-box').innerHTML = '<table><thead><tr>'+D.headers.map(h=>'<th style="text-align:left;color:#94a3b8;">'+h+'</th>').join('')+'</tr></thead><tbody>'+D.rows.map(r=>'<tr>'+D.headers.map((h,i)=>'<td class="'+(i>0?'tabular':'')+'">'+r[h]+'</td>').join('')+'</tr>').join('')+'</tbody></table>';
-  const ch = echarts.init(document.getElementById('chart'));
-  const c1 = D.numCols[0] || D.headers[1], c2 = D.numCols[1] || c1;
-  ch.setOption({
-    tooltip:{trigger:'axis'},
-    legend:{data:[c1,c2],textStyle:{color:'#94a3b8'}},
-    xAxis:{type:'category',data:D.rows.map(r=>r[D.dimCol]),axisLabel:{color:'#94a3b8'}},
-    yAxis:[{type:'value',axisLabel:{color:'#94a3b8'}},{type:'value',axisLabel:{color:'#34d399'}}],
-    series:[
-      {name:c1,type:'bar',itemStyle:{color:'#06b6d4',borderRadius:[5,5,0,0]},data:D.rows.map(r=>r[c1])},
-      {name:c2,type:'line',yAxisIndex:1,smooth:true,itemStyle:{color:'#10b981'},data:D.rows.map(r=>r[c2])}
-    ]
+  let currentView = 'combo', sortCol = D.numCols[0] || D.headers[0], sortAsc = false, selectedDim = null;
+
+  document.addEventListener('mousemove', e => {
+    document.querySelectorAll('.sp-card').forEach(c => {
+      const r = c.getBoundingClientRect();
+      c.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      c.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    });
   });
+  document.addEventListener('keydown', e => {
+    if ((e.key === 't' || e.key === 'T') && !['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) toggleTheme();
+  });
+
+  function toggleTheme() {
+    const root = document.documentElement;
+    root.setAttribute('data-theme', root.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
+  }
+  function setView(v) {
+    currentView = v;
+    ['combo','rank','matrix'].forEach(k => document.getElementById('vbtn-'+k).classList.toggle('active', k === v));
+    renderDashboard();
+  }
+  function sortBy(col) {
+    if (sortCol === col) sortAsc = !sortAsc; else { sortCol = col; sortAsc = false; }
+    renderDashboard();
+  }
+  function selectRowDim(dimVal) {
+    selectedDim = (selectedDim === dimVal) ? null : dimVal;
+    openDrawer(dimVal);
+    renderDashboard();
+  }
+  function openDrawer(dimVal) {
+    const row = D.rows.find(r => String(r[D.dimCol]) === String(dimVal));
+    if (!row) return;
+    document.getElementById('drw-title').textContent = row[D.dimCol];
+    const c1 = D.numCols[0] || D.headers[1];
+    const max1 = Math.max(...D.rows.map(r => Number(r[c1]) || 0), 1);
+    document.getElementById('drw-body').innerHTML = D.headers.map(h => {
+      const val = row[h];
+      const isNum = typeof val === 'number';
+      const pct = isNum ? Math.min(100, Math.round((Math.abs(val) / ( Math.max(...D.rows.map(x => Math.abs(Number(x[h])||0)), 1) )) * 100)) : 0;
+      return '<div style="padding:8px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:7px;">' +
+        '<div style="display:flex;justify-content:space-between;"><span style="color:var(--muted);">'+h.replace(/_/g,' ')+'</span><strong class="tabular">'+(isNum ? val.toLocaleString('es-ES',{maximumFractionDigits:2}) : val)+'</strong></div>' +
+        (isNum ? '<div style="height:4px;background:rgba(255,255,255,0.08);border-radius:3px;margin-top:5px;"><div style="height:100%;width:'+pct+'%;background:#06b6d4;border-radius:3px;"></div></div>' : '') +
+      '</div>';
+    }).join('');
+    document.getElementById('drawer-360').classList.add('open');
+  }
+  function closeDrawer() { document.getElementById('drawer-360').classList.remove('open'); }
+
+  function renderDashboard() {
+    const q = (document.getElementById('q-search').value || '').toLowerCase().trim();
+    const stressPct = Number(document.getElementById('stress-slider').value || 0);
+    document.getElementById('stress-lbl').textContent = (stressPct > 0 ? '+' : '') + stressPct + '%';
+    const pill = document.getElementById('active-filter-pill');
+    if (selectedDim) { pill.style.display = 'inline-block'; pill.textContent = 'Filtro: ' + selectedDim + ' ✕'; } else { pill.style.display = 'none'; }
+
+    let rows = D.rows.map(r => {
+      const copy = { ...r };
+      D.numCols.forEach((c, idx) => {
+        const factor = idx === 0 ? (1 + stressPct / 100) : (1 + (stressPct * 0.4) / 100);
+        copy[c] = Number((Number(r[c]) * factor).toFixed(2));
+      });
+      return copy;
+    }).filter(r => !q || String(r[D.dimCol]).toLowerCase().includes(q));
+
+    rows.sort((a, b) => {
+      const va = a[sortCol], vb = b[sortCol];
+      return (typeof va === 'number' && typeof vb === 'number') ? (sortAsc ? va - vb : vb - va) : (sortAsc ? String(va).localeCompare(String(vb)) : String(vb).localeCompare(String(va)));
+    });
+
+    const activeRows = selectedDim ? rows.filter(r => String(r[D.dimCol]) === String(selectedDim)) : rows;
+    const topNums = D.numCols.slice(0, 4);
+    const colors = ['#38bdf8', '#34d399', '#a5b4fc', '#fbbf24'];
+
+    document.getElementById('kpis').innerHTML = topNums.map((col, idx) => {
+      const vals = activeRows.map(r => Number(r[col]) || 0);
+      const isRate = /pct|rate|rorwa|raroc|mora|npl|stp|index/i.test(col);
+      const v = vals.length ? (isRate ? vals.reduce((a,b)=>a+b,0)/vals.length : vals.reduce((a,b)=>a+b,0)) : 0;
+      const leader = activeRows.length ? activeRows.reduce((best, cur) => Number(cur[col]) > Number(best[col]) ? cur : best, activeRows[0]) : null;
+      return '<div class="sp-card"><div style="font-size:11px;color:var(--muted);text-transform:uppercase;">'+col.replace(/_/g,' ')+' '+(isRate?'(Media)':'(Total)')+'</div>' +
+        '<div class="tabular" style="font-size:23px;font-weight:800;color:'+colors[idx%4]+';margin:4px 0;">'+v.toLocaleString('es-ES',{maximumFractionDigits:2})+(isRate?'%':'')+'</div>' +
+        '<div style="font-size:11px;color:var(--muted);">Líder: <strong>'+(leader ? leader[D.dimCol] : '-')+'</strong></div></div>';
+    }).join('');
+
+    // Auto-Insights Banner (#MP-08)
+    const c1 = D.numCols[0] || D.headers[1], c2 = D.numCols[1] || c1;
+    if (activeRows.length) {
+      const topR = activeRows.reduce((a,b) => Number(b[c1]) > Number(a[c1]) ? b : a, activeRows[0]);
+      const lowR = activeRows.reduce((a,b) => Number(b[c2]) < Number(a[c2]) ? b : a, activeRows[0]);
+      document.getElementById('narrative-banner').innerHTML = '<strong>🧠 Síntesis Ejecutiva Automática (#MP-08):</strong> Sobre <strong>'+activeRows.length+' segmentos activos</strong> (escenario What-If <code>'+(stressPct>=0?'+':'')+stressPct+'%</code>), <strong>'+topR[D.dimCol]+'</strong> lidera en <em>'+c1.replace(/_/g,' ')+'</em> con <strong class="tabular">'+Number(topR[c1]).toLocaleString('es-ES')+'</strong>, mientras que el foco de atención en <em>'+c2.replace(/_/g,' ')+'</em> se sitúa en <strong>'+lowR[D.dimCol]+'</strong> (<span class="tabular">'+Number(lowR[c2]).toLocaleString('es-ES')+'</span>).';
+    }
+
+    // Tabla interactiva con barras in-cell
+    const maxC1 = Math.max(...rows.map(r => Math.abs(Number(r[c1]) || 0)), 1);
+    document.getElementById('table-box').innerHTML = '<table><thead><tr>' +
+      D.headers.map((h,i) => '<th onclick="sortBy(\\''+h+'\\')" style="text-align:'+(i>0?'right':'left')+';">'+h.replace(/_/g,' ')+(sortCol===h?(sortAsc?' ▲':' ▼'):'')+'</th>').join('') +
+      '</tr></thead><tbody>' +
+      rows.map(r => {
+        const isSel = selectedDim && String(r[D.dimCol]) === String(selectedDim);
+        return '<tr class="row-item" onclick="selectRowDim(\\''+String(r[D.dimCol]).replace(/'/g,"\\\\'")+'\\')" style="'+(isSel?'background:rgba(6,182,212,0.18);':'')+'">' +
+          D.headers.map((h,i) => {
+            const val = r[h];
+            if (i === 1 && typeof val === 'number') {
+              const w = Math.min(100, Math.round((Math.abs(val)/maxC1)*100));
+              return '<td class="tabular" style="text-align:right;"><div>'+val.toLocaleString('es-ES',{maximumFractionDigits:2})+'</div><div style="height:3px;background:rgba(255,255,255,0.08);margin-top:2px;"><div style="height:100%;width:'+w+'%;background:#06b6d4;"></div></div></td>';
+            }
+            return '<td class="'+(i>0?'tabular':'')+'" style="text-align:'+(i>0?'right':'left')+';font-weight:'+(i===0?'600':'400')+';">'+(typeof val==='number'?val.toLocaleString('es-ES',{maximumFractionDigits:2}):val)+'</td>';
+          }).join('') + '</tr>';
+      }).join('') + '</tbody></table>';
+
+    // Renderizador SVG Nativo (3 vistas)
+    const stage = document.getElementById('svg-chart-stage');
+    if (!rows.length) { stage.innerHTML = ''; return; }
+    const W = 620, H = 320;
+    if (currentView === 'rank') {
+      const rh = Math.min(38, Math.floor((H - 30) / rows.length));
+      stage.innerHTML = '<svg viewBox="0 0 '+W+' '+H+'" width="100%" height="100%">' +
+        rows.map((r, i) => {
+          const v = Number(r[c1]) || 0;
+          const bw = Math.max(6, ((Math.abs(v) / maxC1) * (W - 230)));
+          const y = 16 + i * rh;
+          return '<g style="cursor:pointer" onclick="selectRowDim(\\''+String(r[D.dimCol]).replace(/'/g,"\\\\'")+'\\')">' +
+            '<text x="155" y="'+(y + rh/2 + 4)+'" fill="currentColor" font-size="11" text-anchor="end">'+String(r[D.dimCol]).slice(0,22)+'</text>' +
+            '<rect x="165" y="'+(y + 4)+'" width="'+bw+'" height="'+(rh - 10)+'" rx="4" fill="'+(i===0?'#10b981':'#06b6d4')+'"/>' +
+            '<text x="'+(172 + bw)+'" y="'+(y + rh/2 + 4)+'" fill="#38bdf8" font-size="11" font-family="monospace">'+v.toLocaleString('es-ES')+'</text></g>';
+        }).join('') + '</svg>';
+    } else if (currentView === 'matrix') {
+      const maxX = Math.max(...rows.map(r => Number(r[c1]) || 0), 1);
+      const maxY = Math.max(...rows.map(r => Number(r[c2]) || 0), 1);
+      stage.innerHTML = '<svg viewBox="0 0 '+W+' '+H+'" width="100%" height="100%">' +
+        '<line x1="60" y1="'+(H-40)+'" x2="'+(W-25)+'" y2="'+(H-40)+'" stroke="rgba(148,163,184,0.35)"/>' +
+        '<line x1="60" y1="20" x2="60" y2="'+(H-40)+'" stroke="rgba(148,163,184,0.35)"/>' +
+        '<line x1="60" y1="'+(H/2)+'" x2="'+(W-25)+'" y2="'+(H/2)+'" stroke="rgba(16,185,129,0.3)" stroke-dasharray="4 4"/>' +
+        rows.map((r, i) => {
+          const cx = 75 + ((Number(r[c1])||0) / maxX) * (W - 130);
+          const cy = (H - 55) - ((Number(r[c2])||0) / maxY) * (H - 95);
+          return '<g style="cursor:pointer" onclick="selectRowDim(\\''+String(r[D.dimCol]).replace(/'/g,"\\\\'")+'\\')">' +
+            '<circle cx="'+cx+'" cy="'+cy+'" r="11" fill="rgba(6,182,212,0.75)" stroke="#38bdf8" stroke-width="2"/>' +
+            '<text x="'+cx+'" y="'+(cy - 14)+'" fill="currentColor" font-size="10" text-anchor="middle">'+String(r[D.dimCol]).slice(0,15)+'</text></g>';
+        }).join('') + '</svg>';
+    } else {
+      const max2 = Math.max(...rows.map(r => Math.abs(Number(r[c2]) || 0)), 1);
+      const padL = 48, padB = 46, stepX = (W - padL - 30) / rows.length, bw = Math.min(42, stepX * 0.56);
+      const pts = [];
+      const barsSvg = rows.map((r, i) => {
+        const v1 = Number(r[c1]) || 0, v2 = Number(r[c2]) || 0;
+        const bh = Math.max(4, (Math.abs(v1) / maxC1) * (H - padB - 40));
+        const x = padL + i * stepX + (stepX - bw) / 2;
+        const y = H - padB - bh;
+        const ly = (H - padB - 10) - (Math.abs(v2) / max2) * (H - padB - 55);
+        pts.push((x + bw/2).toFixed(1) + ',' + ly.toFixed(1));
+        return '<g style="cursor:pointer" onclick="selectRowDim(\\''+String(r[D.dimCol]).replace(/'/g,"\\\\'")+'\\')">' +
+          '<rect x="'+x+'" y="'+y+'" width="'+bw+'" height="'+bh+'" rx="5" fill="'+(selectedDim===String(r[D.dimCol])?'#10b981':'#06b6d4')+'"/>' +
+          '<text x="'+(x + bw/2)+'" y="'+(y - 6)+'" fill="currentColor" font-size="10" font-family="monospace" text-anchor="middle">'+v1.toLocaleString('es-ES')+'</text>' +
+          '<text x="'+(x + bw/2)+'" y="'+(H - 22)+'" fill="#94a3b8" font-size="10" text-anchor="middle">'+String(r[D.dimCol]).slice(0,12)+'</text></g>';
+      }).join('');
+      const lineSvg = '<polyline fill="none" stroke="#10b981" stroke-width="2.5" points="'+pts.join(' ')+'"/>' +
+        pts.map(p => { const [px,py] = p.split(','); return '<circle cx="'+px+'" cy="'+py+'" r="4.5" fill="#10b981" stroke="#060913" stroke-width="1.5"/>'; }).join('');
+      stage.innerHTML = '<svg viewBox="0 0 '+W+' '+H+'" width="100%" height="100%">' + barsSvg + lineSvg + '</svg>';
+    }
+  }
+
   function exportCsv() {
     const csv = '\\uFEFF' + D.headers.join(';') + '\\n' + D.rows.map(r => D.headers.map(h => r[h]).join(';')).join('\\n');
     const a = document.createElement('a');
@@ -5396,6 +6119,7 @@ Oficina Fisica Tradicional;110;19.8;4.2;390;21.2;165`
     a.download = 'Datos_Exportados_Dashboard.csv';
     a.click();
   }
+  renderDashboard();
 <\/script>
 </body>
 </html>`;
@@ -5411,24 +6135,67 @@ Oficina Fisica Tradicional;110;19.8;4.2;390;21.2;165`
       if (ext === 'py') {
         const pyScript = `#!/usr/bin/env python3
 """
-Instalador Automático del Ecosistema de 8 Skills y Slash Commands (VS Code + M365 Copilot + Databricks)
+Instalador Automático del Ecosistema de Skills Zero-CDN + Catálogo motion-prompt (#MP-01 a #MP-12)
 Ejecutar en la raíz de cualquier proyecto: python install_skills_pack.py
 """
 import os
 
 FILES = {
-    ".github/copilot-instructions.md": """# Reglas Globales de Ingeniería Visual (Estándar PaceUI + Databricks + Banca Comercial)
-1. ARQUITECTURA DE 3 BLOQUES DESACOPLADOS: (1) <style> con Design Tokens y font-variant-numeric: tabular-nums, (2) <script id="data-payload"> con window.REPORT_DATA, (3) <script id="app-engine"> con lógica reactiva.
-2. MOTOR GRÁFICO: Priorizar Apache ECharts 5.5 con echarts.connect(), universalTransition y tooltips glassmorphism.
-3. EXCEL 365 SIN VBA: Priorizar fórmulas dinámicas (LET, LAMBDA, AGRUPARPOR, PIVOTBY) o generación limpia con XlsxWriter sin cuadrícula base.
+    ".github/copilot-instructions.md": """# Reglas Globales de Ingeniería Visual (Estándar Zero-CDN + PaceUI + Databricks + motion-prompt)
+1. REGLA CERO (BLINDAJE BANCARIO ZERO-CDN): Prohibido depender de cdn.tailwindcss.com para el layout. Todo el diseño debe residir en un bloque <style> autocontenido con variables :root (Dark #060913) y html[data-theme='light'] (#f8fafc), alturas explícitas y font-variant-numeric: tabular-nums.
+2. ARQUITECTURA DE 3 BLOQUES DESACOPLADOS: (1) <style> con Design Tokens y .sp-card Spotlight, (2) <script id="data-payload"> con window.REPORT_DATA (inyectado con .replace("__PYSPARK_PAYLOAD__", json_str) sin usar f-strings en el HTML), (3) <script id="app-engine"> con motor gráfico SVG nativo infalible + ECharts con fallback.
+3. CATÁLOGO MOTION-PROMPT (#MP-01 A #MP-12): Aplicar siempre iluminación especular #MP-01, contadores 60fps #MP-02, sparklines SVG #MP-03, entrada escalonada #MP-04, vistas SVG conmutables #MP-05..07, banner Auto-Insights #MP-08, simulador What-If #MP-09, Slide-Over Drawer 360° #MP-10, barras in-cell #MP-11 y conmutador Dark/Light + exportación CSV #MP-12.
+4. EXCEL 365 SIN VBA: Priorizar fórmulas dinámicas (LET, LAMBDA, AGRUPARPOR, PIVOTBY) o generación limpia con XlsxWriter / OpenPyXL sin cuadrícula base (showGridLines=False).
 """,
-    ".github/prompts/databricks-deck.prompt.md": "---\\nmode: 'agent'\\ndescription: 'Genera celda PySpark con Dashboard HTML autónomo para displayHTML y envío por correo'\\n---\\nConstruye una celda PySpark que agregue los datos, serialice window.REPORT_DATA en plantilla cruda r\\\"\\\"\\\"...\\\"\\\"\\\" sin f-strings e incluya barra de exportación CSV/PDF/HTML.\\n",
-    ".github/prompts/digital-channels-ui.prompt.md": "---\\nmode: 'agent'\\ndescription: 'Consola de atribución multicanal Markov, Sankey y RORWA/IFRS 9'\\n---\\nGenera un terminal ejecutivo con ECharts 5.5 conectado, atribución Markov, Sankey e inspector lateral Slide-Over.\\n",
-    ".github/prompts/motion-critic.prompt.md": "---\\nmode: 'agent'\\ndescription: 'Nodo 2 Crítico Estético: inyecta Spotlight CSS, contadores 60fps y Auto-Insights'\\n---\\nAudita el HTML actual e inyecta .sp-card spotlight, contadores easeOutQuart con tabular-nums y motor generateExecutiveNarrative().\\n",
-    ".github/prompts/excel-institucional.prompt.md": "---\\nmode: 'agent'\\ndescription: 'Cuadro de mando Excel institucional sin VBA (Fórmulas 365 LET/PIVOTBY + XlsxWriter)'\\n---\\nGenera fórmulas matriciales dinámicas de Excel 365 (LET, AGRUPARPOR, PIVOTBY) o script XlsxWriter con show_gridlines=False.\\n",
-    ".github/prompts/interactive-ppt.prompt.md": "---\\nmode: 'agent'\\ndescription: 'Diapositiva ejecutiva 16:9 interactiva por dentro (Intra-Slide Tabs + Morph !!)'\\n---\\nConstruye una slide 16:9 con pestañas internas, slider de sensibilidad en vivo para comités y nomenclatura !!objeto para PowerPoint Morph.\\n",
-    ".github/prompts/infografia-ejecutiva.prompt.md": "---\\nmode: 'agent'\\ndescription: 'Póster infográfico vectorial SVG de alta densidad con exportación PNG Retina'\\n---\\nGenera una infografía ejecutiva en SVG puro (viewBox 1200x680) con arquitectura en 3 zonas, fórmulas y botón de exportación PNG 2x.\\n",
-    ".github/prompts/video-explicativo.prompt.md": "---\\nmode: 'agent'\\ndescription: 'Estudio de vídeo explicativo animado a 60fps con voz neuronal y grabación .webm'\\n---\\nGenera un reproductor HTML5 Canvas de 4 escenas animadas con speechSynthesis en español y exportación MediaRecorder .webm.\\n",
+    ".github/prompts/databricks-deck.prompt.md": """---
+mode: 'agent'
+description: 'Genera celda PySpark -> displayHTML() 100% Zero-CDN (nunca sale en blanco) con extractor de contexto y descarga .HTML para correo'
+---
+Actúa como Principal Design Engineer en Databricks. Construye una celda PySpark usando plantilla cruda r\\"\\"\\"<!DOCTYPE html>...\\"\\"\\" (PROHIBIDO usar f-strings en el HTML) e inyecta los datos con .replace("__PYSPARK_PAYLOAD__", payload_json).
+1. Incluye CSS puro Zero-CDN (:root Dark #060913 y html[data-theme='light']), números tabular-nums y tarjetas .sp-card con iluminación Spotlight (#MP-01).
+2. Incluye renderizadores SVG vectoriales nativos (Combo Barras+Línea, Waterfall P&L y Matriz Riesgo-Retorno) para que el dashboard jamás salga en blanco aunque el firewall bloquee CDNs externos.
+3. Añade Banner de Auto-Insights (#MP-08), Simulador What-If con sliders (#MP-09), Slide-Over Drawer 360° (#MP-10) y barra superior para descargar el archivo .HTML autónomo codificado en Base64 listo para enviar por Outlook/Teams.
+""",
+    ".github/prompts/motion-critic.prompt.md": """---
+mode: 'agent'
+description: 'Nodo 2 Crítico Estético + Catálogo motion-prompt (#MP-01 a #MP-12): transforma cualquier HTML en un Terminal Ejecutivo Zero-CDN'
+---
+Mantén intactos los datos (window.REPORT_DATA) e inyecta las 12 primitivas deterministas #MP-01 a #MP-12 sin depender de cdn.tailwindcss.com:
+- #MP-01 Specular Spotlight Card (--mx, --my) + #MP-04 Staggered Grid Reveal (cubic-bezier(0.16,1,0.3,1)).
+- #MP-02 Tabular Counter 60fps (easeOutQuart) + #MP-03 Auto-Draw Sparklines SVG.
+- #MP-05 a #MP-07 Gráficos vectoriales SVG nativos conmutables (Combo, Waterfall P&L y Scatter RAROC vs PD).
+- #MP-08 Executive Auto-Narrator + #MP-09 What-If Stress Slider + #MP-10 Slide-Over Inspector Drawer 360° + #MP-12 Bi-Modal Dark/Light [T].
+""",
+    ".github/prompts/digital-channels-ui.prompt.md": """---
+mode: 'agent'
+description: 'Consola de atribución multicanal Markov, Sankey y RORWA/IFRS 9 Zero-CDN'
+---
+Genera un terminal ejecutivo autocontenido con embudo Sankey SVG/ECharts, atribución Markov Web vs App, KPIs con tabular-nums, simulador de fricción UX y Slide-Over Drawer 360°.
+""",
+    ".github/prompts/excel-institucional.prompt.md": """---
+mode: 'agent'
+description: 'Cuadro de mando Excel institucional sin VBA (Fórmulas 365 LET/PIVOTBY + XlsxWriter/OpenPyXL)'
+---
+Genera fórmulas matriciales dinámicas de Excel 365 (LET, AGRUPARPOR, PIVOTBY) o script Python XlsxWriter/OpenPyXL con show_gridlines=False, matriz de sensibilidad 2D y barras de datos condicionales.
+""",
+    ".github/prompts/interactive-ppt.prompt.md": """---
+mode: 'agent'
+description: 'Diapositiva ejecutiva 16:9 interactiva por dentro (Intra-Slide Tabs + Morph !!)'
+---
+Construye una slide 16:9 interactiva con pestañas internas sin cambiar de diapositiva, slider de sensibilidad en vivo para comités, píldoras de defensa CRO/CFO y nomenclatura !!objeto para PowerPoint Morph.
+""",
+    ".github/prompts/infografia-ejecutiva.prompt.md": """---
+mode: 'agent'
+description: 'Póster infográfico vectorial SVG de alta densidad con exportación PNG Retina'
+---
+Genera una infografía ejecutiva en SVG puro (viewBox 1060x420) con arquitectura en 3 zonas, ecuaciones financieras y botón de exportación PNG 2x.
+""",
+    ".github/prompts/video-explicativo.prompt.md": """---
+mode: 'agent'
+description: 'Estudio de vídeo explicativo animado a 60fps con voz neuronal y grabación .webm'
+---
+Genera un reproductor HTML5 Canvas de 4 escenas animadas con speechSynthesis en español, banda de subtítulos de cine y exportación MediaRecorder .webm.
+""",
 }
 
 for rel_path, content in FILES.items():
@@ -5437,7 +6204,7 @@ for rel_path, content in FILES.items():
         f.write(content)
     print(f"[OK] Creado: {rel_path}")
 
-print("\\n✅ Pack de Skills y Slash Commands instalado correctamente en tu workspace de VS Code.")
+print("\\n✅ Pack completo de Skills Zero-CDN + Catálogo motion-prompt instalado en tu workspace de VS Code.")
 `;
         const blob = new Blob([pyScript], { type: 'text/x-python;charset=utf-8' });
         const a = document.createElement('a');
@@ -5445,15 +6212,15 @@ print("\\n✅ Pack de Skills y Slash Commands instalado correctamente en tu work
         a.download = 'install_skills_pack.py';
         a.click();
       } else {
-        const psScript = `# Instalador PowerShell del Pack de Skills VS Code + M365 Copilot (Cuaderno 09)
+        const psScript = `# Instalador PowerShell del Pack de Skills Zero-CDN + motion-prompt (Cuaderno 09)
 New-Item -ItemType Directory -Force -Path ".github/prompts" | Out-Null
 Set-Content -Path ".github/copilot-instructions.md" -Encoding UTF8 -Value @"
-# Reglas Globales de Ingeniería Visual (Estándar PaceUI + Databricks + Banca Comercial)
-- Arquitectura obligatoria en 3 bloques: <style> (tabular-nums + hairline 1px), <script id='data-payload'> (window.REPORT_DATA) y <script id='app-engine'>.
-- Gráficos en Apache ECharts 5.5 con echarts.connect() y universalTransition.
-- En Excel priorizar fórmulas dinámicas 365 (LET, PIVOTBY, AGRUPARPOR) sin macros VBA.
+# Reglas Globales de Ingeniería Visual (Estándar Zero-CDN + PaceUI + Databricks + motion-prompt)
+1. Prohibido depender de cdn.tailwindcss.com: usar <style> autocontenido con variables :root (Dark #060913) y html[data-theme='light'] (#f8fafc) + font-variant-numeric: tabular-nums.
+2. En Databricks usar raw string r\"\"\"...\"\"\" + .replace('__PYSPARK_PAYLOAD__', payload_json) sin f-strings y con motor gráfico SVG nativo infalible.
+3. Aplicar las 12 primitivas #MP-01 a #MP-12 (Spotlight, Contadores 60fps, Sparklines SVG, Waterfall P&L, Auto-Insights, Simulador What-If, Drawer 360° y Tema Dark/Light).
 "@
-Write-Host "✅ Estructura .github/prompts y reglas globales PaceUI creadas en el workspace actual." -ForegroundColor Green
+Write-Host "✅ Estructura .github/prompts y reglas globales Zero-CDN + motion-prompt creadas en el workspace actual." -ForegroundColor Green
 `;
         const blob = new Blob([psScript], { type: 'text/plain;charset=utf-8' });
         const a = document.createElement('a');
@@ -5464,6 +6231,7 @@ Write-Host "✅ Estructura .github/prompts y reglas globales PaceUI creadas en e
     }
 
     window.addEventListener('DOMContentLoaded', () => {
+      if (typeof renderMpCatalog === 'function') renderMpCatalog();
       updateLiveTerminal();
       drawTopographicSurface3D();
       updateWarRoom();

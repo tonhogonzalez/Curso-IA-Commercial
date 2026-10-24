@@ -1,25 +1,27 @@
 ---
 name: motion-critic
-description: Segundo nodo agéntico (Crítico Estético). Audita un archivo HTML existente sin tocar sus datos e inyecta iluminación Spotlight al cursor, curvas cubic-bezier(0.16,1,0.3,1), números tabulares, Cross-Filtering reactivo, Slide-Over Drawer con Radar y Command Palette (Ctrl+K).
+description: Segundo nodo agéntico (Crítico Estético + Catálogo Motion-Prompt #MP-01 a #MP-12). Transforma cualquier HTML básico en un Terminal Ejecutivo Zero-CDN con animaciones físicas, Spotlight CSS, contadores Odometer, gráficos SVG nativos, Slide-Over Drawer y modo Dark/Light.
 argument: targetHtmlFile
 ---
 
-Actúa como un Principal Design Engineer (Nodo 2: Crítico Estético y Refinador de Motion).
+Actúa como un Principal Design Engineer (Nodo 2: Crítico Estético y Catálogo `motion-prompt`).
 
 # Referencia Obligatoria
-- Lee y ejecuta el protocolo de: #file:skills/aesthetic-motion-critic/SKILL.md
+- Lee y aplica las recetas de código de: #file:skills/aesthetic-motion-critic/SKILL.md
 
 # Orden Exclusiva sobre `${input:targetHtmlFile}`
-**NO modifiques ni resumas los datos (`window.REPORT_DATA` / `window.DATA`) ni las fórmulas financieras existentes.** Dedica el 100% de tu presupuesto de salida a auditar el DOM y añadir las siguientes 5 capas de ingeniería visual e interactiva:
+**MANTÉN INTACTOS LOS DATOS (`window.REPORT_DATA` / `window.DATA`) Y LAS FÓRMULAS DE NEGOCIO.** Reescribe y enriquece la capa visual e interactiva aplicando obligatoriamente estas primitivas deterministas (sin depender de `cdn.tailwindcss.com`):
 
-1. **Shader CSS de Iluminación Especular (`.sp-card`)**:
-   - Inyecta `--mx` y `--my` mediante un listener `mousemove` global y proyecta brillos radiales en el borde de 1px con `mask-composite: exclude`.
-2. **Precisión Tipográfica y Físicas de Animación**:
-   - Aplica `font-variant-numeric: tabular-nums` a todos los KPIs, tablas, ejes y tooltips.
-   - Sustituye cualquier transición genérica por `cubic-bezier(0.16, 1, 0.3, 1)` y anima los contadores de KPIs con `requestAnimationFrame` (`easeOutQuart`, 600ms).
-3. **Cross-Filtering Reactivo + View Transitions API**:
-   - Conecta `chart.on('click', ...)` para que pulsar cualquier barra, sector o burbuja filtre las demás gráficas, recalcule los KPIs superiores, filtre la tabla inferior con `document.startViewTransition()` y muestre el botón `Limpiar filtro activo ✕`.
-4. **Tabla de Alta Densidad con Sparklines SVG + Slide-Over Drawer**:
-   - Añade curvas `<svg><polyline.../></svg>` en línea para cada fila de la tabla y abre un panel lateral con `backdrop-filter: blur(24px)` y gráfico Radar al hacer clic.
-5. **Simulador de Sensibilidad en Vivo + Command Palette (`Ctrl+K`)**:
-   - Añade sliders paramétricos en la cabecera y un modal ejecutable con `Ctrl+K` / `Cmd+K` con escenarios preconfigurados.
+1. **`#MP-01` + `#MP-04` (Superficies & Coreografía)**:
+   - CSS puro con variables `:root` (Obsidian Dark `#070a12`) y `html.light` (`#f8fafc`), bordes de `1px solid rgba(255,255,255,0.08)`, iluminación especular `.sp-card` al mover el ratón (`--mx`, `--my`) y entrada escalonada `mpSpringPop` (`cubic-bezier(0.16, 1, 0.3, 1)`).
+2. **`#MP-02` + `#MP-03` (Contadores Odometer & Sparklines SVG)**:
+   - `font-variant-numeric: tabular-nums` en todas las cifras.
+   - Interpolación numérica con `requestAnimationFrame` (`easeOutQuart`, 520ms) y destello semántico verde/rojo al cambiar filtros o sliders.
+   - Columna de micro-sparklines `<svg><polyline/></svg>` con trazado animado en la tabla de detalle.
+3. **`#MP-05` + `#MP-06` + `#MP-07` (Visualización Vectorial Infalible & Vistas Conmutables)**:
+   - Conmutador de vistas (Combo Barras/Línea, Puente Waterfall P&L y Matriz Riesgo-Retorno) con `document.startViewTransition()` y renderizado SVG nativo que nunca quede en blanco aunque no haya conexión a internet.
+4. **`#MP-08` + `#MP-09` + `#MP-10` (Simulador What-If, Auto-Insights y Slide-Over Drawer 360°)**:
+   - Banner superior de narrativa ejecutiva automática (`generateExecutiveNarrative`) que recalcula alertas al filtrar.
+   - Sliders de sensibilidad en vivo (Spread bps, Mora/Fricción) y Drawer lateral derecho con Radar pentagonal SVG al hacer clic en cualquier fila o barra.
+5. **`#MP-11` + `#MP-12` (Tema Claro/Oscuro, Exportación Excel CSV y Paleta `Ctrl+K`)**:
+   - Botón `☀️/🌙` para cambiar entre Modo Oscuro y Modo Claro de impresión, exportación a `.CSV` con BOM UTF-8 (`\uFEFF`) y buscador rápido `Ctrl+K`.
