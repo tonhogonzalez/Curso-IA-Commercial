@@ -3380,6 +3380,324 @@ A partir de los siguientes datos/conclusiones: [PEGA AQUÍ TUS DATOS O CONCLUSIO
 3. EXPORTACIÓN A ARCHIVO DE VÍDEO (`.WEBM`):
    - Incluye un botón `⏺ Grabar y Descargar Vídeo (.webm)` usando `canvas.captureStream(30)` y `MediaRecorder` para poder adjuntar el vídeo en Teams o Outlook.</pre>
           </div>
+
+          <!-- =====================================================================
+               SUBSECCIÓN 5.8: BÓVEDA DE PROMPTS MAESTROS DIRECTOS PARA CHATGPT Y COPILOT
+               (REPLICACIÓN EN 1 CLIC DE TODOS LOS DASHBOARDS CON ANIMACIONES)
+               ===================================================================== -->
+          <h3 id="boveda-prompts-dashboards-sec" style="margin-top: 2.6rem; color: #38bdf8;">5.8. 🚀 Bóveda de Prompts Maestros: "Copiar &amp; Pegar en ChatGPT / M365 Copilot" para Replicar cada Dashboard Animado</h3>
+          <p>
+            Para que tú o los alumnos no tengáis que redactar las especificaciones técnicas ni recordar las fórmulas matemáticas de memoria, aquí tenéis los <strong>6 Prompts Maestros Listos para Usar</strong>. Cada uno está redactado con lenguaje determinista de <em>Principal Financial UI Engineer</em>, estándar <strong>Zero-CDN</strong> y la <strong>Regla de los 3 Bloques Estrictos</strong> para que <strong>ChatGPT (GPT-4o / Canvas / o1)</strong>, <strong>Microsoft 365 Copilot</strong>, <strong>Claude (Claude Code / Artifacts)</strong> o <strong>GitHub Copilot</strong> te construyan el dashboard animado exacto sin alucinar ni generar estilos rotos:
+          </p>
+
+          <!-- SELECTOR DE PESTAÑAS DE LA BÓVEDA DE PROMPTS -->
+          <div class="cyber-terminal-shell" style="padding: 1.15rem; border: 1px solid rgba(56, 189, 248, 0.4); background: linear-gradient(135deg, rgba(6, 11, 25, 0.98) 0%, rgba(9, 18, 38, 0.94) 100%); margin: 1.2rem 0;">
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.8rem; margin-bottom: 1rem;">
+              <div>
+                <span class="tabular-mono" style="font-size: 0.68rem; color: #38bdf8; font-weight: 700; letter-spacing: 0.08em;">
+                  ⚡ SELECTOR DE PROMPTS DE MONTAJE DIRECTO • ELIGE EL DASHBOARD QUE QUIERES CONSTRUIR
+                </span>
+                <div style="font-size: 0.92rem; font-weight: 800; color: #ffffff; margin-top: 0.2rem;">
+                  Plantillas de Ingeniería Visual para Pegar en tu LLM Favorito
+                </div>
+              </div>
+              <span class="tabular-mono" style="font-size: 0.72rem; color: #34d399; background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.35); padding: 0.25rem 0.6rem; border-radius: 6px;">
+                ✅ 6 Prompts Blindados Zero-CDN
+              </span>
+            </div>
+
+            <!-- BOTONES DE PESTAÑA PARA CADA UNO DE LOS 6 DASHBOARDS -->
+            <div style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.1rem;">
+              <button type="button" class="pv-tab-btn active" onclick="setPromptVaultTab(0)" style="padding: 0.45rem 0.85rem; font-size: 0.75rem; border-radius: 7px; border: none; cursor: pointer; background: #10b981; color: #040911; font-weight: 700;">
+                📱 1. Multicanal &amp; Funnel Markov
+              </button>
+              <button type="button" class="pv-tab-btn" onclick="setPromptVaultTab(1)" style="padding: 0.45rem 0.85rem; font-size: 0.75rem; border-radius: 7px; border: 1px solid rgba(255,255,255,0.12); cursor: pointer; background: rgba(255,255,255,0.06); color: #cbd5e1; font-weight: 600;">
+                ⚖️ 2. Deal Desk &amp; War Room
+              </button>
+              <button type="button" class="pv-tab-btn" onclick="setPromptVaultTab(2)" style="padding: 0.45rem 0.85rem; font-size: 0.75rem; border-radius: 7px; border: 1px solid rgba(255,255,255,0.12); cursor: pointer; background: rgba(255,255,255,0.06); color: #cbd5e1; font-weight: 600;">
+                🧊 3. Superficie 3D Sensibilidad
+              </button>
+              <button type="button" class="pv-tab-btn" onclick="setPromptVaultTab(3)" style="padding: 0.45rem 0.85rem; font-size: 0.75rem; border-radius: 7px; border: 1px solid rgba(255,255,255,0.12); cursor: pointer; background: rgba(255,255,255,0.06); color: #cbd5e1; font-weight: 600;">
+                ⚛️ 4. Motor Quantum Motion 60 FPS
+              </button>
+              <button type="button" class="pv-tab-btn" onclick="setPromptVaultTab(4)" style="padding: 0.45rem 0.85rem; font-size: 0.75rem; border-radius: 7px; border: 1px solid rgba(255,255,255,0.12); cursor: pointer; background: rgba(255,255,255,0.06); color: #cbd5e1; font-weight: 600;">
+                📊 5. Diapositiva 16:9 Intra-Slide
+              </button>
+              <button type="button" class="pv-tab-btn" onclick="setPromptVaultTab(5)" style="padding: 0.45rem 0.85rem; font-size: 0.75rem; border-radius: 7px; border: 1px solid rgba(255,255,255,0.12); cursor: pointer; background: rgba(255,255,255,0.06); color: #cbd5e1; font-weight: 600;">
+                🌐 6. Mega-Prompt Universal (Trae tus Datos)
+              </button>
+            </div>
+
+            <!-- ===================================================================
+                 PANEL 1: PROMPT TERMINAL MULTICANAL & FUNNEL MARKOV
+                 =================================================================== -->
+            <div id="pv-panel-0" class="pv-content-panel" style="display: block;">
+              <div class="prompt-block-wrapper pro-version" style="margin: 0;">
+                <div class="prompt-block-header">
+                  <div>
+                    <h4 class="prompt-block-title">📱 Prompt Maestro: Terminal de Canales Digitales &amp; Embudo Markov (Web &amp; App)</h4>
+                    <div style="font-size: 0.73rem; color: #94a3b8; margin-top: 0.2rem;">
+                      <span style="color: #6ee7b7; font-weight: 600;">Animaciones:</span> Odómetros a 60 FPS (easeOutQuart), Embudo SVG con partículas, Spotlight CSS, Sparklines 12M y filtrado cruzado.
+                    </div>
+                  </div>
+                  <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)" style="background: #10b981; color: #040911; font-weight: 800; font-size: 0.76rem; padding: 0.45rem 0.95rem;">📋 Copiar Prompt para ChatGPT / Copilot</button>
+                </div>
+                <pre class="copyable-prompt-pre">Actúa como Principal Financial UI Engineer experto en Banca Comercial, Canales Digitales y Arquitectura Frontend Zero-CDN.
+Tu objetivo es generar UN ÚNICO ARCHIVO HTML AUTÓNOMO (`terminal_canales_digitales.html`) que visualice el rendimiento de originación multicanal (Web Empresas, App Móvil, Gestor Híbrido) y la atribución de conversión digital mediante animaciones fluidas a 60 FPS.
+
+REGLAS ARQUITECTÓNICAS ESTRICTAS (ZERO-CDN Y 3 BLOQUES):
+1. REGLA DE LOS 3 BLOQUES ESTRICTOS:
+   - Bloque 1 (&lt;style&gt;): Variables CSS nativas :root (Fondo Dark Obsidian #060913, Tarjetas #0e1628, Bordes rgba(255,255,255,0.08), Acentos Cian #06b6d4, Esmeralda #10b981, Coral #f43f5e). Tipografía obligatoria font-variant-numeric: tabular-nums (JetBrains Mono / Consolas).
+   - Bloque 2 (&lt;script id="data-payload"&gt;): Objeto global inmutable window.REPORT_DATA con métricas de 6 canales/productos (Volumen EAD M€, Conversión %, Tasa STP %, RORWA %, NPL %, serie temporal sparkline de 12 meses y etapas del embudo).
+   - Bloque 3 (&lt;script id="app-engine"&gt;): Funciones puras Vanilla JS sin dependencias externas bloqueables (PROHIBIDO cdn.tailwindcss.com).
+
+COMPONENTES Y ANIMACIONES OBLIGATORIAS:
+1. CABECERA CON BANNER DE AUTO-INSIGHTS (#MP-08):
+   - Action Title estilo McKinsey con brecha cuantificada en bps frente al Hurdle Rate (2,50%): ej. "🟢 ORIGINACIÓN DIGITAL: RORWA en 3,18% (+68 bps vs Hurdle) impulsado por Preconcedidos App (+22% YoY)".
+2. FILA SUPERIOR DE 4 TARJETAS KPI (#MP-01 + #MP-02):
+   - Tarjetas .sp-card con iluminación especular Spotlight (radial-gradient reactivo al ratón mediante variables --mx y --my).
+   - Contadores numéricos interpolados a 60 FPS mediante requestAnimationFrame y curva física easeOutQuart.
+   - Micro-sparklines SVG embebidos de 12 meses (&lt;svg&gt;&lt;polyline .../&gt;&lt;/svg&gt;) en cada tarjeta.
+3. VISUALIZACIÓN CENTRAL EN 2 COLUMNAS (7fr / 5fr):
+   - Columna Izquierda: Embudo SVG Dinámico Multicanal (Visitantes Web/App -&gt; Solicitud Iniciada -&gt; Documentación CIRBE -&gt; Scoring Riesgos -&gt; Firma Digital STP) con porcentajes de conversión y partículas animadas de flujo continuo.
+   - Columna Derecha: Matriz de Dispersión / Ranking SVG (RORWA vs Tasa de Admisión STP) con cuadrantes semánticos (Zona Esmeralda = Alto RORWA + Alto STP).
+4. TABLA INTERACTIVA INFERIOR (#MP-10 + #MP-11):
+   - Buscador en tiempo real por texto y cabeceras ordenables (▲▼).
+   - Cada fila incluye micro-gráfico sparkline de 12 meses y barra proporcional in-cell.
+   - Al pulsar una fila, se activa un Slide-Over Drawer lateral con la ficha 360° del canal.
+5. CONMUTADOR BI-MODAL Y EXPORTACIÓN (#MP-12 &amp; #MP-13):
+   - Botón para alternar tema Dark (#060913) / Paper Light (#f8fafc).
+   - Regla @media print para impresión limpia en papel blanco A4 horizontal sin gastar tinta negra (#MP-13).
+   - Botón para exportar los datos filtrados a Excel (.CSV con BOM UTF-8 \uFEFF).
+6. GUARDIÁN VIEWPORT (INTERSECTIONOBSERVER):
+   - Pausa automáticamente los bucles de animación si la sección no está en pantalla para proteger la batería.
+
+AQUÍ TIENES LOS DATOS PARA INYECTAR EN window.REPORT_DATA:
+[PEGA AQUÍ TUS DATOS O UTILIZA EL DATASET DE MUESTRA MULTICANAL:
+- Canales: App Móvil Empresas, Portal Web B2B, Gestor Especialista Híbrido, TPV Autónomos, Supply Chain Finance.
+- Métricas: EAD Captada (M€), Solicitudes Totales, Aprobadas STP %, RORWA %, Coste de Riesgo CoR bps].</pre>
+              </div>
+            </div>
+
+            <!-- ===================================================================
+                 PANEL 2: PROMPT DEAL DESK & WAR ROOM DE PRICING
+                 =================================================================== -->
+            <div id="pv-panel-1" class="pv-content-panel" style="display: none;">
+              <div class="prompt-block-wrapper pro-version" style="margin: 0;">
+                <div class="prompt-block-header">
+                  <div>
+                    <h4 class="prompt-block-title">⚖️ Prompt Maestro: Commercial Deal Desk &amp; War Room de Pricing P&amp;L</h4>
+                    <div style="font-size: 0.73rem; color: #94a3b8; margin-top: 0.2rem;">
+                      <span style="color: #6ee7b7; font-weight: 600;">Animaciones:</span> Puente P&amp;L Waterfall SVG flotante, Coordenadas Paralelas, Slide-Over Drawer 360°, Sliders What-If y Paleta Ctrl+K.
+                    </div>
+                  </div>
+                  <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)" style="background: #10b981; color: #040911; font-weight: 800; font-size: 0.76rem; padding: 0.45rem 0.95rem;">📋 Copiar Prompt para ChatGPT / Copilot</button>
+                </div>
+                <pre class="copyable-prompt-pre">Actúa como Principal Deal Desk Architect y Director de Modelización Financiera de Banca Corporativa.
+Tu objetivo es generar UN ÚNICO ARCHIVO HTML AUTÓNOMO (`war_room_pricing_commercial.html`) para comités de precios y negociación de grandes operaciones comerciales con clientes corporativos y Pymes (Líneas de Crédito, Confirming, Factoring, Préstamos Sindicados).
+
+REGLAS DE DISEÑO Y ZERO-CDN:
+- PROHIBIDO usar cdn.tailwindcss.com o CDNs que dejen la pantalla en blanco en proxies bancarios. Todo el layout Bento debe resolverse con CSS Grid y Flexbox nativo en &lt;style&gt;.
+- Mantén estrictamente desacoplados los 3 bloques: &lt;style&gt;, &lt;script id="data-payload"&gt; y &lt;script id="app-engine"&gt;.
+
+COMPONENTES Y ANIMACIONES OBLIGATORIAS:
+1. BARRA SUPERIOR DE SHOCK WHAT-IF A 60 FPS (#MP-09):
+   - 2 Deslizadores táctiles (&lt;input type="range"&gt;):
+     a) Shock de Spread Comercial (+/- 75 bps).
+     b) Eficiencia / Reducción de Mora NPL (+/- 50 bps).
+   - Al mover cualquier slider, todo el dashboard (KPIs, Gráficos SVG y P&amp;L) se recalcula instantáneamente a 60 FPS sin recargar.
+2. CONMUTADOR DE 3 VISTAS EN SVG PURO NATIVO (#MP-04 + #MP-05):
+   - Vista 1 (Puente P&amp;L Waterfall Contable): Descompone el margen de la operación: Margen Bruto TIN -&gt; Coste de Transferencia FTP -&gt; Comisiones -&gt; Coste de Capital RWA -&gt; Pérdida Esperada IFRS 9 = EVA Neto. Cada barra flota con conectores punteados y animación stroke-dashoffset.
+   - Vista 2 (Coordenadas Paralelas Multivariante): Ejes verticales (EAD M€, Spread bps, PD %, Densidad RWA %, RORWA %). Líneas vectoriales coloreadas según superen el Hurdle Rate.
+   - Vista 3 (Ranking de Operaciones con DataBars proporcionales).
+3. SLIDE-OVER INSPECTOR DRAWER 360° LATERAL DERECHO (#MP-07):
+   - Panel lateral con backdrop-filter: blur(16px) que se desliza suavemente (transform: translateX(100%) -&gt; translateX(0)) al hacer clic en cualquier fila de contrato o barra.
+   - Dibuja en SVG nativo un gráfico Radar Pentagonal (Rentabilidad, Riesgo, Colateral, Venta Cruzada, ESG) y el desglose de subcuentas contables.
+4. PALETA DE COMANDOS EJECUTIVA CTRL+K (#MP-12):
+   - Modal flotante accesible mediante atajo de teclado Ctrl+K o botón lupa para buscar rápidamente clientes o filtrar carteras por segmento.
+5. EXPORTACIÓN PORTABLE Y MODO IMPRESIÓN SUIZA (#MP-13):
+   - Botón para descargar copia .CSV con codificación \uFEFF para Excel en español.
+   - Regla @media print optimizada para dossier de Comité de Riesgos en A4 apaisado blanco puro (#MP-13).
+
+AQUÍ TIENES LOS DATOS DE LAS OPERACIONES (Inyectar en window.REPORT_DATA):
+[PEGA AQUÍ TUS CONTRATOS O UTILIZA EL DATASET DE MUESTRA:
+- Operaciones: Póliza Crédito Mid-Market, Confirming Sin Recurso Automoción, Factoring Internacional, Préstamo Sindicado ESG, Leasing Flota.
+- Variables: EAD (M€), Spread TIN (bps), FTP (bps), PD %, Densidad RWA %, Tasa Admisión STP, Colateral].</pre>
+              </div>
+            </div>
+
+            <!-- ===================================================================
+                 PANEL 3: PROMPT SUPERFICIE 3D DE SENSIBILIDAD EN CANVAS2D
+                 =================================================================== -->
+            <div id="pv-panel-2" class="pv-content-panel" style="display: none;">
+              <div class="prompt-block-wrapper pro-version" style="margin: 0;">
+                <div class="prompt-block-header">
+                  <div>
+                    <h4 class="prompt-block-title">🧊 Prompt Maestro: Superficie Topográfica 3D en Canvas2D a 60 FPS (Zero WebGL)</h4>
+                    <div style="font-size: 0.73rem; color: #94a3b8; margin-top: 0.2rem;">
+                      <span style="color: #6ee7b7; font-weight: 600;">Animaciones:</span> Rotación orbital 3D matemática con ratón/touch, deformación analítica en vivo y corte Hurdle Rate.
+                    </div>
+                  </div>
+                  <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)" style="background: #10b981; color: #040911; font-weight: 800; font-size: 0.76rem; padding: 0.45rem 0.95rem;">📋 Copiar Prompt para ChatGPT / Copilot</button>
+                </div>
+                <pre class="copyable-prompt-pre">Actúa como Senior Creative Technologist &amp; Mathematical UI Engineer experto en Canvas2D y visualización financiera espacial.
+Tu objetivo es generar UN ÚNICO ARCHIVO HTML AUTÓNOMO (`superficie_sensibilidad_3d.html`) que renderice una Superficie Topográfica 3D Interactiva a 60 FPS para estudiar la frontera de rentabilidad RORWA frente a Spread Comercial y Fricción/Mora, SIN USAR THREE.JS NI WEBGL (100% Canvas2D matemático nativo, Zero-CDN, compatible con cualquier navegador restringido).
+
+ESPECIFICACIONES TÉCNICAS Y MATEMÁTICAS:
+1. MOTOR DE PROYECCIÓN 3D NATIVO EN CANVAS 2D:
+   - Resuelve la rotación orbital Z (azimut) y elevación X (altitud) mediante matrices trigonométricas puras (cosZ, sinZ, cosX, sinX) con proyección en perspectiva (FOV).
+   - Genera una malla de 20x20 cuadriláteros basada en la función de rentabilidad bancaria:
+     RORWA(u, v) = 2.65 * Eficiencia + 0.95*u - 0.85*v - 0.32*u² - 0.25*v² + 0.28*sin(2.2*u)*cos(2.0*v)
+     donde 'u' es el Spread Comercial normalizado (-1 a 1) y 'v' es la Fricción / Mora NPL (-1 a 1).
+   - Ordena los polígonos de atrás hacia adelante mediante el Algoritmo del Pintor (Painter's Algorithm) según su coordenada de profundidad proyectada.
+2. PLANO DE CORTE HORIZONTAL DEL HURDLE RATE:
+   - Dibuja un plano poligonal discontinuo semitransparente que representa el coste de capital mínimo exigido (Hurdle Rate: 2,50%).
+   - Colorea los cuadriláteros dinámicamente según su altura respecto al corte:
+     * Verde Esmeralda (rgba(16,185,129,0.75)): Zona de creación de valor económico (+EVA &gt; Hurdle).
+     * Azul Cian / Índigo: Rentabilidad moderada.
+     * Rosa / Coral (rgba(244,63,94,0.65)): Zona destructora de valor (&lt; Hurdle).
+3. INTERACCIÓN DE RATÓN Y TÁCTIL FLUIDA:
+   - Permite rotar la superficie arrastrando con el ratón (mousedown + mousemove) o con el dedo en pantallas táctiles con inercia amortiguada y cursor "grab" / "grabbing".
+   - 2 Sliders de control en la cabecera:
+     a) Eficiencia Operativa STP (0.80x a 1.40x).
+     b) Umbral de Hurdle Rate (1.80% a 3.20%).
+     Al mover los deslizadores, la superficie se deforma y actualiza en tiempo real.
+4. GUARDIÁN DE RENDIMIENTO (INTERSECTIONOBSERVER):
+   - Pausa automáticamente los eventos de dibujo si el canvas no se encuentra dentro del viewport (entry.isIntersecting === false) para no consumir batería.
+5. HUD Y LEYENDA NUMÉRICA TABULAR:
+   - Muestra las coordenadas de los ejes 3D proyectados (Eje X: Spread / TIN →, Eje Y: Fricción UX / Mora →, Eje Z: RORWA Neto %).
+
+AQUÍ TIENES LOS PARÁMETROS DEL MODELO:
+[Hurdle Rate Base: 2.50% | RORWA Medio: 2.94% | Sensibilidad Spread: +42 bps | Factor Eficiencia: 1.00x].</pre>
+              </div>
+            </div>
+
+            <!-- ===================================================================
+                 PANEL 4: PROMPT MOTOR QUANTUM MOTION A 60 FPS
+                 =================================================================== -->
+            <div id="pv-panel-3" class="pv-content-panel" style="display: none;">
+              <div class="prompt-block-wrapper pro-version" style="margin: 0;">
+                <div class="prompt-block-header">
+                  <div>
+                    <h4 class="prompt-block-title">⚛️ Prompt Maestro: Motor Quantum Motion a 60 FPS (Física de Resortes &amp; Scramble)</h4>
+                    <div style="font-size: 0.73rem; color: #94a3b8; margin-top: 0.2rem;">
+                      <span style="color: #6ee7b7; font-weight: 600;">Animaciones:</span> Física de osciladores armónicos subamortiguados, descifrado criptográfico, atractor Kepleriano y HUD magnético.
+                    </div>
+                  </div>
+                  <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)" style="background: #10b981; color: #040911; font-weight: 800; font-size: 0.76rem; padding: 0.45rem 0.95rem;">📋 Copiar Prompt para ChatGPT / Copilot</button>
+                </div>
+                <pre class="copyable-prompt-pre">Actúa como Principal Creative Motion Engineer especialista en sistemas físicos deterministas en Canvas2D y el repositorio motion-prompt.
+Tu objetivo es generar UN ÚNICO ARCHIVO HTML AUTÓNOMO (`quantum_motion_dashboard.html`) que implemente un motor analítico a 60 FPS basado en física de osciladores armónicos amortiguados (Springs), eliminando cualquier librería externa.
+
+ARQUITECTURA FÍSICA Y VISUAL:
+1. INTEGRADOR DE RESORTES SUBAMORTIGUADOS:
+   - Implementa la clase Spring2D resolviendo en cada fotograma dt la ecuación diferencial de segundo orden:
+     a = -omega² * (x - target) - 2 * zeta * omega * v
+     donde omega = 10 (frecuencia natural) y zeta = 0.35 (factor de amortiguamiento).
+   - Al cambiar de escenario o filtrar datos, PROHIBIDO sobreescribir las posiciones de golpe: solo se actualiza target[] y los resortes trasladan la masa con rebote orgánico.
+2. EFECTO DE SCRAMBLE CRIPTOGRÁFICO EN KPIS (#004):
+   - Al conmutar escenarios, los números de los 4 paneles KPI superiores ejecutan un efecto de descifrado criptográfico: durante 350ms sustituyen aleatoriamente los dígitos por glifos técnicos ("0123456789ABCDEF!#%&amp;") hasta converger en la cifra real formateada en font-variant-numeric: tabular-nums.
+3. LIENZOS DE ANIMACIÓN CONCURRENTE A 60 FPS:
+   - Panel A (Serie Temporal Cuántica): Gráfico de área con línea de velocidad derivada |du/dt| y punto de anclaje (PIN) clicable para fijar intervalos horarios.
+   - Panel B (Campo Vectorial Dipolar): Matriz de vectores directores que rotan y se orientan hacia la posición del cursor del ratón.
+   - Panel C (Pila Isométrica 3D): 3 capas proyectadas en perspectiva con botón "Explode Z-Axis" que separa o colapsa los planos de datos en el eje Z.
+   - Panel D (Atractor Orbital Kepleriano): Partículas trazando órbitas elípticas según la ley de áreas r(θ) = a(1-e²)/(1+e*cosθ) para simular detección de fraude en tiempo real.
+4. HUD MAGNÉTICO FLOTANTE CON HIT-REGISTRY:
+   - Un CanvasHitRegistry detecta qué nodo, barra u órbita está bajo el cursor y proyecta un HUD flotante que persigue el ratón con micro-sparklines y la fórmula matemática exacta del elemento.
+5. CONTROL DE ENERGÍA Y BATERÍA (INTERSECTIONOBSERVER):
+   - Todo el bucle requestAnimationFrame se congela si el contenedor sale de la pantalla o la pestaña pasa a segundo plano (document.hidden).
+
+AQUÍ TIENES LOS ESCENARIOS DE NEGOCIO A CONFIGURAR:
+[Escenario 1: Flujo Nominal Q1 | Escenario 2: Estrés de Liquidez LCR | Escenario 3: Pico de Admisión STP Campaña Black Friday].</pre>
+              </div>
+            </div>
+
+            <!-- ===================================================================
+                 PANEL 5: PROMPT DIAPOSITIVA 16:9 INTERACTIVA INTRA-SLIDE
+                 =================================================================== -->
+            <div id="pv-panel-4" class="pv-content-panel" style="display: none;">
+              <div class="prompt-block-wrapper pro-version" style="margin: 0;">
+                <div class="prompt-block-header">
+                  <div>
+                    <h4 class="prompt-block-title">📊 Prompt Maestro: Micro-Slide 16:9 Interactiva Intra-Slide (PowerPoint &amp; Web)</h4>
+                    <div style="font-size: 0.73rem; color: #94a3b8; margin-top: 0.2rem;">
+                      <span style="color: #6ee7b7; font-weight: 600;">Animaciones:</span> Pestañas intra-slide sin recarga, slider What-If en lámina, botones de réplica a comité y transición Morph.
+                    </div>
+                  </div>
+                  <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)" style="background: #10b981; color: #040911; font-weight: 800; font-size: 0.76rem; padding: 0.45rem 0.95rem;">📋 Copiar Prompt para ChatGPT / Copilot</button>
+                </div>
+                <pre class="copyable-prompt-pre">Actúa como Principal Executive Presentation Designer experto en Comités de Dirección de Banca y metodología McKinsey / BCG.
+Tu objetivo es generar UN ÚNICO ARCHIVO HTML AUTÓNOMO (`slide_16_9_interactiva.html`) diseñado exactamente con relación de aspecto 16:9 de diapositiva de presentación, que sea 100% interactivo por dentro para proyectar en reuniones de alto nivel o insertar en PowerPoint.
+
+REGLAS DE DISEÑO 16:9 EJECUTIVO:
+1. CONTENEDOR 16:9 APRESTADO:
+   - Marco rígido con `aspect-ratio: 16 / 9; max-width: 980px; margin: auto; background: #060913; border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 22px; position: relative; overflow: hidden;`.
+2. ESTRUCTURA MCKINSEY DE ALTA DENSIDAD:
+   - Cabecera: Kicker de contextualización + Action Title cuantificado en negrita (ej. «La digitalización del Circulante eleva el RORWA al 3,18% y libera +24,6 M€ de EVA»).
+   - 3 Pestañas intra-slide conmutables sin recargar la página:
+     a) Pestaña 1: Tesis Ejecutiva (Embudo Multicanal Web/App vs Gestor).
+     b) Pestaña 2: Puente P&amp;L (Margen Financiero -&gt; FTP -&gt; EVA).
+     c) Pestaña 3: Matriz de Riesgo vs Retorno (Cuadrantes RORWA vs NPL).
+3. SLIDER DE SENSIBILIDAD EN VIVO EN LA CABECERA:
+   - Un control deslizante integrado en la propia lámina que permite al ponente simular en directo: "¿Qué ocurre si el volumen digital crece un +15%?", recalculando los números de la slide al instante.
+4. MUELLE INFERIOR DE "OBJECIONES DIFÍCILES DEL COMITÉ" (CHALLENGE BUTTONS):
+   - 3 Botones de réplica inmediata para preguntas habituales:
+     * Botón 1: "¿Por qué sube la mora en la App?" -&gt; Actualiza el gráfico destacando el efecto dilución por TPV.
+     * Botón 2: "¿Cumple el Hurdle Rate de Riesgos?" -&gt; Muestra la línea de corte en 2,50% y el colchón de +68 bps.
+     * Botón 3: "¿Cuál es el retorno neto en millones?" -&gt; Destaca el EVA neto de +24,6 M€.
+5. COMPATIBILIDAD POWERPOINT MORPH:
+   - En el código fuente, incluye comentarios detallando cómo mapear las etiquetas con la nomenclatura `!!nombre_objeto` para que al pegar los elementos vectoriales en PowerPoint 365, la transición Morph anime los objetos automáticamente entre diapositivas.
+
+AQUÍ TIENES EL CONTENIDO DE LA REUNIÓN:
+[Título del Comité: Estrategia de Canales Digitales &amp; Circulante Q4 | Asistentes: CEO, CRO, CFO | Decisión: Aprobación de presupuesto para onboarding digital STP].</pre>
+              </div>
+            </div>
+
+            <!-- ===================================================================
+                 PANEL 6: MEGA-PROMPT UNIVERSAL (TRAE TUS DATOS CSV / EXCEL)
+                 =================================================================== -->
+            <div id="pv-panel-5" class="pv-content-panel" style="display: none;">
+              <div class="prompt-block-wrapper pro-version" style="margin: 0;">
+                <div class="prompt-block-header">
+                  <div>
+                    <h4 class="prompt-block-title">🌐 Mega-Prompt Universal "Trae tus Datos": Construye Cualquier Dashboard Animado</h4>
+                    <div style="font-size: 0.73rem; color: #94a3b8; margin-top: 0.2rem;">
+                      <span style="color: #6ee7b7; font-weight: 600;">Animaciones:</span> Todas las primitivas deterministas #MP-01 a #MP-13 ensambladas sobre cualquier dataset.
+                    </div>
+                  </div>
+                  <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)" style="background: #10b981; color: #040911; font-weight: 800; font-size: 0.76rem; padding: 0.45rem 0.95rem;">📋 Copiar Prompt para ChatGPT / Copilot</button>
+                </div>
+                <pre class="copyable-prompt-pre">Actúa como Principal Full-Stack Financial UI Engineer y Maestro del Estándar Zero-CDN.
+Voy a proporcionarte al final mis datos crudos (en formato CSV, JSON o tabla de Excel).
+Tu objetivo es devolverme UN ÚNICO ARCHIVO HTML (`dashboard_financiero_ejecutivo.html`) 100% autocontenido, operativo y con diseño de nivel institucional (Dark Glass con paleta semántica, animaciones a 60 FPS y cero dependencias de red externas que puedan fallar en proxies bancarios).
+
+REGLAS DE ORO ARQUITECTÓNICAS (NO OMITIR NINGUNA):
+1. REGLA DE LOS 3 BLOQUES ESTRICTOS:
+   - Bloque 1 (&lt;style&gt;): Micro-CSS Grid nativo de 12 columnas. Variables :root (Dark Obsidian #060913, Tarjetas #0e1628, Bordes hairline rgba(255,255,255,0.08), Cian #06b6d4, Esmeralda #10b981, Coral #f43f5e). Tipografía tabular obligatoria font-variant-numeric: tabular-nums en todas las cifras numéricas. Soporte para modo claro (html.light) y regla @media print para generar informes en papel blanco A4 horizontal sin gastar tinta (#MP-13).
+   - Bloque 2 (&lt;script id="data-payload"&gt;): Objeto global inmutable window.REPORT_DATA conteniendo la estructura limpia de los datos que te paso al final.
+   - Bloque 3 (&lt;script id="app-engine"&gt;): Funciones puras Vanilla JS sin librerías externas.
+
+INCORPORA OBLIGATORIAMENTE LAS SIGUIENTES PRIMITIVAS MOTION-PROMPT:
+- #MP-01: Tarjetas .sp-card con iluminación especular Spotlight guiada por el cursor del ratón.
+- #MP-02: 4 Tarjetas KPI superiores con contadores numéricos animados mediante requestAnimationFrame y curva física easeOutQuart a 60 FPS.
+- #MP-05: Motor gráfico multivista en SVG vectorial nativo (&lt;svg viewBox="0 0 720 320"&gt;) con al menos 2 vistas conmutables mediante conmutador Segmented Pill (Vista 1: Comparativa Barras/Tendencia, Vista 2: Ranking con DataBars proporcionales).
+- #MP-07: Slide-Over Inspector Drawer lateral con backdrop-filter: blur(16px) que se desliza al hacer clic en cualquier fila de la tabla para mostrar la ficha en detalle.
+- #MP-08: Banner de Auto-Insights superior que redacta automáticamente un Action Title cuantitativo y detecta alertas o Red Flags según los umbrales de los datos.
+- #MP-09: Deslizador What-If en la cabecera que recalcule en tiempo real los KPIs, la tabla y los gráficos a 60 FPS.
+- #MP-10: Micro-sparklines SVG embebidos (&lt;polyline points="..."/&gt;) dentro de cada fila de la tabla.
+- #MP-11: Buscador en tiempo real por texto y cabeceras de tabla ordenables (▲▼).
+- #MP-12 &amp; #MP-13: Barra inferior flotante con botón Dark/Light, botón "📊 Exportar a Excel (.CSV)" con BOM UTF-8 (\uFEFF) y botón "🖨️ Guardar PDF" optimizado para A4.
+- GUARDIÁN VIEWPORT: IntersectionObserver para congelar bucles de animación cuando la sección no esté en pantalla.
+
+RESTRICCIONES ESTRICTAS:
+- PROHIBIDO usar &lt;script src="https://cdn.tailwindcss.com"&gt; o CDNs que dejen el lienzo en blanco.
+- PROHIBIDO truncar el código con "// ... resto del código". Entrega el archivo completo y 100% funcional.
+
+AQUÍ TIENES MIS DATOS CRUDOS:
+[PEGA AQUÍ TU TABLA DE EXCEL, SALIDA CSV O ESQUEMA DE DATABRICKS]</pre>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -3718,6 +4036,20 @@ function generateExecutiveNarrative(slice, hurdleRorwa = 2.50, maxStage2Pct = 7.
           btn.style.background = '';
           btn.style.color = '';
         }, 1800);
+      });
+    }
+
+    // 2B. Conmutador de Pestañas de la Bóveda de Prompts Maestros (Sección 05.8)
+    function setPromptVaultTab(idx) {
+      document.querySelectorAll('.pv-tab-btn').forEach((btn, i) => {
+        const isActive = (i === idx);
+        btn.classList.toggle('active', isActive);
+        btn.style.background = isActive ? '#10b981' : 'rgba(255,255,255,0.06)';
+        btn.style.color = isActive ? '#040911' : '#cbd5e1';
+        btn.style.fontWeight = isActive ? '700' : '600';
+      });
+      document.querySelectorAll('.pv-content-panel').forEach((panel, i) => {
+        panel.style.display = (i === idx) ? 'block' : 'none';
       });
     }
 
