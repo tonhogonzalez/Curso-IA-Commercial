@@ -717,26 +717,56 @@
               El fallo que reduce un 60% la calidad visual de los dashboards generados por IA es incrustar los datos en mitad del HTML o dentro de la configuración de las gráficas. Todo entregable HTML debe obligar al agente a dividir el archivo en <strong>tres compartimentos estancos</strong>:
             </p>
             <ol style="margin-top: 0.6rem; margin-left: 1.25rem; line-height: 1.65;">
-              <li><strong>Bloque 1 — Motor de Estilos y Design Tokens (<code>&lt;style&gt;</code> + Tailwind CDN)</strong>: Variables CSS nativas, tipografía numérica tabular (<code>tabular-nums</code>), curvas <code>cubic-bezier(0.16, 1, 0.3, 1)</code> y shader CSS de iluminación especular (<code>.sp-card</code>).</li>
+              <li><strong>Bloque 1 — Motor de Estilos y Design Tokens (<code>&lt;style&gt;</code> con Micro-CSS Fallback 100% Zero-CDN)</strong>: Grid Bento nativo de 12 columnas, variables CSS en <code>:root</code> (Dark <code>#060913</code>) y <code>html.light</code> (Executive Slate <code>#f8fafc</code>), tipografía numérica tabular (<code>font-variant-numeric: tabular-nums</code>), curvas físicas <code>cubic-bezier(0.16, 1, 0.3, 1)</code> y shader CSS de iluminación especular (<code>.sp-card</code>). <em>PROHIBIDO depender de <code>cdn.tailwindcss.com</code> en producción bancaria</em>.</li>
               <li><strong>Bloque 2 — Payload de Datos Aislado (<code>&lt;script id="data-payload"&gt;</code>)</strong>: Un único objeto global inmutable (<code>window.REPORT_DATA = {...}</code>) con todas las métricas, vectores de 12 meses (sparklines) y enlaces Sankey precalculados en PySpark o Python.</li>
-              <li><strong>Bloque 3 — Motor Reactivo de Renderizado e Interacción (<code>&lt;script id="app-engine"&gt;</code>)</strong>: Funciones puras que leen <code>window.REPORT_DATA</code>, hidratan el DOM, conectan eventos de filtrado cruzado (<em>Cross-Filtering</em>) y sincronizan instancias de Apache ECharts.</li>
+              <li><strong>Bloque 3 — Motor Reactivo de Renderizado e Interacción (<code>&lt;script id="app-engine"&gt;</code>)</strong>: Funciones puras que leen <code>window.REPORT_DATA</code>, hidratan el DOM, conectan eventos de filtrado cruzado (<em>Cross-Filtering</em>) y sincronizan instancias de Apache ECharts o motores vectoriales SVG nativos.</li>
             </ol>
           </div>
 
-          <h3>0.1. El Patrón «Crítico Estético» en 2 Nodos (Por qué dividir el Prompt duplica la calidad)</h3>
+          <!-- CALLOUT DE SEGURIDAD & GOBIERNO TI CORPORATIVO -->
+          <div class="concept-card" style="border-left: 4px solid #f59e0b; background: rgba(245, 158, 11, 0.08); margin: 1.2rem 0; padding: 1rem 1.25rem;">
+            <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.4rem;">
+              <span style="font-size: 1.25rem;">🛡️</span>
+              <strong style="color: #fbbf24; font-size: 0.92rem; text-transform: uppercase; letter-spacing: 0.05em;">Aviso de Seguridad TI Corporativa: Canales Homologados para Compartir HTML</strong>
+            </div>
+            <p style="font-size: 0.84rem; line-height: 1.6; color: #cbd5e1; margin-bottom: 0.5rem;">
+              En la inmensa mayoría de entidades financieras y grandes corporaciones protegidas por <strong>Microsoft Defender for Office 365 / Exchange Online</strong>, los archivos <code>.html</code> adjuntos en correos que contienen código JavaScript ejecutable son puestos en cuarentena automática o bloqueados por políticas EOP (*Exchange Online Protection*).
+            </p>
+            <div style="font-size: 0.82rem; line-height: 1.55; color: #e2e8f0;">
+              <strong>Rutas corporativas recomendadas para compartir dashboards sin bloqueos:</strong>
+              <ul style="margin: 0.4rem 0 0.2rem 1.2rem;">
+                <li><strong>1. Espacio Compartido OneDrive / SharePoint Corporativo:</strong> Sube el archivo <code>.html</code> a una biblioteca de SharePoint de tu unidad de negocio y comparte un enlace interno de <em>"Solo lectura para miembros de la organización"</em> (o renómbralo a <code>.aspx</code> si tu tenant permite la renderización web nativa).</li>
+                <li><strong>2. Databricks Apps / Databricks Lakeview:</strong> Publica la aplicación directamente dentro de tu workspace de Databricks para que el comité acceda autenticado mediante SSO corporativo (Entra ID) sin mover archivos binarios.</li>
+                <li><strong>3. Distribución en contenedor <code>.zip</code> o portal documental interno:</strong> Si necesitas enviarlo por correo o Teams, comprímelo previamente en un <code>.zip</code> cifrado o colócalo en el repositorio de red compartido de tu departamento.</li>
+              </ul>
+            </div>
+          </div>
+
+          <h3>0.1. El Patrón «Crítico Estético» en 2 Nodos: La Bifurcación Clave entre VS Code y M365 Copilot</h3>
           <p>
-            Tanto en <strong>VS Code</strong> como especialmente en <strong>Microsoft 365 Copilot</strong> (donde la ventana de tokens de respuesta por turno es más conservadora), la estrategia más efectiva consiste en separar el trabajo en dos pasos secuenciales:
+            Separar el flujo en dos turnos agénticos (<strong>Turno 1: Datos &amp; Estructura</strong> → <strong>Turno 2: Crítico Estético &amp; Motion</strong>) duplica la calidad del resultado. Sin embargo, para no frustrarse en el día a día, es imprescindible entender cómo se comporta cada entorno:
           </p>
 
           <div class="mermaid">
-          flowchart LR
-            subgraph Paso1 ["Turno / Nodo 1: Arquitecto de Datos y Estructura"]
-              D1["Tabla PySpark / Excel\n(Canales Web, App, Cartera)"] --> A1["🤖 Prompt Nodo 1:\nPre-agregación Vectorial + JSON\n+ Esqueleto HTML Funcional"]
+          flowchart TD
+            subgraph Turno1 ["Turno / Nodo 1: Arquitecto de Datos y Esqueleto Funcional"]
+              D1["Tabla PySpark / Excel\n(Pre-agregada a &lt;500 filas)"] --> A1["🤖 Prompt Nodo 1:\nwindow.REPORT_DATA limpio\n+ Esqueleto HTML Bento 12-col"]
             end
-            subgraph Paso2 ["Turno / Nodo 2: Crítico Estético & Motion"]
-              A1 --> A2["✨ Prompt Nodo 2 (/motion-critic):\nProhibido tocar datos. Dedica 100% tokens a:\nSpotlight CSS + ECharts Morphing + Drawer + Ctrl+K"]
+            subgraph Turno2 ["Turno / Nodo 2: Crítico Estético &amp; Motion (/motion-critic)"]
+              A1 --> BIF{"¿En qué entorno estás ejecutando el Nodo 2?"}
+              BIF -->|"VS Code / Cursor / Claude Code\n(Ventana amplia de salida)"| VSC["💻 Flujo VS Code:\nEl agente edita o reescribe\nel archivo completo en disco\n(1.200+ líneas sin truncar)"]
+              BIF -->|"Microsoft 365 Copilot (Web/Teams)\n(Límite ~350-450 líneas)"| M365["🎯 Flujo M365 Copilot (Modular):\nPROHIBIDO pedir todo el HTML.\nPide SÓLO el bloque &lt;style&gt;\ny la función initCharts() para inyectar"]
             end
-            A2 --> Out["🏆 Terminal Ejecutivo 60 FPS\n(Listo para Comité / Databricks)"]
+            VSC --> Out["🏆 Terminal Ejecutivo 60 FPS\n(Listo para Comité de Dirección)"]
+            M365 --> Out
+          </div>
+
+          <div class="concept-card highlight" style="margin-top: 1rem;">
+            <div class="concept-card-label">⚡ Regla de Oro contra el Efecto "Lazy Generation" en M365 Copilot</div>
+            <p style="font-size: 0.83rem; line-height: 1.6; color: #cbd5e1;">
+              En Microsoft 365 Copilot (Teams/Web), si le pides al Turno 2 <em>«Reescribe todo el archivo HTML mejorado»</em>, el modelo superará su presupuesto de tokens de salida y te devolverá <code>&lt;!-- ... resto del código igual ... --&gt;</code>, destrozando el archivo. 
+              <strong>La solución profesional:</strong> pide explícitamente en el prompt: <em>«Devuélveme ÚNICAMENTE el bloque &lt;style&gt; mejorado y la función JavaScript initCharts(), sin el esqueleto HTML ni los datos»</em>. De este modo, M365 Copilot dedica el 100% de su capacidad a pulir el diseño visual y tú solo tienes que pegar esos dos fragmentos en tu archivo base.
+            </p>
           </div>
         </div>
       </section>
@@ -805,11 +835,11 @@
           </div>
 
           <!-- =================================================================
-               SUBSECCIÓN 1.2: CATÁLOGO INTERACTIVO MOTION-PROMPT (#MP-01 A #MP-12)
+               SUBSECCIÓN 1.2: CATÁLOGO INTERACTIVO MOTION-PROMPT (#MP-01 A #MP-13)
                ================================================================= -->
-          <h3 id="motion-prompt-catalog-sec" style="margin-top: 2.2rem;">1.2. 🎬 Catálogo Visual Interactivo <code>motion-prompt</code> para Dashboards (<code>#MP-01</code> a <code>#MP-12</code> — Sistema <em>"Pick &amp; Send"</em> con Código Real)</h3>
+          <h3 id="motion-prompt-catalog-sec" style="margin-top: 2.2rem;">1.2. 🎬 Catálogo Visual Interactivo <code>motion-prompt</code> para Dashboards (<code>#MP-01</code> a <code>#MP-13</code> — Sistema <em>"Pick &amp; Send"</em> con Código Real)</h3>
           <p>
-            Inspirado en el repositorio <a href="https://github.com/showheyohtaki/motion-prompt" target="_blank" rel="noopener" style="color:#38bdf8;font-weight:600;"><code>showheyohtaki/motion-prompt</code></a>, este catálogo soluciona el <strong>principal motivo por el que los prompts dan resultados pobres en M365 Copilot y VS Code</strong>: cuando le pides a la IA con palabras vagas <em>«haz que se vea moderno y fluido»</em>, la IA inventa un CSS pobre. En cambio, aquí tienes <strong>12 piezas numeradas (<code>#MP-01</code> a <code>#MP-12</code>) con su animación funcionando en vivo y su receta de código determinista (Zero-CDN, 100% libre de bloqueos de red)</strong>.
+            Inspirado en el repositorio <a href="https://github.com/showheyohtaki/motion-prompt" target="_blank" rel="noopener" style="color:#38bdf8;font-weight:600;"><code>showheyohtaki/motion-prompt</code></a>, este catálogo soluciona el <strong>principal motivo por el que los prompts dan resultados pobres en M365 Copilot y VS Code</strong>: cuando le pides a la IA con palabras vagas <em>«haz que se vea moderno y fluido»</em>, la IA inventa un CSS pobre. En cambio, aquí tienes <strong>13 piezas numeradas (<code>#MP-01</code> a <code>#MP-13</code>) con su animación funcionando en vivo y su receta de código determinista (Zero-CDN, 100% libre de bloqueos de red)</strong>, incluyendo el motor de impresión ejecutiva en modo papel suizo para Comités de Riesgos.
           </p>
           <p>
             <strong>Cómo usarlo en tu flujo diario (Databricks → VS Code / M365 Copilot):</strong>
@@ -826,13 +856,13 @@
                   🎯 MOTION-PROMPT PICKER BAR • SELECCIONA TUS RECETAS PARA VS CODE / M365 COPILOT
                 </div>
                 <div id="mp-picker-summary" style="font-size: 0.88rem; color: #f8fafc; font-weight: 700; margin-top: 0.2rem;">
-                  <span id="mp-selected-count">6</span> primitivas seleccionadas (haz clic en cualquier insignia o tarjeta para añadir/quitar):
+                  <span id="mp-selected-count">7</span> primitivas seleccionadas (haz clic en cualquier insignia o tarjeta para añadir/quitar):
                 </div>
                 <div id="mp-selected-badges" style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.45rem;"></div>
               </div>
               <div style="display: flex; flex-wrap: wrap; gap: 0.45rem;">
                 <button type="button" onclick="mpSelectPreset('essential')" style="padding: 0.38rem 0.7rem; font-size: 0.72rem; border-radius: 6px; border: 1px solid rgba(6,182,212,0.45); background: rgba(6,182,212,0.15); color: #67e8f9; cursor: pointer; font-weight: 600;">⚡ Pack Esencial M365 Copilot (6)</button>
-                <button type="button" onclick="mpSelectPreset('all')" style="padding: 0.38rem 0.7rem; font-size: 0.72rem; border-radius: 6px; border: 1px solid rgba(99,102,241,0.45); background: rgba(99,102,241,0.16); color: #c7d2fe; cursor: pointer; font-weight: 600;">🏆 Seleccionar Todas (12)</button>
+                <button type="button" onclick="mpSelectPreset('all')" style="padding: 0.38rem 0.7rem; font-size: 0.72rem; border-radius: 6px; border: 1px solid rgba(99,102,241,0.45); background: rgba(99,102,241,0.16); color: #c7d2fe; cursor: pointer; font-weight: 600;">🏆 Seleccionar Todas (13)</button>
                 <button type="button" onclick="mpCopyPickedPrompt(this)" style="padding: 0.42rem 0.9rem; font-size: 0.75rem; border-radius: 7px; border: none; background: #10b981; color: #040911; cursor: pointer; font-weight: 800;">📋 Copiar Prompt con Código de las #MP Elegidas</button>
                 <button type="button" onclick="mpSendToWorkbench()" style="padding: 0.42rem 0.8rem; font-size: 0.74rem; border-radius: 7px; border: 1px solid rgba(16,185,129,0.5); background: rgba(16,185,129,0.15); color: #6ee7b7; cursor: pointer; font-weight: 700;">🛠️ Inyectar en Workbench (Sección 07) ↓</button>
               </div>
@@ -1331,11 +1361,11 @@ Incluye siempre `setupCanvas(canvas)`, `class SpringChannel`, `class CanvasHitRe
           <!-- BLOQUE 3.0: EXTRACTOR DE CONTEXTO DE DATABRICKS PARA VS CODE / M365 COPILOT -->
           <div class="prompt-block-wrapper m365-version">
             <div class="prompt-block-header">
-              <h3 class="prompt-block-title">🧲 Paso 0 (Tu Flujo Diario): Extractor de Contexto en Databricks (<code>export_ai_context</code>) para Pegar en VS Code o M365 Copilot</h3>
+              <h3 class="prompt-block-title">🧲 Paso 0 (Tu Flujo Diario): Extractor de Contexto PySpark con Guardián de Payload (<code>build_safe_payload</code>)</h3>
               <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Extractor de Contexto PySpark</button>
             </div>
             <p style="font-size: 0.83rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
-              Cuando estás analizando tablas en Databricks y quieres pasarle el contexto a <strong>VS Code</strong> o a <strong>M365 Copilot</strong> para que te construya el dashboard o informe, ejecuta esta función sobre tu DataFrame ya agregado (<code>export_ai_context(df_resumen)</code>). Te imprimirá en pantalla el bloque exacto (esquema + rangos + JSON limpio sin errores de <code>Decimal</code> ni fechas) listo para copiar y pegar:
+              <strong>🛡️ Regla Obligatoria de Producción (Límites de displayHTML y DOM):</strong> En Databricks, <code>displayHTML()</code> tiene un límite estricto de tamaño (~10-20 MB) y corre en un <code>&lt;iframe&gt;</code> aislado. <em>PROHIBIDO volcar DataFrames a nivel de contrato o cliente individual sin agregar</em>. Pre-agrega siempre en PySpark con <code>.groupBy().agg()</code> para que <code>REPORT_DATA</code> nunca supere 500–1.000 filas (&lt; 250 KB). La función <code>build_safe_payload</code> valida automáticamente el volumen antes de inyectar:
             </p>
             <pre class="copyable-prompt-pre">import json
 from decimal import Decimal
@@ -1347,19 +1377,31 @@ def _spark_safe_json(obj):
     if isinstance(obj, (date, datetime)): return obj.isoformat()
     return str(obj)
 
+def build_safe_payload(spark_df, max_rows=500):
+    """
+    Control de seguridad para Databricks displayHTML() y correo corporativo.
+    Evita bloqueos de memoria en el DOM garantizando payloads &lt; 250 KB.
+    """
+    row_count = spark_df.count()
+    if row_count &gt; max_rows:
+        print(f"⚠️ [AVISO ARQUITECTURA]: El DataFrame tiene {row_count} filas.")
+        print(f"   Recortando a top {max_rows} para evitar saturar el DOM. Pre-agrega en PySpark con .groupBy().")
+        spark_df = spark_df.limit(max_rows)
+    
+    records = [row.asDict(recursive=True) for row in spark_df.collect()]
+    payload_json = json.dumps(records, default=_spark_safe_json, ensure_ascii=False)
+    size_kb = len(payload_json.encode('utf-8')) / 1024
+    print(f"✅ Payload generado con éxito: {len(records)} registros ({size_kb:.1f} KB)")
+    return payload_json, records
+
 def export_ai_context(df, title="Análisis Cartera Comercial", max_rows=30):
     """
     Ejecuta esta función sobre tu DataFrame agregado en Databricks.
     Copia el texto que imprime en consola y pégalo junto con tu Prompt en VS Code o M365 Copilot.
     """
     fields_info = [f"{f.name} ({f.dataType.simpleString().upper()})" for f in df.schema.fields]
-    rows_dict = [r.asDict(recursive=True) for r in df.limit(max_rows).collect()]
-    payload = {
-        "meta": {"title": title, "rows_exported": len(rows_dict), "hurdle_rorwa": 2.50},
-        "columns": [f.name for f in df.schema.fields],
-        "rows": rows_dict
-    }
-    json_str = json.dumps(payload, default=_spark_safe_json, ensure_ascii=False)
+    json_str, rows_dict = build_safe_payload(df, max_rows=max_rows)
+    
     print("==========================================================================")
     print("📋 COPIA DESDE AQUÍ Y PÉGALO EN VS CODE O M365 COPILOT:")
     print("==========================================================================")
@@ -2016,15 +2058,19 @@ displayHTML(final_wr)</pre>
           <!-- SUBSECCIÓN 3.4: DE LA CELDA DE DATABRICKS AL CORREO ELECTRÓNICO (EJECUCIÓN 100% LOCAL FILE://) -->
           <h3>3.4. De la Celda de Databricks al Correo Electrónico: Empaquetador <code>.HTML</code> Portable en 1 Clic y Utilidades Locales para el Receptor</h3>
           <p>
-            Como ejecutas el código en celdas de <strong>Databricks</strong> pero envías los dashboards por <strong>correo electrónico (Outlook / Teams)</strong> para que cada director, gestor o analista los abra en local en su propio ordenador (<code>file:///C:/Users/.../Downloads/Informe.html</code> sin acceso a Databricks), añade siempre este <strong>Kit de Portabilidad y Ejecución Local</strong> al final de tu celda PySpark.
+            Como ejecutas el código en celdas de <strong>Databricks</strong> pero distribuyes los dashboards hacia directores, gestores o analistas para que los abran en local en su propio ordenador (<code>file:///C:/Users/.../Downloads/Informe.html</code> sin necesidad de licencia ni acceso a Databricks), añade siempre este <strong>Kit de Portabilidad y Ejecución Local</strong> al final de tu celda PySpark.
           </p>
+          <div class="concept-card" style="border-left: 4px solid #f59e0b; background: rgba(245, 158, 11, 0.08); margin: 0.8rem 0; padding: 0.85rem 1.1rem; font-size: 0.83rem; line-height: 1.55;">
+            <strong style="color: #fbbf24;">⚠️ Aviso de Seguridad en Outlook / Exchange Online:</strong> Si envías el archivo <code>.html</code> directamente como adjunto de correo en un entorno corporativo con Microsoft Defender, es muy probable que sea retenido por contener JavaScript. 
+            <strong>Ruta recomendada:</strong> Sube el archivo generado a una carpeta compartida de <strong>OneDrive / SharePoint</strong> y envía el enlace, publícalo como <strong>Databricks App</strong> interna o comprímelo previamente en un archivo <strong><code>.zip</code></strong>.
+          </div>
           <p>
-            Este bloque resuelve <strong>3 necesidades críticas del trabajo diario</strong>: (1) muestra en tu celda de Databricks un botón verde <strong>«📥 Descargar .HTML Autocontenido para Enviar por Correo»</strong> codificado en Base64 para que bajes el fichero ya hidratado con los datos en 1 clic; (2) añade dentro del dashboard del receptor el botón <strong>«📊 Exportar Vista Filtrada a Excel/CSV»</strong> para que quien recibe el correo pueda bajarse a Excel los datos que está filtrando en pantalla; y (3) incluye reglas <code>@media print</code> y botón <strong>«🖨️ Guardar Informe en PDF A4»</strong>:
+            Este bloque resuelve <strong>3 necesidades críticas del trabajo diario</strong>: (1) muestra en tu celda de Databricks un botón verde <strong>«📥 Descargar .HTML Autocontenido para Enviar por Correo»</strong> codificado en Base64 para que bajes el fichero ya hidratado con los datos en 1 clic; (2) añade dentro del dashboard del receptor el botón <strong>«📊 Exportar Vista Filtrada a Excel/CSV»</strong> para que quien recibe el correo pueda bajarse a Excel los datos que está filtrando en pantalla; y (3) incluye reglas <code>@media print</code> (#MP-13) en modo papel suizo blanco y botón <strong>«🖨️ Guardar Informe en PDF A4»</strong> (sin consumir tóner ni imprimir fondos oscuros):
           </p>
 
           <div class="prompt-block-wrapper pro-version">
             <div class="prompt-block-header">
-              <h4 class="prompt-block-title">📧 Snippet Maestro Databricks → Correo Local: Empaquetador Base64 + Exportador CSV Local + PDF Print</h4>
+              <h4 class="prompt-block-title">📧 Snippet Maestro Databricks → Correo Local: Empaquetador Base64 + Exportador CSV Local + PDF Print Suizo</h4>
               <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Kit Databricks-a-Correo</button>
             </div>
             <pre class="copyable-prompt-pre"># ==============================================================================
@@ -2035,13 +2081,18 @@ import base64
 
 # 1. Utilidades JavaScript que viajarán DENTRO del HTML para quien lo abra desde el correo:
 #    - Descargar tabla filtrada actual a CSV compatible con Excel en español (BOM UTF-8 + punto y coma)
-#    - Imprimir / Guardar vista actual como PDF Ejecutivo A4 Horizontal
+#    - Imprimir / Guardar vista actual como PDF Ejecutivo A4 Horizontal en Papel Blanco (#MP-13)
 #    - Auto-descargar copia portable del propio archivo .html con el estado actual
 local_receiver_toolbar_html = r"""
 &lt;style&gt;
   @media print {
-    body { background: #070B14 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-    .no-print-bar { display: none !important; }
+    body { background: #ffffff !important; color: #0f172a !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    .no-print-bar, .drawer-360, .ctrl-k-palette, button { display: none !important; }
+    .sp-card, .card-box { background: #ffffff !important; border: 1px solid #cbd5e1 !important; box-shadow: none !important; color: #0f172a !important; }
+    .sp-card::after, .sp-card::before { display: none !important; }
+    h1, h2, h3, h4, span, div, td, th { color: #0f172a !important; text-shadow: none !important; }
+    table { border-collapse: collapse !important; width: 100% !important; }
+    th, td { border-bottom: 1px solid #e2e8f0 !important; color: #0f172a !important; }
     @page { size: A4 landscape; margin: 8mm; }
   }
 &lt;/style&gt;
@@ -3077,19 +3128,50 @@ AQUÍ TIENES EL CONTEXTO Y DATOS EXTRAÍDOS DE DATABRICKS:
 [PEGA AQUÍ LA SALIDA DE export_ai_context(df) O TUS COLUMNAS/DATOS]</pre>
           </div>
 
-          <div class="prompt-block-wrapper m365-version">
+          <!-- OPCIÓN A: PARA VS CODE / CURSOR / CLAUDE CODE (VENTANA AMPLIA) -->
+          <div class="prompt-block-wrapper pro-version">
             <div class="prompt-block-header">
-              <h4 class="prompt-block-title">🥈 Prompt de Refinamiento Quirúrgico (Nodo 2 <code>/motion-critic</code>: Para Mejorar un HTML que te haya quedado flojo sin romper sus datos)</h4>
-              <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Prompt Refinador Nodo 2</button>
+              <h4 class="prompt-block-title">🥈 Opción A: Prompt Nodo 2 para VS Code / Cursor / Claude Code (Reescritura de Archivo Completo en Disco)</h4>
+              <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Prompt Nodo 2 (VS Code Full)</button>
             </div>
-            <pre class="copyable-prompt-pre">Mantén 100% intactos los datos de `window.REPORT_DATA` y las métricas de negocio del código anterior, pero REESCRIBE la capa visual y de interacción porque ha quedado demasiado básica. Aplica obligatoriamente estas 5 recetas de código deterministas:
+            <pre class="copyable-prompt-pre">Mantén 100% intactos los datos de `window.REPORT_DATA` y las métricas de negocio del código anterior, pero REESCRIBE el archivo HTML completo en disco incorporando la capa visual y de interacción de nivel ejecutivo. Aplica obligatoriamente estas recetas de código deterministas:
 
-1. ELIMINA cualquier dependencia de `cdn.tailwindcss.com`. Usa CSS Grid nativo en `&lt;style&gt;` con tema oscuro `#060913` y soporte `html.light` (`#f8fafc`).
+1. ELIMINA cualquier dependencia de `cdn.tailwindcss.com`. Usa CSS Grid nativo en `&lt;style&gt;` con tema oscuro `#060913`, soporte `html.light` (`#f8fafc`) y regla `@media print` en papel blanco A4 (#MP-13).
 2. INYECTA iluminación Spotlight en cada tarjeta `.sp-card` con este listener exacto:
    `document.addEventListener('mousemove', e =&gt; document.querySelectorAll('.sp-card').forEach(c =&gt; { const r = c.getBoundingClientRect(); c.style.setProperty('--mx', (e.clientX-r.left)+'px'); c.style.setProperty('--my', (e.clientY-r.top)+'px'); }));`
 3. REEMPLAZA cualquier gráfico vacío o dependiente de CDN externo por un motor `&lt;svg viewBox="0 0 720 330"&gt;` nativo con 3 pestañas conmutables (1. Comparativa Barras/Línea, 2. Puente P&amp;L / Ranking EVA, 3. Cuadrante Scatter Riesgo vs Retorno) donde hacer clic en una barra o burbuja filtre toda la pantalla (`selectSegment(id)`).
 4. AÑADE en la cabecera un buscador instantáneo (`oninput`), 2 sliders de simulación What-If (Spread bps y Mora/Fricción) y un Banner de Auto-Insights que redacte automáticamente las alertas de negocio al filtrar.
-5. AÑADE en cada fila de la tabla un micro-sparkline `&lt;svg width="64" height="20"&gt;&lt;polyline .../&gt;&lt;/svg&gt;` y haz que al pulsar una fila se abra un Slide-Over Drawer lateral con el desglose completo.</pre>
+5. AÑADE en cada fila de la tabla un micro-sparkline `&lt;svg width="64" height="20"&gt;&lt;polyline .../&gt;&lt;/svg&gt;` y haz que al pulsar una fila se abra un Slide-Over Drawer lateral con el desglose completo.
+6. INCORPORA un IntersectionObserver en los canvas/animaciones para pausar el bucle requestAnimationFrame cuando el elemento no esté en pantalla.</pre>
+          </div>
+
+          <!-- OPCIÓN B: PARA MICROSOFT 365 COPILOT WEB / TEAMS (MODULAR ANTI-TRUNCADO) -->
+          <div class="prompt-block-wrapper m365-version">
+            <div class="prompt-block-header">
+              <h4 class="prompt-block-title">🎯 Opción B: Prompt Nodo 2 para Microsoft 365 Copilot (Modular Quirúrgico — Cero Truncado por Límite de Tokens)</h4>
+              <button type="button" class="copy-action-btn" onclick="copyPreBlock(this)">📋 Copiar Prompt Nodo 2 (M365 Modular)</button>
+            </div>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
+              <strong>⚠️ Por qué usar este formato en M365 Copilot (Teams/Web):</strong> M365 Copilot suele truncar respuestas que superan las ~400 líneas devolviendo <code>// ... resto del código igual</code>. Este prompt le prohíbe reescribir todo el HTML y le pide <strong>exclusivamente dos bloques de reemplazo</strong> que puedes copiar y pegar en 10 segundos:
+            </p>
+            <pre class="copyable-prompt-pre">Actúa como Principal Motion &amp; UX Critic. Mantén 100% intactos los datos de `window.REPORT_DATA` y el esqueleto HTML del Turno 1.
+
+⚠️ RESTRICCIÓN DE LONGITUD ESTRICTA:
+NO reescribas todo el archivo HTML ni vuelvas a imprimir el esqueleto ni los datos de window.REPORT_DATA (se agotaría el límite de tokens).
+Devuélveme ÚNICAMENTE DOS BLOQUES DE CÓDIGO para reemplazar en mi archivo:
+
+BLOQUE 1: El nuevo bloque `&lt;style&gt;...&lt;/style&gt;` completo, incluyendo:
+- Variables CSS `:root` (Dark `#060913`), `html.light` (`#f8fafc`) y `@media print` A4 papel blanco (#MP-13).
+- Tipografía numérica `font-variant-numeric: tabular-nums` (JetBrains Mono/Consolas).
+- Shader de iluminación Spotlight (`.sp-card::after` con radial-gradient reactivo).
+- Clases para el Slide-Over Drawer lateral (`.drawer-360`) y conmutador Segmented Pill.
+
+BLOQUE 2: La nueva función JavaScript `&lt;script&gt;function initAdvancedVisualEngine() { ... }&lt;/script&gt;`, incluyendo:
+- Animación de contadores KPI con requestAnimationFrame (`easeOutQuart`).
+- Motor SVG nativo multivista (3 vistas conmutables con click-to-filter, sin librerías externas).
+- Lógica de los sliders What-If y actualización del Banner de Auto-Insights.
+- Apertura del Slide-Over Drawer al hacer clic en filas de la tabla.
+- Guardián IntersectionObserver para pausar animaciones fuera de pantalla.</pre>
           </div>
 
           <!-- =====================================================================
@@ -4020,6 +4102,7 @@ function generateExecutiveNarrative(slice, hurdleRorwa = 2.50, maxStage2Pct = 7.
     function drawTopographicSurface3D() {
       const canvas = document.getElementById('topographic-3d-canvas');
       if (!canvas) return;
+      if (canvas.dataset.inView === "false" && !isSurfDragging) return;
       const ctx = canvas.getContext('2d');
       const w = canvas.width, h = canvas.height;
       ctx.clearRect(0, 0, w, h);
@@ -5198,6 +5281,7 @@ Entrega el código HTML completo en un único bloque sin truncar ninguna funció
     function drawVideoSceneCanvas(progress = 1) {
       const canvas = document.getElementById('explanatory-video-canvas');
       if (!canvas) return;
+      if (canvas.dataset.inView === "false" && !vidIsPlaying) return;
       const ctx = canvas.getContext('2d');
       const w = canvas.width, h = canvas.height;
       const sc = VIDEO_SCENES[vidSceneIdx];
@@ -5554,10 +5638,31 @@ function sortRows(col) { sortAsc = (sortCol === col) ? !sortAsc : false; sortCol
         recipe: `/* #MP-12: Dual Theme Switcher (OLED Dark / Paper Light) + CSV UTF-8 BOM */
 html[data-theme="light"] { --bg:#f8fafc; --card:#ffffff; --border:rgba(15,23,42,0.12); --text:#0f172a; --muted:#475569; }
 function toggleTheme(){ const h=document.documentElement; h.setAttribute('data-theme', h.getAttribute('data-theme')==='light'?'dark':'light'); }`
+      },
+      {
+        id: 'MP-13',
+        name: 'Swiss Executive Print Engine',
+        cat: 'Comité & @media print',
+        desc: 'Modo papel suizo de alto contraste para Comités de Riesgos: fondo blanco puro, vector nítido y A4 landscape sin gasto de tóner.',
+        stageHtml: `<div style="display:flex;align-items:center;justify-content:center;gap:8px;background:#ffffff;border:1px solid #cbd5e1;padding:8px 12px;border-radius:6px;cursor:pointer;" onclick="alert('Demostración de impresión: El modo @media print convierte automáticamente el dashboard en papel suizo blanco #ffffff, ocultando barras flotantes y ajustando tablas a A4 apaisado.')">
+          <span style="font-size:12px;">🖨️</span>
+          <span class="tabular-mono" style="font-size:10px;font-weight:700;color:#0f172a;">A4 Swiss Paper • Ctrl+P</span>
+        </div>`,
+        recipe: `/* #MP-13: Swiss Executive Print Engine (@media print A4 & Paper Mode) */
+@media print {
+  body { background: #ffffff !important; color: #0f172a !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  .no-print-bar, .drawer-360, .ctrl-k-palette, nav, button, .interactive-controls { display: none !important; }
+  .sp-card, .card-box { background: #ffffff !important; border: 1px solid #cbd5e1 !important; box-shadow: none !important; color: #0f172a !important; }
+  .sp-card::after, .sp-card::before { display: none !important; }
+  h1, h2, h3, h4, span, div, td, th { color: #0f172a !important; text-shadow: none !important; }
+  table { border-collapse: collapse !important; width: 100% !important; }
+  th, td { border-bottom: 1px solid #e2e8f0 !important; color: #0f172a !important; }
+  @page { size: A4 landscape; margin: 8mm; }
+}`
       }
     ];
 
-    let mpSelectedSet = new Set(['MP-01', 'MP-02', 'MP-05', 'MP-08', 'MP-09', 'MP-12']);
+    let mpSelectedSet = new Set(['MP-01', 'MP-02', 'MP-05', 'MP-08', 'MP-09', 'MP-12', 'MP-13']);
 
     function renderMpCatalog() {
       const grid = document.getElementById('mp-catalog-container');
@@ -5600,7 +5705,7 @@ function toggleTheme(){ const h=document.documentElement; h.setAttribute('data-t
       } else if (mode === 'none') {
         mpSelectedSet = new Set();
       } else {
-        mpSelectedSet = new Set(['MP-01', 'MP-02', 'MP-05', 'MP-08', 'MP-09', 'MP-12']);
+        mpSelectedSet = new Set(['MP-01', 'MP-02', 'MP-05', 'MP-08', 'MP-09', 'MP-12', 'MP-13']);
       }
       renderMpCatalog();
       buildCustomMasterPrompt();
@@ -5703,7 +5808,7 @@ function toggleTheme(){ const h=document.documentElement; h.setAttribute('data-t
         rules.push('5. INSPECTOR LATERAL 360° SLIDE-OVER (#MP-07) + ORDENACIÓN TABULAR (#MP-11):\n   - Al pulsar cualquier fila de la tabla o elemento del gráfico, abre un Drawer lateral con Ficha 360° y gráfico Radar SVG de 5 ejes.');
       }
       if (modExport) {
-        rules.push('6. CONMUTADOR DARK/LIGHT + BARRA DE EXPORTACIÓN PORTABLE (#MP-12):\n   - Incluye botón `🌓 Dark / Light` (`html[data-theme="light"]`), `📊 Exportar a Excel (.CSV)` con BOM UTF-8 `\\uFEFF` y `🖨️ Guardar Vista PDF`.');
+        rules.push('6. CONMUTADOR DARK/LIGHT + MODO IMPRESIÓN SUIZA + EXPORTACIÓN PORTABLE (#MP-12 & #MP-13):\n   - Incluye botón `🌓 Dark / Light` (`html[data-theme="light"]`), regla `@media print` en papel blanco A4 apaisado libre de fondos negros y `📊 Exportar a Excel (.CSV)` con BOM UTF-8 `\\uFEFF` y `🖨️ Guardar Vista PDF`.');
       }
 
       const pickedMp = MOTION_PROMPT_CATALOG.filter(x => mpSelectedSet.has(x.id));
@@ -5726,7 +5831,7 @@ ${rules.join('\n\n')}
 ${mpBlock}
 RESTRICCIONES NEGATIVAS ESTRICTAS:
 - PROHIBIDO usar <script src="https://cdn.tailwindcss.com"> o depender de CDNs externos que dejen el lienzo en blanco en red corporativa.
-- PROHIBIDO truncar el código con comentarios tipo "// ... resto del código". Entrega el archivo completo y 100% operativo.`;
+- PROHIBIDO truncar el código con comentarios tipo "// ... resto del código". Si estás en VS Code entrega el archivo completo; si estás en M365 Copilot entrega exclusivamente los bloques modulares solicitados (<style> e initCharts).`;
 
       const out = document.getElementById('pb-generated-prompt');
       if (out) out.textContent = promptText;
@@ -7103,7 +7208,24 @@ Write-Host "✅ Estructura .github/prompts y reglas globales Zero-CDN + motion-p
       };
     } if (document.readyState === "loading") { document.addEventListener("DOMContentLoaded", initQuantumMotionEngine); } else { initQuantumMotionEngine(); }
 
+    // =========================================================================
+    // GUARDIÁN GLOBAL DE RENDIMIENTO (IntersectionObserver para Canvas / rAF)
+    // Pausa cálculos y renderizados en portátiles corporativos cuando no están en viewport
+    // =========================================================================
+    const viewportGuard = ('IntersectionObserver' in window) ? new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        entry.target.dataset.inView = entry.isIntersecting ? "true" : "false";
+      });
+    }, { threshold: 0.05, rootMargin: '60px' }) : null;
+
     window.addEventListener('DOMContentLoaded', () => {
+      if (viewportGuard) {
+        document.querySelectorAll('canvas, [data-kinetic-canvas], .cyber-terminal-shell').forEach(el => {
+          el.dataset.inView = "false";
+          viewportGuard.observe(el);
+        });
+      }
+
       if (typeof renderMpCatalog === 'function') renderMpCatalog();
       updateLiveTerminal();
       drawTopographicSurface3D();

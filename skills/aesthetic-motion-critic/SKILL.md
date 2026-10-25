@@ -1,9 +1,9 @@
 ---
 name: aesthetic-motion-critic
-description: Ejecuta el patrón de 'Crítico Estético y Catálogo Motion-Prompt' (Nodo 2). Audita un dashboard o presentación HTML existente sin alterar sus datos e inyecta las 12 primitivas deterministas (#MP-01 a #MP-12) con CSS puro Zero-CDN, iluminación Spotlight, contadores Odometer a 60fps, gráficos SVG nativos infalibles, Slide-Over Drawer y soporte Bi-Modal Dark/Light.
+description: Ejecuta el patrón de 'Crítico Estético y Catálogo Motion-Prompt' (Nodo 2). Audita un dashboard o presentación HTML existente sin alterar sus datos e inyecta las 13 primitivas deterministas (#MP-01 a #MP-13) con CSS puro Zero-CDN, iluminación Spotlight, contadores Odometer a 60fps, gráficos SVG nativos infalibles, Slide-Over Drawer, modo Swiss Print y soporte Bi-Modal Dark/Light.
 ---
 
-# Habilidad Agencial: Aesthetic & Motion Critic + Catálogo `motion-prompt` (#MP-01 a #MP-12)
+# Habilidad Agencial: Aesthetic & Motion Critic + Catálogo `motion-prompt` (#MP-01 a #MP-13)
 
 Esta habilidad implementa el **Segundo Nodo (Refinador de Interacción y Motion)** inspirado en la arquitectura de vocabulario determinista de `showheyohtaki/motion-prompt`. Su objetivo es erradicar las respuestas mediocres o pantallas en blanco de los LLMs inyectando **recetas de código exactas y autónomas (Zero-CDN)** sobre cualquier HTML existente sin truncar `window.REPORT_DATA`.
 
@@ -13,10 +13,11 @@ Esta habilidad implementa el **Segundo Nodo (Refinador de Interacción y Motion)
 1. **PROHIBIDO depender de `cdn.tailwindcss.com`**: En entornos corporativos bancarios y sandboxes de Databricks (`displayHTML`), el compilador JIT de Tailwind CDN suele ser bloqueado por políticas CSP o carga de forma asíncrona provocando que los contenedores midan `0px` de alto al inicializar los gráficos.
 2. **CSS Puro Autocontenido + Alturas Explícitas**: Todo el diseño debe declararse en un bloque `<style>` nativo con CSS Grid/Flexbox y alturas explícitas (`min-height: 340px`) en los contenedores de visualización.
 3. **Motor Gráfico con Fallback SVG Nativo**: Si se usa Apache ECharts, envuelve siempre su inicialización en un bloque `try / catch` con comprobación `typeof echarts !== 'undefined'`. Si el CDN externo está bloqueado por el firewall corporativo o el usuario abre el `.html` sin conexión a internet, renderiza automáticamente el gráfico en **SVG vectorial nativo** para garantizar que **jamás aparezca un recuadro vacío**.
+4. **Guardián de Viewport (`IntersectionObserver`)**: En portátiles corporativos con gráfica integrada, pausa automáticamente cualquier animación Canvas/ECharts cuando la sección salga del viewport (`entry.isIntersecting === false`).
 
 ---
 
-## 🎬 Catálogo de las 12 Primitivas Deterministas (`#MP-01` a `#MP-12`)
+## 🎬 Catálogo de las 13 Primitivas Deterministas (`#MP-01` a `#MP-13`)
 
 Cuando el usuario solicite mejorar un dashboard o indique códigos `#MP-XX`, inyecta exactamente la implementación técnica correspondiente:
 
@@ -112,3 +113,29 @@ Variables CSS en `:root` (Obsidian Dark `#070a12`) y `html.light` (Executive Sla
 
 ### `#MP-12` · Executive Command Palette (`Ctrl+K`) + Batch Action Dock
 Modal flotante activado con `Ctrl+K` para filtrar o disparar escenarios de estrés con el teclado, y muelle inferior para exportar o auditar múltiples filas seleccionadas.
+
+### `#MP-13` · Swiss Executive Print Engine (`@media print` A4 Landscape)
+Modo papel suizo de alto contraste para Comités de Riesgos y Dirección: elimina fondos negros (`background: #ffffff !important`), oculta selectores/botones interactivos, convierte tipografías a `#0f172a` y ajusta el grid a una sola página A4 apaisada sin consumo excesivo de tóner ni pérdida de nitidez en bordes vectoriales.
+
+```css
+@media print {
+  body { background: #ffffff !important; color: #0f172a !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  .no-print-bar, .drawer-360, .ctrl-k-palette, nav, button, .interactive-controls { display: none !important; }
+  .sp-card, .card-box { background: #ffffff !important; border: 1px solid #cbd5e1 !important; box-shadow: none !important; color: #0f172a !important; }
+  .sp-card::after, .sp-card::before { display: none !important; }
+  h1, h2, h3, h4, span, div, td, th { color: #0f172a !important; text-shadow: none !important; }
+  table { border-collapse: collapse !important; width: 100% !important; }
+  th, td { border-bottom: 1px solid #e2e8f0 !important; color: #0f172a !important; }
+  @page { size: A4 landscape; margin: 8mm; }
+}
+```
+
+---
+
+## 🎯 Protocolo Operativo según el Entorno de Ejecución (VS Code vs. M365 Copilot)
+
+- **En VS Code / Cursor / Claude Code**: El agente puede reescribir o parchar el archivo completo (1.200+ líneas) sin riesgo de corte.
+- **En Microsoft 365 Copilot (Teams / Web)**: Para evitar el corte por presupuesto de salida (~400 líneas) que produce `// ... resto del código igual`, pide al modelo **exclusivamente dos entregables modulares**:
+  1. El bloque `<style>` enriquecido.
+  2. La función JavaScript `initCharts()` / capa app-engine.
+  *El usuario pegará ambos bloques en su archivo base sin perder ni una sola línea de datos.*
