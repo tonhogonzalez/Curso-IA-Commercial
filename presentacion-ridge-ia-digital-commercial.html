@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RIDGE // Iniciativas de IA en Procesos Digitales · Banca Comercial</title>
+  <style>
+    /* ==========================================================================
+       RIDGE ENGINE · SCROLL-DRIVEN 3D TOPOGRAPHIC PRESENTATION (ZERO-CDN)
+       ========================================================================== */
+    :root {
+      --bg-deep: #04060b;
+      --glass-bg: rgba(8, 12, 22, 0.72);
+      --glass-border: rgba(255, 255, 255, 0.13);
+      --text-main: #f8fafc;
+      --text-dim: #94a3b8;
+      --accent: #f59e0b;
+      --accent-2: #38bdf8;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-display: 'Outfit', 'Space Grotesk', 'Inter', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: auto; background: var(--bg-deep); color: var(--text-main); font-family: var(--font-sans); }
+    body { overflow-x: hidden; background: var(--bg-deep); selection-background-color: var(--accent); }
+
+    /* Contenedor de Scroll Largo (620vh) que alimenta la cámara 3D */
+    .ridge-scroll-track {
+      height: 620vh;
+      position: relative;
+    }
+
+    /* Escenario Fijo (Single Sticky Stage) */
+    .ridge-sticky-stage {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      perspective: 1400px;
+    }
+
+    /* Lienzo 3D Topográfico (Ridge Lines + Horizonte Atmosférico + Nodos de Cumbre) */
+    #ridge-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      z-index: 1;
+    }
+
+    /* Viñeta Cinematográfica y Grano Sutil */
+    .ridge-vignette {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 50% 42%, transparent 35%, rgba(3, 5, 10, 0.78) 100%),
+        linear-gradient(180deg, rgba(3, 5, 10, 0.75) 0%, transparent 18%, transparent 78%, rgba(3, 5, 10, 0.92) 100%);
+    }
+
+    /* ==========================================================================
+       HUD SUPERIOR DE TELEMETRÍA Y NAVEGACIÓN DE CUMBRES
+       ========================================================================== */
+    .ridge-hud-top {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 20;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.9rem 1.8rem;
+      background: linear-gradient(180deg, rgba(4, 6, 11, 0.9) 0%, rgba(4, 6, 11, 0) 100%);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+    }
+    .ridge-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: #fff;
+      font-weight: 800;
+    }
+    .ridge-brand-mark {
+      width: 28px; height: 28px;
+      border-radius: 7px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #04060b;
+      font-weight: 900;
+      font-size: 0.78rem;
+      box-shadow: 0 0 20px rgba(245, 158, 11, 0.45);
+    }
+    .ridge-telemetry {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      color: var(--text-dim);
+      font-variant-numeric: tabular-nums;
+    }
+    .ridge-telemetry strong { color: #f8fafc; }
+    @media (max-width: 900px) { .ridge-telemetry { display: none; } }
+
+    .ridge-top-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+    .ridge-btn {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.42rem 0.8rem;
+      border-radius: 7px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(12, 17, 30, 0.75);
+      color: #e2e8f0;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      transition: all 180ms cubic-bezier(0.16, 1, 0.3, 1);
+      text-decoration: none;
+    }
+    .ridge-btn:hover {
+      border-color: var(--accent);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+    .ridge-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #04060b;
+    }
+
+    /* ==========================================================================
+       ESCENARIO CENTRAL DE DIAPOSITIVAS 2.5D (TRANSICIÓN EN EJE Z)
+       ========================================================================== */
+    .ridge-stage-grid {
+      position: absolute;
+      inset: 68px 0 84px 0;
+      z-index: 10;
+      display: grid;
+      grid-template-columns: minmax(320px, 560px) minmax(320px, 560px);
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0 2.2rem;
+      gap: 2rem;
+      pointer-events: none;
+    }
+    @media (max-width: 1024px) {
+      .ridge-stage-grid {
+        grid-template-columns: 1fr;
+        overflow-y: auto;
+        padding: 1rem 1.2rem;
+        align-content: center;
+      }
+    }
+
+    .ridge-glass-panel {
+      pointer-events: auto;
+      background: var(--glass-bg);
+      backdrop-filter: blur(24px) saturate(175%);
+      -webkit-backdrop-filter: blur(24px) saturate(175%);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 1.85rem 2rem;
+      box-shadow:
+        0 30px 70px -15px rgba(0, 0, 0, 0.78),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      position: relative;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      transition: border-color 300ms ease, transform 140ms ease-out;
+    }
+    .ridge-glass-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 0%), rgba(255, 255, 255, 0.09), transparent 60%);
+    }
+
+    .ridge-chapter-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.26rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(245, 158, 11, 0.14);
+      border: 1px solid rgba(245, 158, 11, 0.45);
+      color: #fcd34d;
+      margin-bottom: 0.9rem;
+    }
+    .ridge-chapter-pill .dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 10px var(--accent);
+    }
+
+    .ridge-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.55rem, 2.3vw, 2.25rem);
+      font-weight: 800;
+      line-height: 1.12;
+      letter-spacing: -0.025em;
+      margin-bottom: 0.85rem;
+      color: #ffffff;
+    }
+    .ridge-word {
+      display: inline-block;
+      transition: transform 460ms cubic-bezier(0.16, 1, 0.3, 1), opacity 460ms ease, filter 460ms ease;
+    }
+
+    .ridge-subtitle {
+      font-size: 0.92rem;
+      line-height: 1.62;
+      color: #cbd5e1;
+      margin-bottom: 1.25rem;
+    }
+
+    /* Lista de Iniciativas / Pilares dentro del panel izquierdo */
+    .ridge-points {
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      margin-bottom: 1.15rem;
+    }
+    .ridge-point {
+      display: grid;
+      grid-template-columns: 44px 1fr;
+      align-items: start;
+      gap: 0.7rem;
+      padding: 0.65rem 0.8rem;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: all 200ms ease;
+    }
+    .ridge-point:hover {
+      border-color: rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.065);
+      transform: translateX(3px);
+    }
+    .ridge-point-code {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-align: center;
+      padding: 0.22rem 0.35rem;
+      border-radius: 6px;
+      background: rgba(56, 189, 248, 0.14);
+      border: 1px solid rgba(56, 189, 248, 0.38);
+      color: #7dd3fc;
+    }
+    .ridge-point strong {
+      display: block;
+      font-size: 0.84rem;
+      color: #f8fafc;
+      margin-bottom: 0.12rem;
+    }
+    .ridge-point span {
+      display: block;
+      font-size: 0.76rem;
+      line-height: 1.45;
+      color: #94a3b8;
+    }
+
+    /* Pie del panel con KPI de Impacto */
+    .ridge-impact-strip {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      padding-top: 0.85rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+    }
+    .ridge-impact-strip .tag {
+      color: #6ee7b7;
+      font-weight: 800;
+    }
+
+    /* ==========================================================================
+       PANEL DERECHO: ARQUITECTURA INTERACTIVA Y SIMULADOR DE PROCESOS DIGITALES
+       ========================================================================== */
+    .ridge-blueprint-card {
+      pointer-events: auto;
+      background: rgba(6, 10, 19, 0.78);
+      backdrop-filter: blur(22px) saturate(165%);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 20px;
+      padding: 1.4rem 1.55rem;
+      box-shadow: 0 28px 65px -12px rgba(0, 0, 0, 0.8);
+    }
+    .bp-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      padding-bottom: 0.75rem;
+      margin-bottom: 0.9rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: #94a3b8;
+    }
+    .bp-mode-switch {
+      display: inline-flex;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      padding: 2px;
+    }
+    .bp-mode-btn {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+      border: none;
+      background: transparent;
+      color: #94a3b8;
+      cursor: pointer;
+    }
+    .bp-mode-btn.active {
+      background: var(--accent);
+      color: #04060b;
+    }
+
+    /* Diagrama de Nodos del Proceso Digital */
+    .bp-flow-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      margin-bottom: 1rem;
+    }
+    .bp-step-node {
+      position: relative;
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 11px;
+      padding: 0.65rem 0.85rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      transition: all 240ms ease;
+    }
+    .bp-step-node.ai-active {
+      border-color: rgba(16, 185, 129, 0.48);
+      background: linear-gradient(90deg, rgba(16, 185, 129, 0.13) 0%, rgba(6, 182, 212, 0.05) 100%);
+    }
+    .bp-step-node.legacy-active {
+      border-color: rgba(244, 63, 94, 0.42);
+      background: rgba(244, 63, 94, 0.08);
+    }
+    .bp-step-left {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+    .bp-step-idx {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 800;
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .bp-step-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #f8fafc;
+    }
+    .bp-step-sub {
+      font-size: 0.71rem;
+      color: #94a3b8;
+    }
+    .bp-step-sla {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+    .bp-step-node.ai-active .bp-step-sla {
+      color: #6ee7b7;
+      background: rgba(16, 185, 129, 0.16);
+    }
+    .bp-step-node.legacy-active .bp-step-sla {
+      color: #fda4af;
+      background: rgba(244, 63, 94, 0.16);
+    }
+
+    /* Métricas Comparativas Antes vs IA */
+    .bp-kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.55rem;
+    }
+    .bp-kpi-box {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 0.55rem 0.65rem;
+      text-align: center;
+    }
+    .bp-kpi-box small {
+      display: block;
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #94a3b8;
+      margin-bottom: 0.2rem;
+    }
+    .bp-kpi-box strong {
+      font-family: var(--font-mono);
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #fff;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ==========================================================================
+       BARRA INFERIOR DE NAVEGACIÓN TOPOGRÁFICA (ALTITUDE TIMELINE)
+       ========================================================================== */
+    .ridge-bottom-bar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 20;
+      background: rgba(4, 6, 12, 0.92);
+      backdrop-filter: blur(16px);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 0.65rem 1.8rem 0.75rem;
+    }
+    .ridge-chapters-nav {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 0.45rem;
+      max-width: 1320px;
+      margin: 0 auto;
+    }
+    @media (max-width: 860px) {
+      .ridge-chapters-nav {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    .ridge-chap-btn {
+      text-align: left;
+      padding: 0.42rem 0.65rem;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #94a3b8;
+      cursor: pointer;
+      transition: all 180ms ease;
+    }
+    .ridge-chap-btn:hover {
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+    .ridge-chap-btn.active {
+      background: rgba(245, 158, 11, 0.16);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    .ridge-chap-btn small {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.58rem;
+      color: #fcd34d;
+      margin-bottom: 0.12rem;
+    }
+    .ridge-chap-btn span {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .ridge-scroll-meter {
+      max-width: 1320px;
+      margin: 0.45rem auto 0;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .ridge-scroll-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #f59e0b, #38bdf8, #10b981);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Pista de Scroll de 620vh para Scrollytelling Continuo -->
+  <div class="ridge-scroll-track" id="scroll-track"></div>
+
+  <!-- Escenario Fijo 3D -->
+  <div class="ridge-sticky-stage">
+    <canvas id="ridge-canvas"></canvas>
+    <div class="ridge-vignette"></div>
+
+    <!-- HUD Superior -->
+    <header class="ridge-hud-top">
+      <div class="ridge-brand">
+        <span class="ridge-brand-mark">▲</span>
+        <span>RIDGE // IA EN PROCESOS DIGITALES · BANCA COMERCIAL</span>
+      </div>
+      <div class="ridge-telemetry">
+        <span>CUMBRE: <strong id="hud-peak">01 / 06</strong></span>
+        <span>ALTITUD: <strong id="hud-alt">1.240 m</strong></span>
+        <span>PENDIENTE: <strong id="hud-slope">+14.2°</strong></span>
+        <span>PROGRESO: <strong id="hud-pct">00%</strong></span>
+      </div>
+      <div class="ridge-top-actions">
+        <button type="button" class="ridge-btn" id="btn-prev">← Anterior</button>
+        <button type="button" class="ridge-btn active" id="btn-next">Siguiente Cumbre →</button>
+        <button type="button" class="ridge-btn" id="btn-autoplay">▶ Auto-Vuelo</button>
+        <button type="button" class="ridge-btn" id="btn-fullscreen">⛶ Pantalla Completa</button>
+        <a href="cuadernos/11-presentaciones-cinematograficas-scrolltide.html" class="ridge-btn">↩ Volver al C11</a>
+      </div>
+    </header>
+
+    <!-- Rejilla Central: Narrativa Ejecutiva (Izquierda) + Blueprint Interactivo (Derecha) -->
+    <main class="ridge-stage-grid">
+      <!-- Panel Izquierdo: Historia & Iniciativas -->
+      <section class="ridge-glass-panel" id="panel-left">
+        <div class="ridge-chapter-pill">
+          <span class="dot"></span>
+          <span id="ch-kicker">CUMBRE 01 · VISIÓN ESTRATÉGICA</span>
+        </div>
+        <h1 class="ridge-title" id="ch-title"></h1>
+        <p class="ridge-subtitle" id="ch-lead"></p>
+        <div class="ridge-points" id="ch-points"></div>
+        <div class="ridge-impact-strip">
+          <span id="ch-impact-label">IMPACTO OBJETIVO EN CANAL DIGITAL:</span>
+          <span class="tag" id="ch-impact-val"></span>
+        </div>
+      </section>
+
+      <!-- Panel Derecho: Flujo del Proceso Digital (Conmutador Proceso Actual vs. Con IA) -->
+      <aside class="ridge-blueprint-card" id="panel-right">
+        <div class="bp-header">
+          <span id="bp-title">ARQUITECTURA DEL PROCESO DIGITAL</span>
+          <div class="bp-mode-switch">
+            <button type="button" class="bp-mode-btn" id="mode-legacy">Proceso Clásico</button>
+            <button type="button" class="bp-mode-btn active" id="mode-ai">Con IA Nativa ✨</button>
+          </div>
+        </div>
+        <div class="bp-flow-steps" id="bp-steps"></div>
+        <div class="bp-kpi-grid" id="bp-kpis"></div>
+      </aside>
+    </main>
+
+    <!-- Barra Inferior de Cumbres -->
+    <footer class="ridge-bottom-bar">
+      <div class="ridge-chapters-nav" id="chapters-nav"></div>
+      <div class="ridge-scroll-meter"><div class="ridge-scroll-fill" id="scroll-fill"></div></div>
+    </footer>
+  </div>
+
+  <script>
+  (function () {
+    'use strict';
+
+    // =========================================================================
+    // 1. CONTENIDO DE LAS 6 CUMBRES (INICIATIVAS DE IA EN PROCESOS DIGITALES)
+    // =========================================================================
+    const CHAPTERS = [
+      {
+        id: '01',
+        short: 'Visión & Paradigma',
+        alt: 1240,
+        slope: '+12.4°',
+        palette: { ridge: [245, 158, 11], glow: [56, 189, 248], hex: '#f59e0b' },
+        kicker: 'CUMBRE 01 / 06 · DEL FORMULARIO AL AGENTE',
+        title: 'De canales digitales de consulta a procesos comerciales autónomos con IA',
+        lead: 'La web y la app de Banca Comercial dejan de ser escaparates con formularios estáticos para convertirse en flujos asistidos por agentes que entienden documentos, pre-calculan riesgo y formalizan en tiempo real.',
+        impact: '+42% CONVERSIÓN EN EMBUDO DIGITAL FIN A FIN',
+        points: [
+          { code: 'INI-01', t: 'Eliminación del abandono en formularios', d: 'El cliente sube un documento o expresa su necesidad y la IA autocompleta el 90% del expediente.' },
+          { code: 'INI-02', t: 'Decisión en el mismo instante de sesión', d: 'Integración en línea con motores de scoring, límites STP y rentabilidad RAROC.' },
+          { code: 'INI-03', t: 'Continuidad total Web/App ↔ Gestor', d: 'Si la operación requiere intervención humana, el gestor recibe el dossier ya analizado.' }
+        ],
+        bpTitle: 'EMBUDO DIGITAL DE CONTRATACIÓN EMPRESAS',
+        legacy: {
+          kpis: [['Tiempo hasta oferta', '5,4 días'], ['Abandono en paso 2', '64%'], ['Intervención manual', '100%']],
+          steps: [
+            { t: '1. Formulario web de 38 campos', s: 'El cliente introduce datos financieros a mano', sla: '25 min' },
+            { t: '2. Subida de PDFs sin validación', s: 'Escrituras y balances quedan en bandeja de Back-Office', sla: '+48 h' },
+            { t: '3. Revisión manual y subsanación', s: 'Correo de vuelta al cliente por documentos incompletos', sla: '+3 días' },
+            { t: '4. Oferta comercial tardía', s: 'El cliente ya ha firmado con otra entidad', sla: '5,4 días' }
+          ]
+        },
+        ai: {
+          kpis: [['Tiempo hasta oferta', '3,5 min'], ['Abandono en paso 2', '18%'], ['Tasa STP directa', '76%']],
+          steps: [
+            { t: '1. Arrastre de documentación en App/Web', s: 'Agente multimodal extrae CIF, poderes y estados financieros', sla: '12 seg' },
+            { t: '2. Validación en vivo y subsanación guiada', s: 'Verifica vigencia registral y coherencia contable en sesión', sla: '8 seg' },
+            { t: '3. Pre-cálculo de límite y pricing RORWA', s: 'Cruza con Unity Catalog y asigna tasa personalizada', sla: '4 seg' },
+            { t: '4. Firma digital inmediata en un clic', s: 'Abono o activación de línea sin esperas', sla: '3,5 min' }
+          ]
+        }
+      },
+      {
+        id: '02',
+        short: 'Onboarding & KYB',
+        alt: 1680,
+        slope: '+18.7°',
+        palette: { ridge: [56, 189, 248], glow: [139, 92, 246], hex: '#38bdf8' },
+        kicker: 'CUMBRE 02 / 06 · ALTA DIGITAL & KYB EMPRESAS',
+        title: 'Onboarding digital de Pymes y Empresas en menos de 4 minutos',
+        lead: 'El mayor freno en la captación digital de empresas es el bastanteo de escrituras y la identificación de titulares reales (KYB). Los agentes documentales convierten días de espera jurídica en segundos.',
+        impact: '-82% COSTE OPERATIVO DE ALTA Y BASTANTEO',
+        points: [
+          { code: 'KYB-1', t: 'Lectura inteligente de escrituras notariales', d: 'Extracción estructurada de administradores, facultades solidarias/mancomunadas y límites de importe.' },
+          { code: 'KYB-2', t: 'Árbol societario y titularidad real (UBO)', d: 'Construcción automática de la malla de participaciones y validación KYC/AML.' },
+          { code: 'KYB-3', t: 'Lectura de Modelo 200, IVA (303/390) y CIRBE', d: 'Volcado directo al motor de admisión sin picado manual de datos.' }
+        ],
+        bpTitle: 'FLUJO DE ALTA Y BASTANTEO DIGITAL (KYB)',
+        legacy: {
+          kpis: [['SLA Bastanteo', '72 horas'], ['Rechazos por foto/PDF', '38%'], ['Coste por alta', '145 €']],
+          steps: [
+            { t: '1. Envío de escritura de 90 páginas en PDF', s: 'Cola de espera en asesoría operativa', sla: '24 h' },
+            { t: '2. Lectura manual de poderes y cargos', s: 'Búsqueda visual de cláusulas de endeudamiento', sla: '45 min' },
+            { t: '3. Grabación manual en sistema core', s: 'Riesgo de error de transcripción en facultades', sla: '20 min' },
+            { t: '4. Activación de cuenta operativa', s: 'Cliente bloqueado durante 3 días hábiles', sla: '72 h' }
+          ]
+        },
+        ai: {
+          kpis: [['SLA Bastanteo', '45 seg'], ['Precisión extracción', '99,4%'], ['Coste por alta', '19 €']],
+          steps: [
+            { t: '1. Ingesta OCR + LLM Jurídico Especializado', s: 'Localiza páginas exactas de nombramientos y poderes', sla: '15 seg' },
+            { t: '2. Grafo automático de facultades y mancomunidad', s: 'Mapea qué firmantes autorizan cada producto bancario', sla: '10 seg' },
+            { t: '3. Contraste con Registro Mercantil y listas AML', s: 'Certificación con citas a la página y párrafo original', sla: '12 seg' },
+            { t: '4. Cuenta y banca digital operativas al instante', s: 'Solo escala a abogado los casos con alerta ámbar', sla: '45 seg' }
+          ]
+        }
+      },
+      {
+        id: '03',
+        short: 'Next Best Action',
+        alt: 2150,
+        slope: '+22.1°',
+        palette: { ridge: [16, 185, 129], glow: [6, 182, 212], hex: '#10b981' },
+        kicker: 'CUMBRE 03 / 06 · HIPER-PERSONALIZACIÓN EN VIVO',
+        title: 'Contextual AI en el Portal y App: la oferta exacta en el segundo exacto',
+        lead: 'Sustituimos los banners genéricos de campaña por un motor contextual que interpreta qué está haciendo la empresa en la web o app y le ofrece financiación o cobertura integrada en su tarea.',
+        impact: '3,8x TASA DE CLIC A CONTRATACIÓN EN CANAL DIGITAL',
+        points: [
+          { code: 'NBA-1', t: 'Financiación embebida en el pago de ficheros', d: 'Al subir una remesa de pagos o nóminas con punta de tesorería, la app ofrece anticipo en 1 clic.' },
+          { code: 'NBA-2', t: 'Cobertura dinámica de divisa en Comercio Exterior', d: 'Simulación instantánea de seguro de cambio al emitir una transferencia internacional.' },
+          { code: 'NBA-3', t: 'Prevención proactiva de fuga transaccional', d: 'Detección de caída en TPVs o Confirming con propuesta personalizada en sesión.' }
+        ],
+        bpTitle: 'MOTOR CONTEXTUAL EN EL FLUJO TRANSACCIONAL',
+        legacy: {
+          kpis: [['Conversión banner', '0,9%'], ['Latencia de campaña', 'Mensual (T-30)'], ['Relevancia percibida', 'Baja']],
+          steps: [
+            { t: '1. Extracción mensual de público objetivo', s: 'Campaña estática basada en foto del mes anterior', sla: 'Día +10' },
+            { t: '2. Banner genérico al entrar en la App', s: 'El cliente lo cierra porque va a pagar impuestos', sla: 'Ignorado' },
+            { t: '3. Llamada telefónica fría días después', s: 'La necesidad de tesorería ya pasó', sla: 'Día +18' },
+            { t: '4. Pérdida de la operación puntual', s: 'Uso de línea de competidor', sla: '0,9% éxito' }
+          ]
+        },
+        ai: {
+          kpis: [['Conversión contextual', '11,4%'], ['Latencia de señal', 'En sesión (<1s)'], ['Cruce de productos', '+1,7x']],
+          steps: [
+            { t: '1. El cliente carga remesa de proveedores en la Web', s: 'El agente detecta pico de salida de caja a 7 días', sla: '120 ms' },
+            { t: '2. Cálculo instantáneo de disponible en Confirming', s: 'Verifica margen de línea pre-concedida y precio', sla: '180 ms' },
+            { t: '3. Propuesta integrada en la misma pantalla de firma', s: '«Financia esta remesa a 60 días al X% sin papeleo»', sla: 'En vivo' },
+            { t: '4. Aceptación y desembolso en el acto', s: 'Sin salir del flujo de pagos habitual', sla: '11,4% éxito' }
+          ]
+        }
+      },
+      {
+        id: '04',
+        short: 'Crédito & Circulante STP',
+        alt: 2590,
+        slope: '+26.5°',
+        palette: { ridge: [168, 85, 247], glow: [245, 158, 11], hex: '#a855f7' },
+        kicker: 'CUMBRE 04 / 06 · ADMISIÓN DIGITAL & PRICING STP',
+        title: 'Renovación y ampliación digital de Circulante con RAROC en vivo',
+        lead: 'Conectamos el frontal digital con el motor de riesgos y precios: evaluación instantánea de facturas en Factoring, alta de proveedores en Confirming y fijación dinámica de spread según consumo de RWA.',
+        impact: '78% DE RENOVACIONES SIN CARGA MANUAL EN OFICINA',
+        points: [
+          { code: 'STP-1', t: 'Auditoría automática de facturas y deudores', d: 'Verificación de autenticidad, concentración y solvencia del cedente/deudor al subir la factura.' },
+          { code: 'STP-2', t: 'Pricing dinámico ajustado a RORWA / EVA', d: 'Cálculo en tiempo real del tipo suelo que garantiza creación de valor económico (EVA > 0).' },
+          { code: 'STP-3', t: 'Renovación en 1 clic de pólizas sin alertas', d: 'Para clientes en Stage 1 con comportamiento óptimo, renovación 100% digital.' }
+        ],
+        bpTitle: 'ADMISIÓN Y FORMALIZACIÓN DIGITAL DE CIRCULANTE',
+        legacy: {
+          kpis: [['Tiempo renovación', '9 días'], ['Operaciones STP', '22%'], ['Fuga por demora', '14%']],
+          steps: [
+            { t: '1. Vencimiento próximo de línea de circulante', s: 'Petición manual de estados financieros por email', sla: 'Día 1' },
+            { t: '2. Volcado a hoja de cálculo de riesgos', s: 'Cálculo manual de ratios y propuesta de comité', sla: 'Día 5' },
+            { t: '3. Negociación de precio sin visión de RWA en vivo', s: 'Iteraciones con Deal Desk por correo', sla: 'Día 7' },
+            { t: '4. Firma presencial o diferida', s: 'Alta carga administrativa en la red', sla: 'Día 9' }
+          ]
+        },
+        ai: {
+          kpis: [['Tiempo renovación', 'En el día'], ['Operaciones STP', '78%'], ['RORWA medio', '+24 pb']],
+          steps: [
+            { t: '1. Pre-evaluación continua 30 días antes de vencer', s: 'Cruza flujos transaccionales, CIRBE e impuestos', sla: 'Automático' },
+            { t: '2. Propuesta digital pre-aprobada en el portal', s: 'Importe y precio calibrados con Hurdle Rate del banco', sla: 'Instantáneo' },
+            { t: '3. Simulador interactivo de plazo y garantías', s: 'El cliente ajusta importe dentro de su corredor aprobado', sla: '30 seg' },
+            { t: '4. Formalización digital con trazabilidad IFRS 9', s: 'Expediente completo archivado automáticamente', sla: 'En el día' }
+          ]
+        }
+      },
+      {
+        id: '05',
+        short: 'Copiloto Omnicanal',
+        alt: 2890,
+        slope: '+19.8°',
+        palette: { ridge: [244, 63, 94], glow: [56, 189, 248], hex: '#f43f5e' },
+        kicker: 'CUMBRE 05 / 06 · CONVERGENCIA DIGITAL ↔ GESTOR',
+        title: 'Cuando el proceso digital escala a persona, el gestor recibe el trabajo hecho',
+        lead: 'En operaciones complejas o sindicadas, el cliente empieza en el canal digital y termina con su Especialista. La IA actúa como puente invisible que resume la intención, simula la operación y redacta la nota de comité.',
+        impact: '-60% TIEMPO DE PREPARACIÓN DE EXPEDIENTES COMPLEJOS',
+        points: [
+          { code: 'OMN-1', t: 'Traspaso con memoria completa de sesión', d: 'El gestor ve exactamente qué simuló el cliente en la web y qué documentos adjuntó.' },
+          { code: 'OMN-2', t: 'Borrador automático de propuesta de crédito', d: 'Síntesis ejecutiva de riesgos, garantías, evolución de circulante y motivos de la operación.' },
+          { code: 'OMN-3', t: 'Asistente de respuesta técnica en el canal', d: 'Resolución inmediata de dudas de comercio exterior, avales e impuestos en el chat seguro.' }
+        ],
+        bpTitle: 'PUENTE OMNICANAL CANAL DIGITAL → ESPECIALISTA',
+        legacy: {
+          kpis: [['Contexto conservado', '15%'], ['Repetición de preguntas', 'Alta'], ['Preparación comité', '4,5 horas']],
+          steps: [
+            { t: '1. El cliente se atasca en una operación compleja web', s: 'Abandona la pantalla y llama a su oficina', sla: 'Fricción' },
+            { t: '2. El gestor no ve lo que el cliente intentó hacer', s: 'Vuelve a pedir los mismos datos y documentos por correo', sla: '+24 h' },
+            { t: '3. Redacción desde cero de la nota para Riesgos', s: 'Recopilación manual de posiciones en 4 aplicativos', sla: '4,5 horas' },
+            { t: '4. Respuesta al cliente tras varios días', s: 'Experiencia fragmentada entre canal digital y red', sla: '4 días' }
+          ]
+        },
+        ai: {
+          kpis: [['Contexto conservado', '100%'], ['Repetición de datos', '0%'], ['Preparación comité', '25 min']],
+          steps: [
+            { t: '1. Detección de operación fuera de corredor STP', s: 'Ofrece agenda inmediata o chat en vivo con su especialista', sla: 'En acto' },
+            { t: '2. Dossier pre-ensamblado en el escritorio del gestor', s: 'Incluye simulación del cliente, documentos validados y alertas', sla: '0 seg' },
+            { t: '3. Nota de Comité generada con datos conciliados', s: 'El gestor solo revisa argumentos cualitativos y defiende el caso', sla: '25 min' },
+            { t: '4. Envío de oferta final de vuelta al portal digital', s: 'El cliente firma desde el móvil con un clic', sla: 'Mismo día' }
+          ]
+        }
+      },
+      {
+        id: '06',
+        short: 'Hoja de Ruta & ROI',
+        alt: 3200,
+        slope: 'CUMBRE',
+        palette: { ridge: [16, 185, 129], glow: [245, 158, 11], hex: '#10b981' },
+        kicker: 'CUMBRE 06 / 06 · ARQUITECTURA, GOBIERNO Y DESPLIEGUE',
+        title: 'Implantación modular en 3 olas con retorno medible desde el primer trimestre',
+        lead: 'Todas las iniciativas comparten una misma base técnica en Databricks + Unity Catalog, contratos de especificación auditables y guardarraíles de privacidad y cumplimiento normativo.',
+        impact: 'ROI ESTIMADO > 3,4x EN EL PRIMER AÑO DE DESPLIEGUE',
+        points: [
+          { code: 'OLA 1', t: 'Q1–Q2 · Quick Wins en Circulante y Alertas Digitales', d: 'Renovación digital asistida y motor contextual en remesas de Confirming/Factoring.' },
+          { code: 'OLA 2', t: 'Q2–Q3 · Onboarding & Bastanteo Documental KYB', d: 'Extracción automatizada de escrituras, impuestos y estados financieros en alta digital.' },
+          { code: 'OLA 3', t: 'Q3–Q4 · Copiloto Omnicanal y Pricing Dinámico STP', d: 'Integración extremo a extremo entre portal de empresas, motor RORWA y escritorio del gestor.' }
+        ],
+        bpTitle: 'RESUMEN DE IMPACTO Y GOBIERNO POR OLA',
+        legacy: {
+          kpis: [['Time-to-Market IA', '9–12 meses'], ['Reutilización entre casos', '<20%'], ['Riesgo de cuadre', 'Alto']],
+          steps: [
+            { t: 'Proyectos aislados por cada canal', s: 'Cada iniciativa construye sus propias extracciones de datos', sla: 'Lento' },
+            { t: 'Validación manual tardía', s: 'Discrepancias con Control de Gestión al llegar a producción', sla: 'Retrasos' },
+            { t: 'Difícil mantenimiento evolutivo', s: 'Cambiar una regla de negocio obliga a tocar múltiples scripts', sla: 'Costoso' },
+            { t: 'Adopción desigual en la red', s: 'Falta de trazabilidad y confianza en las recomendaciones', sla: 'Bajo uso' }
+          ]
+        },
+        ai: {
+          kpis: [['Time-to-Market IA', '6–8 semanas'], ['Reutilización de catálogo', '85%'], ['Cuadre certificado', '100%']],
+          steps: [
+            { t: 'Catálogo único en Unity Catalog + Spec-Kit', s: 'Las tablas maestras y reglas se definen una vez y sirven a los 5 procesos', sla: 'Semana 1' },
+            { t: 'Guardarraíles PII y explicabilidad nativa', s: 'Cada decisión o extracción cita el documento y regla exacta', sla: 'Auditado' },
+            { t: 'Métricas de negocio en tiempo real', s: 'Seguimiento diario de conversión digital, tasa STP y margen defendido', sla: 'En vivo' },
+            { t: 'Escalado continuo a nuevos productos', s: 'Comercio exterior, leasing, avales y tesorería sobre el mismo motor', sla: 'Continuo' }
+          ]
+        }
+      }
+    ];
+
+    // =========================================================================
+    // 2. ESTADO DE NAVEGACIÓN, SCROLL LERP Y RENDERIZADO DE PANELES DOM
+    // =========================================================================
+    let targetProgress = 0;   // 0 .. CHAPTERS.length - 1
+    let currentProgress = 0;  // interpolado suavemente
+    let activeChapter = 0;
+    let bpMode = 'ai';        // 'ai' | 'legacy'
+    let autoPlay = false;
+    let mouse = { x: 0.5, y: 0.5 };
+
+    const $ = (s) => document.querySelector(s);
+
+    function syncScrollToChapter(idx) {
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const targetY = (idx / (CHAPTERS.length - 1)) * maxScroll;
+      window.scrollTo({ top: targetY, behavior: 'smooth' });
+    }
+
+    function renderChapterDOM(idx) {
+      const ch = CHAPTERS[idx];
+      document.documentElement.style.setProperty('--accent', ch.palette.hex);
+
+      $('#ch-kicker').textContent = ch.kicker;
+
+      // Tipografía cinética con aparición escalonada por palabra
+      const titleEl = $('#ch-title');
+      titleEl.innerHTML = ch.title.split(' ').map((w, i) =>
+        `<span class="ridge-word" style="opacity:0;filter:blur(9px);transform:translateY(9px);transition-delay:${i * 28}ms">${w}&nbsp;</span>`
+      ).join('');
+      requestAnimationFrame(() => {
+        titleEl.querySelectorAll('.ridge-word').forEach(el => {
+          el.style.opacity = '1';
+          el.style.filter = 'blur(0px)';
+          el.style.transform = 'translateY(0px)';
+        });
+      });
+
+      $('#ch-lead').textContent = ch.lead;
+      $('#ch-impact-val').textContent = ch.impact;
+      $('#ch-points').innerHTML = ch.points.map(p => `
+        <div class="ridge-point">
+          <span class="ridge-point-code">${p.code}</span>
+          <div>
+            <strong>${p.t}</strong>
+            <span>${p.d}</span>
+          </div>
+        </div>
+      `).join('');
+
+      renderBlueprintDOM(ch);
+      renderBottomNav(idx);
+    }
+
+    function renderBlueprintDOM(ch) {
+      $('#bp-title').textContent = ch.bpTitle;
+      const data = bpMode === 'ai' ? ch.ai : ch.legacy;
+      const cls = bpMode === 'ai' ? 'ai-active' : 'legacy-active';
+
+      $('#bp-steps').innerHTML = data.steps.map((s, i) => `
+        <div class="bp-step-node ${cls}">
+          <div class="bp-step-left">
+            <span class="bp-step-idx">${i + 1}</span>
+            <div>
+              <div class="bp-step-title">${s.t}</div>
+              <div class="bp-step-sub">${s.s}</div>
+            </div>
+          </div>
+          <span class="bp-step-sla">${s.sla}</span>
+        </div>
+      `).join('');
+
+      $('#bp-kpis').innerHTML = data.kpis.map(([k, v]) => `
+        <div class="bp-kpi-box">
+          <small>${k}</small>
+          <strong style="color:${bpMode === 'ai' ? '#6ee7b7' : '#fda4af'}">${v}</strong>
+        </div>
+      `).join('');
+    }
+
+    function renderBottomNav(idx) {
+      const nav = $('#chapters-nav');
+      nav.innerHTML = CHAPTERS.map((c, i) => `
+        <button type="button" class="ridge-chap-btn ${i === idx ? 'active' : ''}" data-cidx="${i}">
+          <small><span>CUMBRE ${c.id}</span><span>${c.alt}m</span></small>
+          <span>${c.short}</span>
+        </button>
+      `).join('');
+      nav.querySelectorAll('.ridge-chap-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          autoPlay = false;
+          $('#btn-autoplay').classList.remove('active');
+          syncScrollToChapter(Number(btn.dataset.cidx));
+        });
+      });
+    }
+
+    // Eventos de controles
+    $('#mode-legacy').addEventListener('click', () => {
+      bpMode = 'legacy';
+      $('#mode-legacy').classList.add('active');
+      $('#mode-ai').classList.remove('active');
+      renderBlueprintDOM(CHAPTERS[activeChapter]);
+    });
+    $('#mode-ai').addEventListener('click', () => {
+      bpMode = 'ai';
+      $('#mode-ai').classList.add('active');
+      $('#mode-legacy').classList.remove('active');
+      renderBlueprintDOM(CHAPTERS[activeChapter]);
+    });
+
+    $('#btn-prev').addEventListener('click', () => {
+      autoPlay = false;
+      syncScrollToChapter(Math.max(0, activeChapter - 1));
+    });
+    $('#btn-next').addEventListener('click', () => {
+      autoPlay = false;
+      syncScrollToChapter((activeChapter + 1) % CHAPTERS.length);
+    });
+    $('#btn-autoplay').addEventListener('click', (e) => {
+      autoPlay = !autoPlay;
+      e.currentTarget.classList.toggle('active', autoPlay);
+      e.currentTarget.textContent = autoPlay ? '⏸ Pausar Vuelo' : '▶ Auto-Vuelo';
+    });
+    $('#btn-fullscreen').addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen().catch(() => {});
+      }
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        e.preventDefault();
+        autoPlay = false;
+        syncScrollToChapter(Math.min(CHAPTERS.length - 1, activeChapter + 1));
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        autoPlay = false;
+        syncScrollToChapter(Math.max(0, activeChapter - 1));
+      }
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = e.clientX / window.innerWidth;
+      mouse.y = e.clientY / window.innerHeight;
+      const pl = $('#panel-left');
+      if (pl) {
+        const r = pl.getBoundingClientRect();
+        pl.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+        pl.style.setProperty('--my', (e.clientY - r.top) + 'px');
+      }
+    });
+
+    // =========================================================================
+    // 3. MOTOR 3D TOPOGRÁFICO «RIDGE» (CURVAS DE NIVEL EN PERSPECTIVA A 60 FPS)
+    // =========================================================================
+    const canvas = $('#ridge-canvas');
+    const ctx = canvas.getContext('2d');
+    let W = 0, H = 0;
+
+    function resize() {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = window.innerWidth;
+      H = window.innerHeight;
+      canvas.width = W * dpr;
+      canvas.height = H * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    // Función de elevación topográfica multi-octava (crea la cordillera central y los valles laterales)
+    function ridgeHeight(xNorm, zWorld, p) {
+      // Cordillera desplazada ligeramente a la derecha para dejar aire limpio al texto izquierdo
+      const ridgeCenter = 0.12 + Math.sin(zWorld * 0.0022 + p * 0.9) * 0.18;
+      const distFromSpine = Math.abs(xNorm - ridgeCenter);
+      const envelope = Math.exp(-distFromSpine * distFromSpine * 3.8);
+
+      const h1 = Math.sin(xNorm * 4.5 + zWorld * 0.008) * Math.cos(zWorld * 0.0055 - p * 1.4);
+      const h2 = Math.sin(xNorm * 9.2 - zWorld * 0.013 + p * 2.1) * 0.45;
+      const h3 = Math.cos((xNorm + zWorld * 0.004) * 16.0) * 0.18;
+
+      // Efecto interactivo de elevación bajo el puntero del ratón
+      const mdx = xNorm - (mouse.x * 2 - 1);
+      const mouseBoost = Math.exp(-mdx * mdx * 8) * (0.5 - mouse.y) * 55;
+
+      return (envelope * 155 + (h1 + h2 + h3) * 42) + mouseBoost;
+    }
+
+    function lerp(a, b, t) { return a + (b - a) * t; }
+
+    function drawRidgeTerrain(now) {
+      const t = now * 0.001;
+
+      // Progreso de scroll normalizado
+      const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      if (autoPlay) {
+        const nextY = (window.scrollY + 1.8) % maxScroll;
+        window.scrollTo(0, nextY);
+      }
+      const rawFrac = Math.max(0, Math.min(1, window.scrollY / maxScroll));
+      targetProgress = rawFrac * (CHAPTERS.length - 1);
+      currentProgress += (targetProgress - currentProgress) * 0.075;
+
+      // Cambio de capítulo activo cuando cruzamos el umbral
+      const nearestChap = Math.round(currentProgress);
+      if (nearestChap !== activeChapter) {
+        activeChapter = nearestChap;
+        renderChapterDOM(activeChapter);
+      }
+
+      // Interpolación de color entre la cumbre actual y la siguiente
+      const idxA = Math.max(0, Math.min(CHAPTERS.length - 1, Math.floor(currentProgress)));
+      const idxB = Math.max(0, Math.min(CHAPTERS.length - 1, idxA + 1));
+      const frac = currentProgress - idxA;
+      const colA = CHAPTERS[idxA].palette.ridge, colB = CHAPTERS[idxB].palette.ridge;
+      const glwA = CHAPTERS[idxA].palette.glow, glwB = CHAPTERS[idxB].palette.glow;
+      const rCol = [
+        Math.round(lerp(colA[0], colB[0], frac)),
+        Math.round(lerp(colA[1], colB[1], frac)),
+        Math.round(lerp(colA[2], colB[2], frac))
+      ];
+      const gCol = [
+        Math.round(lerp(glwA[0], glwB[0], frac)),
+        Math.round(lerp(glwA[1], glwB[1], frac)),
+        Math.round(lerp(glwA[2], glwB[2], frac))
+      ];
+
+      // Actualización de telemetría en vivo
+      const interpAlt = Math.round(lerp(CHAPTERS[idxA].alt, CHAPTERS[idxB].alt, frac));
+      $('#hud-peak').textContent = `0${activeChapter + 1} / 0${CHAPTERS.length}`;
+      $('#hud-alt').textContent = interpAlt.toLocaleString('es-ES') + ' m';
+      $('#hud-slope').textContent = CHAPTERS[activeChapter].slope;
+      $('#hud-pct').textContent = Math.round(rawFrac * 100).toString().padStart(2, '0') + '%';
+      $('#scroll-fill').style.width = (rawFrac * 100).toFixed(1) + '%';
+
+      // Fondo y resplandor atmosférico en el horizonte
+      ctx.fillStyle = '#04060b';
+      ctx.fillRect(0, 0, W, H);
+
+      const horizonY = H * 0.36 + (mouse.y - 0.5) * 28;
+      const horizonX = W * 0.56 + (mouse.x - 0.5) * 45;
+      const radGlow = ctx.createRadialGradient(horizonX, horizonY, 20, horizonX, horizonY, Math.max(W, H) * 0.65);
+      radGlow.addColorStop(0, `rgba(${rCol[0]}, ${rCol[1]}, ${rCol[2]}, 0.24)`);
+      radGlow.addColorStop(0.45, `rgba(${gCol[0]}, ${gCol[1]}, ${gCol[2]}, 0.10)`);
+      radGlow.addColorStop(1, 'rgba(4, 6, 11, 0)');
+      ctx.fillStyle = radGlow;
+      ctx.fillRect(0, 0, W, H);
+
+      // Retícula de coordenadas celestes sutil en el cielo
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
+      ctx.lineWidth = 1;
+      for (let gx = 0; gx < W; gx += 120) {
+        ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, horizonY); ctx.stroke();
+      }
+
+      // =======================================================================
+      // RENDERIZADO DE LAS 48 CURVAS DE NIVEL 3D (RIDGE CONTOUR LINES)
+      // =======================================================================
+      const NUM_RIDGES = 48;
+      const X_SAMPLES = 72;
+      const speedZ = currentProgress * 420 + t * 38;
+      const fov = 420;
+      const cameraY = 155;
+      const bankAngle = (mouse.x - 0.5) * 0.06; // alabeo suave de cámara al mover ratón
+      const cosB = Math.cos(bankAngle), sinB = Math.sin(bankAngle);
+
+      // Dibujamos de atrás (horizonte lejano) hacia delante (primer plano) con ocultación de líneas traseras (Painter's algorithm)
+      for (let r = NUM_RIDGES - 1; r >= 0; r--) {
+        const zDepth = 70 + r * 26 - (speedZ % 26);
+        const zWorld = speedZ + zDepth;
+        const depthNorm = 1 - r / NUM_RIDGES; // 0 lejos, 1 cerca
+        const scale = fov / (fov + zDepth);
+
+        ctx.beginPath();
+        const pts = [];
+        for (let i = 0; i <= X_SAMPLES; i++) {
+          const xNorm = (i / X_SAMPLES) * 2.5 - 1.25; // -1.25 .. +1.25
+          const worldX = xNorm * W * 0.95;
+          const elev = ridgeHeight(xNorm, zWorld, currentProgress);
+          const worldY = cameraY - elev;
+
+          // Rotación de alabeo (banking) y proyección en perspectiva
+          const rx = worldX * cosB - worldY * sinB;
+          const ry = worldX * sinB + worldY * cosB;
+
+          const px = horizonX + rx * scale;
+          const py = horizonY + ry * scale;
+          pts.push([px, py, elev]);
+          if (i === 0) ctx.moveTo(px, py);
+          else ctx.lineTo(px, py);
+        }
+
+        // Polígono oscuro inferior para tapar las líneas de detrás (oclusión topográfica real)
+        ctx.lineTo(pts[pts.length - 1][0], H + 40);
+        ctx.lineTo(pts[0][0], H + 40);
+        ctx.closePath();
+        ctx.fillStyle = 'rgba(4, 6, 11, 0.92)';
+        ctx.fill();
+
+        // Trazo luminoso de la cresta
+        ctx.beginPath();
+        pts.forEach(([px, py], i) => i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py));
+        const isMajorContour = (Math.floor(zWorld / 26) % 5 === 0);
+        const alpha = (0.12 + depthNorm * 0.68) * (isMajorContour ? 1.15 : 0.72);
+        ctx.strokeStyle = isMajorContour
+          ? `rgba(${rCol[0]}, ${rCol[1]}, ${rCol[2]}, ${Math.min(0.95, alpha).toFixed(3)})`
+          : `rgba(${gCol[0]}, ${gCol[1]}, ${gCol[2]}, ${Math.min(0.75, alpha * 0.75).toFixed(3)})`;
+        ctx.lineWidth = isMajorContour ? 1.9 : 1.05;
+        ctx.stroke();
+
+        // Balizas de telemetría en las crestas principales
+        if (isMajorContour && r % 6 === 0) {
+          const peakPt = pts.reduce((best, cur) => cur[2] > best[2] ? cur : best, pts[0]);
+          if (peakPt[0] > W * 0.35 && peakPt[0] < W * 0.92 && peakPt[1] > 80 && peakPt[1] < H - 90) {
+            ctx.fillStyle = `rgb(${rCol[0]}, ${rCol[1]}, ${rCol[2]})`;
+            ctx.beginPath();
+            ctx.arc(peakPt[0], peakPt[1], 3.2, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.strokeStyle = `rgba(${rCol[0]}, ${rCol[1]}, ${rCol[2]}, 0.45)`;
+            ctx.beginPath();
+            ctx.moveTo(peakPt[0], peakPt[1]);
+            ctx.lineTo(peakPt[0], peakPt[1] - 22);
+            ctx.stroke();
+
+            ctx.font = '600 9.5px "JetBrains Mono", monospace';
+            ctx.fillStyle = 'rgba(248, 250, 252, 0.78)';
+            ctx.fillText(`▲ ${Math.round(1100 + peakPt[2] * 8)}m`, peakPt[0] + 5, peakPt[1] - 14);
+          }
+        }
+      }
+
+      requestAnimationFrame(drawRidgeTerrain);
+    }
+
+    // Inicializar primera cumbre y arrancar motor 60 FPS
+    renderChapterDOM(0);
+    requestAnimationFrame(drawRidgeTerrain);
+  })();
+  </script>
+</body>
+</html>

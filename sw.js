@@ -1,10 +1,11 @@
-const CACHE_NAME = 'curso-ia-v14';
+const CACHE_NAME = 'curso-ia-v15';
 const ASSETS = [
   './',
   './index.html',
   './muro.html',
   './recursos.html',
   './examen.html',
+  './presentacion-ridge-ia-digital-commercial.html',
   './cuadernos/01-pep-martorell.html',
   './cuadernos/02-javier-ideami.html',
   './cuadernos/03-compendio-tecnico.html',
