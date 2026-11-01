@@ -538,13 +538,15 @@
             <div class="st-cinema-topbar">
               <div class="st-deck-pills" id="st-deck-selector">
                 <span class="st-mono" style="font-size:0.66rem;color:#94a3b8;margin-right:0.2rem;">PRESENTACIÓN:</span>
-                <button type="button" class="st-pill-btn active" data-deck="ia_proyecto">🚀 1. Proyecto IA a Comité</button>
-                <button type="button" class="st-pill-btn" data-deck="arquitectura">🧬 2. Arquitectura Agéntica 3D</button>
-                <button type="button" class="st-pill-btn" data-deck="comercial">🌐 3. Estrategia &amp; Red Comercial</button>
+                <button type="button" class="st-pill-btn active" data-deck="ridge_ia">⛰️ 1. RIDGE · IA en Procesos Comerciales</button>
+                <button type="button" class="st-pill-btn" data-deck="ia_proyecto">🚀 2. Proyecto IA a Comité</button>
+                <button type="button" class="st-pill-btn" data-deck="arquitectura">🧬 3. Arquitectura Agéntica 3D</button>
+                <button type="button" class="st-pill-btn" data-deck="comercial">🌐 4. Estrategia &amp; Red Comercial</button>
               </div>
               <div class="st-shader-pills">
                 <span class="st-mono" style="font-size:0.66rem;color:#94a3b8;">FONDO SHADER:</span>
-                <button type="button" class="st-pill-btn active" data-shader="liquid">Liquid Metal</button>
+                <button type="button" class="st-pill-btn active" data-shader="ridge">RIDGE 3D Topo</button>
+                <button type="button" class="st-pill-btn" data-shader="liquid">Liquid Metal</button>
                 <button type="button" class="st-pill-btn" data-shader="aurora">Silk Aurora</button>
                 <button type="button" class="st-pill-btn" data-shader="halftone">Halftone Wave</button>
                 <button type="button" class="st-pill-btn" id="st-fullscreen-btn" title="Pantalla completa">⛶ Pantalla Completa</button>
@@ -668,19 +670,19 @@ Tu objetivo es crear un **único archivo `.html` 100% autónomo (sin librerías 
    - El usuario avanza entre $N$ escenas (por defecto 5) usando la rueda del ratón (`wheel`), las teclas `ArrowRight`/`ArrowLeft`/`Space` o la barra inferior de capítulos.
    - Mantén dos variables globales: `targetP` (índice de escena o progreso continuo) y `currentP` interpolado en cada frame con `currentP += (targetP - currentP) * 0.075` dentro de `requestAnimationFrame`.
 2. **Tres Capas Visuales Superpuestas a 60 FPS:**
-   - **Capa 1 (`<canvas id="bg-shader">`):** Fondo procedural animado en tiempo real (ondas armónicas tipo *Liquid Metal*, *Silk Aurora* o *Halftone Matrix*) reactivo a la posición del cursor `(mx, my)` y al progreso `currentP`.
-   - **Capa 2 (`<canvas id="hero-3d">`):** Objeto Héroe 3D proyectado con perspectiva real (`fov / (fov + z)`), rotable con el ratón y cuyas coordenadas `(x, y, z)` hacen **morphing continuo entre escenas** según `currentP`:
+   - **Capa 1 (`&lt;canvas id="bg-shader"&gt;`):** Fondo procedural animado en tiempo real (ondas topográficas 3D tipo *RIDGE*, *Liquid Metal*, *Silk Aurora* o *Halftone Matrix*) reactivo a la posición del cursor `(mx, my)` y al progreso `currentP`.
+   - **Capa 2 (`&lt;canvas id="hero-3d"&gt;`):** Objeto Héroe 3D proyectado con perspectiva real (`fov / (fov + z)`), rotable con el ratón y cuyas coordenadas `(x, y, z)` hacen **morphing continuo entre escenas** según `currentP`:
      * Estado `ring`: Anillo orbital 3D de nodos/pilares que gira al cambiar de escena.
      * Estado `stack`: Arquitectura isométrica en capas que se separa verticalmente (*Exploded View*) para explicar cómo funciona el sistema por dentro.
      * Estado `globe`: Esfera geodésica 3D con arcos luminosos entre nodos.
      * Estado `tunnel`: Túnel en el eje Z por el que avanza la cámara.
    - **Capa 3 (Tarjeta Narrativa 2.5D + Tipografía Cinética):**
      * Panel en cristal óptico (`backdrop-filter: blur(22px) saturate(170%)`, borde `1px solid rgba(255,255,255,0.14)`), con inclinación magnética 3D (`rotateX`, `rotateY`) al mover el ratón.
-     * Al cambiar de escena, el titular emerge palabra por palabra con transición de desenfoque (`filter: blur(10px) -> blur(0px)` + `translateY`).
+     * Al cambiar de escena, el titular emerge palabra por palabra con transición de desenfoque (`filter: blur(10px) -&gt; blur(0px)` + `translateY`).
 3. **Estructura en 3 Bloques Limpios:**
-   - `<style>`: Design tokens oscuros (`#04060d`), cristal esmerilado y controles.
-   - `<script id="deck-data">`: Objeto `window.DECK_SCENES = [...]` con `kicker`, `title`, `lead`, `pillars` (3–4 puntos clave con insignia y descripción), `metric` destacada y `model` (`ring` | `stack` | `globe` | `tunnel`) de cada escena.
-   - `<script id="deck-engine">`: Motor completo de renderizado 2D/3D, bucle `requestAnimationFrame` y controles de teclado/pantalla completa.
+   - `&lt;style&gt;`: Design tokens oscuros (`#04060d`), cristal esmerilado y controles.
+   - `&lt;script id="deck-data"&gt;`: Objeto `window.DECK_SCENES = [...]` con `kicker`, `title`, `lead`, `pillars` (3–4 puntos clave con insignia y descripción), `metric` destacada y `model` (`ring` | `stack` | `globe` | `tunnel`) de cada escena.
+   - `&lt;script id="deck-engine"&gt;`: Motor completo de renderizado 2D/3D, bucle `requestAnimationFrame` y controles de teclado/pantalla completa.
 4. **Prohibido truncar código:** Entrega el archivo `.html` íntegro y funcional de principio a fin.</pre>
 
           <h3 style="margin-top:2rem;">3.1. Tres Prompts Directos para Casos Habituales (Copiar y Pegar en VS Code o M365 Copilot)</h3>
@@ -711,6 +713,7 @@ Tu objetivo es crear un **único archivo `.html` 100% autónomo (sin librerías 
               <div class="st-field">
                 <label>Fondo Shader por defecto</label>
                 <select id="b-shader">
+                  <option value="ridge">RIDGE 3D Topographic Contours (Curvas de nivel en perspectiva)</option>
                   <option value="liquid">Liquid Metal Chrome (Cromo oscuro reflectante)</option>
                   <option value="aurora">Silk Aurora (Cortinas de luz ejecutivas)</option>
                   <option value="halftone">Halftone Wave Matrix (Matriz de ondas)</option>
@@ -810,9 +813,86 @@ Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de aná
     });
 
     // -------------------------------------------------------------------------
-    // 2. Las 3 Presentaciones Completas Integradas (5 escenas cada una)
+    // 2. Las 4 Presentaciones Completas Integradas (incluye RIDGE Topográfico 3D)
     // -------------------------------------------------------------------------
     const DECKS = {
+      ridge_ia: {
+        name: '1. RIDGE · IA en Procesos Digitales Commercial',
+        shader: 'ridge',
+        scenes: [
+          {
+            kicker: 'CUMBRE 01 / 06 · ALT 1.240m · EMBUDO COMERCIAL',
+            title: 'De procesos digitales lineales a flujos autónomos con IA',
+            lead: 'Los canales digitales comerciales ya capturan el tráfico, pero el 68% del tiempo se pierde en saltos manuales entre front, back-office y riesgos.',
+            model: 'tunnel',
+            metric: 'META 2026: CERO FRICCIÓN EN LOS 4 PROCESOS CORE DE COMMERCIAL',
+            pillars: [
+              { b: '82%', t: 'Tiempo administrativo improductivo', d: 'Validación manual de escrituras, balances e impuestos antes de dar respuesta.', hl: true },
+              { b: '4,8d', t: 'Latencia media hasta oferta en firme', d: 'Enfriamiento del lead digital antes de recibir propuesta personalizada.', hl: true },
+              { b: '3x', t: 'Multiplicador de conversión digital', d: 'Cuando la respuesta comercial se produce en los primeros 5 minutos.', hl: false }
+            ]
+          },
+          {
+            kicker: 'CUMBRE 02 / 06 · ALT 1.890m · ONBOARDING & KYB',
+            title: 'Alta Digital de Empresas e Inteligencia Documental Instantánea',
+            lead: 'Agentes multimodales extraen poderes, titularidad real (UBO) y estados financieros en 90 segundos durante la sesión digital del cliente.',
+            model: 'stack',
+            metric: 'IMPACTO: DE 9 DÍAS A 18 MINUTOS EN ALTA OPERATIVA PYME',
+            pillars: [
+              { b: 'KYB', t: 'Grafo societario y poderes automático', d: 'Lectura estructurada de escrituras notariales con trazabilidad al párrafo.', hl: true },
+              { b: '200/303', t: 'Cruce fiscal-contable en vivo', d: 'Extracción de Impuesto de Sociedades, IVA y CIRBE con cuadre automático.', hl: true },
+              { b: '84%', t: 'Tasa de aprobación directa (STP)', d: 'Solo el 16% con alertas reales pasa a especialista humano con expediente pre-resuelto.', hl: false }
+            ]
+          },
+          {
+            kicker: 'CUMBRE 03 / 06 · ALT 2.420m · HIPER-PERSONALIZACIÓN',
+            title: 'Motor Next-Best-Action y Pricing Dinámico por Micro-Señales',
+            lead: 'Pasamos de campañas estáticas trimestrales a impactos en tiempo real disparados por eventos transaccionales de tesorería, TPV y comercio exterior.',
+            model: 'ring',
+            metric: 'CONVERSIÓN DIGITAL: 14,2% FRENTE AL 3,1% DE CAMPAÑA TRADICIONAL',
+            pillars: [
+              { b: 'SEÑAL', t: 'Detección de picos y desvíos en vivo', d: 'Identifica necesidad de circulante o divisa en el instante en que ocurre.', hl: true },
+              { b: 'RORWA', t: 'Simulación instantánea de tasa y EVA', d: 'Calcula el precio óptimo ajustado a riesgo y vinculación del grupo.', hl: true },
+              { b: '1-CLICK', t: 'Activación omnicanal sincronizada', d: 'Misma propuesta pre-aprobada en App, Web Empresas y muro del gestor.', hl: false }
+            ]
+          },
+          {
+            kicker: 'CUMBRE 04 / 06 · ALT 2.950m · FINANCIACIÓN & CIRCULANTE',
+            title: 'Renovación y Concesión Digital STP de Líneas de Circulante',
+            lead: 'El flujo de Confirming, Factoring y Pólizas de Crédito se evalúa en segundos combinando scoring conductual y redacción asistida de propuesta.',
+            model: 'globe',
+            metric: 'COBERTURA: 76% DE RENOVACIONES SIN INTERVENCIÓN MANUAL',
+            pillars: [
+              { b: 'CASH', t: 'Rating dinámico por flujo de caja real', d: 'Evalúa cobros, pagos e impagos sectoriales en ventana móvil de 90 días.', hl: true },
+              { b: 'MEMO', t: 'Propuesta de crédito auto-redactada', d: 'En operaciones complejas, el analista recibe el informe listo al 90%.', hl: true },
+              { b: '< 3m', t: 'Desembolso digital con firma integrada', d: 'Disponibilidad inmediata de fondos en cuenta desde el portal.', hl: false }
+            ]
+          },
+          {
+            kicker: 'CUMBRE 05 / 06 · ALT 3.480m · RETENCIÓN & COPILOTO',
+            title: 'Copiloto del Gestor y Defensa Proactiva de Cartera VIP',
+            lead: 'La IA prepara cada reunión en 30 segundos y detecta fugas silenciosas de negocio 60 días antes de la cancelación del contrato.',
+            model: 'ring',
+            metric: 'AHORRO: +9,5 HORAS COMERCIALES GANADAS POR GESTOR A LA SEMANA',
+            pillars: [
+              { b: 'RADAR', t: 'Alerta temprana de desvinculación', d: 'Detecta caídas de remesas y saldos medios antes del cierre mensual.', hl: true },
+              { b: 'BRIEF', t: 'Dossier 360º pre-visita en 1 clic', d: 'Resumen ejecutivo de posiciones, vencimientos y argumentos de negociación.', hl: true },
+              { b: 'CRM', t: 'Registro automático de acuerdos y tareas', d: 'Cero carga administrativa post-reunión para la red comercial.', hl: false }
+            ]
+          },
+          {
+            kicker: 'CUMBRE 06 / 06 · ALT 3.850m · ARQUITECTURA & ROI',
+            title: 'Gobierno, Seguridad Bancaria y Hoja de Ruta de Impacto',
+            lead: 'Arquitectura auditable sobre Unity Catalog y Spec-Kit con enmascaramiento PII en origen y retorno financiero desde el primer trimestre.',
+            model: 'stack',
+            metric: 'IMPACTO ANUALIZADO: +18,4 M€ EN MARGEN ORDINARIO · 0 FUGAS PII',
+            pillars: [
+              { b: 'OLA 1', t: 'Q1–Q2 · Onboarding KYB + Copiloto Red', d: 'Despliegue rápido con reducción inmediata de tiempos de alta y preparación.', hl: true },
+              { b: 'OLA 2', t: 'Q3–Q4 · Circulante STP + Pricing Dinámico', d: 'Automatización de renovaciones y ofertas personalizadas en tiempo real.', hl: true }
+            ]
+          }
+        ]
+      },
       ia_proyecto: {
         name: '1. Proyecto IA a Comité de Dirección',
         shader: 'liquid',
@@ -1018,8 +1098,8 @@ Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de aná
     // -------------------------------------------------------------------------
     // 3. Motor Gráfico en Vivo (Shader Canvas + 3D Morphing Canvas + Scrollytelling)
     // -------------------------------------------------------------------------
-    let activeDeckKey = 'ia_proyecto';
-    let activeShader = 'liquid';
+    let activeDeckKey = 'ridge_ia';
+    let activeShader = 'ridge';
     let modelOverride = 'auto';
     let sceneIdx = 0;
     let targetP = 0;   // 0 .. scenes.length - 1
@@ -1142,7 +1222,54 @@ Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de aná
     function drawShader(ctx, w, h, t) {
       ctx.clearRect(0, 0, w, h);
       const grd = ctx.createLinearGradient(0, 0, w, h);
-      if (activeShader === 'liquid') {
+      if (activeShader === 'ridge') {
+        // RIDGE 3D Topographic Contour Shader (Estilo scrolltide.co/templates/ridge)
+        grd.addColorStop(0, '#04060c');
+        grd.addColorStop(0.55, '#0b1325');
+        grd.addColorStop(1, '#070b14');
+        ctx.fillStyle = grd;
+        ctx.fillRect(0, 0, w, h);
+
+        // Sol de horizonte topográfico reactivo a currentP
+        const sunX = w * (0.64 + Math.sin(currentP * 0.7) * 0.08 + (mouseUV.x - 0.5) * 0.06);
+        const sunY = h * 0.34;
+        const sunGlow = ctx.createRadialGradient(sunX, sunY, 10, sunX, sunY, Math.max(w, h) * 0.48);
+        sunGlow.addColorStop(0, 'rgba(245, 158, 11, 0.24)');
+        sunGlow.addColorStop(0.42, 'rgba(56, 189, 248, 0.11)');
+        sunGlow.addColorStop(1, 'rgba(4, 6, 12, 0)');
+        ctx.fillStyle = sunGlow;
+        ctx.fillRect(0, 0, w, h);
+
+        // 28 crestas de elevación 3D con oclusión del pintor (atrás hacia adelante)
+        const rows = 28;
+        for (let r = 0; r < rows; r++) {
+          const depth = r / (rows - 1); // 0 = horizonte, 1 = frente
+          const baseY = h * (0.28 + Math.pow(depth, 1.32) * 0.68);
+          const amp = (18 + depth * 52);
+          ctx.beginPath();
+          for (let x = 0; x <= w; x += 14) {
+            const nx = x / w;
+            const ridgePeak = Math.exp(-Math.pow((nx - (0.66 + Math.sin(currentP * 0.8 + r * 0.11) * 0.1)) / 0.22, 2));
+            const elev = (Math.sin(nx * 6.5 + r * 0.42 - t * 0.55 + currentP * 0.9) * 0.52
+                       + Math.cos(nx * 13.0 - r * 0.28 + t * 0.35) * 0.28
+                       + ridgePeak * 1.15) * amp;
+            const y = baseY - elev + (mouseUV.y - 0.5) * 24 * depth;
+            if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+          }
+          ctx.lineTo(w, h + 20);
+          ctx.lineTo(0, h + 20);
+          ctx.closePath();
+          ctx.fillStyle = 'rgba(5, 8, 17, 0.86)';
+          ctx.fill();
+
+          const isMajor = r % 4 === 0;
+          ctx.strokeStyle = isMajor
+            ? `rgba(245, 158, 11, ${(0.22 + depth * 0.55).toFixed(2)})`
+            : `rgba(56, 189, 248, ${(0.10 + depth * 0.28).toFixed(2)})`;
+          ctx.lineWidth = isMajor ? 1.7 : 0.9;
+          ctx.stroke();
+        }
+      } else if (activeShader === 'liquid') {
         grd.addColorStop(0, '#050711');
         grd.addColorStop(0.5, '#0c1226');
         grd.addColorStop(1, '#050814');
@@ -1451,13 +1578,14 @@ Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de aná
     // -------------------------------------------------------------------------
     function buildStandaloneDeckHtml(deckTitle, shaderMode, scenesArray) {
       const scenesJson = JSON.stringify(scenesArray, null, 2);
+      const shMode = shaderMode || 'ridge';
       return `<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${deckTitle}</title>
-<style>
+\x3cstyle>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: #04060d; color: #f8fafc; font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; overflow: hidden; height: 100vh; display: flex; flex-direction: column; }
   .topbar { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1.5rem; background: rgba(7,10,20,0.92); border-bottom: 1px solid rgba(255,255,255,0.1); z-index: 10; }
@@ -1479,16 +1607,16 @@ Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de aná
   .sbtn.active { background: rgba(139,92,246,0.22); border-color: #a78bfa; color: #fff; }
   .sbtn small { display: block; font-family: monospace; font-size: 0.62rem; color: #67e8f9; }
   .sbtn span { font-size: 0.76rem; font-weight: 700; }
-</style>
-</head>
-<body>
+\x3c/style>
+\x3c/head>
+\x3cbody>
   <div class="topbar">
     <div class="brand">${deckTitle}</div>
     <div style="font-family:monospace;font-size:0.75rem;color:#94a3b8;">Usa la rueda del ratón o las flechas ← / → para cambiar de escena</div>
   </div>
   <div class="stage" id="st">
-    <canvas id="bg"></canvas>
-    <canvas id="hero"></canvas>
+    \x3ccanvas id="bg">\x3c/canvas>
+    \x3ccanvas id="hero">\x3c/canvas>
     <div class="layer">
       <div class="card">
         <div class="kicker" id="k"></div>
@@ -1500,8 +1628,9 @@ Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de aná
     </div>
   </div>
   <div class="bar" id="bar"></div>
-<script>
+\x3cscript>
 const SCENES = ${scenesJson};
+const SHADER = '${shMode}';
 let idx = 0, targetP = 0, currentP = 0, rotY = 0.4;
 const N = 110;
 const nodes = Array.from({length:N}, (_, i) => {
@@ -1540,13 +1669,26 @@ function frame(now){
   const t = now*0.001, w = bg.width, h = bg.height;
   currentP += (targetP - currentP)*0.08; rotY += 0.006;
   bctx.fillStyle = '#050814'; bctx.fillRect(0,0,w,h);
-  for(let k=0;k<6;k++){
-    bctx.beginPath();
-    for(let x=0;x<=w;x+=20){
-      const y = h*(0.2+k*0.12) + Math.sin(x/w*5+t+k)*26 + Math.cos(x/w*9-t+currentP)*14;
-      x===0?bctx.moveTo(x,y):bctx.lineTo(x,y);
+  if (SHADER === 'ridge') {
+    for(let r=0;r<24;r++){
+      const d = r/23, baseY = h*(0.28 + Math.pow(d,1.3)*0.68), amp = 16 + d*48;
+      bctx.beginPath();
+      for(let x=0;x<=w;x+=16){
+        const nx = x/w, pk = Math.exp(-Math.pow((nx-0.66)/0.22,2));
+        const y = baseY - (Math.sin(nx*6.5+r*0.4-t*0.5+currentP)+pk*1.1)*amp;
+        x===0?bctx.moveTo(x,y):bctx.lineTo(x,y);
+      }
+      bctx.strokeStyle = r%4===0?'rgba(245,158,11,0.45)':'rgba(56,189,248,0.22)'; bctx.lineWidth = r%4===0?1.6:0.9; bctx.stroke();
     }
-    bctx.strokeStyle = k%2?'rgba(56,189,248,0.12)':'rgba(167,139,250,0.14)'; bctx.lineWidth = 22; bctx.stroke();
+  } else {
+    for(let k=0;k<6;k++){
+      bctx.beginPath();
+      for(let x=0;x<=w;x+=20){
+        const y = h*(0.2+k*0.12) + Math.sin(x/w*5+t+k)*26 + Math.cos(x/w*9-t+currentP)*14;
+        x===0?bctx.moveTo(x,y):bctx.lineTo(x,y);
+      }
+      bctx.strokeStyle = k%2?'rgba(56,189,248,0.12)':'rgba(167,139,250,0.14)'; bctx.lineWidth = 22; bctx.stroke();
+    }
   }
   hctx.clearRect(0,0,w,h);
   const mode = SCENES[idx].model || 'ring', cx = w*0.68, cy = h*0.5, cyR = Math.cos(rotY+currentP*0.8), syR = Math.sin(rotY+currentP*0.8);
@@ -1563,9 +1705,9 @@ function frame(now){
   requestAnimationFrame(frame);
 }
 requestAnimationFrame(frame);
-<\/script>
-</body>
-</html>`;
+\x3c/script>
+\x3c/body>
+\x3c/html>`;
     }
 
     if ($('#st-export-deck-btn')) {
