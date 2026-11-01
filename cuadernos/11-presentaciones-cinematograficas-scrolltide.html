@@ -1,0 +1,1796 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Estudio Maestro de Presentaciones Cinematográficas 2.5D/3D estilo Scrolltide: Shaders en Tiempo Real (Liquid Metal, Aurora, Halftone), Escenario Sticky 3D con Anillo Orbital, Globo de Red, Arquitectura en Explosión Isométrica, Túnel Z-Axis, Catálogo de Componentes Interactivos y Prompts Blindados para VS Code Copilot.">
+  <meta name="keywords" content="Scrolltide, Scrollytelling, Presentaciones Interactivas, WebGL Shader, Liquid Metal, CSS 3D Perspective, Carousel Ring 3D, Exploded View, Z-Axis Flythrough, Kinetic Typography, VS Code Copilot, Prompt Engineering, Banca Comercial">
+  <title>Cuaderno 11 — Presentaciones Cinematográficas 2.5D/3D (Estilo Scrolltide): Shaders, Escenarios 3D, Ejemplos en Vivo y Prompts Maestros | Curso IA Commercial</title>
+  <link rel="manifest" href="../manifest.json">
+  <link rel="stylesheet" href="../css/styles.css">
+  <style>
+    /* ==========================================================================
+       CUADERNO 11 · ESTUDIO DE PRESENTACIONES CINEMATOGRÁFICAS (ESTILO SCROLLTIDE)
+       ========================================================================== */
+    .content-wrapper { max-width: 1180px; }
+    .st-mono { font-family: 'JetBrains Mono', var(--font-mono), monospace; font-variant-numeric: tabular-nums; }
+
+    /* Barra de pestañas del cuaderno */
+    .st-tabs {
+      display: flex; flex-wrap: wrap; gap: 0.45rem;
+      background: rgba(10, 14, 26, 0.94);
+      border: 1px solid rgba(139, 92, 246, 0.38);
+      border-radius: 12px; padding: 0.45rem; margin: 1.6rem 0;
+      position: sticky; top: 72px; z-index: 30;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 12px 32px -10px rgba(0, 0, 0, 0.65);
+    }
+    .st-tab {
+      flex: 1 1 auto; padding: 0.55rem 0.9rem; border-radius: 8px;
+      font-size: 0.8rem; font-weight: 600; color: #cbd5e1;
+      background: transparent; border: 1px solid transparent;
+      cursor: pointer; transition: all 180ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .st-tab:hover { color: #fff; background: rgba(255, 255, 255, 0.07); }
+    .st-tab.active {
+      color: #fff;
+      border-color: rgba(139, 92, 246, 0.6);
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.32), rgba(6, 182, 212, 0.25));
+      box-shadow: 0 4px 14px rgba(139, 92, 246, 0.25);
+    }
+    [data-st-hidden="true"] { display: none !important; }
+
+    /* ==========================================================================
+       TEATRO CINEMATOGRÁFICO EN VIVO (SCROLLTIDE STAGE PLAYER)
+       ========================================================================== */
+    .st-cinema-shell {
+      background: #04060d;
+      border: 1px solid rgba(139, 92, 246, 0.45);
+      border-radius: 16px;
+      overflow: hidden;
+      margin: 1.5rem 0;
+      box-shadow: 0 28px 70px -15px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.06);
+      position: relative;
+    }
+    .st-cinema-shell.is-fullscreen {
+      position: fixed; inset: 0; z-index: 99999;
+      margin: 0; border-radius: 0; border: none;
+      display: flex; flex-direction: column;
+    }
+    .st-cinema-topbar {
+      display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
+      gap: 0.65rem; padding: 0.75rem 1.1rem;
+      background: rgba(8, 11, 21, 0.96);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+      z-index: 10; position: relative;
+    }
+    .st-deck-pills, .st-shader-pills {
+      display: flex; flex-wrap: wrap; gap: 0.35rem; align-items: center;
+    }
+    .st-pill-btn {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.73rem; font-weight: 700;
+      padding: 0.38rem 0.75rem; border-radius: 7px;
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      background: rgba(255, 255, 255, 0.04);
+      color: #cbd5e1; cursor: pointer;
+      transition: all 160ms cubic-bezier(0.16, 1, 0.3, 1);
+      white-space: nowrap;
+    }
+    .st-pill-btn:hover { border-color: rgba(139, 92, 246, 0.55); color: #fff; }
+    .st-pill-btn.active {
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.35), rgba(6, 182, 212, 0.3));
+      border-color: #a78bfa; color: #fff;
+      box-shadow: 0 0 18px -4px rgba(139, 92, 246, 0.6);
+    }
+    .st-pill-btn.emerald {
+      background: #10b981; color: #04110b; border-color: #10b981; font-weight: 800;
+    }
+    .st-pill-btn.emerald:hover { background: #34d399; }
+
+    /* El Viewport 3D donde ocurre el Scrollytelling */
+    .st-stage-viewport {
+      position: relative;
+      height: 570px;
+      width: 100%;
+      overflow: hidden;
+      perspective: 1300px;
+      background: #03050b;
+      user-select: none;
+    }
+    .st-cinema-shell.is-fullscreen .st-stage-viewport {
+      flex: 1; height: auto;
+    }
+    #st-shader-canvas, #st-hero3d-canvas {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      display: block;
+    }
+    #st-shader-canvas { z-index: 1; opacity: 0.88; }
+    #st-hero3d-canvas { z-index: 2; pointer-events: auto; cursor: grab; }
+    #st-hero3d-canvas:active { cursor: grabbing; }
+
+    /* Capa de Superposición Narrativa 2.5D (Tarjetas de Cristal + Tipografía Cinética) */
+    .st-narrative-layer {
+      position: absolute; inset: 0; z-index: 3;
+      pointer-events: none;
+      display: grid;
+      grid-template-columns: minmax(290px, 470px) 1fr;
+      align-items: center;
+      padding: 2rem 2.4rem;
+      gap: 1.5rem;
+    }
+    @media (max-width: 860px) {
+      .st-narrative-layer {
+        grid-template-columns: 1fr;
+        align-items: flex-end;
+        padding: 1.1rem;
+      }
+    }
+    .st-story-card {
+      pointer-events: auto;
+      background: rgba(9, 13, 26, 0.72);
+      backdrop-filter: blur(22px) saturate(170%);
+      -webkit-backdrop-filter: blur(22px) saturate(170%);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 18px;
+      padding: 1.55rem 1.7rem;
+      color: #f8fafc;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+      transform-style: preserve-3d;
+      transition: transform 120ms ease-out, border-color 240ms ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .st-story-card::before {
+      content: ""; position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 0%), rgba(167, 139, 250, 0.18), transparent 60%);
+    }
+    .st-kicker {
+      display: inline-flex; align-items: center; gap: 0.45rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem; font-weight: 800;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: #67e8f9;
+      background: rgba(6, 182, 212, 0.14);
+      border: 1px solid rgba(6, 182, 212, 0.35);
+      padding: 0.22rem 0.6rem; border-radius: 999px;
+      margin-bottom: 0.75rem;
+    }
+    .st-kinetic-title {
+      font-family: var(--font-display, 'Outfit', sans-serif);
+      font-size: 1.65rem; font-weight: 800; line-height: 1.16;
+      margin: 0 0 0.75rem;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 55%, #a5b4fc 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .st-kinetic-word {
+      display: inline-block;
+      transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1), opacity 420ms ease, filter 420ms ease;
+    }
+    .st-story-lead {
+      font-size: 0.86rem; line-height: 1.6; color: #cbd5e1;
+      margin: 0 0 1rem;
+    }
+    .st-pillars-list {
+      display: grid; grid-template-columns: 1fr; gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .st-pillar-item {
+      background: rgba(255, 255, 255, 0.045);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 10px;
+      padding: 0.55rem 0.75rem;
+      display: flex; align-items: flex-start; gap: 0.6rem;
+      transition: all 220ms ease;
+    }
+    .st-pillar-item.hl {
+      border-color: rgba(56, 189, 248, 0.55);
+      background: rgba(56, 189, 248, 0.11);
+    }
+    .st-pillar-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem; font-weight: 800;
+      color: #a78bfa; background: rgba(139, 92, 246, 0.18);
+      border: 1px solid rgba(139, 92, 246, 0.4);
+      border-radius: 6px; padding: 0.15rem 0.42rem;
+      flex-shrink: 0; margin-top: 0.08rem;
+    }
+    .st-pillar-text strong {
+      display: block; font-size: 0.8rem; color: #f8fafc; margin-bottom: 0.1rem;
+    }
+    .st-pillar-text span {
+      display: block; font-size: 0.74rem; color: #94a3b8; line-height: 1.4;
+    }
+
+    /* HUD Flotante Derecho del Objeto 3D */
+    .st-stage-hud {
+      justify-self: end; align-self: start;
+      background: rgba(7, 10, 20, 0.75);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px; padding: 0.65rem 0.85rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem; color: #94a3b8;
+      pointer-events: auto;
+      max-width: 270px;
+    }
+    .st-stage-hud strong { color: #38bdf8; }
+
+    /* Barra inferior de Scrollytelling Timeline */
+    .st-timeline-bar {
+      background: rgba(7, 10, 19, 0.96);
+      border-top: 1px solid rgba(255, 255, 255, 0.09);
+      padding: 0.7rem 1.15rem;
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+      gap: 0.8rem; z-index: 10; position: relative;
+    }
+    .st-scene-steps {
+      display: flex; flex-wrap: wrap; gap: 0.35rem; flex: 1;
+    }
+    .st-scene-btn {
+      flex: 1 1 120px;
+      text-align: left;
+      padding: 0.42rem 0.65rem;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #94a3b8; cursor: pointer;
+      transition: all 180ms ease;
+    }
+    .st-scene-btn:hover { color: #fff; border-color: rgba(255, 255, 255, 0.22); }
+    .st-scene-btn.active {
+      background: rgba(139, 92, 246, 0.18);
+      border-color: #a78bfa; color: #fff;
+    }
+    .st-scene-btn small {
+      display: block; font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem; color: #67e8f9; text-transform: uppercase;
+    }
+    .st-scene-btn span {
+      display: block; font-size: 0.74rem; font-weight: 700;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .st-progress-track {
+      width: 100%; height: 4px; background: rgba(255, 255, 255, 0.08);
+      border-radius: 999px; overflow: hidden; margin-top: 0.35rem;
+    }
+    .st-progress-fill {
+      height: 100%; width: 0%;
+      background: linear-gradient(90deg, #8b5cf6, #06b6d4, #10b981);
+      transition: width 80ms linear;
+    }
+
+    /* ==========================================================================
+       CATÁLOGO DE 8 COMPONENTES SCROLLTIDE (CON DEMO EN VIVO + PICKER)
+       ========================================================================== */
+    .st-comp-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.1rem; margin: 1.25rem 0;
+    }
+    .st-comp-card {
+      background: #090d19;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px; padding: 1rem;
+      display: flex; flex-direction: column; justify-content: space-between;
+      gap: 0.75rem; color: #f1f5f9;
+      transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .st-comp-card:hover {
+      border-color: rgba(139, 92, 246, 0.5);
+      transform: translateY(-2px);
+    }
+    .st-comp-card.picked {
+      border-color: #10b981;
+      background: linear-gradient(180deg, rgba(16, 185, 129, 0.13) 0%, #090d19 100%);
+      box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.38);
+    }
+    .st-comp-stage {
+      height: 130px; border-radius: 10px;
+      background: #040711;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      perspective: 700px;
+    }
+    .st-comp-id {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.66rem; font-weight: 800;
+      color: #c4b5fd; background: rgba(139, 92, 246, 0.18);
+      border: 1px solid rgba(139, 92, 246, 0.4);
+      padding: 0.15rem 0.5rem; border-radius: 5px;
+    }
+    .st-comp-title { font-size: 0.94rem; font-weight: 700; color: #fff; margin: 0.2rem 0; }
+    .st-comp-desc { font-size: 0.77rem; color: #cbd5e1; line-height: 1.48; margin: 0; }
+
+    /* Mini-animaciones CSS del catálogo */
+    @keyframes stOrbitSpin {
+      0% { transform: rotateX(62deg) rotateZ(0deg); }
+      100% { transform: rotateX(62deg) rotateZ(360deg); }
+    }
+    @keyframes stPortalPulse {
+      0%, 100% { clip-path: circle(22% at 50% 50%); }
+      50% { clip-path: circle(68% at 50% 50%); }
+    }
+    @keyframes stBlurWave {
+      0%, 100% { filter: blur(6px); opacity: 0.35; transform: translateY(8px); }
+      50% { filter: blur(0px); opacity: 1; transform: translateY(0px); }
+    }
+    @keyframes stZFly {
+      0% { transform: translateZ(-180px) scale(0.75); opacity: 0.25; }
+      60% { transform: translateZ(20px) scale(1.03); opacity: 1; }
+      100% { transform: translateZ(130px) scale(1.25); opacity: 0; }
+    }
+
+    /* Bloques de código y prompts */
+    .st-codehead {
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 0.6rem; flex-wrap: wrap;
+      background: #0d1324; border: 1px solid rgba(255, 255, 255, 0.1);
+      border-bottom: none; border-radius: 10px 10px 0 0;
+      padding: 0.55rem 0.9rem;
+    }
+    .st-codehead .path {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+      color: #67e8f9; font-weight: 700;
+    }
+    .st-pre {
+      background: #060913; color: #dbe4f0;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 0 0 10px 10px;
+      padding: 1rem 1.15rem; margin: 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem; line-height: 1.58;
+      overflow: auto; white-space: pre-wrap; max-height: 520px;
+    }
+    .st-grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 1rem; margin: 1.2rem 0; }
+    .st-builder-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 1rem; margin: 1.2rem 0; }
+    @media (max-width: 960px) { .st-builder-grid { grid-template-columns: 1fr; } }
+    .st-form-box {
+      background: var(--bg-card); border: 1px solid var(--border-subtle);
+      border-radius: 12px; padding: 1.1rem;
+      display: flex; flex-direction: column; gap: 0.8rem;
+    }
+    .st-field label {
+      display: block; font-size: 0.72rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.04em;
+      color: var(--text-primary); margin-bottom: 0.3rem;
+    }
+    .st-field input, .st-field select, .st-field textarea {
+      width: 100%; background: var(--bg-secondary, #0b1220);
+      border: 1px solid var(--border-medium); color: var(--text-primary);
+      border-radius: 7px; padding: 0.48rem 0.65rem; font-size: 0.8rem; font-family: inherit;
+    }
+    .st-field textarea { min-height: 92px; font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; }
+    .st-toast {
+      position: fixed; bottom: 26px; left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #10b981; color: #04110b; font-weight: 800; font-size: 0.82rem;
+      padding: 0.6rem 1.1rem; border-radius: 9px;
+      opacity: 0; pointer-events: none;
+      transition: all 220ms cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 100001; box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+    }
+    .st-toast.on { opacity: 1; transform: translateX(-50%) translateY(0); }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <nav class="top-nav">
+    <button class="menu-toggle" aria-label="Abrir menú">☰</button>
+    <a href="../index.html" class="nav-brand">
+      <div class="nav-brand-icon">IA</div>
+      <div class="nav-brand-text"><span>Curso IA</span> Commercial</div>
+    </a>
+    <div class="nav-links">
+      <a href="../index.html" class="nav-link">Cuadernos</a>
+      <a href="../muro.html" class="nav-link">Lienzo</a>
+      <a href="../recursos.html" class="nav-link">Recursos</a>
+      <a href="../examen.html" class="nav-link">Examen Oficial</a>
+      <a href="#" class="nav-link">Acerca de</a>
+    </div>
+  </nav>
+
+  <!-- Reading Progress -->
+  <div class="progress-bar"><div class="progress-bar-fill"></div></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Contenido del cuaderno</div>
+      <a href="#intro-scrolltide" class="sidebar-link active"><span class="sidebar-link-number">00</span> Anatomía Scrolltide 2.5D/3D</a>
+      <a href="#teatro-vivo" class="sidebar-link"><span class="sidebar-link-number">01</span> 3 Presentaciones en Vivo</a>
+      <a href="#catalogo-efectos" class="sidebar-link"><span class="sidebar-link-number">02</span> Catálogo de 8 Motores (#ST)</a>
+      <a href="#prompts-maestros" class="sidebar-link"><span class="sidebar-link-number">03</span> Prompts &amp; Comando /scrolltide</a>
+      <a href="#ensamblador-deck" class="sidebar-link"><span class="sidebar-link-number">04</span> Generador de Presentaciones</a>
+    </div>
+  </aside>
+  <div class="sidebar-overlay"></div>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="content-wrapper">
+
+      <!-- Page Header -->
+      <div class="page-header">
+        <div class="breadcrumb">
+          <a href="../index.html">Cuadernos</a>
+          <span class="separator">/</span>
+          <span>Cuaderno 11</span>
+        </div>
+
+        <div class="page-meta">
+          <span class="meta-badge">CUADERNO 11</span>
+          <span class="meta-badge blue">Scrolltide · Shaders · 3D Scrollytelling</span>
+          <span class="meta-info">Presentaciones Conceptuales, de Estrategia y Arquitectura</span>
+        </div>
+
+        <h1 class="page-title">Presentaciones Cinematográficas 2.5D y 3D (Estilo Scrolltide): Shaders en Vivo, Escenarios Interactivos y Prompts Maestros para VS Code Copilot</h1>
+        <p class="page-subtitle">Cómo crear presentaciones de alto impacto visual para defender proyectos de IA, arquitecturas tecnológicas, planes estratégicos o iniciativas comerciales sin usar PowerPoint: un único archivo <code>.html</code> autónomo con fondos Shader en GPU, objetos 3D reactivos al scroll, tipografía cinética y control dual ratón/teclado.</p>
+
+        <div class="bloom-card">
+          <div class="bloom-header">
+            <h3 class="bloom-title">🎯 Objetivos de Aprendizaje &amp; Competencias Operativas</h3>
+            <div class="bloom-meta-pills">
+              <span class="bloom-pill time">⏱️ 35 min lectura · 3 presentaciones descargables</span>
+              <span class="bloom-pill diff-intermediate">Nivel: Estudio Creativo / Principal Architect</span>
+            </div>
+          </div>
+          <div class="bloom-grid">
+            <div class="bloom-col">
+              <div class="bloom-col-header understand">🧠 1. Comprender</div>
+              <ul>
+                <li>Por qué un prompt genérico falla al pedir animaciones 3D y cómo funciona la arquitectura <strong>Single Sticky Stage + Timeline Normalizado $p \in [0,1]$</strong> de Scrolltide.</li>
+                <li>Cómo generar fondos tipo <strong>Liquid Metal, Silk Aurora o Halftone Matrix</strong> por código matemático sin archivos de vídeo pesados.</li>
+              </ul>
+            </div>
+            <div class="bloom-col">
+              <div class="bloom-col-header analyze">⚖️ 2. Experimentar en Vivo</div>
+              <ul>
+                <li>Interactuar en la Sección 01 con <strong>3 presentaciones completas integradas</strong> (Proyecto IA a Comité, Arquitectura Agéntica en Capas y Hoja de Ruta Comercial) y descargarlas como <code>.html</code> independiente.</li>
+                <li>Probar y combinar las <strong>8 mecánicas visuales (<code>#ST-01</code> a <code>#ST-08</code>)</strong> en la Sección 02.</li>
+              </ul>
+            </div>
+            <div class="bloom-col">
+              <div class="bloom-col-header apply">🚀 3. Aplicar en VS Code</div>
+              <ul>
+                <li>Instalar el comando <code>/scrolltide.deck</code> (<code>.github/prompts/scrolltide.deck.prompt.md</code>) que ya inyecta el motor físico y 3D a GitHub Copilot.</li>
+                <li>Usar el <strong>Ensamblador de la Sección 04</strong> para generar el prompt exacto de tu próxima presentación o exportar el HTML al instante.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="st-tabs" role="tablist">
+          <button class="st-tab active" data-st-filter="all">🎬 Todo el Cuaderno</button>
+          <button class="st-tab" data-st-filter="live">✨ 1. Teatro en Vivo (3 Presentaciones)</button>
+          <button class="st-tab" data-st-filter="catalog">🧩 2. Catálogo 8 Efectos (#ST-01 a #ST-08)</button>
+          <button class="st-tab" data-st-filter="prompts">🤖 3. Prompts &amp; Comando /scrolltide.deck</button>
+          <button class="st-tab" data-st-filter="builder">🛠️ 4. Generador de tu Presentación</button>
+        </div>
+      </div>
+
+      <!-- =====================================================================
+           SECCIÓN 00 · ANATOMÍA TÉCNICA DE SCROLLTIDE
+           ===================================================================== -->
+      <section id="intro-scrolltide" class="transcript-section" data-st-group="live prompts">
+        <div class="section-header">
+          <span class="section-number">00</span>
+          <h2 class="section-title">Por qué las webs de Scrolltide parecen una película (y cómo lograrlo sin servidores ni vídeos pesados)</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p class="editorial-lead">
+            Cuando tienes que presentar una idea, la arquitectura de un proyecto de IA, un nuevo modelo operativo o una propuesta comercial —donde el protagonista es <strong>el concepto, el flujo o la visión</strong> y no una tabla de números—, las diapositivas estáticas de PowerPoint pierden la atención en el minuto dos. El secreto de plataformas como <code>scrolltide.co</code> es tratar la presentación como <strong>un único escenario tridimensional continuo</strong> gobernado por una variable matemática: el progreso normalizado $p \in [0, 1]$.
+          </p>
+
+          <div class="concept-card highlight">
+            <div class="concept-card-label">🔑 Las 4 Leyes de Ingeniería para que Copilot Genere Calidad «Scrolltide»</div>
+            <ol style="margin-top: 0.55rem; margin-left: 1.2rem; line-height: 1.65;">
+              <li><strong>Escenario Único con Inercia Amortiguada (<em>Lerp Camera</em>):</strong> El usuario avanza con la rueda del ratón o con las flechas <code>←</code> / <code>→</code>, pero la escena nunca salta de golpe. Un integrador físico (<code>currentP += (targetP - currentP) * 0.075</code>) interpola suavemente a 60 FPS la rotación de la cámara 3D, la separación de capas y el foco de luz.</li>
+              <li><strong>Separación en 3 Planos de Profundidad (<em>Z-Layering</em>):</strong>
+                <strong>Plano 1 (Fondo GPU):</strong> Shader procedural (Metal líquido, Aurora o Matriz Halftone) sin vídeos MP4 externos;
+                <strong>Plano 2 (Objeto Héroe 3D):</strong> Un modelo interactivo en Canvas/3D (Anillo Orbital de pilares, Arquitectura en Explosión Isométrica, Esfera Global de Nodos o Túnel Z-Axis) que se transforma de una escena a otra;
+                <strong>Plano 3 (Cristal Narrativo 2.5D):</strong> Tarjetas con <code>backdrop-filter: blur(22px)</code>, inclinación magnética 3D al ratón y tipografía cinética que emerge del desenfoque.</li>
+              <li><strong>Guion por Tramos de Progreso (<em>Scene Keyframes</em>):</strong> En lugar de pedirle al LLM «haz una presentación bonita», el prompt define qué estado geométrico exacto adopta el Objeto Héroe 3D en cada escena (Escena 0: $p=0.00$, Escena 1: $p=0.25$, Escena 2: $p=0.50$, Escena 3: $p=0.75$, Escena 4: $p=1.00$).</li>
+              <li><strong>100% Zero-CDN y Doble Control (Scroll + Teclado de Sala):</strong> Todo corre en un único archivo <code>.html</code> de menos de 65 KB que puedes abrir con doble clic en cualquier portátil corporativo o exportar desde la Sección 01.</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SECCIÓN 01 · TEATRO INTERACTIVO EN VIVO (3 PRESENTACIONES COMPLETAS)
+           ===================================================================== -->
+      <section id="teatro-vivo" class="transcript-section" data-st-group="live">
+        <div class="section-header">
+          <span class="section-number">01</span>
+          <h2 class="section-title">Estudio en Vivo: 3 Presentaciones Cinematográficas Completas (Pruébalas y Descárgalas en <code>.HTML</code>)</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            Aquí tienes el resultado real funcionando en directo. <strong>Cómo probarlo:</strong>
+            1) Elige una de las <strong>3 presentaciones de ejemplo</strong> en la barra superior,
+            2) Cambia en cualquier momento el <strong>Fondo Shader</strong> y el <strong>Objeto Héroe 3D</strong>,
+            3) Avanza por las 5 escenas usando la <strong>rueda del ratón sobre el escenario</strong>, haciendo clic en la barra inferior o con las teclas <code>←</code> / <code>→</code> (arrastra también el objeto 3D con el ratón), y
+            4) Pulsa <strong><code>⬇ Descargar esta Presentación (.HTML)</code></strong> para guardarla como archivo independiente listo para proyectar a pantalla completa.
+          </p>
+
+          <div class="st-cinema-shell" id="st-cinema-root">
+            <!-- Barra de control superior -->
+            <div class="st-cinema-topbar">
+              <div class="st-deck-pills" id="st-deck-selector">
+                <span class="st-mono" style="font-size:0.66rem;color:#94a3b8;margin-right:0.2rem;">PRESENTACIÓN:</span>
+                <button type="button" class="st-pill-btn active" data-deck="ia_proyecto">🚀 1. Proyecto IA a Comité</button>
+                <button type="button" class="st-pill-btn" data-deck="arquitectura">🧬 2. Arquitectura Agéntica 3D</button>
+                <button type="button" class="st-pill-btn" data-deck="comercial">🌐 3. Estrategia &amp; Red Comercial</button>
+              </div>
+              <div class="st-shader-pills">
+                <span class="st-mono" style="font-size:0.66rem;color:#94a3b8;">FONDO SHADER:</span>
+                <button type="button" class="st-pill-btn active" data-shader="liquid">Liquid Metal</button>
+                <button type="button" class="st-pill-btn" data-shader="aurora">Silk Aurora</button>
+                <button type="button" class="st-pill-btn" data-shader="halftone">Halftone Wave</button>
+                <button type="button" class="st-pill-btn" id="st-fullscreen-btn" title="Pantalla completa">⛶ Pantalla Completa</button>
+                <button type="button" class="st-pill-btn emerald" id="st-export-deck-btn">⬇ Descargar Presentación (.HTML)</button>
+              </div>
+            </div>
+
+            <!-- Escenario 3D + Shader + Tarjeta Narrativa -->
+            <div class="st-stage-viewport" id="st-viewport">
+              <canvas id="st-shader-canvas"></canvas>
+              <canvas id="st-hero3d-canvas"></canvas>
+
+              <div class="st-narrative-layer">
+                <!-- Tarjeta de Cristal 2.5D con Tilt Magnético -->
+                <div class="st-story-card" id="st-story-card">
+                  <div class="st-kicker" id="st-scene-kicker">ESCENA 01 / 05 · VISIÓN EJECUTIVA</div>
+                  <h3 class="st-kinetic-title" id="st-scene-title"></h3>
+                  <p class="st-story-lead" id="st-scene-lead"></p>
+                  <div class="st-pillars-list" id="st-scene-pillars"></div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;gap:0.6rem;padding-top:0.55rem;border-top:1px solid rgba(255,255,255,0.1);">
+                    <span class="st-mono" id="st-scene-metric" style="font-size:0.74rem;color:#6ee7b7;font-weight:700;"></span>
+                    <div style="display:flex;gap:0.35rem;">
+                      <button type="button" class="st-pill-btn" id="st-prev-scene">← Anterior</button>
+                      <button type="button" class="st-pill-btn active" id="st-next-scene">Siguiente escena →</button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- HUD derecho del motor 3D -->
+                <div class="st-stage-hud">
+                  <div style="display:flex;justify-content:space-between;gap:0.5rem;margin-bottom:0.35rem;">
+                    <span>MOTOR 3D EN VIVO</span>
+                    <strong id="st-hud-mode">EXPLODED STACK</strong>
+                  </div>
+                  <div style="margin-bottom:0.45rem;">Progreso timeline: <strong id="st-hud-prog">0.00</strong> · Arrastra el lienzo 3D o usa la rueda del ratón</div>
+                  <div style="display:flex;flex-wrap:wrap;gap:0.28rem;" id="st-model-override">
+                    <button type="button" class="st-pill-btn" style="font-size:0.63rem;padding:0.2rem 0.45rem;" data-model="auto">Auto (por escena)</button>
+                    <button type="button" class="st-pill-btn" style="font-size:0.63rem;padding:0.2rem 0.45rem;" data-model="ring">Anillo 3D</button>
+                    <button type="button" class="st-pill-btn" style="font-size:0.63rem;padding:0.2rem 0.45rem;" data-model="stack">Capas 3D</button>
+                    <button type="button" class="st-pill-btn" style="font-size:0.63rem;padding:0.2rem 0.45rem;" data-model="globe">Esfera Nodos</button>
+                    <button type="button" class="st-pill-btn" style="font-size:0.63rem;padding:0.2rem 0.45rem;" data-model="tunnel">Túnel Z</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Línea de tiempo de escenas inferior -->
+            <div class="st-timeline-bar">
+              <div style="width:100%;">
+                <div class="st-scene-steps" id="st-scene-steps"></div>
+                <div class="st-progress-track"><div class="st-progress-fill" id="st-progress-fill"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SECCIÓN 02 · CATÁLOGO DE 8 MOTORES VISUALES SCROLLTIDE (#ST-01 A #ST-08)
+           ===================================================================== -->
+      <section id="catalogo-efectos" class="transcript-section" data-st-group="catalog">
+        <div class="section-header">
+          <span class="section-number">02</span>
+          <h2 class="section-title">Catálogo Interactivo «Pick &amp; Send»: Los 8 Motores Visuales Estilo Scrolltide (<code>#ST-01</code> a <code>#ST-08</code>)</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            Cada tarjeta muestra un efecto de <code>scrolltide.co</code> funcionando en miniatura y contiene debajo su <strong>receta de código matemática (Zero-CDN)</strong>. Selecciona los efectos que quieras combinar en tu presentación y pulsa <strong><code>📋 Copiar Prompt con los Motores #ST Seleccionados</code></strong> para que VS Code Copilot construya tu presentación usándolos sin inventar ni recortar código:
+          </p>
+
+          <div style="background:rgba(10,15,29,0.95);border:1px solid rgba(16,185,129,0.45);border-radius:14px;padding:1rem 1.2rem;margin:1.2rem 0;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:0.8rem;">
+            <div>
+              <div class="st-mono" style="font-size:0.68rem;color:#34d399;font-weight:800;">🎯 SCROLLTIDE EFFECT PICKER · SELECCIONA TUS RECETAS</div>
+              <div style="font-size:0.86rem;color:#f8fafc;font-weight:700;margin-top:0.2rem;">
+                <span id="st-picked-count">5</span> motores seleccionados para inyectar en el prompt
+              </div>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:0.45rem;">
+              <button type="button" class="st-pill-btn" id="st-pick-all">Seleccionar los 8</button>
+              <button type="button" class="st-pill-btn emerald" id="st-copy-picked-btn">📋 Copiar Prompt Blindado con los #ST Elegidos</button>
+            </div>
+          </div>
+
+          <div class="st-comp-grid" id="st-comp-grid"></div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SECCIÓN 03 · PROMPTS MAESTROS Y COMANDO /scrolltide.deck EN VS CODE
+           ===================================================================== -->
+      <section id="prompts-maestros" class="transcript-section" data-st-group="prompts">
+        <div class="section-header">
+          <span class="section-number">03</span>
+          <h2 class="section-title">Comando <code>/scrolltide.deck</code> para VS Code Copilot y Prompts de Estudio listos para Ejecutar</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            Si lo guardas en <code>.github/prompts/scrolltide.deck.prompt.md</code> dentro de tu proyecto de VS Code (junto a los comandos <code>/speckit.*</code> del Cuaderno 10), tendrás el comando <strong><code>/scrolltide.deck</code></strong> siempre disponible en el chat de GitHub Copilot. Lleva el motor matemático incrustado para que Copilot solo tenga que diseñar el guion visual de tus escenas y entregarte un archivo <code>.html</code> impecable.
+          </p>
+
+          <div class="st-codehead">
+            <span class="path">.github/prompts/scrolltide.deck.prompt.md</span>
+            <div style="display:flex;gap:0.4rem;">
+              <button type="button" class="st-pill-btn" id="st-copy-skill-btn">📋 Copiar Prompt File</button>
+              <button type="button" class="st-pill-btn emerald" id="st-dl-skill-btn">⬇ Descargar scrolltide.deck.prompt.md</button>
+            </div>
+          </div>
+          <pre class="st-pre" id="st-skill-pre">---
+description: Genera una presentación interactiva 2.5D/3D estilo Scrolltide en un único archivo .HTML autónomo con Shaders en vivo, Objeto Héroe 3D y Scrollytelling
+agent: agent
+---
+# /scrolltide.deck · Generador de Presentaciones Cinematográficas 2.5D/3D (Zero-CDN)
+
+Actúa como Principal Creative Technologist (nivel Apple Keynote / Linear / Scrolltide).
+Tu objetivo es crear un **único archivo `.html` 100% autónomo (sin librerías externas ni CDNs que puedan bloquearse)** que funcione como una presentación cinematográfica interactiva sobre el tema que indique el usuario.
+
+## Reglas de Arquitectura Obligatorias (NO NEGOCIABLES)
+1. **Patrón Single Sticky Stage + Cámara Lerp ($p \in [0, 1]$):**
+   - El usuario avanza entre $N$ escenas (por defecto 5) usando la rueda del ratón (`wheel`), las teclas `ArrowRight`/`ArrowLeft`/`Space` o la barra inferior de capítulos.
+   - Mantén dos variables globales: `targetP` (índice de escena o progreso continuo) y `currentP` interpolado en cada frame con `currentP += (targetP - currentP) * 0.075` dentro de `requestAnimationFrame`.
+2. **Tres Capas Visuales Superpuestas a 60 FPS:**
+   - **Capa 1 (`<canvas id="bg-shader">`):** Fondo procedural animado en tiempo real (ondas armónicas tipo *Liquid Metal*, *Silk Aurora* o *Halftone Matrix*) reactivo a la posición del cursor `(mx, my)` y al progreso `currentP`.
+   - **Capa 2 (`<canvas id="hero-3d">`):** Objeto Héroe 3D proyectado con perspectiva real (`fov / (fov + z)`), rotable con el ratón y cuyas coordenadas `(x, y, z)` hacen **morphing continuo entre escenas** según `currentP`:
+     * Estado `ring`: Anillo orbital 3D de nodos/pilares que gira al cambiar de escena.
+     * Estado `stack`: Arquitectura isométrica en capas que se separa verticalmente (*Exploded View*) para explicar cómo funciona el sistema por dentro.
+     * Estado `globe`: Esfera geodésica 3D con arcos luminosos entre nodos.
+     * Estado `tunnel`: Túnel en el eje Z por el que avanza la cámara.
+   - **Capa 3 (Tarjeta Narrativa 2.5D + Tipografía Cinética):**
+     * Panel en cristal óptico (`backdrop-filter: blur(22px) saturate(170%)`, borde `1px solid rgba(255,255,255,0.14)`), con inclinación magnética 3D (`rotateX`, `rotateY`) al mover el ratón.
+     * Al cambiar de escena, el titular emerge palabra por palabra con transición de desenfoque (`filter: blur(10px) -> blur(0px)` + `translateY`).
+3. **Estructura en 3 Bloques Limpios:**
+   - `<style>`: Design tokens oscuros (`#04060d`), cristal esmerilado y controles.
+   - `<script id="deck-data">`: Objeto `window.DECK_SCENES = [...]` con `kicker`, `title`, `lead`, `pillars` (3–4 puntos clave con insignia y descripción), `metric` destacada y `model` (`ring` | `stack` | `globe` | `tunnel`) de cada escena.
+   - `<script id="deck-engine">`: Motor completo de renderizado 2D/3D, bucle `requestAnimationFrame` y controles de teclado/pantalla completa.
+4. **Prohibido truncar código:** Entrega el archivo `.html` íntegro y funcional de principio a fin.</pre>
+
+          <h3 style="margin-top:2rem;">3.1. Tres Prompts Directos para Casos Habituales (Copiar y Pegar en VS Code o M365 Copilot)</h3>
+          <div class="st-grid-2" id="st-ready-prompts"></div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SECCIÓN 04 · GENERADOR INTERACTIVO DE TU PRESENTACIÓN (.HTML + PROMPT)
+           ===================================================================== -->
+      <section id="ensamblador-deck" class="transcript-section" data-st-group="builder">
+        <div class="section-header">
+          <span class="section-number">04</span>
+          <h2 class="section-title">Generador en Vivo: Crea tu Propia Presentación Estilo Scrolltide en 60 Segundos</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            Personaliza el título, el estilo de Shader y el guion de tus escenas. Puedes <strong>cargar tu guion directamente en el Teatro 3D de la Sección 01 para verlo en vivo</strong>, <strong>descargar el archivo <code>.html</code> terminado</strong> o <strong>copiar el prompt completo</strong> para que Copilot lo amplíe en VS Code:
+          </p>
+
+          <div class="st-builder-grid">
+            <div class="st-form-box" id="st-custom-form">
+              <div class="st-field">
+                <label>Título general de la presentación</label>
+                <input type="text" id="b-deck-title" value="Transformación Agéntica en Banca de Empresas 2027">
+              </div>
+              <div class="st-field">
+                <label>Fondo Shader por defecto</label>
+                <select id="b-shader">
+                  <option value="liquid">Liquid Metal Chrome (Cromo oscuro reflectante)</option>
+                  <option value="aurora">Silk Aurora (Cortinas de luz ejecutivas)</option>
+                  <option value="halftone">Halftone Wave Matrix (Matriz de ondas)</option>
+                </select>
+              </div>
+              <div class="st-field">
+                <label>Guion de Escenas (1 línea por escena: <code>Título | Idea clave | Modelo 3D [ring/stack/globe/tunnel] | Insignia final</code>)</label>
+                <textarea id="b-scenes" style="min-height:165px;">El cuello de botella actual | El 70% del tiempo analítico se pierde validando cruces manuales y hojas desconectadas. | tunnel | OBJETIVO: CERO FRICCIÓN
+Arquitectura en 3 Capas | Separamos Constitución, Catálogo Persistente de Tablas y Especificación Auditable por proyecto. | stack | ARQUITECTURA BLINDADA
+Los 4 Pilares del Motor | Perfilado en 1 ejecución, safe_join automático, memoria compartida y narrativa ejecutiva. | ring | 4 PILARES EN PRODUCCIÓN
+Despliegue en Red y Territorios | Escalado progresivo a las direcciones territoriales y equipos de Riesgos y Comercial. | globe | COBERTURA 100% RED
+Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de análisis y 0 errores de cuadre en Comité. | stack | IMPACTO: -65% TIEMPO</textarea>
+              </div>
+              <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
+                <button type="button" class="st-pill-btn active" id="b-preview-in-stage">▶ Cargar y Ver en el Teatro 3D (Sección 01)</button>
+                <button type="button" class="st-pill-btn emerald" id="b-download-html">⬇ Descargar mi Presentación (.HTML)</button>
+              </div>
+            </div>
+
+            <div>
+              <div class="st-codehead">
+                <span class="path">Prompt Maestro Personalizado para Copilot (con tu guion + motor 3D)</span>
+                <button type="button" class="st-pill-btn emerald" id="b-copy-prompt">📋 Copiar Prompt</button>
+              </div>
+              <pre class="st-pre" id="b-prompt-out" style="max-height:380px;"></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Autoevaluación interactiva -->
+      <div class="quiz-target"></div>
+
+    </div><!-- /content-wrapper -->
+
+    <footer class="site-footer">
+      <p class="footer-text">Curso IA Commercial — Cuaderno 11 · Presentaciones Cinematográficas 2.5D/3D (Estilo Scrolltide)</p>
+    </footer>
+  </main>
+
+  <button class="back-to-top" aria-label="Volver arriba">↑</button>
+  <div class="st-toast" id="st-toast">Copiado</div>
+
+  <!-- =========================================================================
+       MOTOR GRÁFICO 2.5D/3D + SHADERS + GENERADOR STANDALONE DEL CUADERNO 11
+       ========================================================================= -->
+  <script>
+  (function () {
+    'use strict';
+
+    const $ = (s, ctx = document) => ctx.querySelector(s);
+    const $$ = (s, ctx = document) => Array.from(ctx.querySelectorAll(s));
+
+    function toast(msg) {
+      const el = $('#st-toast');
+      if (!el) return;
+      el.textContent = msg || 'Copiado';
+      el.classList.add('on');
+      clearTimeout(el._t);
+      el._t = setTimeout(() => el.classList.remove('on'), 1900);
+    }
+
+    function copyText(text, btn, msg) {
+      navigator.clipboard.writeText(text).then(() => {
+        if (btn) {
+          const prev = btn.textContent;
+          btn.textContent = '✓ Copiado';
+          setTimeout(() => { btn.textContent = prev; }, 1400);
+        }
+        toast(msg || 'Copiado al portapapeles');
+      });
+    }
+
+    function downloadText(filename, text, mime = 'text/plain;charset=utf-8') {
+      const blob = new Blob([text], { type: mime });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = filename;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 1500);
+      toast('Descargado: ' + filename);
+    }
+
+    // -------------------------------------------------------------------------
+    // 1. Pestañas de filtro del cuaderno
+    // -------------------------------------------------------------------------
+    $$('.st-tab').forEach(btn => {
+      btn.addEventListener('click', () => {
+        $$('.st-tab').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const f = btn.dataset.stFilter;
+        $$('section.transcript-section[data-st-group]').forEach(sec => {
+          const g = (sec.dataset.stGroup || '').split(/\s+/);
+          sec.setAttribute('data-st-hidden', f === 'all' || g.includes(f) ? 'false' : 'true');
+        });
+      });
+    });
+
+    // -------------------------------------------------------------------------
+    // 2. Las 3 Presentaciones Completas Integradas (5 escenas cada una)
+    // -------------------------------------------------------------------------
+    const DECKS = {
+      ia_proyecto: {
+        name: '1. Proyecto IA a Comité de Dirección',
+        shader: 'liquid',
+        scenes: [
+          {
+            kicker: 'ESCENA 01 / 05 · EL PROBLEMA DE NEGOCIO',
+            title: 'Del análisis artesanal al motor de decisión en tiempo real',
+            lead: 'Hoy los equipos dedican el 70% del tiempo a conciliar tablas y preparar presentaciones manuales, llegando tarde a la ventana comercial del cliente.',
+            model: 'tunnel',
+            metric: 'META: REDUCIR LATENCIA DE DECISIÓN DE 14 DÍAS A 15 MINUTOS',
+            pillars: [
+              { b: '01', t: 'Fragmentación de fuentes', d: 'Cruces repetidos en cada petición sin memoria compartida entre análisis.', hl: true },
+              { b: '02', t: 'Riesgo operativo en cruces', d: 'Duplicidad silenciosa de importes al unir contratos con clientes.', hl: false },
+              { b: '03', t: 'Entrega estática', d: 'Informes planos que no permiten explorar escenarios en vivo durante el Comité.', hl: false }
+            ]
+          },
+          {
+            kicker: 'ESCENA 02 / 05 · VISIÓN DE LA SOLUCIÓN',
+            title: 'Cuatro pilares de un sistema analítico gobernado por especificaciones',
+            lead: 'Unificamos el descubrimiento de datos en Databricks, la programación asistida en VS Code y el empaquetado ejecutivo interactivo.',
+            model: 'ring',
+            metric: 'ARQUITECTURA: 4 PILARES INTEGRADOS EN VS CODE + DATABRICKS',
+            pillars: [
+              { b: 'P1', t: 'Constitución & Catálogo Vivo', d: 'Reglas de negocio, filtros y esquemas aprendidos una sola vez.', hl: true },
+              { b: 'P2', t: 'Perfilado 1-Shot sin PII', d: 'Radiografía instantánea de tablas y simulación de JOINs en seco.', hl: true },
+              { b: 'P3', t: 'Guardarraíles Automáticos', d: 'Bloqueo preventivo ante fan-out o desviaciones frente a Control de Gestión.', hl: false },
+              { b: 'P4', t: 'Narrativa & Escenarios 3D', d: 'Presentaciones vivas que responden preguntas en la misma reunión.', hl: false }
+            ]
+          },
+          {
+            kicker: 'ESCENA 03 / 05 · ARQUITECTURA POR DENTRO',
+            title: 'Tres capas desacopladas que blindan la calidad del dato',
+            lead: 'El modelo separa la memoria permanente del equipo, el contrato de cada análisis y la ejecución auditable en PySpark.',
+            model: 'stack',
+            metric: 'TRAZABILIDAD 100% CELDA ↔ TAREA ↔ REGLA DE NEGOCIO',
+            pillars: [
+              { b: 'L1', t: 'Capa Superior · Entrega Ejecutiva', d: 'Presentaciones Scrollytelling 2.5D, Dashboards ECharts y Excel Institucional.', hl: true },
+              { b: 'L2', t: 'Capa Media · Contrato Spec-Kit', d: 'spec.md + data-model.md + plan.md validados antes de tocar código.', hl: true },
+              { b: 'L3', t: 'Capa Base · Unity Catalog & PySpark', d: 'Ejecución distribuida con safe_join() y reconciliación contable.', hl: false }
+            ]
+          },
+          {
+            kicker: 'ESCENA 04 / 05 · DESPLIEGUE EN LA RED',
+            title: 'Escalado progresivo desde Servicios Centrales a toda la Red',
+            lead: 'Cada análisis validado enriquece automáticamente el atlas de tablas y métricas para el resto de los equipos.',
+            model: 'globe',
+            metric: 'EFECTO RED: EL 3er ANÁLISIS REUTILIZA EL 85% DEL CONTEXTO',
+            pillars: [
+              { b: 'FASE 1', t: 'Núcleo Analítico & Riesgos', d: 'Estandarización de mae_clientes, circulante, rentabilidad e IFRS 9.', hl: true },
+              { b: 'FASE 2', t: 'Direcciones Territoriales', d: 'Plantillas de alerta temprana, puentes PVM y seguimiento de campañas.', hl: false },
+              { b: 'FASE 3', t: 'Conexión MCP Databricks', d: 'Transición transparente a consulta automática en solo lectura.', hl: false }
+            ]
+          },
+          {
+            kicker: 'ESCENA 05 / 05 · IMPACTO Y DECISIÓN',
+            title: 'Más velocidad, cero errores de cuadre y foco en el cliente',
+            lead: 'Pasamos de invertir semanas en depurar queries a dedicar el tiempo al diseño de acciones comerciales de alto retorno.',
+            model: 'ring',
+            metric: 'DECISIÓN HOY: APROBAR PILOTO Q1 EN BANCA DE EMPRESAS',
+            pillars: [
+              { b: '-65%', t: 'Tiempo de ciclo analítico', d: 'De 15 idas y vueltas en chat a 1 perfilado y generación guiada.', hl: true },
+              { b: '0,0%', t: 'Desviación no detectada en JOINs', d: 'Certificación matemática de sumas antes y después de cada cruce.', hl: true },
+              { b: '100%', t: 'Portabilidad en un clic', d: 'Entregables autónomos sin depender de infraestructura externa.', hl: false }
+            ]
+          }
+        ]
+      },
+      arquitectura: {
+        name: '2. Arquitectura de un Sistema Agéntico',
+        shader: 'aurora',
+        scenes: [
+          {
+            kicker: 'CAPÍTULO 01 / 05 · EL CAMBIO DE PARADIGMA',
+            title: 'Por qué los agentes fracasan sin una arquitectura de contexto',
+            lead: 'Un modelo de lenguaje sin estado improvisa esquemas, olvida restricciones y degrada la calidad cuando la tarea supera un turno.',
+            model: 'tunnel',
+            metric: 'REGLA #1: EL CONTEXTO VIVE EN ARCHIVOS, NO EN EL CHAT',
+            pillars: [
+              { b: 'ERR-1', t: 'Degradación por longitud de hilo', d: 'A partir de 10 mensajes el agente contradice reglas iniciales.', hl: true },
+              { b: 'ERR-2', t: 'Mezcla de diseño y cálculo', d: 'Pedir lógica de datos y diseño visual a la vez recorta ambos.', hl: false },
+              { b: 'SOL', t: 'Flujo guiado por artefactos', d: 'Cada comando lee y escribe un contrato especializado en disco.', hl: true }
+            ]
+          },
+          {
+            kicker: 'CAPÍTULO 02 / 05 · DISEÑO EN CAPAS (EXPLODED VIEW)',
+            title: 'Anatomía en 4 niveles del flujo agéntico en VS Code',
+            lead: 'Observa en el modelo 3D cómo se separan las capas desde las instrucciones permanentes hasta el artefacto ejecutable.',
+            model: 'stack',
+            metric: '4 NIVELES DE AISLAMIENTO Y VERIFICACIÓN',
+            pillars: [
+              { b: 'NIVEL 4', t: 'Artefacto Compilado (.ipynb / .html)', d: 'Código reproducible con marcadores # COMMAND y controles.', hl: true },
+              { b: 'NIVEL 3', t: 'Planificación & Tareas (plan.md)', d: 'Desglose atómico y auditoría cruzada antes de implementar.', hl: true },
+              { b: 'NIVEL 2', t: 'Modelo de Datos Verificado', d: 'Evidencia empírica obtenida del perfilador en Databricks.', hl: false },
+              { b: 'NIVEL 1', t: 'Constitución & Catálogo', d: 'Memoria inmutable compartida por todo el repositorio.', hl: false }
+            ]
+          },
+          {
+            kicker: 'CAPÍTULO 03 / 05 · ORQUESTACIÓN DE COMANDOS',
+            title: 'Ocho comandos especializados que giran alrededor del dato',
+            lead: 'Cada comando slash en Copilot Chat tiene una única responsabilidad y criterios estrictos de entrada y salida.',
+            model: 'ring',
+            metric: '8 SLASH COMMANDS NATIVOS EN .github/prompts/',
+            pillars: [
+              { b: '/specify', t: 'Definición de alcance y referencias', d: 'Separa certezas (✅), supuestos y desconocidos.', hl: true },
+              { b: '/discover', t: 'Exploración empírica en 1 disparo', d: 'Construye data-model.md y actualiza el catálogo de tablas.', hl: true },
+              { b: '/plan + /implement', t: 'Diseño y codificación determinista', d: 'Genera celdas trazables con controles dq_utils.', hl: false },
+              { b: '/review + /insights', t: 'Auditoría post-ejecución y narrativa', d: 'Valida cuadres y redacta conclusiones para Comité.', hl: false }
+            ]
+          },
+          {
+            kicker: 'CAPÍTULO 04 / 05 · CONECTIVIDAD E INTEGRACIÓN MCP',
+            title: 'Preparado para conectarse al Lakehouse mediante Model Context Protocol',
+            lead: 'El mismo flujo funciona hoy por copia/pegado seguro y mañana mediante invocación directa de herramientas MCP.',
+            model: 'globe',
+            metric: 'SEGURIDAD: SOLO LECTURA · AGREGADO · SIN DATOS PERSONALES',
+            pillars: [
+              { b: 'MODO A', t: 'Ejecución Manual Asistida (Hoy)', d: 'Cero permisos especiales ni instalaciones en el portátil.', hl: true },
+              { b: 'MODO B', t: 'Ejecución vía Servidor MCP', d: 'Activación inmediata cambiando EXEC_MODE: MCP en la constitución.', hl: true },
+              { b: 'GUARD', t: 'Filtro PII en origen', d: 'Bloqueo por expresión regular de NIF, nombres, emails e IBAN.', hl: false }
+            ]
+          },
+          {
+            kicker: 'CAPÍTULO 05 / 05 · GOBERNANZA Y EVOLUCIÓN',
+            title: 'Un sistema que se vuelve más inteligente con cada proyecto',
+            lead: 'El código de un análisis puntual caduca; las fichas de tablas y cruces validados permanecen como activo del equipo.',
+            model: 'stack',
+            metric: 'ACTIVO ESTRATÉGICO: CONOCIMIENTO INSTITUCIONAL VERSIONADO EN GIT',
+            pillars: [
+              { b: 'GIT', t: 'Control de versiones de negocio', d: 'Cada cambio de criterio queda registrado con fecha y motivo.', hl: true },
+              { b: 'ONBOARD', t: 'Incorporación inmediata', d: 'Un nuevo analista hereda desde el día 1 todas las reglas del banco.', hl: false }
+            ]
+          }
+        ]
+      },
+      comercial: {
+        name: '3. Estrategia & Transformación Comercial',
+        shader: 'halftone',
+        scenes: [
+          {
+            kicker: 'ACTO 01 / 05 · CONTEXTO DE MERCADO',
+            title: 'Compresión de márgenes y batalla por el circulante empresarial',
+            lead: 'En un entorno de normalización de tipos, defender el volumen transaccional y la vinculación en Empresas es la palanca número uno del ROE.',
+            model: 'globe',
+            metric: 'FOCO ESTRATÉGICO: PROTEGER 68,5 M€/MES DE MARGEN ORDINARIO',
+            pillars: [
+              { b: 'RET-1', t: 'Desvío silencioso de remesas', d: 'El cliente reduce Confirming y Factoring 60 días antes de cancelar líneas.', hl: true },
+              { b: 'RET-2', t: 'Asimetría de información en la red', d: 'El gestor detecta la caída cuando el trimestre ya está cerrado.', hl: false },
+              { b: 'OPORT', t: 'Anticipación basada en señales', d: 'Detectar la anomalía en la primera semana de desviación.', hl: true }
+            ]
+          },
+          {
+            kicker: 'ACTO 02 / 05 · SEGMENTACIÓN DE PRECISIÓN',
+            title: 'Cuatro cuadrantes de actuación sobre la cartera de Empresas',
+            lead: 'Cruzamos variación de actividad en ventana móvil de 6 meses con rentabilidad ajustada al riesgo (RORWA) para priorizar cada gesto comercial.',
+            model: 'ring',
+            metric: '412 CLIENTES VIP CONCENTRAN EL 21,6% DEL MARGEN EN RIESGO',
+            pillars: [
+              { b: 'Q1 · VIP', t: 'Retención Inmediata (Margen Alto + Caída >20%)', d: 'Visita conjunta Director Empresas + Especialista de Circulante.', hl: true },
+              { b: 'Q2 · GROW', t: 'Expansión de Cuota (Margen Alto + Crecimiento)', d: 'Ampliación de límite STP para absorber cuota de competidores.', hl: true },
+              { b: 'Q3 · REPRICE', t: 'Optimización de Precio y RWA', d: 'Revisión de tarifas y garantías en carteras con RORWA < Ke.', hl: false },
+              { b: 'Q4 · DIGITAL', t: 'Atención Automatizada Digital', d: 'Flujos de autoservicio en App y Portal de Empresas.', hl: false }
+            ]
+          },
+          {
+            kicker: 'ACTO 03 / 05 · MODELO OPERATIVO EN 3 CAPAS',
+            title: 'Del dato en el Lakehouse a la alerta en la mesa del gestor',
+            lead: 'Conectamos la inteligencia analítica con la ejecución diaria en oficinas y canales digitales sin fricción.',
+            model: 'stack',
+            metric: 'CICLO SEMANAL AUTOMATIZADO DE GENERACIÓN DE OPORTUNIDADES',
+            pillars: [
+              { b: 'CAPA 1', t: 'Detección en Databricks', d: 'Cálculo semanal de caídas de facturación y utilización de líneas.', hl: true },
+              { b: 'CAPA 2', t: 'Priorización por Valor en Riesgo', d: 'Ordenación objetiva por impacto en margen ordinario y EVA.', hl: true },
+              { b: 'CAPA 3', t: 'Activación Comercial y Seguimiento', d: 'Ficha ejecutiva por cliente y medición de tasa de recuperación.', hl: false }
+            ]
+          },
+          {
+            kicker: 'ACTO 04 / 05 · ACELERACIÓN HACIA EL OBJETIVO',
+            title: 'Hoja de ruta de implantación en 90 días',
+            lead: 'Un despliegue rápido con hitos medibles cada 30 días y seguimiento en Comité Comercial.',
+            model: 'tunnel',
+            metric: 'HORIZONTE 90 DÍAS · 3 OLAS DE DESPLIEGUE',
+            pillars: [
+              { b: 'DÍA 30', t: 'Ola 1 · Piloto en 2 Territoriales', d: 'Foco en los 150 mayores grupos empresariales en alerta.', hl: true },
+              { b: 'DÍA 60', t: 'Ola 2 · Extensión a toda la Red de Empresas', d: 'Integración del cuadro de seguimiento de retención.', hl: false },
+              { b: 'DÍA 90', t: 'Ola 3 · Incorporación de TPVs y Comercio Exterior', d: 'Visión 360º de todo el negocio transaccional.', hl: false }
+            ]
+          },
+          {
+            kicker: 'ACTO 05 / 05 · COMPROMISO DE RESULTADOS',
+            title: 'Impacto esperado en cuenta de resultados',
+            lead: 'La defensa proactiva del circulante protege tanto el margen financiero como las comisiones de servicio.',
+            model: 'globe',
+            metric: 'IMPACTO ESTIMADO: +4,2 M€ DE MARGEN ORDINARIO DEFENDIDO',
+            pillars: [
+              { b: '+35%', t: 'Tasa de recuperación de clientes en caída', d: 'Frente a la gestión reactiva tradicional a cierre de trimestre.', hl: true },
+              { b: '+18 pb', t: 'Mejora de RORWA en cartera gestionada', d: 'Por reasignación de límites hacia clientes con mayor vinculación.', hl: true }
+            ]
+          }
+        ]
+      }
+    };
+
+    // -------------------------------------------------------------------------
+    // 3. Motor Gráfico en Vivo (Shader Canvas + 3D Morphing Canvas + Scrollytelling)
+    // -------------------------------------------------------------------------
+    let activeDeckKey = 'ia_proyecto';
+    let activeShader = 'liquid';
+    let modelOverride = 'auto';
+    let sceneIdx = 0;
+    let targetP = 0;   // 0 .. scenes.length - 1
+    let currentP = 0;  // interpolado con lerp
+    let rotY = 0.4, rotX = 0.25, dragging = false, lastX = 0, lastY = 0;
+    let mouseUV = { x: 0.5, y: 0.5 };
+
+    // Creamos 120 nodos 3D con sus coordenadas objetivo en los 4 modos (ring, stack, globe, tunnel)
+    const N_NODES = 120;
+    const nodes3D = Array.from({ length: N_NODES }, (_, i) => {
+      const u = i / N_NODES;
+      // 1) Ring (Anillo orbital doble)
+      const ringAngle = u * Math.PI * 2 * (i % 2 === 0 ? 1 : 2);
+      const ringR = i % 2 === 0 ? 155 : 95;
+      const ringPos = {
+        x: Math.cos(ringAngle) * ringR,
+        y: (i % 6 - 2.5) * 14,
+        z: Math.sin(ringAngle) * ringR
+      };
+      // 2) Stack (3 capas isométricas en explosión)
+      const layer = i % 3; // 0, 1, 2
+      const gridIdx = Math.floor(i / 3);
+      const gx = (gridIdx % 8) - 3.5;
+      const gz = Math.floor(gridIdx / 8) - 2;
+      const stackPos = {
+        x: gx * 34,
+        y: (layer - 1) * 78,
+        z: gz * 34
+      };
+      // 3) Globe (Esfera de Fibonacci)
+      const phi = Math.acos(1 - 2 * (i + 0.5) / N_NODES);
+      const theta = Math.PI * (1 + Math.sqrt(5)) * i;
+      const globeR = 145;
+      const globePos = {
+        x: globeR * Math.sin(phi) * Math.cos(theta),
+        y: globeR * Math.cos(phi),
+        z: globeR * Math.sin(phi) * Math.sin(theta)
+      };
+      // 4) Tunnel (Túnel en el eje Z)
+      const tAngle = (i % 15) * ((Math.PI * 2) / 15);
+      const tDepth = (Math.floor(i / 15) - 3.5) * 65;
+      const tunnelPos = {
+        x: Math.cos(tAngle) * 135,
+        y: Math.sin(tAngle) * 105,
+        z: tDepth
+      };
+      return {
+        i, layer,
+        x: ringPos.x, y: ringPos.y, z: ringPos.z,
+        targets: { ring: ringPos, stack: stackPos, globe: globePos, tunnel: tunnelPos }
+      };
+    });
+
+    function getActiveDeck() {
+      return DECKS[activeDeckKey] || DECKS.ia_proyecto;
+    }
+
+    function getActiveModelMode() {
+      if (modelOverride !== 'auto') return modelOverride;
+      const deck = getActiveDeck();
+      const s = deck.scenes[sceneIdx] || deck.scenes[0];
+      return s.model || 'ring';
+    }
+
+    function renderNarrativeCard() {
+      const deck = getActiveDeck();
+      const s = deck.scenes[sceneIdx] || deck.scenes[0];
+
+      $('#st-scene-kicker').textContent = s.kicker;
+      // Kinetic Title: palabra por palabra con escalonado
+      const words = s.title.split(' ');
+      const titleEl = $('#st-scene-title');
+      titleEl.innerHTML = words.map((w, idx) =>
+        `<span class="st-kinetic-word" style="opacity:0;filter:blur(10px);transform:translateY(10px);transition-delay:${idx * 32}ms">${w}&nbsp;</span>`
+      ).join('');
+      requestAnimationFrame(() => {
+        $$('.st-kinetic-word', titleEl).forEach(el => {
+          el.style.opacity = '1';
+          el.style.filter = 'blur(0px)';
+          el.style.transform = 'translateY(0px)';
+        });
+      });
+
+      $('#st-scene-lead').textContent = s.lead;
+      $('#st-scene-metric').textContent = s.metric;
+      $('#st-scene-pillars').innerHTML = (s.pillars || []).map(p => `
+        <div class="st-pillar-item ${p.hl ? 'hl' : ''}">
+          <span class="st-pillar-badge">${p.b}</span>
+          <div class="st-pillar-text">
+            <strong>${p.t}</strong>
+            <span>${p.d}</span>
+          </div>
+        </div>
+      `).join('');
+
+      // Timeline inferior
+      const stepsEl = $('#st-scene-steps');
+      stepsEl.innerHTML = deck.scenes.map((sc, i) => `
+        <button type="button" class="st-scene-btn ${i === sceneIdx ? 'active' : ''}" data-sidx="${i}">
+          <small>Escena 0${i + 1}</small>
+          <span>${sc.title}</span>
+        </button>
+      `).join('');
+      $$('.st-scene-btn', stepsEl).forEach(b => b.addEventListener('click', () => {
+        setScene(Number(b.dataset.sidx));
+      }));
+
+      $('#st-hud-mode').textContent = getActiveModelMode().toUpperCase();
+    }
+
+    function setScene(idx) {
+      const deck = getActiveDeck();
+      const max = deck.scenes.length - 1;
+      sceneIdx = Math.max(0, Math.min(max, idx));
+      targetP = sceneIdx;
+      renderNarrativeCard();
+    }
+
+    // Dibujo del Shader Procedural en Canvas 2D de alta velocidad
+    function drawShader(ctx, w, h, t) {
+      ctx.clearRect(0, 0, w, h);
+      const grd = ctx.createLinearGradient(0, 0, w, h);
+      if (activeShader === 'liquid') {
+        grd.addColorStop(0, '#050711');
+        grd.addColorStop(0.5, '#0c1226');
+        grd.addColorStop(1, '#050814');
+        ctx.fillStyle = grd;
+        ctx.fillRect(0, 0, w, h);
+        // Ondas de cromo líquido
+        for (let k = 0; k < 7; k++) {
+          ctx.beginPath();
+          const baseY = h * (0.18 + k * 0.11);
+          for (let x = 0; x <= w; x += 18) {
+            const nx = x / w;
+            const wave = Math.sin(nx * 5.5 + t * 0.9 + k * 0.7) * 28
+                       + Math.cos(nx * 11 - t * 0.6 + currentP * 1.4) * 14
+                       + (mouseUV.y - 0.5) * 35;
+            const y = baseY + wave;
+            if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+          }
+          ctx.strokeStyle = k % 2 === 0
+            ? `rgba(167, 139, 250, ${0.09 + k * 0.015})`
+            : `rgba(56, 189, 248, ${0.08 + k * 0.015})`;
+          ctx.lineWidth = 22;
+          ctx.stroke();
+        }
+      } else if (activeShader === 'aurora') {
+        grd.addColorStop(0, '#030712');
+        grd.addColorStop(1, '#071426');
+        ctx.fillStyle = grd;
+        ctx.fillRect(0, 0, w, h);
+        const cols = ['rgba(16,185,129,0.16)', 'rgba(6,182,212,0.16)', 'rgba(139,92,246,0.18)'];
+        cols.forEach((col, i) => {
+          const cx = w * (0.35 + 0.22 * Math.sin(t * 0.5 + i * 2.1 + currentP));
+          const cy = h * (0.45 + 0.18 * Math.cos(t * 0.4 + i * 1.7));
+          const r = Math.max(w, h) * 0.48;
+          const rg = ctx.createRadialGradient(cx, cy, 10, cx, cy, r);
+          rg.addColorStop(0, col);
+          rg.addColorStop(1, 'rgba(0,0,0,0)');
+          ctx.fillStyle = rg;
+          ctx.fillRect(0, 0, w, h);
+        });
+      } else {
+        // Halftone Wave Matrix
+        ctx.fillStyle = '#040711';
+        ctx.fillRect(0, 0, w, h);
+        const step = 28;
+        for (let y = step / 2; y < h; y += step) {
+          for (let x = step / 2; x < w; x += step) {
+            const dx = x / w - mouseUV.x;
+            const dy = y / h - mouseUV.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            const s = (Math.sin(dist * 14 - t * 2.2 + currentP * 1.8) + 1) * 0.5;
+            const rad = 1.2 + s * 3.2;
+            ctx.fillStyle = s > 0.65 ? 'rgba(56,189,248,0.34)' : 'rgba(139,92,246,0.18)';
+            ctx.beginPath();
+            ctx.arc(x, y, rad, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
+      }
+    }
+
+    // Dibujo del Objeto Héroe 3D a la derecha del escenario
+    function drawHero3D(ctx, w, h, t) {
+      ctx.clearRect(0, 0, w, h);
+      const mode = getActiveModelMode();
+      const centerX = w > 860 ? w * 0.69 : w * 0.5;
+      const centerY = w > 860 ? h * 0.5 : h * 0.32;
+      const fov = 440;
+
+      // Rotación suave + efecto de currentP
+      if (!dragging) {
+        rotY += 0.0055;
+      }
+      const effRotY = rotY + currentP * 0.85;
+      const effRotX = rotX + Math.sin(currentP * 1.2) * 0.18;
+      const cosY = Math.cos(effRotY), sinY = Math.sin(effRotY);
+      const cosX = Math.cos(effRotX), sinX = Math.sin(effRotX);
+
+      // Si estamos en modo stack, dibujamos los 3 planos isométricos translúcidos
+      if (mode === 'stack') {
+        [-78, 0, 78].forEach((ly, idx) => {
+          const corners = [
+            [-135, ly, -95], [135, ly, -95], [135, ly, 95], [-135, ly, 95]
+          ].map(([x, y, z]) => {
+            const x1 = x * cosY - z * sinY;
+            const z1 = z * cosY + x * sinY;
+            const y2 = y * cosX - z1 * sinX;
+            const z2 = z1 * cosX + y * sinX;
+            const sc = fov / (fov + z2 + 240);
+            return [centerX + x1 * sc, centerY + y2 * sc];
+          });
+          ctx.beginPath();
+          corners.forEach(([px, py], i) => i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py));
+          ctx.closePath();
+          ctx.fillStyle = idx === 0 ? 'rgba(139,92,246,0.11)' : idx === 1 ? 'rgba(6,182,212,0.12)' : 'rgba(16,185,129,0.12)';
+          ctx.fill();
+          ctx.strokeStyle = idx === 0 ? 'rgba(167,139,250,0.55)' : idx === 1 ? 'rgba(56,189,248,0.55)' : 'rgba(52,211,153,0.6)';
+          ctx.lineWidth = 1.4;
+          ctx.stroke();
+        });
+      }
+
+      const projected = [];
+      nodes3D.forEach(n => {
+        const tgt = n.targets[mode] || n.targets.ring;
+        // Interpolación elástica hacia la geometría de la escena activa
+        n.x += (tgt.x - n.x) * 0.08;
+        n.y += (tgt.y - n.y) * 0.08;
+        n.z += (tgt.z - n.z) * 0.08;
+
+        let zMod = n.z;
+        if (mode === 'tunnel') {
+          zMod = ((n.z + t * 90 + 260) % 520) - 260;
+        }
+
+        const x1 = n.x * cosY - zMod * sinY;
+        const z1 = zMod * cosY + n.x * sinY;
+        const y2 = n.y * cosX - z1 * sinX;
+        const z2 = z1 * cosX + n.y * sinX;
+        const scale = fov / Math.max(80, fov + z2 + 220);
+        projected.push({
+          px: centerX + x1 * scale,
+          py: centerY + y2 * scale,
+          z: z2,
+          scale,
+          layer: n.layer,
+          i: n.i
+        });
+      });
+
+      projected.sort((a, b) => b.z - a.z);
+
+      // Conectores luminosos entre nodos cercanos
+      ctx.lineWidth = 0.85;
+      for (let i = 0; i < projected.length; i++) {
+        const a = projected[i];
+        for (let j = i + 1; j < Math.min(i + 8, projected.length); j++) {
+          const b = projected[j];
+          const dx = a.px - b.px, dy = a.py - b.py;
+          const d2 = dx * dx + dy * dy;
+          if (d2 < 3600) {
+            const alpha = (1 - d2 / 3600) * 0.32;
+            ctx.strokeStyle = a.layer === 0
+              ? `rgba(167,139,250,${alpha})`
+              : a.layer === 1
+                ? `rgba(56,189,248,${alpha})`
+                : `rgba(52,211,153,${alpha})`;
+            ctx.beginPath();
+            ctx.moveTo(a.px, a.py);
+            ctx.lineTo(b.px, b.py);
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Dibujo de nodos 3D con brillo
+      projected.forEach(p => {
+        const r = Math.max(1.6, 4.2 * p.scale);
+        const col = p.layer === 0 ? '#c4b5fd' : p.layer === 1 ? '#38bdf8' : '#34d399';
+        ctx.fillStyle = col;
+        ctx.beginPath();
+        ctx.arc(p.px, p.py, r, 0, Math.PI * 2);
+        ctx.fill();
+        if (p.i % 9 === 0) {
+          ctx.strokeStyle = 'rgba(255,255,255,0.45)';
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.arc(p.px, p.py, r * 2.1, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+      });
+    }
+
+    // Inicialización del Teatro en Vivo
+    const viewport = $('#st-viewport');
+    const shCanvas = $('#st-shader-canvas');
+    const h3Canvas = $('#st-hero3d-canvas');
+    const storyCard = $('#st-story-card');
+
+    if (viewport && shCanvas && h3Canvas) {
+      const shCtx = shCanvas.getContext('2d');
+      const h3Ctx = h3Canvas.getContext('2d');
+
+      function resizeCanvases() {
+        const rect = viewport.getBoundingClientRect();
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        shCanvas.width = rect.width * dpr;
+        shCanvas.height = rect.height * dpr;
+        h3Canvas.width = rect.width * dpr;
+        h3Canvas.height = rect.height * dpr;
+        shCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        h3Ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+      resizeCanvases();
+      window.addEventListener('resize', resizeCanvases);
+
+      // Interacción de rueda (Scrollytelling por pasos con bloqueo suave)
+      let wheelCooldown = 0;
+      viewport.addEventListener('wheel', (e) => {
+        const deck = getActiveDeck();
+        const atStart = sceneIdx === 0 && e.deltaY < 0;
+        const atEnd = sceneIdx === deck.scenes.length - 1 && e.deltaY > 0;
+        if (atStart || atEnd) return; // deja hacer scroll de la página si está en los extremos
+        e.preventDefault();
+        const now = performance.now();
+        if (now - wheelCooldown < 420) return;
+        wheelCooldown = now;
+        setScene(sceneIdx + (e.deltaY > 0 ? 1 : -1));
+      }, { passive: false });
+
+      // Inclinación magnética 3D de la tarjeta y coordenadas del cursor
+      viewport.addEventListener('mousemove', (e) => {
+        const r = viewport.getBoundingClientRect();
+        mouseUV.x = (e.clientX - r.left) / r.width;
+        mouseUV.y = (e.clientY - r.top) / r.height;
+        if (dragging) {
+          rotY += (e.clientX - lastX) * 0.008;
+          rotX = Math.max(-1.1, Math.min(1.1, rotX + (e.clientY - lastY) * 0.008));
+          lastX = e.clientX;
+          lastY = e.clientY;
+        }
+        if (storyCard) {
+          const cr = storyCard.getBoundingClientRect();
+          storyCard.style.setProperty('--mx', (e.clientX - cr.left) + 'px');
+          storyCard.style.setProperty('--my', (e.clientY - cr.top) + 'px');
+          const nx = ((e.clientX - cr.left) / cr.width - 0.5) * 6;
+          const ny = ((e.clientY - cr.top) / cr.height - 0.5) * -6;
+          storyCard.style.transform = `rotateX(${ny.toFixed(2)}deg) rotateY(${nx.toFixed(2)}deg)`;
+        }
+      });
+      viewport.addEventListener('mouseleave', () => {
+        dragging = false;
+        if (storyCard) storyCard.style.transform = 'rotateX(0deg) rotateY(0deg)';
+      });
+      h3Canvas.addEventListener('mousedown', (e) => {
+        dragging = true; lastX = e.clientX; lastY = e.clientY;
+      });
+      window.addEventListener('mouseup', () => { dragging = false; });
+
+      // Botones del Teatro
+      $('#st-prev-scene').addEventListener('click', () => setScene(sceneIdx - 1));
+      $('#st-next-scene').addEventListener('click', () => {
+        const deck = getActiveDeck();
+        setScene((sceneIdx + 1) % deck.scenes.length);
+      });
+
+      $$('#st-deck-selector [data-deck]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          $$('#st-deck-selector [data-deck]').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          activeDeckKey = btn.dataset.deck;
+          activeShader = getActiveDeck().shader || 'liquid';
+          $$('[data-shader]').forEach(b => b.classList.toggle('active', b.dataset.shader === activeShader));
+          modelOverride = 'auto';
+          setScene(0);
+        });
+      });
+
+      $$('[data-shader]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          $$('[data-shader]').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          activeShader = btn.dataset.shader;
+        });
+      });
+
+      $$('#st-model-override [data-model]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          modelOverride = btn.dataset.model;
+          $('#st-hud-mode').textContent = getActiveModelMode().toUpperCase();
+        });
+      });
+
+      $('#st-fullscreen-btn').addEventListener('click', () => {
+        const root = $('#st-cinema-root');
+        root.classList.toggle('is-fullscreen');
+        setTimeout(resizeCanvases, 60);
+      });
+
+      // Bucle de animación a 60 FPS (pausado cuando no está en pantalla)
+      let inView = true;
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver((entries) => { inView = entries[0].isIntersecting; }, { rootMargin: '120px' }).observe(viewport);
+      }
+      function loop(now) {
+        if (inView && !document.hidden) {
+          const t = now * 0.001;
+          currentP += (targetP - currentP) * 0.08;
+          const deck = getActiveDeck();
+          const maxIdx = Math.max(1, deck.scenes.length - 1);
+          const pct = Math.max(0, Math.min(100, (currentP / maxIdx) * 100));
+          $('#st-progress-fill').style.width = pct.toFixed(1) + '%';
+          $('#st-hud-prog').textContent = (currentP / maxIdx).toFixed(2);
+
+          const rect = viewport.getBoundingClientRect();
+          drawShader(shCtx, rect.width, rect.height, t);
+          drawHero3D(h3Ctx, rect.width, rect.height, t);
+        }
+        requestAnimationFrame(loop);
+      }
+      renderNarrativeCard();
+      requestAnimationFrame(loop);
+    }
+
+    // -------------------------------------------------------------------------
+    // 4. Exportador de Presentación .HTML Autónoma (1-Click)
+    // -------------------------------------------------------------------------
+    function buildStandaloneDeckHtml(deckTitle, shaderMode, scenesArray) {
+      const scenesJson = JSON.stringify(scenesArray, null, 2);
+      return `<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${deckTitle}</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #04060d; color: #f8fafc; font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; overflow: hidden; height: 100vh; display: flex; flex-direction: column; }
+  .topbar { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1.5rem; background: rgba(7,10,20,0.92); border-bottom: 1px solid rgba(255,255,255,0.1); z-index: 10; }
+  .brand { font-weight: 800; font-size: 0.9rem; letter-spacing: 0.04em; color: #e2e8f0; }
+  .stage { position: relative; flex: 1; overflow: hidden; perspective: 1300px; }
+  canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  #hero { z-index: 2; cursor: grab; }
+  .layer { position: absolute; inset: 0; z-index: 3; pointer-events: none; display: grid; grid-template-columns: minmax(300px, 500px) 1fr; align-items: center; padding: 2.5rem 3.5rem; }
+  .card { pointer-events: auto; background: rgba(9,13,26,0.74); backdrop-filter: blur(22px) saturate(170%); border: 1px solid rgba(255,255,255,0.15); border-radius: 18px; padding: 1.8rem; box-shadow: 0 25px 60px rgba(0,0,0,0.65); }
+  .kicker { display: inline-block; font-family: monospace; font-size: 0.7rem; font-weight: 800; color: #67e8f9; background: rgba(6,182,212,0.15); border: 1px solid rgba(6,182,212,0.38); padding: 0.22rem 0.6rem; border-radius: 999px; margin-bottom: 0.8rem; }
+  h1 { font-size: 1.85rem; line-height: 1.15; margin-bottom: 0.8rem; background: linear-gradient(135deg,#fff,#a5b4fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .lead { font-size: 0.92rem; line-height: 1.6; color: #cbd5e1; margin-bottom: 1.1rem; }
+  .pillar { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 0.6rem 0.8rem; margin-bottom: 0.5rem; display: flex; gap: 0.65rem; }
+  .badge { font-family: monospace; font-size: 0.7rem; font-weight: 800; color: #c4b5fd; background: rgba(139,92,246,0.2); border: 1px solid rgba(139,92,246,0.4); border-radius: 6px; padding: 0.15rem 0.45rem; height: fit-content; }
+  .pillar strong { display: block; font-size: 0.84rem; margin-bottom: 0.15rem; }
+  .pillar span { font-size: 0.76rem; color: #94a3b8; }
+  .bar { background: rgba(7,10,19,0.96); border-top: 1px solid rgba(255,255,255,0.1); padding: 0.75rem 1.5rem; display: flex; gap: 0.5rem; z-index: 10; }
+  .sbtn { flex: 1; text-align: left; padding: 0.45rem 0.7rem; border-radius: 8px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: #94a3b8; cursor: pointer; }
+  .sbtn.active { background: rgba(139,92,246,0.22); border-color: #a78bfa; color: #fff; }
+  .sbtn small { display: block; font-family: monospace; font-size: 0.62rem; color: #67e8f9; }
+  .sbtn span { font-size: 0.76rem; font-weight: 700; }
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">${deckTitle}</div>
+    <div style="font-family:monospace;font-size:0.75rem;color:#94a3b8;">Usa la rueda del ratón o las flechas ← / → para cambiar de escena</div>
+  </div>
+  <div class="stage" id="st">
+    <canvas id="bg"></canvas>
+    <canvas id="hero"></canvas>
+    <div class="layer">
+      <div class="card">
+        <div class="kicker" id="k"></div>
+        <h1 id="t"></h1>
+        <p class="lead" id="l"></p>
+        <div id="p"></div>
+        <div style="margin-top:0.8rem;padding-top:0.6rem;border-top:1px solid rgba(255,255,255,0.1);font-family:monospace;font-size:0.75rem;color:#6ee7b7;font-weight:700;" id="m"></div>
+      </div>
+    </div>
+  </div>
+  <div class="bar" id="bar"></div>
+<script>
+const SCENES = ${scenesJson};
+let idx = 0, targetP = 0, currentP = 0, rotY = 0.4;
+const N = 110;
+const nodes = Array.from({length:N}, (_, i) => {
+  const u = i / N, a = u * Math.PI * 2 * (i%2?2:1), r = i%2?95:155;
+  const gx = (Math.floor(i/3)%8)-3.5, gz = Math.floor(i/24)-2, ly = (i%3-1)*78;
+  const phi = Math.acos(1 - 2*(i+0.5)/N), th = Math.PI*(1+Math.sqrt(5))*i;
+  const ta = (i%15)*(Math.PI*2/15), td = (Math.floor(i/15)-3.5)*65;
+  return {
+    layer: i%3, x:0, y:0, z:0,
+    targets: {
+      ring: {x:Math.cos(a)*r, y:(i%6-2.5)*14, z:Math.sin(a)*r},
+      stack: {x:gx*34, y:ly, z:gz*34},
+      globe: {x:145*Math.sin(phi)*Math.cos(th), y:145*Math.cos(phi), z:145*Math.sin(phi)*Math.sin(th)},
+      tunnel: {x:Math.cos(ta)*135, y:Math.sin(ta)*105, z:td}
+    }
+  };
+});
+function setScene(n) {
+  idx = Math.max(0, Math.min(SCENES.length - 1, n));
+  targetP = idx;
+  const s = SCENES[idx];
+  document.getElementById('k').textContent = s.kicker;
+  document.getElementById('t').textContent = s.title;
+  document.getElementById('l').textContent = s.lead;
+  document.getElementById('m').textContent = s.metric || '';
+  document.getElementById('p').innerHTML = (s.pillars||[]).map(p => '<div class="pillar"><span class="badge">'+p.b+'</span><div><strong>'+p.t+'</strong><span>'+p.d+'</span></div></div>').join('');
+  document.getElementById('bar').innerHTML = SCENES.map((sc, i) => '<button class="sbtn '+(i===idx?'active':'')+'" onclick="setScene('+i+')"><small>0'+(i+1)+'</small><span>'+sc.title+'</span></button>').join('');
+}
+window.addEventListener('keydown', e => { if(e.key==='ArrowRight'||e.key===' ') setScene(idx+1); if(e.key==='ArrowLeft') setScene(idx-1); });
+let cd = 0;
+window.addEventListener('wheel', e => { if(performance.now()-cd>420){ cd=performance.now(); setScene(idx+(e.deltaY>0?1:-1)); } });
+const bg = document.getElementById('bg'), hero = document.getElementById('hero'), bctx = bg.getContext('2d'), hctx = hero.getContext('2d');
+function rsz(){ bg.width = hero.width = window.innerWidth; bg.height = hero.height = window.innerHeight - 110; }
+window.addEventListener('resize', rsz); rsz(); setScene(0);
+function frame(now){
+  const t = now*0.001, w = bg.width, h = bg.height;
+  currentP += (targetP - currentP)*0.08; rotY += 0.006;
+  bctx.fillStyle = '#050814'; bctx.fillRect(0,0,w,h);
+  for(let k=0;k<6;k++){
+    bctx.beginPath();
+    for(let x=0;x<=w;x+=20){
+      const y = h*(0.2+k*0.12) + Math.sin(x/w*5+t+k)*26 + Math.cos(x/w*9-t+currentP)*14;
+      x===0?bctx.moveTo(x,y):bctx.lineTo(x,y);
+    }
+    bctx.strokeStyle = k%2?'rgba(56,189,248,0.12)':'rgba(167,139,250,0.14)'; bctx.lineWidth = 22; bctx.stroke();
+  }
+  hctx.clearRect(0,0,w,h);
+  const mode = SCENES[idx].model || 'ring', cx = w*0.68, cy = h*0.5, cyR = Math.cos(rotY+currentP*0.8), syR = Math.sin(rotY+currentP*0.8);
+  const pts = nodes.map(n => {
+    const tg = n.targets[mode] || n.targets.ring;
+    n.x += (tg.x-n.x)*0.08; n.y += (tg.y-n.y)*0.08; n.z += (tg.z-n.z)*0.08;
+    const x1 = n.x*cyR - n.z*syR, z1 = n.z*cyR + n.x*syR, sc = 440/Math.max(90, 660+z1);
+    return {px:cx+x1*sc, py:cy+n.y*sc, sc, layer:n.layer};
+  });
+  pts.forEach(p => {
+    hctx.fillStyle = p.layer===0?'#c4b5fd':p.layer===1?'#38bdf8':'#34d399';
+    hctx.beginPath(); hctx.arc(p.px,p.py,Math.max(1.8,4*p.sc),0,Math.PI*2); hctx.fill();
+  });
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+<\/script>
+</body>
+</html>`;
+    }
+
+    if ($('#st-export-deck-btn')) {
+      $('#st-export-deck-btn').addEventListener('click', () => {
+        const deck = getActiveDeck();
+        const html = buildStandaloneDeckHtml(deck.name, activeShader, deck.scenes);
+        downloadText(`presentacion-${activeDeckKey}.html`, html, 'text/html;charset=utf-8');
+      });
+    }
+
+    // -------------------------------------------------------------------------
+    // 5. Catálogo de 8 Motores Visuales Scrolltide (#ST-01 a #ST-08)
+    // -------------------------------------------------------------------------
+    const ST_MOTORS = [
+      {
+        id: '#ST-01', title: 'Single Sticky Stage + Lerp Camera', picked: true,
+        desc: 'Escenario fijo con interpolador amortiguado currentP += (targetP - currentP) * 0.08 que sincroniza toda la historia a 60 FPS.',
+        preview: `<div style="width:82%;height:8px;background:rgba(255,255,255,0.1);border-radius:99px;overflow:hidden;"><div style="width:65%;height:100%;background:linear-gradient(90deg,#8b5cf6,#06b6d4);animation:mpDrawPath 2s infinite alternate;"></div></div>`,
+        recipe: `/* #ST-01 · Lerp Camera Loop */\nlet targetP = 0, currentP = 0;\nfunction tick(){ currentP += (targetP - currentP) * 0.075; requestAnimationFrame(tick); }`
+      },
+      {
+        id: '#ST-02', title: '3D Orbital Carousel Ring', picked: true,
+        desc: 'Corona tridimensional de nodos o tarjetas que rota en el espacio (rotateX + rotateZ) al cambiar de capítulo.',
+        preview: `<div style="width:82px;height:82px;border:2px dashed #a78bfa;border-radius:50%;animation:stOrbitSpin 4s linear infinite;box-shadow:0 0 18px rgba(139,92,246,0.45);"></div>`,
+        recipe: `/* #ST-02 · Coordenadas de Anillo 3D */\nconst x = Math.cos(angle + currentP) * R, z = Math.sin(angle + currentP) * R, sc = fov / (fov + z);`
+      },
+      {
+        id: '#ST-03', title: 'Isometric Exploded View (Capas 3D)', picked: true,
+        desc: 'Desensambla una arquitectura en 3 o 4 planos flotantes en el eje Y cuando pasas al capítulo de arquitectura técnica.',
+        preview: `<div style="display:flex;flex-direction:column;gap:8px;transform:rotateX(55deg) rotateZ(-28deg);"><div style="width:70px;height:36px;background:rgba(139,92,246,0.35);border:1px solid #a78bfa;"></div><div style="width:70px;height:36px;background:rgba(6,182,212,0.35);border:1px solid #38bdf8;"></div></div>`,
+        recipe: `/* #ST-03 · Separación vertical de capas según progreso p */\nconst layerY = (layerIndex - 1) * (30 + 55 * sceneProgress);`
+      },
+      {
+        id: '#ST-04', title: 'Procedural Liquid Metal Shader', picked: true,
+        desc: 'Superficie cromada ondulante generada con armónicos senoidales en Canvas/WebGL sin vídeos MP4 pesados.',
+        preview: `<div style="width:100%;height:100%;background:radial-gradient(circle at 30% 40%,rgba(167,139,250,0.4),rgba(6,182,212,0.2),#040711);"></div>`,
+        recipe: `/* #ST-04 · Onda armónica reactiva al cursor */\nconst y = baseY + Math.sin(nx * 5.5 + t) * 28 + Math.cos(nx * 11 - t + currentP) * 14;`
+      },
+      {
+        id: '#ST-05', title: 'Blur-Stagger Kinetic Typography', picked: true,
+        desc: 'Aparición secuencial palabra por palabra emergiendo desde desenfoque gaussiano (blur 10px → 0px).',
+        preview: `<div style="font-weight:800;font-size:1rem;color:#e0e7ff;animation:stBlurWave 2.4s ease-in-out infinite;">KINETIC REVEAL</div>`,
+        recipe: `/* #ST-05 · Palabras con escalonado de desenfoque */\n.word { filter: blur(10px); opacity: 0; transform: translateY(10px); transition: all 420ms cubic-bezier(0.16,1,0.3,1); }`
+      },
+      {
+        id: '#ST-06', title: 'Z-Axis Flythrough Tunnel', picked: false,
+        desc: 'Viaje hacia el interior del eje Z donde los anillos de datos avanzan hacia la cámara al hacer scroll.',
+        preview: `<div style="width:58px;height:58px;border:2px solid #38bdf8;border-radius:12px;animation:stZFly 2.2s linear infinite;"></div>`,
+        recipe: `/* #ST-06 · Avance continuo en el eje Z */\nconst zMod = ((node.z + t * 90 + 260) % 520) - 260;`
+      },
+      {
+        id: '#ST-07', title: 'Clip-Path Portal Transition', picked: false,
+        desc: 'Máscara circular o poligonal que se abre desde el centro hasta cubrir el 100% del escenario al cambiar de acto.',
+        preview: `<div style="width:100%;height:100%;background:linear-gradient(135deg,#10b981,#06b6d4);animation:stPortalPulse 2.6s ease-in-out infinite;"></div>`,
+        recipe: `/* #ST-07 · Apertura de portal con clip-path */\nstage.style.clipPath = \`circle(\${15 + p * 85}% at 50% 50%)\`;`
+      },
+      {
+        id: '#ST-08', title: 'Magnetic 3D Tilt + Specular Glare', picked: false,
+        desc: 'Inclinación física en 3D (rotateX/rotateY) y reflejo de luz especular sobre tarjetas de cristal esmerilado.',
+        preview: `<div style="width:95px;height:56px;border-radius:10px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.28);box-shadow:0 12px 24px rgba(0,0,0,0.5);"></div>`,
+        recipe: `/* #ST-08 · Inclinación 3D al paso del ratón */\ncard.style.transform = \`perspective(900px) rotateX(\${ny}deg) rotateY(\${nx}deg)\`;`
+      }
+    ];
+
+    function renderCompGrid() {
+      const grid = $('#st-comp-grid');
+      if (!grid) return;
+      const pickedCount = ST_MOTORS.filter(m => m.picked).length;
+      $('#st-picked-count').textContent = pickedCount;
+      grid.innerHTML = ST_MOTORS.map((m, idx) => `
+        <div class="st-comp-card ${m.picked ? 'picked' : ''}" data-midx="${idx}">
+          <div>
+            <div class="st-comp-stage">${m.preview}</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:0.65rem;">
+              <span class="st-comp-id">${m.id}</span>
+              <span style="font-size:0.66rem;color:#94a3b8;font-weight:700;">ZERO-CDN</span>
+            </div>
+            <h4 class="st-comp-title">${m.title}</h4>
+            <p class="st-comp-desc">${m.desc}</p>
+          </div>
+          <div>
+            <pre class="st-pre" style="border-radius:8px;padding:0.5rem 0.65rem;font-size:0.68rem;margin-bottom:0.55rem;">${m.recipe}</pre>
+            <button type="button" class="st-pill-btn ${m.picked ? 'emerald' : ''}" style="width:100%;" data-toggle="${idx}">
+              ${m.picked ? '✓ Seleccionado para tu Prompt' : '+ Seleccionar Motor'}
+            </button>
+          </div>
+        </div>
+      `).join('');
+
+      $$('[data-toggle]', grid).forEach(btn => {
+        btn.addEventListener('click', () => {
+          const i = Number(btn.dataset.toggle);
+          ST_MOTORS[i].picked = !ST_MOTORS[i].picked;
+          renderCompGrid();
+          updateCustomBuilderPrompt();
+        });
+      });
+    }
+
+    if ($('#st-comp-grid')) {
+      renderCompGrid();
+      $('#st-pick-all').addEventListener('click', () => {
+        ST_MOTORS.forEach(m => { m.picked = true; });
+        renderCompGrid();
+        updateCustomBuilderPrompt();
+      });
+      $('#st-copy-picked-btn').addEventListener('click', (e) => {
+        const picked = ST_MOTORS.filter(m => m.picked);
+        const txt = `Usa el comando /scrolltide.deck para crear una presentación interactiva en un único archivo .HTML autónomo incorporando exactamente estos ${picked.length} motores visuales:\n\n` +
+          picked.map(m => `### ${m.id} · ${m.title}\n${m.desc}\n\`\`\`javascript\n${m.recipe}\n\`\`\``).join('\n\n');
+        copyText(txt, e.currentTarget);
+      });
+    }
+
+    // -------------------------------------------------------------------------
+    // 6. Prompts Directos de la Sección 03 + Botones del Skill
+    // -------------------------------------------------------------------------
+    const READY_PROMPTS = [
+      {
+        title: '🚀 Prompt A · Defender un Proyecto de IA o Datos ante Dirección',
+        desc: 'Ideal para pedir aprobación de un proyecto, explicar el problema actual, los pilares de la solución y el retorno esperado.',
+        text: `/scrolltide.deck Crea una presentación ejecutiva en un único archivo .HTML autónomo (estilo Scrolltide 2.5D/3D con fondo Liquid Metal Shader) de 5 escenas para presentar al Comité nuestro proyecto "[NOMBRE DEL PROYECTO]":
+- Escena 1 (modelo 3D: tunnel): El problema actual y por qué el enfoque tradicional ya no escala.
+- Escena 2 (modelo 3D: ring): Los 4 pilares de nuestra solución que giran en un anillo orbital 3D.
+- Escena 3 (modelo 3D: stack): Cómo funciona por dentro en 3 capas desacopladas (Exploded View isométrico).
+- Escena 4 (modelo 3D: globe): Plan de despliegue por fases y adopción en los equipos.
+- Escena 5 (modelo 3D: ring): Impacto cuantificado en eficiencia, control de riesgo y próximos pasos.`
+      },
+      {
+        title: '🧬 Prompt B · Explicar una Arquitectura Técnica o Pipeline Complejo',
+        desc: 'Ideal para mostrar cómo fluye la información entre sistemas, capas Medallion, agentes o controles de calidad.',
+        text: `/scrolltide.deck Genera una presentación técnica interactiva en un único archivo .HTML (con fondo Silk Aurora Shader y control por rueda de ratón + flechas) que explique paso a paso nuestra arquitectura "[NOMBRE DE LA ARQUITECTURA]":
+- Escena 1 (stack): Vista general de las 4 capas del sistema en explosión isométrica.
+- Escena 2 (tunnel): Ingesta, perfilado y validación en origen sin exposición de datos personales.
+- Escena 3 (ring): Orquestación de módulos y reglas de transformación.
+- Escena 4 (globe): Integración con consumidores finales y gobierno del dato.`
+      }
+    ];
+
+    if ($('#st-ready-prompts')) {
+      $('#st-ready-prompts').innerHTML = READY_PROMPTS.map((p, i) => `
+        <div class="st-comp-card">
+          <div>
+            <h4 class="st-comp-title">${p.title}</h4>
+            <p class="st-comp-desc" style="margin-bottom:0.65rem;">${p.desc}</p>
+            <pre class="st-pre" style="border-radius:8px;max-height:190px;font-size:0.71rem;">${p.text}</pre>
+          </div>
+          <button type="button" class="st-pill-btn emerald" data-ridx="${i}">📋 Copiar Prompt Listo para Ejecutar</button>
+        </div>
+      `).join('');
+      $$('[data-ridx]', $('#st-ready-prompts')).forEach(btn => {
+        btn.addEventListener('click', (e) => copyText(READY_PROMPTS[Number(btn.dataset.ridx)].text, e.currentTarget));
+      });
+    }
+
+    if ($('#st-copy-skill-btn')) {
+      $('#st-copy-skill-btn').addEventListener('click', (e) => copyText($('#st-skill-pre').textContent, e.currentTarget));
+      $('#st-dl-skill-btn').addEventListener('click', () => downloadText('scrolltide.deck.prompt.md', $('#st-skill-pre').textContent));
+    }
+
+    // -------------------------------------------------------------------------
+    // 7. Ensamblador Personalizado de la Sección 04
+    // -------------------------------------------------------------------------
+    function parseCustomScenes() {
+      const raw = ($('#b-scenes')?.value || '').trim().split('\n').filter(Boolean);
+      return raw.map((line, i) => {
+        const parts = line.split('|').map(s => s.trim());
+        return {
+          kicker: `ESCENA 0${i + 1} / 0${raw.length}`,
+          title: parts[0] || `Escena ${i + 1}`,
+          lead: parts[1] || '',
+          model: ['ring', 'stack', 'globe', 'tunnel'].includes((parts[2] || '').toLowerCase()) ? parts[2].toLowerCase() : 'ring',
+          metric: parts[3] || 'SCROLLTIDE INTERACTIVE STAGE',
+          pillars: [
+            { b: `0${i + 1}.A`, t: parts[0] || 'Punto clave', d: parts[1] || 'Detalle de la escena', hl: true }
+          ]
+        };
+      });
+    }
+
+    function updateCustomBuilderPrompt() {
+      const out = $('#b-prompt-out');
+      if (!out) return;
+      const title = $('#b-deck-title')?.value || 'Presentación Ejecutiva';
+      const sh = $('#b-shader')?.value || 'liquid';
+      const scenes = parseCustomScenes();
+      const picked = ST_MOTORS.filter(m => m.picked);
+
+      out.textContent = `/scrolltide.deck Crea una presentación interactiva 2.5D/3D en un único archivo .HTML autónomo (Zero-CDN) titulada "${title}" con fondo Shader "${sh}" y las siguientes ${scenes.length} escenas sincronizadas con el scroll y las flechas del teclado:\n\n` +
+        scenes.map((s, idx) => `${idx + 1}. [${s.kicker}] "${s.title}" (Objeto 3D: ${s.model}) -> ${s.lead} (Insignia: ${s.metric})`).join('\n') +
+        `\n\nMotores visuales obligatorios que debes incluir en el código:\n` +
+        picked.map(m => `- ${m.id} (${m.title}): \`${m.recipe.replace(/\n/g, ' ')}\``).join('\n');
+    }
+
+    if ($('#st-custom-form')) {
+      $$('input, select, textarea', $('#st-custom-form')).forEach(el => {
+        el.addEventListener('input', updateCustomBuilderPrompt);
+        el.addEventListener('change', updateCustomBuilderPrompt);
+      });
+      updateCustomBuilderPrompt();
+
+      $('#b-copy-prompt').addEventListener('click', (e) => copyText($('#b-prompt-out').textContent, e.currentTarget));
+      $('#b-preview-in-stage').addEventListener('click', () => {
+        const title = $('#b-deck-title').value || 'Presentación Personalizada';
+        const sh = $('#b-shader').value || 'liquid';
+        DECKS.custom_user = { name: title, shader: sh, scenes: parseCustomScenes() };
+        activeDeckKey = 'custom_user';
+        activeShader = sh;
+        setScene(0);
+        $('#st-cinema-root').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        toast('Presentación cargada en el Teatro 3D');
+      });
+      $('#b-download-html').addEventListener('click', () => {
+        const title = $('#b-deck-title').value || 'Presentacion-Scrolltide';
+        const sh = $('#b-shader').value || 'liquid';
+        const html = buildStandaloneDeckHtml(title, sh, parseCustomScenes());
+        downloadText('mi-presentacion-scrolltide.html', html, 'text/html;charset=utf-8');
+      });
+    }
+  })();
+  </script>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/search-data.js"></script>
+  <script src="../js/search.js"></script>
+  <script src="../js/highlighter.js"></script>
+
+  <!-- Custom Scripts -->
+  <script src="../js/diagrams.js"></script>
+  <script src="../js/edit-mode.js"></script>
+  <script src="../js/playground.js"></script>
+  <script src="../js/glossary.js"></script>
+  <script src="../js/ai-tutor.js"></script>
+  <script src="../js/text-zoom.js"></script>
+  <script src="../js/simulations.js"></script>
+  <script src="../js/quiz.js"></script>
+  <script src="../js/annotations.js"></script>
+  <script src="../js/achievements.js"></script>
+</body>
+</html>

@@ -538,6 +538,39 @@
         correct: 0,
         explanation: "Los comandos /speckit.discover y /speckit.review leen EXEC_MODE en la constitución: hoy entregan la celda lista para pegar (MANUAL) y mañana pueden invocar la herramienta MCP en modo solo lectura con las mismas reglas de privacidad."
       }
+    ],
+
+    "11-presentaciones-cinematograficas-scrolltide": [
+      {
+        question: "¿Cuál es la mecánica fundamental del patrón «Single Sticky Stage + Cámara Lerp» que hace que una presentación estilo Scrolltide se sienta como una película fluida?",
+        options: [
+          "Mantener un escenario tridimensional fijo donde el progreso normalizado p ∈ [0,1] interpola con amortiguación (currentP += (targetP - currentP) * 0.08) la geometría del Objeto Héroe 3D, las ondas del Shader de fondo y la entrada de las tarjetas narrativas.",
+          "Recargar una página web distinta del servidor cada vez que el usuario pulsa la tecla de avance.",
+          "Incrustar vídeos MP4 sin comprimir de 100 MB por cada diapositiva."
+        ],
+        correct: 0,
+        explanation: "El uso de una única variable de progreso interpolada (currentP) sincroniza todos los planos visuales a 60 FPS sin cortes ni recargas, permitiendo tanto scrollytelling libre con rueda como avance por capítulos con teclado."
+      },
+      {
+        question: "¿Por qué el comando /scrolltide.deck separa el escenario en 3 planos de profundidad (Shader GPU, Objeto Héroe 3D y Cristal Narrativo 2.5D)?",
+        options: [
+          "Para crear paralelaje real y permitir que el Objeto Héroe 3D mute entre estados geométricos (ring, stack, globe, tunnel) según el capítulo de la historia sin interferir en la legibilidad del texto.",
+          "Porque los navegadores web no permiten dibujar texto y gráficos en la misma pantalla.",
+          "Para desactivar la aceleración por hardware del navegador."
+        ],
+        correct: 0,
+        explanation: "Separar el fondo Shader, el modelo 3D interactivo y la tarjeta de cristal con backdrop-filter garantiza legibilidad ejecutiva sobre fondos en movimiento y aporta profundidad espacial 2.5D/3D."
+      },
+      {
+        question: "¿Qué ventaja aporta generar fondos tipo Liquid Metal, Silk Aurora o Halftone Matrix mediante Shaders matemáticos en Canvas/WebGL frente a usar vídeos MP4?",
+        options: [
+          "El archivo .HTML pesa menos de 65 KB, funciona 100% offline sin bloqueos de red corporativos y reacciona en tiempo real a la posición del cursor y al progreso de la presentación.",
+          "Los vídeos MP4 se adaptan mejor al movimiento del ratón que los shaders.",
+          "Ninguna, ambos pesan exactamente lo mismo."
+        ],
+        correct: 0,
+        explanation: "Un shader procedural calcula las ondas en tiempo real en cada fotograma, logrando un archivo HTML ultraligero, interactivo al ratón y libre de dependencias externas."
+      }
     ]
   };
 
