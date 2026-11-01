@@ -1,4 +1,4 @@
-const CACHE_NAME = 'curso-ia-v16';
+const CACHE_NAME = 'curso-ia-v17';
 const ASSETS = [
   './',
   './index.html',
@@ -6,6 +6,13 @@ const ASSETS = [
   './recursos.html',
   './examen.html',
   './presentacion-ridge-ia-digital-commercial.html',
+  './assets/scrolltide/ridge-poster.jpg',
+  './assets/scrolltide/zephyr-poster.jpg',
+  './assets/scrolltide/selene-poster.jpg',
+  './assets/scrolltide/synapse-poster.jpg',
+  './assets/scrolltide/helix-poster.jpg',
+  './assets/scrolltide/aurora-poster.jpg',
+  './assets/scrolltide/glacier-poster.jpg',
   './cuadernos/01-pep-martorell.html',
   './cuadernos/02-javier-ideami.html',
   './cuadernos/03-compendio-tecnico.html',

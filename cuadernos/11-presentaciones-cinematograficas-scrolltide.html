@@ -522,14 +522,14 @@
           </p>
 
           <!-- LANZADOR DESTACADO DE LA PRESENTACIÓN RIDGE A PANTALLA COMPLETA -->
-          <div style="background:linear-gradient(135deg,rgba(245,158,11,0.14) 0%,rgba(56,189,248,0.14) 100%);border:1.5px solid rgba(245,158,11,0.5);border-radius:14px;padding:1.1rem 1.35rem;margin:1.2rem 0;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:1rem;">
+          <div style="background:linear-gradient(135deg,rgba(74,111,117,0.28) 0%,rgba(15,23,42,0.88) 100%);border:1.5px solid rgba(125,211,252,0.45);border-radius:16px;padding:1.25rem 1.45rem;margin:1.2rem 0;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:1rem;">
             <div>
-              <div class="st-mono" style="font-size:0.68rem;color:#fcd34d;font-weight:800;letter-spacing:0.08em;">▲ DEMO STANDALONE ESTILO SCROLLTIDE /TEMPLATES/RIDGE · 6 CUMBRES EN 3D</div>
-              <div style="font-size:0.98rem;font-weight:800;color:#fff;margin-top:0.2rem;">Presentación Completa: «Iniciativas de IA en los Procesos Digitales de Banca Comercial»</div>
-              <p style="margin:0.2rem 0 0;font-size:0.8rem;color:#cbd5e1;">Terreno topográfico 3D con 48 curvas de nivel en perspectiva real, telemetría de altitud, comparador interactivo <em>Proceso Clásico vs. Con IA</em> y 6 capítulos (Onboarding KYB, Next Best Action, Circulante STP, Copiloto Omnicanal y ROI).</p>
+              <div class="st-mono" style="font-size:0.68rem;color:#7dd3fc;font-weight:800;letter-spacing:0.12em;">▲ PLANTILLA OFICIAL SCROLLTIDE /TEMPLATES/RIDGE · VÍDEO CINEMATOGRÁFICO + 5 ZONAS EDITORIALES</div>
+              <div style="font-size:1.02rem;font-weight:800;color:#fff;margin-top:0.25rem;">Presentación Standalone: «Ridge — Iniciativas de IA en los Procesos Digitales de Commercial»</div>
+              <p style="margin:0.25rem 0 0;font-size:0.82rem;color:#cbd5e1;">Réplica exacta de la composición, tipografía mixta (<em>Plus Jakarta Sans + Instrument Serif Italic + Space Mono</em>), fondo atmosférico en movimiento de <code>scrolltide.co/templates/ridge</code>, carril de 4 cumbres (estilo <em>Zephyr / Selene</em>) y simulador en vivo (estilo <em>Synapse</em>).</p>
             </div>
             <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
-              <a href="../presentacion-ridge-ia-digital-commercial.html" target="_blank" class="st-pill-btn emerald" style="text-decoration:none;padding:0.55rem 1.05rem;font-size:0.8rem;">▲ Abrir Presentación RIDGE a Pantalla Completa ↗</a>
+              <a href="../presentacion-ridge-ia-digital-commercial.html" target="_blank" class="st-pill-btn emerald" style="text-decoration:none;padding:0.6rem 1.15rem;font-size:0.82rem;">▲ Abrir Presentación RIDGE a Pantalla Completa ↗</a>
             </div>
           </div>
 
@@ -537,15 +537,15 @@
             <!-- Barra de control superior -->
             <div class="st-cinema-topbar">
               <div class="st-deck-pills" id="st-deck-selector">
-                <span class="st-mono" style="font-size:0.66rem;color:#94a3b8;margin-right:0.2rem;">PRESENTACIÓN:</span>
-                <button type="button" class="st-pill-btn active" data-deck="ridge_ia">⛰️ 1. RIDGE · IA en Procesos Comerciales</button>
-                <button type="button" class="st-pill-btn" data-deck="ia_proyecto">🚀 2. Proyecto IA a Comité</button>
-                <button type="button" class="st-pill-btn" data-deck="arquitectura">🧬 3. Arquitectura Agéntica 3D</button>
-                <button type="button" class="st-pill-btn" data-deck="comercial">🌐 4. Estrategia &amp; Red Comercial</button>
+                <span class="st-mono" style="font-size:0.66rem;color:#94a3b8;margin-right:0.2rem;">PLANTILLA:</span>
+                <button type="button" class="st-pill-btn active" data-deck="ridge_ia">⛰️ 1. Ridge (Procesos IA Commercial)</button>
+                <button type="button" class="st-pill-btn" data-deck="ia_proyecto">🏛️ 2. Zephyr (Proyecto IA a Comité)</button>
+                <button type="button" class="st-pill-btn" data-deck="arquitectura">🧬 3. Synapse (Arquitectura Agéntica)</button>
+                <button type="button" class="st-pill-btn" data-deck="comercial">🌕 4. Selene (Estrategia &amp; Red Comercial)</button>
               </div>
               <div class="st-shader-pills">
-                <span class="st-mono" style="font-size:0.66rem;color:#94a3b8;">FONDO SHADER:</span>
-                <button type="button" class="st-pill-btn active" data-shader="ridge">RIDGE 3D Topo</button>
+                <span class="st-mono" style="font-size:0.66rem;color:#94a3b8;">ESCENA / FONDO:</span>
+                <button type="button" class="st-pill-btn active" data-shader="ridge">Vídeo Scrolltide HD</button>
                 <button type="button" class="st-pill-btn" data-shader="liquid">Liquid Metal</button>
                 <button type="button" class="st-pill-btn" data-shader="aurora">Silk Aurora</button>
                 <button type="button" class="st-pill-btn" data-shader="halftone">Halftone Wave</button>
@@ -554,9 +554,13 @@
               </div>
             </div>
 
-            <!-- Escenario 3D + Shader + Tarjeta Narrativa -->
+            <!-- Escenario 3D + Vídeo Atmosférico Scrolltide + Tarjeta Narrativa -->
             <div class="st-stage-viewport" id="st-viewport">
-              <canvas id="st-shader-canvas"></canvas>
+              <video id="st-bg-video" autoplay muted loop playsinline poster="../assets/scrolltide/ridge-poster.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:0.92;transition:opacity 0.4s ease;">
+                <source id="st-bg-video-src" src="../assets/scrolltide/ridge.mp4" type="video/mp4">
+              </video>
+              <div style="position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(4,7,12,0.45) 0%,rgba(4,7,12,0.12) 45%,rgba(4,7,12,0.82) 100%);"></div>
+              <canvas id="st-shader-canvas" style="opacity:0.35;"></canvas>
               <canvas id="st-hero3d-canvas"></canvas>
 
               <div class="st-narrative-layer">
@@ -1515,13 +1519,30 @@ Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de aná
         setScene((sceneIdx + 1) % deck.scenes.length);
       });
 
+      const DECK_VIDEOS = {
+        ridge_ia: { mp4: '../assets/scrolltide/ridge.mp4', poster: '../assets/scrolltide/ridge-poster.jpg' },
+        ia_proyecto: { mp4: '../assets/scrolltide/zephyr.mp4', poster: '../assets/scrolltide/zephyr-poster.jpg' },
+        arquitectura: { mp4: '../assets/scrolltide/synapse.mp4', poster: '../assets/scrolltide/synapse-poster.jpg' },
+        comercial: { mp4: '../assets/scrolltide/selene.mp4', poster: '../assets/scrolltide/selene-poster.jpg' }
+      };
+
       $$('#st-deck-selector [data-deck]').forEach(btn => {
         btn.addEventListener('click', () => {
           $$('#st-deck-selector [data-deck]').forEach(b => b.classList.remove('active'));
           btn.classList.add('active');
           activeDeckKey = btn.dataset.deck;
-          activeShader = getActiveDeck().shader || 'liquid';
+          activeShader = getActiveDeck().shader || 'ridge';
           $$('[data-shader]').forEach(b => b.classList.toggle('active', b.dataset.shader === activeShader));
+          const bgVideo = $('#st-bg-video');
+          const vAsset = DECK_VIDEOS[activeDeckKey] || DECK_VIDEOS.ridge_ia;
+          if (bgVideo && vAsset) {
+            bgVideo.poster = vAsset.poster;
+            if (!bgVideo.src.endsWith(vAsset.mp4.replace('..', ''))) {
+              bgVideo.src = vAsset.mp4;
+              bgVideo.load();
+              bgVideo.play().catch(() => {});
+            }
+          }
           modelOverride = 'auto';
           setScene(0);
         });
@@ -1723,52 +1744,52 @@ requestAnimationFrame(frame);
     // -------------------------------------------------------------------------
     const ST_MOTORS = [
       {
-        id: '#ST-01', title: 'Single Sticky Stage + Lerp Camera', picked: true,
-        desc: 'Escenario fijo con interpolador amortiguado currentP += (targetP - currentP) * 0.08 que sincroniza toda la historia a 60 FPS.',
-        preview: `<div style="width:82%;height:8px;background:rgba(255,255,255,0.1);border-radius:99px;overflow:hidden;"><div style="width:65%;height:100%;background:linear-gradient(90deg,#8b5cf6,#06b6d4);animation:mpDrawPath 2s infinite alternate;"></div></div>`,
-        recipe: `/* #ST-01 · Lerp Camera Loop */\nlet targetP = 0, currentP = 0;\nfunction tick(){ currentP += (targetP - currentP) * 0.075; requestAnimationFrame(tick); }`
+        id: '#ST-01', title: 'Ridge 5-Zone Monumental Hero (Full-Bleed MP4)', picked: true,
+        desc: 'Vídeo HD en bucle (ridge.mp4) con arquitectura espacial de 5 zonas, tipografía mixta Sans + Serif Itálica y botón central slate-teal con blur(14px).',
+        preview: `<video autoplay muted loop playsinline poster="../assets/scrolltide/ridge-poster.jpg" style="width:100%;height:100%;object-fit:cover;"><source src="../assets/scrolltide/ridge.mp4" type="video/mp4"></video>`,
+        recipe: `/* #ST-01 · Ridge 5-Zone Spatial Grid */\n.ridge-stage { display:grid; grid-template-rows:auto 1fr auto; height:100vh; padding:2.2rem 2.8rem; }\n.cta-ridge { background:rgba(74,111,117,0.76); backdrop-filter:blur(14px); border-radius:999px; }`
       },
       {
-        id: '#ST-02', title: '3D Orbital Carousel Ring', picked: true,
-        desc: 'Corona tridimensional de nodos o tarjetas que rota en el espacio (rotateX + rotateZ) al cambiar de capítulo.',
-        preview: `<div style="width:82px;height:82px;border:2px dashed #a78bfa;border-radius:50%;animation:stOrbitSpin 4s linear infinite;box-shadow:0 0 18px rgba(139,92,246,0.45);"></div>`,
-        recipe: `/* #ST-02 · Coordenadas de Anillo 3D */\nconst x = Math.cos(angle + currentP) * R, z = Math.sin(angle + currentP) * R, sc = fov / (fov + z);`
+        id: '#ST-02', title: 'Selene 3:4 Video Mission Reel (Hover Scale)', picked: true,
+        desc: 'Tarjetas verticales 3:4 con vídeo autónomo (selene.mp4), índice tabular superior y zoom cinematográfico cubic-bezier(0.16, 1, 0.3, 1).',
+        preview: `<video autoplay muted loop playsinline poster="../assets/scrolltide/selene-poster.jpg" style="width:100%;height:100%;object-fit:cover;"><source src="../assets/scrolltide/selene.mp4" type="video/mp4"></video>`,
+        recipe: `/* #ST-02 · Selene 3:4 Card Reel */\n.mission-card { aspect-ratio:3/4; border-radius:20px; overflow:hidden; }\n.mission-card:hover video { transform:scale(1.07); transition:transform 900ms cubic-bezier(0.16,1,0.3,1); }`
       },
       {
-        id: '#ST-03', title: 'Isometric Exploded View (Capas 3D)', picked: true,
-        desc: 'Desensambla una arquitectura en 3 o 4 planos flotantes en el eje Y cuando pasas al capítulo de arquitectura técnica.',
-        preview: `<div style="display:flex;flex-direction:column;gap:8px;transform:rotateX(55deg) rotateZ(-28deg);"><div style="width:70px;height:36px;background:rgba(139,92,246,0.35);border:1px solid #a78bfa;"></div><div style="width:70px;height:36px;background:rgba(6,182,212,0.35);border:1px solid #38bdf8;"></div></div>`,
-        recipe: `/* #ST-03 · Separación vertical de capas según progreso p */\nconst layerY = (layerIndex - 1) * (30 + 55 * sceneProgress);`
+        id: '#ST-03', title: 'Zephyr 4-Step Telemetry Floor Rail', picked: true,
+        desc: 'Raíl inferior de 4 columnas numeradas (01–04) con barra activa ámbar/esmeralda sobre escenario atmosférico (zephyr.mp4).',
+        preview: `<video autoplay muted loop playsinline poster="../assets/scrolltide/zephyr-poster.jpg" style="width:100%;height:100%;object-fit:cover;"><source src="../assets/scrolltide/zephyr.mp4" type="video/mp4"></video>`,
+        recipe: `/* #ST-03 · Zephyr Bottom 4-Step Rail */\n.zephyr-rail { display:grid; grid-template-columns:repeat(4,1fr); gap:1.5rem; }\n.z-step::before { content:''; display:block; height:2px; background:rgba(255,255,255,0.16); }`
       },
       {
-        id: '#ST-04', title: 'Procedural Liquid Metal Shader', picked: true,
-        desc: 'Superficie cromada ondulante generada con armónicos senoidales en Canvas/WebGL sin vídeos MP4 pesados.',
-        preview: `<div style="width:100%;height:100%;background:radial-gradient(circle at 30% 40%,rgba(167,139,250,0.4),rgba(6,182,212,0.2),#040711);"></div>`,
-        recipe: `/* #ST-04 · Onda armónica reactiva al cursor */\nconst y = baseY + Math.sin(nx * 5.5 + t) * 28 + Math.cos(nx * 11 - t + currentP) * 14;`
+        id: '#ST-04', title: 'Synapse Floating Live Session Card + 3D Tilt', picked: true,
+        desc: 'Tarjeta flotante de telemetría en vivo con inclinación 3D al paso del ratón sobre red neuronal bioluminiscente (synapse.mp4).',
+        preview: `<video autoplay muted loop playsinline poster="../assets/scrolltide/synapse-poster.jpg" style="width:100%;height:100%;object-fit:cover;"><source src="../assets/scrolltide/synapse.mp4" type="video/mp4"></video>`,
+        recipe: `/* #ST-04 · Synapse Live Telemetry Card */\n.synapse-card { background:rgba(8,14,19,0.72); backdrop-filter:blur(22px) saturate(160%); border:1px solid rgba(255,255,255,0.14); }`
       },
       {
-        id: '#ST-05', title: 'Blur-Stagger Kinetic Typography', picked: true,
-        desc: 'Aparición secuencial palabra por palabra emergiendo desde desenfoque gaussiano (blur 10px → 0px).',
-        preview: `<div style="font-weight:800;font-size:1rem;color:#e0e7ff;animation:stBlurWave 2.4s ease-in-out infinite;">KINETIC REVEAL</div>`,
-        recipe: `/* #ST-05 · Palabras con escalonado de desenfoque */\n.word { filter: blur(10px); opacity: 0; transform: translateY(10px); transition: all 420ms cubic-bezier(0.16,1,0.3,1); }`
+        id: '#ST-05', title: 'Helix Organic Luxury & Editorial Serif Contrast', picked: true,
+        desc: 'Contraste tipográfico entre Plus Jakarta Sans semibold y palabras clave en Instrument Serif Italic sobre texturas orgánicas (helix.mp4).',
+        preview: `<video autoplay muted loop playsinline poster="../assets/scrolltide/helix-poster.jpg" style="width:100%;height:100%;object-fit:cover;"><source src="../assets/scrolltide/helix.mp4" type="video/mp4"></video>`,
+        recipe: `/* #ST-05 · Editorial Sans + Serif Italic */\n.stmt-serif { font-family:'Instrument Serif', Georgia, serif; font-style:italic; font-weight:400; }`
       },
       {
-        id: '#ST-06', title: 'Z-Axis Flythrough Tunnel', picked: false,
-        desc: 'Viaje hacia el interior del eje Z donde los anillos de datos avanzan hacia la cámara al hacer scroll.',
-        preview: `<div style="width:58px;height:58px;border:2px solid #38bdf8;border-radius:12px;animation:stZFly 2.2s linear infinite;"></div>`,
-        recipe: `/* #ST-06 · Avance continuo en el eje Z */\nconst zMod = ((node.z + t * 90 + 260) % 520) - 260;`
+        id: '#ST-06', title: 'Aurora Atmospheric Light & Mist Gradients', picked: false,
+        desc: 'Vignette perimetral multicapa que mantiene legibilidad AAA sobre fondos de vídeo claros o auroras boreales (aurora.mp4).',
+        preview: `<video autoplay muted loop playsinline poster="../assets/scrolltide/aurora-poster.jpg" style="width:100%;height:100%;object-fit:cover;"><source src="../assets/scrolltide/aurora.mp4" type="video/mp4"></video>`,
+        recipe: `/* #ST-06 · Scrim & Vignette Multicapa */\n.scrim { background:linear-gradient(180deg,rgba(4,9,13,0.45) 0%,transparent 35%,rgba(4,8,12,0.88) 100%); }`
       },
       {
-        id: '#ST-07', title: 'Clip-Path Portal Transition', picked: false,
-        desc: 'Máscara circular o poligonal que se abre desde el centro hasta cubrir el 100% del escenario al cambiar de acto.',
-        preview: `<div style="width:100%;height:100%;background:linear-gradient(135deg,#10b981,#06b6d4);animation:stPortalPulse 2.6s ease-in-out infinite;"></div>`,
-        recipe: `/* #ST-07 · Apertura de portal con clip-path */\nstage.style.clipPath = \`circle(\${15 + p * 85}% at 50% 50%)\`;`
+        id: '#ST-07', title: 'Glacier Brutalist Minimal Grid & KPI Pill', picked: false,
+        desc: 'Píldoras de estado con punto luminoso animado y tipografía monoespaciada Space Mono sobre arquitectura glacial (glacier.mp4).',
+        preview: `<video autoplay muted loop playsinline poster="../assets/scrolltide/glacier-poster.jpg" style="width:100%;height:100%;object-fit:cover;"><source src="../assets/scrolltide/glacier.mp4" type="video/mp4"></video>`,
+        recipe: `/* #ST-07 · Space Mono Status Pill */\n.kicker-dot { font-family:'Space Mono',monospace; font-size:0.75rem; letter-spacing:0.06em; }`
       },
       {
-        id: '#ST-08', title: 'Magnetic 3D Tilt + Specular Glare', picked: false,
-        desc: 'Inclinación física en 3D (rotateX/rotateY) y reflejo de luz especular sobre tarjetas de cristal esmerilado.',
-        preview: `<div style="width:95px;height:56px;border-radius:10px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.28);box-shadow:0 12px 24px rgba(0,0,0,0.5);"></div>`,
-        recipe: `/* #ST-08 · Inclinación 3D al paso del ratón */\ncard.style.transform = \`perspective(900px) rotateX(\${ny}deg) rotateY(\${nx}deg)\`;`
+        id: '#ST-08', title: 'Single Sticky Stage + Lerp Camera (Zero-CDN)', picked: false,
+        desc: 'Interpolador amortiguado currentP += (targetP - currentP) * 0.08 que sincroniza vídeo, 3D y tarjetas a 60 FPS.',
+        preview: `<video autoplay muted loop playsinline poster="../assets/scrolltide/ridge-poster.jpg" style="width:100%;height:100%;object-fit:cover;filter:hue-rotate(35deg) contrast(1.1);"><source src="../assets/scrolltide/ridge.mp4" type="video/mp4"></video>`,
+        recipe: `/* #ST-08 · Lerp Camera Loop */\nlet targetP = 0, currentP = 0;\nfunction tick(){ currentP += (targetP - currentP) * 0.08; requestAnimationFrame(tick); }`
       }
     ];
 
