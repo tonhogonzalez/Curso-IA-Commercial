@@ -338,7 +338,8 @@
         { id: 6, short: "C6", name: "Cuaderno 06 · M365 Banca Comercial", colorVar: "--cmap-c6", colorHex: "#0ea5e9", cx: 340, cy: 10 },
         { id: 7, short: "C7", name: "Cuaderno 07 · Migración ChatGPT→M365", colorVar: "--cmap-c7", colorHex: "#ec4899", cx: -300, cy: 190 },
         { id: 8, short: "C8", name: "Cuaderno 08 · Agentes VS Code & PaceUI", colorVar: "--cmap-c8", colorHex: "#a855f7", cx: 0, cy: 210 },
-        { id: 9, short: "C9", name: "Cuaderno 09 · Databricks, Excel & Diccionario", colorVar: "--cmap-c9", colorHex: "#14b8a6", cx: 320, cy: 190 }
+        { id: 9, short: "C9", name: "Cuaderno 09 · Databricks, Excel & Diccionario", colorVar: "--cmap-c9", colorHex: "#14b8a6", cx: 320, cy: 190 },
+        { id: 10, short: "C10", name: "Cuaderno 10 · Spec-Driven Analytics & Spec-Kit", colorVar: "--cmap-c10", colorHex: "#10b981", cx: 180, cy: 280 }
     ];
 
     const CUADERNO_LINKS = {
@@ -350,7 +351,8 @@
         6: 'cuadernos/06-m365-copilot-banca-comercial.html',
         7: 'cuadernos/07-migracion-chatgpt-copilot-m365.html',
         8: 'cuadernos/08-agentes-vscode-ux-dashboards.html',
-        9: 'cuadernos/09-ingenieria-visual-databricks-m365-vscode.html'
+        9: 'cuadernos/09-ingenieria-visual-databricks-m365-vscode.html',
+        10: 'cuadernos/10-spec-driven-analytics-databricks.html'
     };
 
     // 48 Conceptos Clave distribuidos en los 9 Cuadernos con enlace directo a la sección exacta
@@ -415,7 +417,13 @@
         { id: "excel_institucional", label: "Excel Institucional & Prompts", c: 9, url: "cuadernos/09-ingenieria-visual-databricks-m365-vscode.html#excel-institucional-python", desc: "Estándar sin cuadrícula, Matriz de Sensibilidad 2D, bloques =PY() y Prompts Directos para Copilot en Excel sin VBA." },
         { id: "ppt_infog_video", label: "Slides Interactivas, Infografías & Vídeo", c: 9, url: "cuadernos/09-ingenieria-visual-databricks-m365-vscode.html#boveda-prompts-skills", desc: "Diapositivas 16:9 interactivas por dentro, estudio de Infografías SVG exportables a PNG y Vídeos Explicativos (.webm)." },
         { id: "diccionario_44", label: "Diccionario 44 KPIs Commercial", c: 9, url: "cuadernos/09-ingenieria-visual-databricks-m365-vscode.html#diccionario-visual-commercial", desc: "Enciclopedia visual con fórmulas y gráficos: RORWA, RAROC, Confirming, Factoring, TPV MDR, Cash Pooling, STP, IFRS 9 y CET1." },
-        { id: "workbench_c9", label: "Workbench: Prompts, Auto-Insights & CSV→HTML", c: 9, url: "cuadernos/09-ingenieria-visual-databricks-m365-vscode.html#workbench-operativo", desc: "Ensamblador de Prompts a medida, Motor de Narrativa Automática (Red Flags), Generador CSV→HTML para Correo y Pack Instalador." }
+        { id: "workbench_c9", label: "Workbench: Prompts, Auto-Insights & CSV→HTML", c: 9, url: "cuadernos/09-ingenieria-visual-databricks-m365-vscode.html#workbench-operativo", desc: "Ensamblador de Prompts a medida, Motor de Narrativa Automática (Red Flags), Generador CSV→HTML para Correo y Pack Instalador." },
+
+        // Cuaderno 10
+        { id: "spec_driven_analytics", label: "Spec-Driven Analytics (Spec-Kit)", c: 10, url: "cuadernos/10-spec-driven-analytics-databricks.html#intro", desc: "Adaptación de GitHub Spec-Kit a Databricks y VS Code Copilot: la especificación y el modelo de datos verificado como fuente de verdad." },
+        { id: "profile_tables_1shot", label: "Perfilador 1-Shot (profile_tables)", c: 10, url: "cuadernos/10-spec-driven-analytics-databricks.html#kit", desc: "Radiografía en una sola ejecución en Databricks: esquemas, dimensiones, unicidad de claves, ocultación PII y test de fan-out en JOINs." },
+        { id: "dq_utils_safe_join", label: "Controles DQ & safe_join()", c: 10, url: "cuadernos/10-spec-driven-analytics-databricks.html#kit", desc: "Librería de control de calidad en PySpark que detiene el notebook si un cruce multiplica filas o altera importes monetarios." },
+        { id: "knowledge_catalog", label: "Catálogo Persistente (.specify/knowledge)", c: 10, url: "cuadernos/10-spec-driven-analytics-databricks.html#arquitectura", desc: "Memoria acumulativa de fichas de tablas, cruces validados y métricas oficiales que acelera cada nuevo análisis." }
     ];
 
     const EDGES = [
@@ -459,7 +467,12 @@
         { source: "ppt_infog_video", target: "vscode_skills", label: "skills multimedia" },
         { source: "ppt_infog_video", target: "databricks_html", label: "exportación local" },
         { source: "workbench_c9", target: "databricks_html", label: "CSV→HTML correo" },
-        { source: "workbench_c9", target: "vscode_skills", label: "bootstrap kit" }
+        { source: "workbench_c9", target: "vscode_skills", label: "bootstrap kit" },
+        { source: "vscode_skills", target: "spec_driven_analytics", label: "Prompt Files /speckit" },
+        { source: "spec_driven_analytics", target: "profile_tables_1shot", label: "/speckit.discover" },
+        { source: "profile_tables_1shot", target: "knowledge_catalog", label: "alimenta fichas" },
+        { source: "spec_driven_analytics", target: "dq_utils_safe_join", label: "/speckit.implement" },
+        { source: "dq_utils_safe_join", target: "databricks_html", label: "/speckit.insights → C09" }
     ];
 
     class ConceptMap {
@@ -483,7 +496,7 @@
             this.selectedNode = null; // Foco bloqueado al hacer clic
             this.hoveredEdge = null;
             
-            this.activeFilters = new Set([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+            this.activeFilters = new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
             this.searchQuery = "";
             this.isFullscreen = false;
 

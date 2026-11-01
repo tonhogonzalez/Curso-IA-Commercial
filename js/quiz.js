@@ -495,6 +495,49 @@
         correct: 0,
         explanation: "En Excel corporativo las macros suelen estar bloqueadas. La excelencia visual proviene de eliminar el ruido de la cuadrícula base, dar aire vertical a las celdas, aplicar formatos numéricos explícitos con negativos en rojo entre paréntesis y usar DataBarRule sobrios."
       }
+    ],
+
+    "10-spec-driven-analytics-databricks": [
+      {
+        question: "¿Qué problema fundamental del método «explorar en chat y pedir un mega-prompt final» resuelve Spec-Driven Analytics en VS Code con GitHub Copilot?",
+        options: [
+          "Sustituye la memoria volátil del chat por ficheros vivos en el repositorio (constitution.md, spec.md, data-model.md, plan.md y catálogo knowledge/) que Copilot lee siempre sin degradación de contexto ni necesidad de repetir cruces en futuros análisis.",
+          "Elimina la necesidad de usar PySpark en Databricks reemplazándolo por hojas de cálculo locales.",
+          "Ejecuta automáticamente cambios en producción sin pasar por controles de calidad ni validaciones de negocio."
+        ],
+        correct: 0,
+        explanation: "En hilos largos de chat, el LLM olvida filtros o cardinalidades descubiertas al principio. Guardar la verdad verificada en data-model.md y en .specify/knowledge/ permite que cada paso y cada análisis futuro partan del conocimiento exacto."
+      },
+      {
+        question: "¿Por qué la función profile_join() de profile_tables.py es crítica antes de escribir el código del notebook?",
+        options: [
+          "Porque detecta en seco el factor de multiplicación (fan-out) y la deriva de importes (ej. duplicar el margen ordinario de un cliente al cruzarlo con múltiples contratos de circulante) sin necesidad de materializar el JOIN completo.",
+          "Porque borra automáticamente las filas duplicadas de las tablas maestras de Unity Catalog.",
+          "Porque convierte todas las columnas numéricas a formato texto para acelerar la lectura."
+        ],
+        correct: 0,
+        explanation: "Cruzar una tabla a nivel cliente-mes con otra a nivel contrato-mes multiplica las filas y las sumas de importes de la tabla izquierda. profile_join() mide el factor de fan-out antes de programar y obliga a pre-agregar en plan.md."
+      },
+      {
+        question: "¿Cómo garantiza safe_join() de dq_utils.py que un cruce en el notebook .ipynb no corrompa silenciosamente las cifras?",
+        options: [
+          "Compara el conteo de filas y la suma exacta de las columnas monetarias indicadas en sum_cols antes y después del JOIN, lanzando un DQError que detiene el notebook si hay variación no autorizada.",
+          "Redondea todos los importes al millón de euros más cercano para absorber las diferencias.",
+          "Oculta los avisos de error para que el notebook termine siempre sin interrupciones."
+        ],
+        correct: 0,
+        explanation: "Con STRICT = True, safe_join() verifica matemáticamente que tanto el número de filas como la suma de las métricas de la tabla izquierda permanezcan intactos tras un LEFT JOIN, deteniendo la ejecución antes de llevar un dato erróneo a un comité."
+      },
+      {
+        question: "¿Cómo queda preparado el kit para pasar del modo copiar/pegar actual al futuro servidor MCP de Databricks sin reescribir los comandos?",
+        options: [
+          "Mediante el interruptor EXEC_MODE (MANUAL vs MCP) en constitution.md y la plantilla .vscode/mcp.json.example, manteniendo en los prompts las salvaguardas de solo lectura, agregación obligatoria y ocultación de datos personales.",
+          "Obligando a reinstalar VS Code desde cero cuando se publique el servidor MCP.",
+          "Dando permisos de borrado de tablas (DROP TABLE) al agente cuando opera por MCP."
+        ],
+        correct: 0,
+        explanation: "Los comandos /speckit.discover y /speckit.review leen EXEC_MODE en la constitución: hoy entregan la celda lista para pegar (MANUAL) y mañana pueden invocar la herramienta MCP en modo solo lectura con las mismas reglas de privacidad."
+      }
     ]
   };
 

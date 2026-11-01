@@ -1,0 +1,2514 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Spec-Driven Analytics: adaptación de GitHub Spec-Kit a VS Code + GitHub Copilot + Databricks. Kit completo de comandos /speckit, perfilador automático de tablas, librería de controles de calidad, catálogo de conocimiento persistente, simulador paso a paso y preparación para MCP de Databricks.">
+  <meta name="keywords" content="Spec-Kit, Spec-Driven Development, GitHub Copilot, VS Code, Prompt Files, Databricks, PySpark, Unity Catalog, Data Profiling, Data Quality, MCP, ipynb, Banca Comercial">
+  <title>Cuaderno 10 — Spec-Driven Analytics: GitHub Spec-Kit + VS Code Copilot + Databricks | Curso IA Commercial</title>
+  <link rel="manifest" href="../manifest.json">
+  <link rel="stylesheet" href="../css/styles.css">
+  <style>
+    /* ==========================================================================
+       CUADERNO 10 · SPEC-DRIVEN ANALYTICS (prefijo sk-)
+       ========================================================================== */
+    .content-wrapper { max-width: 1180px; }
+    .sk-mono { font-family: 'JetBrains Mono', var(--font-mono), monospace; font-variant-numeric: tabular-nums; }
+
+    /* Pestañas de vista */
+    .sk-tabs { display: flex; flex-wrap: wrap; gap: .45rem; background: var(--bg-card); border: 1px solid var(--border-medium); border-radius: 12px; padding: .45rem; margin: 1.6rem 0; position: sticky; top: 72px; z-index: 30; backdrop-filter: blur(12px); }
+    .sk-tab { flex: 1 1 auto; padding: .55rem .9rem; border-radius: 8px; font-size: .8rem; font-weight: 600; color: var(--text-secondary); background: transparent; border: 1px solid transparent; cursor: pointer; transition: all 180ms cubic-bezier(.16,1,.3,1); }
+    .sk-tab:hover { color: var(--text-primary); background: rgba(127,127,127,.08); }
+    .sk-tab.active { color: var(--text-primary); border-color: rgba(16,185,129,.5); background: linear-gradient(135deg, rgba(16,185,129,.18), rgba(6,182,212,.14)); }
+
+    /* Tarjetas comparativas */
+    .sk-grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin: 1.25rem 0; }
+    .sk-grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin: 1.25rem 0; }
+    .sk-card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 1.1rem 1.2rem; }
+    .sk-card h4 { margin: 0 0 .5rem; font-size: .95rem; color: var(--text-primary); display: flex; align-items: center; gap: .45rem; }
+    .sk-card p, .sk-card li { font-size: .84rem; line-height: 1.6; color: var(--text-secondary); }
+    .sk-card ul { margin: .3rem 0 0 1.1rem; }
+    .sk-card.bad { border-left: 3px solid var(--accent-rose); }
+    .sk-card.good { border-left: 3px solid var(--accent-emerald); }
+    .sk-card.info { border-left: 3px solid var(--accent-cyan); }
+    .sk-card.warn { border-left: 3px solid var(--accent-amber); }
+
+    /* Tablas */
+    .sk-table-wrap { overflow-x: auto; margin: 1.2rem 0; border: 1px solid var(--border-subtle); border-radius: 12px; }
+    .sk-table { width: 100%; border-collapse: collapse; font-size: .83rem; }
+    .sk-table th { text-align: left; padding: .7rem .85rem; background: rgba(16,185,129,.1); color: var(--text-primary); font-weight: 700; border-bottom: 1px solid var(--border-medium); white-space: nowrap; }
+    .sk-table td { padding: .65rem .85rem; border-bottom: 1px solid var(--border-subtle); color: var(--text-secondary); vertical-align: top; line-height: 1.55; }
+    .sk-table tr:last-child td { border-bottom: none; }
+    .sk-table td:first-child { color: var(--text-primary); font-weight: 600; }
+
+    /* Bloques de código */
+    .sk-pre { background: #070b14; color: #dbe4f0; border: 1px solid rgba(255,255,255,.09); border-radius: 10px; padding: 1rem 1.1rem; font-family: 'JetBrains Mono', var(--font-mono), monospace; font-size: .76rem; line-height: 1.6; overflow: auto; white-space: pre; max-height: 520px; margin: 0; }
+    .sk-pre .h { color: #6ee7b7; font-weight: 700; }
+    .sk-pre .c { color: #7c8aa5; }
+    .sk-pre .k { color: #93c5fd; }
+    .sk-pre .w { color: #fcd34d; }
+    .sk-pre .e { color: #fda4af; }
+    .sk-codehead { display: flex; justify-content: space-between; align-items: center; gap: .6rem; flex-wrap: wrap; background: #0d1322; border: 1px solid rgba(255,255,255,.09); border-bottom: none; border-radius: 10px 10px 0 0; padding: .5rem .8rem; }
+    .sk-codehead + .sk-pre { border-radius: 0 0 10px 10px; }
+    .sk-codehead .path { font-family: 'JetBrains Mono', monospace; font-size: .74rem; color: #67e8f9; font-weight: 600; word-break: break-all; }
+    .sk-btn { display: inline-flex; align-items: center; gap: .35rem; font-size: .74rem; font-weight: 700; padding: .38rem .75rem; border-radius: 7px; border: 1px solid rgba(16,185,129,.45); background: rgba(16,185,129,.14); color: #6ee7b7; cursor: pointer; transition: all 150ms ease; white-space: nowrap; }
+    .sk-btn:hover { background: rgba(16,185,129,.28); color: #fff; }
+    .sk-btn.alt { border-color: rgba(99,102,241,.45); background: rgba(99,102,241,.14); color: #c7d2fe; }
+    .sk-btn.alt:hover { background: rgba(99,102,241,.3); color: #fff; }
+    .sk-btn.primary { background: #10b981; color: #04110b; border-color: #10b981; }
+    .sk-btn.primary:hover { background: #34d399; }
+    .sk-btn.done { background: #10b981 !important; color: #04110b !important; }
+
+    /* Árbol de carpetas */
+    .sk-tree { background: #070b14; border: 1px solid rgba(255,255,255,.09); border-radius: 12px; padding: 1.1rem 1.2rem; font-family: 'JetBrains Mono', monospace; font-size: .76rem; line-height: 1.75; color: #cbd5e1; overflow-x: auto; white-space: pre; }
+    .sk-tree .d { color: #93c5fd; font-weight: 700; }
+    .sk-tree .n { color: #6ee7b7; font-weight: 700; }
+    .sk-tree .m { color: #fcd34d; }
+    .sk-tree .x { color: #64748b; }
+
+    /* Tarjetas de comando */
+    .sk-cmd-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 1rem; margin: 1.2rem 0; }
+    .sk-cmd { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 1.05rem 1.15rem; display: flex; flex-direction: column; gap: .55rem; transition: border-color 180ms ease, transform 180ms ease; }
+    .sk-cmd:hover { border-color: rgba(16,185,129,.45); transform: translateY(-2px); }
+    .sk-cmd-top { display: flex; justify-content: space-between; align-items: center; gap: .5rem; flex-wrap: wrap; }
+    .sk-cmd-name { font-family: 'JetBrains Mono', monospace; font-size: .88rem; font-weight: 800; color: var(--accent-emerald); }
+    .sk-pill { font-size: .64rem; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; padding: .16rem .5rem; border-radius: 999px; border: 1px solid; }
+    .sk-pill.once { color: #fcd34d; border-color: rgba(245,158,11,.45); background: rgba(245,158,11,.1); }
+    .sk-pill.core { color: #67e8f9; border-color: rgba(6,182,212,.45); background: rgba(6,182,212,.1); }
+    .sk-pill.new { color: #f9a8d4; border-color: rgba(236,72,153,.45); background: rgba(236,72,153,.1); }
+    .sk-cmd p { margin: 0; font-size: .82rem; line-height: 1.55; color: var(--text-secondary); }
+    .sk-cmd .io { display: grid; grid-template-columns: 74px 1fr; gap: .25rem .6rem; font-size: .78rem; }
+    .sk-cmd .io b { color: var(--text-muted, #94a3b8); font-weight: 700; font-size: .7rem; text-transform: uppercase; letter-spacing: .05em; padding-top: .1rem; }
+    .sk-cmd .io span { color: var(--text-primary); }
+    .sk-cmd .ex { background: #070b14; color: #dbe4f0; border-radius: 8px; padding: .55rem .7rem; font-family: 'JetBrains Mono', monospace; font-size: .72rem; line-height: 1.5; white-space: pre-wrap; border: 1px solid rgba(255,255,255,.07); }
+
+    /* Simulador */
+    .sk-sim { background: #060a13; border: 1px solid rgba(16,185,129,.35); border-radius: 14px; padding: 1rem; color: #e2e8f0; margin: 1.4rem 0; }
+    .sk-sim-top { display: flex; flex-wrap: wrap; gap: .8rem; justify-content: space-between; align-items: center; padding-bottom: .8rem; border-bottom: 1px solid rgba(255,255,255,.08); margin-bottom: .9rem; }
+    .sk-sim-title { font-family: 'JetBrains Mono', monospace; font-size: .7rem; letter-spacing: .08em; color: #34d399; font-weight: 700; }
+    .sk-kpis { display: flex; flex-wrap: wrap; gap: .5rem; }
+    .sk-kpi { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.09); border-radius: 9px; padding: .35rem .65rem; min-width: 112px; }
+    .sk-kpi small { display: block; font-size: .6rem; color: #94a3b8; text-transform: uppercase; letter-spacing: .06em; }
+    .sk-kpi strong { font-family: 'JetBrains Mono', monospace; font-size: 1rem; color: #f8fafc; font-variant-numeric: tabular-nums; }
+    .sk-kpi.hl strong { color: #34d399; }
+    .sk-steps { display: flex; gap: .35rem; overflow-x: auto; padding-bottom: .4rem; margin-bottom: .9rem; }
+    .sk-step { flex: 0 0 auto; display: flex; align-items: center; gap: .4rem; padding: .42rem .7rem; border-radius: 8px; border: 1px solid rgba(255,255,255,.1); background: rgba(255,255,255,.03); color: #94a3b8; font-size: .72rem; font-weight: 600; cursor: pointer; transition: all 160ms ease; white-space: nowrap; }
+    .sk-step .num { font-family: 'JetBrains Mono', monospace; font-size: .66rem; width: 20px; height: 20px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: rgba(255,255,255,.08); color: #cbd5e1; }
+    .sk-step.done { color: #a7f3d0; border-color: rgba(16,185,129,.3); }
+    .sk-step.done .num { background: rgba(16,185,129,.3); color: #ecfdf5; }
+    .sk-step.active { color: #fff; border-color: #10b981; background: rgba(16,185,129,.16); }
+    .sk-step.active .num { background: #10b981; color: #04110b; }
+    .sk-step.you { border-style: dashed; }
+    .sk-sim-body { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: .9rem; }
+    @media (max-width: 960px) { .sk-sim-body { grid-template-columns: 1fr; } }
+    .sk-panel { background: rgba(12,16,26,.9); border: 1px solid rgba(255,255,255,.08); border-radius: 11px; padding: .8rem .9rem; min-width: 0; }
+    .sk-panel-label { font-family: 'JetBrains Mono', monospace; font-size: .62rem; letter-spacing: .07em; text-transform: uppercase; color: #94a3b8; margin-bottom: .45rem; display: flex; justify-content: space-between; gap: .5rem; align-items: center; }
+    .sk-chat-you { background: rgba(99,102,241,.12); border: 1px solid rgba(99,102,241,.35); border-radius: 10px 10px 2px 10px; padding: .65rem .8rem; font-size: .8rem; line-height: 1.55; color: #e0e7ff; white-space: pre-wrap; }
+    .sk-chat-you .cmd { font-family: 'JetBrains Mono', monospace; color: #6ee7b7; font-weight: 800; }
+    .sk-chat-ai { margin-top: .7rem; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.09); border-radius: 10px 10px 10px 2px; padding: .65rem .8rem; font-size: .79rem; line-height: 1.6; color: #cbd5e1; white-space: pre-wrap; }
+    .sk-why { margin-top: .7rem; font-size: .76rem; line-height: 1.55; color: #fde68a; background: rgba(245,158,11,.08); border-left: 2px solid #f59e0b; padding: .5rem .7rem; border-radius: 4px; }
+    .sk-filetabs { display: flex; flex-wrap: wrap; gap: .3rem; }
+    .sk-filetab { font-family: 'JetBrains Mono', monospace; font-size: .66rem; padding: .22rem .5rem; border-radius: 5px; border: 1px solid rgba(255,255,255,.12); background: transparent; color: #94a3b8; cursor: pointer; }
+    .sk-filetab.active { color: #04110b; background: #34d399; border-color: #34d399; font-weight: 700; }
+    .sk-sim-nav { display: flex; justify-content: space-between; align-items: center; gap: .6rem; margin-top: .9rem; flex-wrap: wrap; }
+    .sk-sim-nav .hint { font-size: .72rem; color: #64748b; }
+
+    /* Bóveda del kit */
+    .sk-vault { display: grid; grid-template-columns: 290px minmax(0, 1fr); gap: 1rem; margin: 1.2rem 0; }
+    @media (max-width: 900px) { .sk-vault { grid-template-columns: 1fr; } }
+    .sk-vault-list { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 12px; padding: .6rem; max-height: 640px; overflow: auto; }
+    .sk-vault-group { font-size: .64rem; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; color: var(--text-muted, #94a3b8); padding: .65rem .5rem .3rem; }
+    .sk-vault-item { display: block; width: 100%; text-align: left; font-family: 'JetBrains Mono', monospace; font-size: .72rem; padding: .42rem .55rem; border-radius: 7px; border: 1px solid transparent; background: transparent; color: var(--text-secondary); cursor: pointer; word-break: break-all; }
+    .sk-vault-item:hover { background: rgba(127,127,127,.08); color: var(--text-primary); }
+    .sk-vault-item.active { border-color: rgba(16,185,129,.5); background: rgba(16,185,129,.12); color: var(--text-primary); font-weight: 700; }
+    .sk-vault-desc { font-size: .82rem; line-height: 1.55; color: var(--text-secondary); margin: 0 0 .6rem; }
+    .sk-installer { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; background: linear-gradient(135deg, rgba(16,185,129,.12), rgba(6,182,212,.1)); border: 1.5px solid rgba(16,185,129,.45); border-radius: 14px; padding: 1.1rem 1.3rem; margin: 1.2rem 0; }
+    .sk-installer h4 { margin: 0 0 .25rem; color: var(--text-primary); font-size: 1rem; }
+    .sk-installer p { margin: 0; font-size: .82rem; color: var(--text-secondary); line-height: 1.5; max-width: 640px; }
+
+    /* Generador de constitución */
+    .sk-gen { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 1rem; margin: 1.2rem 0; }
+    @media (max-width: 960px) { .sk-gen { grid-template-columns: 1fr; } }
+    .sk-form { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 1rem 1.1rem; display: flex; flex-direction: column; gap: .8rem; }
+    .sk-field label { display: block; font-size: .72rem; font-weight: 700; color: var(--text-primary); margin-bottom: .3rem; text-transform: uppercase; letter-spacing: .04em; }
+    .sk-field input[type=text], .sk-field select, .sk-field textarea { width: 100%; background: var(--bg-secondary, #0b1220); border: 1px solid var(--border-medium); color: var(--text-primary); border-radius: 7px; padding: .45rem .65rem; font-size: .8rem; font-family: inherit; }
+    .sk-field textarea { min-height: 70px; font-family: 'JetBrains Mono', monospace; font-size: .74rem; resize: vertical; }
+    .sk-checks { display: flex; flex-direction: column; gap: .35rem; }
+    .sk-checks label { display: flex; gap: .5rem; align-items: flex-start; font-size: .79rem; color: var(--text-secondary); text-transform: none; letter-spacing: 0; font-weight: 500; line-height: 1.45; cursor: pointer; }
+    .sk-checks input { margin-top: .2rem; accent-color: #10b981; }
+
+    /* Plantillas */
+    .sk-tpl { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 1rem 1.1rem; display: flex; flex-direction: column; gap: .55rem; }
+    .sk-tpl h4 { margin: 0; font-size: .92rem; color: var(--text-primary); }
+    .sk-tpl p { margin: 0; font-size: .8rem; line-height: 1.5; color: var(--text-secondary); }
+    .sk-tpl .ctl { font-size: .74rem; color: var(--text-secondary); }
+    .sk-tpl .ctl b { color: var(--accent-emerald); }
+
+    /* Flujo visual */
+    .sk-flow { display: flex; flex-wrap: wrap; align-items: stretch; gap: .4rem; margin: 1.2rem 0; }
+    .sk-flow-node { flex: 1 1 120px; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 10px; padding: .6rem .7rem; text-align: center; }
+    .sk-flow-node b { display: block; font-family: 'JetBrains Mono', monospace; font-size: .74rem; color: var(--accent-emerald); }
+    .sk-flow-node span { display: block; font-size: .7rem; color: var(--text-secondary); margin-top: .2rem; line-height: 1.35; }
+    .sk-flow-node.you { border-style: dashed; border-color: rgba(99,102,241,.55); }
+    .sk-flow-node.you b { color: #a5b4fc; }
+    .sk-flow-arrow { align-self: center; color: var(--text-muted, #64748b); font-size: .9rem; }
+
+    /* Toast */
+    .sk-toast { position: fixed; bottom: 26px; left: 50%; transform: translateX(-50%) translateY(20px); background: #10b981; color: #04110b; font-weight: 700; font-size: .82rem; padding: .6rem 1.1rem; border-radius: 9px; opacity: 0; pointer-events: none; transition: all 220ms cubic-bezier(.16,1,.3,1); z-index: 10001; box-shadow: 0 10px 30px rgba(0,0,0,.4); }
+    .sk-toast.on { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    [data-sk-hidden="true"] { display: none !important; }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <nav class="top-nav">
+    <button class="menu-toggle" aria-label="Abrir menú">☰</button>
+    <a href="../index.html" class="nav-brand">
+      <div class="nav-brand-icon">IA</div>
+      <div class="nav-brand-text"><span>Curso IA</span> Commercial</div>
+    </a>
+    <div class="nav-links">
+      <a href="../index.html" class="nav-link">Cuadernos</a>
+      <a href="../muro.html" class="nav-link">Lienzo</a>
+      <a href="../recursos.html" class="nav-link">Recursos</a>
+      <a href="../examen.html" class="nav-link">Examen Oficial</a>
+      <a href="#" class="nav-link">Acerca de</a>
+    </div>
+  </nav>
+
+  <!-- Reading Progress -->
+  <div class="progress-bar"><div class="progress-bar-fill"></div></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Contenido del cuaderno</div>
+      <a href="#intro" class="sidebar-link active"><span class="sidebar-link-number">00</span> Tu método vs. Spec-Driven</a>
+      <a href="#arquitectura" class="sidebar-link"><span class="sidebar-link-number">01</span> Arquitectura del kit</a>
+      <a href="#instalacion" class="sidebar-link"><span class="sidebar-link-number">02</span> Instalación en VS Code</a>
+      <a href="#comandos" class="sidebar-link"><span class="sidebar-link-number">03</span> Guía de comandos</a>
+      <a href="#simulador" class="sidebar-link"><span class="sidebar-link-number">04</span> Simulador: caso Circulante</a>
+      <a href="#kit" class="sidebar-link"><span class="sidebar-link-number">05</span> Ficheros del kit</a>
+      <a href="#constitucion" class="sidebar-link"><span class="sidebar-link-number">06</span> Generador de constitución</a>
+      <a href="#plantillas" class="sidebar-link"><span class="sidebar-link-number">07</span> Plantillas de análisis</a>
+      <a href="#chuleta" class="sidebar-link"><span class="sidebar-link-number">08</span> Chuleta y buenas prácticas</a>
+    </div>
+  </aside>
+  <div class="sidebar-overlay"></div>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="content-wrapper">
+
+      <!-- Page Header -->
+      <div class="page-header">
+        <div class="breadcrumb">
+          <a href="../index.html">Cuadernos</a>
+          <span class="separator">/</span>
+          <span>Cuaderno 10</span>
+        </div>
+
+        <div class="page-meta">
+          <span class="meta-badge">CUADERNO 10</span>
+          <span class="meta-badge blue">Spec-Kit · VS Code Copilot · Databricks</span>
+          <span class="meta-info">Método de trabajo &amp; kit operativo</span>
+        </div>
+
+        <h1 class="page-title">Spec-Driven Analytics: de la exploración de tablas al notebook de Databricks auditable con GitHub Spec-Kit y VS Code Copilot</h1>
+        <p class="page-subtitle">Adaptación de <a href="https://github.com/github/spec-kit" target="_blank" rel="noopener">github/spec-kit</a> al análisis avanzado de datos: comandos <code>/speckit.*</code> para Copilot, perfilador automático de tablas, controles de calidad en cada cruce, catálogo de conocimiento que crece con cada análisis y preparación para el futuro MCP de Databricks.</p>
+
+        <div class="bloom-card">
+          <div class="bloom-header">
+            <h3 class="bloom-title">🎯 Objetivos de Aprendizaje &amp; Competencias Operativas</h3>
+            <div class="bloom-meta-pills">
+              <span class="bloom-pill time">⏱️ 40 min lectura · 20 min instalación</span>
+              <span class="bloom-pill diff-intermediate">Nivel: Avanzado</span>
+            </div>
+          </div>
+          <div class="bloom-grid">
+            <div class="bloom-col">
+              <div class="bloom-col-header understand">🧠 1. Comprender</div>
+              <ul>
+                <li>Por qué el flujo «chat + mega-prompt» se degrada y cómo lo resuelve la <strong>especificación como fuente de verdad</strong>.</li>
+                <li>Cómo funcionan los <strong>Prompt Files</strong> de Copilot (<code>.github/prompts/*.prompt.md</code>) como comandos <code>/</code>.</li>
+              </ul>
+            </div>
+            <div class="bloom-col">
+              <div class="bloom-col-header analyze">⚖️ 2. Analizar</div>
+              <ul>
+                <li>Recorrer en el <strong>simulador</strong> un análisis real (Circulante × Rentabilidad) de principio a fin.</li>
+                <li>Detectar <strong>fan-out en JOINs</strong>, claves no únicas y huecos de especificación antes de programar.</li>
+              </ul>
+            </div>
+            <div class="bloom-col">
+              <div class="bloom-col-header apply">🚀 3. Aplicar</div>
+              <ul>
+                <li>Instalar el kit con <strong>un script PowerShell</strong> y generar tu <code>constitution.md</code>.</li>
+                <li>Usar <code>profile_tables()</code> y <code>dq_utils.py</code> en tus notebooks <code>.ipynb</code>.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="sk-tabs" role="tablist" aria-label="Vista del cuaderno">
+          <button class="sk-tab active" data-sk-filter="all">📚 Todo</button>
+          <button class="sk-tab" data-sk-filter="metodo">🧭 Método</button>
+          <button class="sk-tab" data-sk-filter="setup">⚙️ Instalación &amp; comandos</button>
+          <button class="sk-tab" data-sk-filter="practica">🧪 Simulador</button>
+          <button class="sk-tab" data-sk-filter="kit">📦 Kit &amp; generadores</button>
+        </div>
+      </div>
+
+      <!-- =====================================================================
+           SECCIÓN 00 · TU MÉTODO VS SPEC-DRIVEN
+           ===================================================================== -->
+      <section id="intro" class="transcript-section" data-sk-group="metodo">
+        <div class="section-header">
+          <span class="section-number">00</span>
+          <h2 class="section-title">Tu método actual ya es casi Spec-Driven: el problema es dónde vive el conocimiento</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p class="editorial-lead">
+            Explorar primero las tablas, pasar los resultados a la IA y pedirle después un prompt detallado para programar el notebook es, conceptualmente, lo correcto. El cuello de botella no es la lógica: es que todo ese conocimiento vive en <strong>una conversación efímera</strong> que se degrada, se pierde y hay que reconstruir en cada análisis.
+          </p>
+
+          <div class="sk-grid-2">
+            <div class="sk-card bad">
+              <h4>💬 Hoy: chat + mega-prompt</h4>
+              <ul>
+                <li>10–15 idas y vueltas pegando resultados de queries sueltas.</li>
+                <li>A partir de cierto punto la IA <strong>olvida o mezcla</strong> detalles (filtros, cardinalidades, formatos de fecha).</li>
+                <li>El mega-prompt final es de usar y tirar: un cambio de negocio obliga a rehacerlo.</li>
+                <li>Lo que descubres de una tabla se queda enterrado en un hilo.</li>
+                <li>Nadie comprueba sistemáticamente que un JOIN no ha multiplicado importes.</li>
+              </ul>
+            </div>
+            <div class="sk-card good">
+              <h4>📐 Con Spec-Driven Analytics</h4>
+              <ul>
+                <li><strong>1 ejecución del perfilador</strong> y 1 pegado sustituyen las idas y vueltas.</li>
+                <li>Los hallazgos se escriben en <strong>ficheros del proyecto</strong> (<code>spec.md</code>, <code>data-model.md</code>), no en el chat.</li>
+                <li>El «mega-prompt» pasa a ser <code>plan.md</code> + <code>tasks.md</code>: versionable y editable.</li>
+                <li>Un <strong>catálogo de conocimiento</strong> reutiliza tablas, cruces y métricas en el siguiente análisis.</li>
+                <li><code>safe_join()</code> detiene el notebook si un cruce cambia filas o importes.</li>
+              </ul>
+            </div>
+          </div>
+
+          <h3>0.1. Qué aporta GitHub Spec-Kit y qué le añadimos</h3>
+          <p>
+            <a href="https://github.com/github/spec-kit" target="_blank" rel="noopener">Spec-Kit</a> es el toolkit oficial de GitHub para <em>Spec-Driven Development</em>: una secuencia de comandos (<code>constitution → specify → clarify → plan → tasks → analyze → implement</code>) que obliga al agente a escribir primero <strong>qué</strong> se construye y <strong>por qué</strong>, después <strong>cómo</strong>, y solo al final el código. Está pensado para desarrollo de aplicaciones; por eso lo adaptamos a análisis de datos:
+          </p>
+          <div class="sk-table-wrap">
+            <table class="sk-table">
+              <thead><tr><th>Spec-Kit original</th><th>Versión «Data Edition» de este cuaderno</th><th>Por qué</th></tr></thead>
+              <tbody>
+                <tr><td><code>/speckit.constitution</code></td><td><code>/speckit.constitution</code> con reglas de Databricks, PySpark, privacidad y DQ</td><td>Las leyes cambian: anti-OOM, Unity Catalog, cuadres obligatorios.</td></tr>
+                <tr><td><code>/speckit.specify</code></td><td><code>/speckit.specify</code> con pregunta de negocio, población, periodo, granularidad y <strong>cifras de referencia</strong></td><td>Permite validar los resultados contra órdenes de magnitud conocidos.</td></tr>
+                <tr><td><code>/speckit.clarify</code></td><td><code>/speckit.discover</code> (ida: perfilador · vuelta: data-model + preguntas)</td><td>En datos, la mayoría de dudas se resuelven <strong>mirando los datos</strong>, no preguntando.</td></tr>
+                <tr><td><code>/speckit.plan</code> + <code>/speckit.tasks</code> + <code>/speckit.analyze</code></td><td><code>/speckit.plan</code> (plan, tareas por celda y auditoría de coherencia en un paso)</td><td>Menos comandos para el día a día sin perder rigor.</td></tr>
+                <tr><td><code>/speckit.implement</code></td><td><code>/speckit.implement</code> → <code>.ipynb</code> con marcadores <code># COMMAND ---------- Txx</code></td><td>Trazabilidad celda ↔ tarea; DQ en cada paso.</td></tr>
+                <tr><td>—</td><td><code>/speckit.review</code> · <code>/speckit.change</code> · <code>/speckit.insights</code></td><td>Cubren lo que pasa <strong>después</strong> de ejecutar: cuadres, cambios y narrativa.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>0.2. Las 6 mejoras sobre Spec-Kit que te hacen más eficiente</h3>
+          <div class="sk-grid-3">
+            <div class="sk-card info"><h4>🧠 1. Catálogo de conocimiento</h4><p><code>.specify/knowledge/</code> guarda fichas de tablas, cruces validados y métricas oficiales. El siguiente análisis sobre las mismas tablas <strong>arranca casi resuelto</strong>.</p></div>
+            <div class="sk-card info"><h4>🔬 2. Perfilador en 1 ejecución</h4><p><code>profile_tables()</code> devuelve esquema, nulos, cardinalidad, dimensiones, rangos de fechas, unicidad de claves y <strong>test de fan-out</strong> en Markdown compacto.</p></div>
+            <div class="sk-card info"><h4>🛡️ 3. Controles de calidad</h4><p><code>dq_utils.py</code>: <code>assert_unique</code>, <code>safe_join</code>, <code>reconcile</code>, <code>assert_range</code>. El notebook se para antes de producir una cifra errónea.</p></div>
+            <div class="sk-card info"><h4>🎯 4. Cifras de referencia</h4><p>El <code>spec.md</code> recoge órdenes de magnitud esperados; <code>/speckit.review</code> avisa si el resultado se sale de lo razonable.</p></div>
+            <div class="sk-card info"><h4>🔁 5. Ciclo post-ejecución</h4><p><code>review</code> (cuadres y errores), <code>change</code> (cambios con análisis de impacto) e <code>insights</code> (narrativa ejecutiva y payload para el C09).</p></div>
+            <div class="sk-card info"><h4>⚡ 6. Modo exprés y plantillas</h4><p>Para consultas puntuales: <code>specify → discover → implement</code>. Seis plantillas por tipo de análisis con sus controles típicos.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SECCIÓN 01 · ARQUITECTURA
+           ===================================================================== -->
+      <section id="arquitectura" class="transcript-section" data-sk-group="metodo setup">
+        <div class="section-header">
+          <span class="section-number">01</span>
+          <h2 class="section-title">Arquitectura del kit: tres capas de memoria y un ciclo cerrado</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>El kit separa el conocimiento en tres capas con distinta vida útil. Copilot lee las tres antes de cada comando, así que <strong>nunca tienes que repetir contexto</strong>.</p>
+
+          <div class="sk-grid-3">
+            <div class="sk-card warn"><h4>🏛️ Capa 1 · Constitución</h4><p><code>.specify/memory/constitution.md</code><br>Reglas permanentes del equipo: entorno, estándares PySpark, controles obligatorios, privacidad, formato de notebook y modo de ejecución. <strong>Cambia pocas veces al año.</strong></p></div>
+            <div class="sk-card good"><h4>📚 Capa 2 · Conocimiento</h4><p><code>.specify/knowledge/</code><br>Fichas de tablas, registro de cruces (<code>joins.md</code>) y métricas oficiales (<code>metrics.md</code>). <strong>Crece con cada análisis</strong> y se comparte entre todos.</p></div>
+            <div class="sk-card info"><h4>📁 Capa 3 · Análisis</h4><p><code>.specify/specs/NNN-nombre/</code><br><code>spec.md</code>, <code>data-model.md</code>, <code>plan.md</code>, <code>tasks.md</code>, <code>review.md</code>, <code>insights.md</code>. <strong>Uno por análisis</strong>, trazable y reabrible meses después.</p></div>
+          </div>
+
+          <h3>1.1. Estructura de carpetas en tu proyecto</h3>
+<div class="sk-tree"><span class="d">tu-proyecto-analitica/</span>
+├── <span class="d">.vscode/</span>
+│   ├── <span class="n">settings.json</span>                    <span class="x"># activa prompt files e instrucciones</span>
+│   └── <span class="m">mcp.json.example</span>                 <span class="x"># preparado para el futuro MCP de Databricks</span>
+├── <span class="d">.github/</span>
+│   ├── <span class="n">copilot-instructions.md</span>          <span class="x"># reglas globales siempre activas</span>
+│   └── <span class="d">prompts/</span>                         <span class="x"># cada fichero = un comando "/" en Copilot Chat</span>
+│       ├── speckit.constitution.prompt.md
+│       ├── speckit.specify.prompt.md
+│       ├── speckit.discover.prompt.md
+│       ├── speckit.plan.prompt.md
+│       ├── speckit.implement.prompt.md
+│       ├── speckit.review.prompt.md
+│       ├── speckit.change.prompt.md
+│       └── speckit.insights.prompt.md
+├── <span class="d">.specify/</span>
+│   ├── <span class="d">memory/</span>
+│   │   └── <span class="n">constitution.md</span>              <span class="x"># CAPA 1</span>
+│   ├── <span class="d">knowledge/</span>                       <span class="x"># CAPA 2 (crece sola)</span>
+│   │   ├── <span class="d">tables/</span>                      <span class="x"># una ficha .md por tabla</span>
+│   │   ├── joins.md
+│   │   └── metrics.md
+│   ├── <span class="d">templates/</span>                       <span class="x"># plantillas que usan los comandos</span>
+│   │   ├── spec-template.md · data-model-template.md · plan-template.md
+│   │   ├── tasks-template.md · table-card-template.md
+│   │   └── notebook-template.ipynb
+│   └── <span class="d">specs/</span>                           <span class="x"># CAPA 3 (una carpeta por análisis)</span>
+│       └── <span class="d">001-circulante-rentabilidad/</span>
+└── <span class="d">notebooks/</span>
+    ├── <span class="d">lib/</span>
+    │   ├── <span class="n">profile_tables.py</span>            <span class="x"># perfilador (copiar/pegar en Databricks)</span>
+    │   └── <span class="n">dq_utils.py</span>                  <span class="x"># controles de calidad</span>
+    └── 001-circulante-rentabilidad.ipynb</div>
+
+          <h3>1.2. El ciclo de trabajo</h3>
+          <div class="sk-flow">
+            <div class="sk-flow-node"><b>/specify</b><span>Pregunta de negocio y tablas candidatas</span></div>
+            <div class="sk-flow-arrow">→</div>
+            <div class="sk-flow-node"><b>/discover</b><span>Genera el perfilado de lo que aún no se sabe</span></div>
+            <div class="sk-flow-arrow">→</div>
+            <div class="sk-flow-node you"><b>Databricks</b><span>Ejecutas 1 celda y copias la salida</span></div>
+            <div class="sk-flow-arrow">→</div>
+            <div class="sk-flow-node"><b>/discover</b><span>Escribe data-model y actualiza el catálogo</span></div>
+            <div class="sk-flow-arrow">→</div>
+            <div class="sk-flow-node"><b>/plan</b><span>Plan, tareas por celda y auditoría</span></div>
+            <div class="sk-flow-arrow">→</div>
+            <div class="sk-flow-node"><b>/implement</b><span>Notebook .ipynb con DQ</span></div>
+            <div class="sk-flow-arrow">→</div>
+            <div class="sk-flow-node you"><b>Databricks</b><span>Ejecutas y copias el bloque SPECKIT-RUN</span></div>
+            <div class="sk-flow-arrow">→</div>
+            <div class="sk-flow-node"><b>/review</b><span>Cuadres, anomalías, lecciones</span></div>
+            <div class="sk-flow-arrow">→</div>
+            <div class="sk-flow-node"><b>/insights</b><span>Narrativa y payload C09</span></div>
+          </div>
+          <p style="font-size:.84rem;">Si negocio pide algo nuevo después: <code>/speckit.change</code> analiza el impacto y modifica <strong>solo</strong> las celdas afectadas.</p>
+
+          <h3>1.3. Modos de trabajo: no todo merece el ciclo completo</h3>
+          <div class="sk-table-wrap">
+            <table class="sk-table">
+              <thead><tr><th>Situación</th><th>Modo</th><th>Comandos</th></tr></thead>
+              <tbody>
+                <tr><td>Query de menos de 20 líneas, una sola vez</td><td>Sin Spec-Kit</td><td>Chat normal de Copilot (la constitución sigue aplicando vía <code>copilot-instructions.md</code>)</td></tr>
+                <tr><td>Análisis puntual con 2–3 tablas conocidas</td><td><strong>Exprés</strong></td><td><code>/speckit.specify exprés …</code> → <code>/speckit.discover</code> → <code>/speckit.implement</code></td></tr>
+                <tr><td>Análisis recurrente, para comité o con tablas nuevas</td><td><strong>Completo</strong></td><td>Ciclo entero, con <code>review</code> e <code>insights</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>1.4. Preparado para el MCP de Databricks</h3>
+          <div class="sk-card warn">
+            <h4>🔌 Hoy copiar/pegar · mañana MCP sin tocar los comandos</h4>
+            <p>
+              La constitución incluye un interruptor <code>EXEC_MODE</code>. Con <code>EXEC_MODE: MANUAL</code> (valor por defecto) <code>/speckit.discover</code> y <code>/speckit.review</code> te entregan una celda para pegar en Databricks y esperan la salida. Cuando tu equipo publique el servidor MCP, basta con:
+            </p>
+            <ol style="margin:.4rem 0 0 1.2rem; font-size:.83rem; line-height:1.65; color:var(--text-secondary);">
+              <li>Renombrar <code>.vscode/mcp.json.example</code> a <code>mcp.json</code> y completar la URL o el comando del servidor.</li>
+              <li>Cambiar la constitución a <code>EXEC_MODE: MCP</code>.</li>
+            </ol>
+            <p style="margin-top:.5rem;">A partir de ahí Copilot (modo Agent) ejecutará él mismo el perfilado con la herramienta del MCP. Los prompts ya llevan las salvaguardas: <strong>solo lectura</strong> (<code>SELECT</code>/<code>DESCRIBE</code>), resultados <strong>agregados</strong>, con <code>LIMIT</code>, y vuelta automática al modo manual si la herramienta no está disponible.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SECCIÓN 02 · INSTALACIÓN
+           ===================================================================== -->
+      <section id="instalacion" class="transcript-section" data-sk-group="setup">
+        <div class="section-header">
+          <span class="section-number">02</span>
+          <h2 class="section-title">Instalación en VS Code en 5 pasos (sin instalar ningún programa)</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            No necesitas el CLI <code>specify</code> ni <code>uv</code>: todo funciona con ficheros Markdown que GitHub Copilot reconoce de forma nativa. Es la opción adecuada para portátiles corporativos con instalación restringida.
+          </p>
+
+          <div class="sk-table-wrap">
+            <table class="sk-table">
+              <thead><tr><th>Paso</th><th>Qué haces</th><th>Detalle</th></tr></thead>
+              <tbody>
+                <tr><td>1. Requisitos</td><td>VS Code actualizado + extensión GitHub Copilot Chat</td><td>Los Prompt Files requieren una versión reciente de VS Code. Comprueba en <em>Ayuda → Acerca de</em>.</td></tr>
+                <tr><td>2. Instalar el kit</td><td>Descarga <code>instalar-speckit-data.ps1</code> (sección 05) en la raíz de tu proyecto y ejecútalo</td><td><code>powershell -ExecutionPolicy Bypass -File .\instalar-speckit-data.ps1</code><br>Crea todas las carpetas y ficheros. <strong>No sobrescribe</strong> nada que ya exista (usa <code>-Force</code> si quieres hacerlo).</td></tr>
+                <tr><td>3. Personalizar la constitución</td><td>Genera tu <code>constitution.md</code> en la sección 06 y reemplaza la del kit</td><td>Catálogo por defecto, runtime, métricas oficiales, umbrales de calidad.</td></tr>
+                <tr><td>4. Recargar VS Code</td><td><kbd>Ctrl+Shift+P</kbd> → <em>Developer: Reload Window</em></td><td>Para que Copilot indexe los nuevos prompt files.</td></tr>
+                <tr><td>5. Comprobar</td><td>Abre Copilot Chat en <strong>modo Agent</strong> y escribe <code>/speck</code></td><td>Deben aparecer los 8 comandos. Si no, revisa <code>settings.json</code> y que la carpeta abierta en VS Code sea la raíz del proyecto.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="sk-card info">
+            <h4>🧩 Por qué modo <em>Agent</em></h4>
+            <p>Los comandos crean y editan ficheros (<code>spec.md</code>, <code>data-model.md</code>, el <code>.ipynb</code>…). En modo <em>Ask</em> Copilot solo responde texto. Cada prompt file declara <code>agent: agent</code> en su cabecera, así que VS Code cambia de modo automáticamente al invocarlo.</p>
+          </div>
+
+          <h3>2.1. Lo que el kit configura por ti</h3>
+          <div class="sk-grid-2">
+            <div>
+              <div class="sk-codehead"><span class="path">.vscode/settings.json</span></div>
+<pre class="sk-pre">{
+  <span class="k">"chat.promptFiles"</span>: true,
+  <span class="k">"github.copilot.chat.codeGeneration.useInstructionFiles"</span>: true,
+  <span class="k">"chat.promptFilesLocations"</span>: { <span class="w">".github/prompts"</span>: true },
+  <span class="k">"files.associations"</span>: { <span class="w">"*.prompt.md"</span>: <span class="w">"prompt"</span> }
+}</pre>
+            </div>
+            <div>
+              <div class="sk-codehead"><span class="path">Cabecera de cada .prompt.md</span></div>
+<pre class="sk-pre"><span class="c">---</span>
+<span class="k">description</span>: Perfilado guiado de tablas y
+  construcción del data-model
+<span class="k">agent</span>: agent
+<span class="c">---</span>
+<span class="c"># El nombre del fichero define el comando:</span>
+<span class="c"># speckit.discover.prompt.md → /speckit.discover</span>
+<span class="c"># El texto que escribes después del comando</span>
+<span class="c"># llega al prompt como argumento.</span></pre>
+            </div>
+          </div>
+
+          <div class="sk-card warn" style="margin-top:1rem;">
+            <h4>⚠️ Si ya tienes un <code>settings.json</code> o un <code>copilot-instructions.md</code></h4>
+            <p>El instalador no los toca. Copia manualmente las claves de arriba en tu <code>settings.json</code> y añade al final de tu <code>copilot-instructions.md</code> el bloque «Spec-Driven Analytics» que encontrarás en la sección 05. Si vienes del Cuaderno 09, ambos conjuntos de reglas conviven sin problema.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SECCIÓN 03 · GUÍA DE COMANDOS
+           ===================================================================== -->
+      <section id="comandos" class="transcript-section" data-sk-group="setup">
+        <div class="section-header">
+          <span class="section-number">03</span>
+          <h2 class="section-title">Guía de comandos: qué escribes, qué hace Copilot y qué fichero queda</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>Ocho comandos. Los cinco centrales siguen el ciclo; los tres marcados como <span class="sk-pill new">nuevo</span> no existen en Spec-Kit y cubren lo que ocurre tras ejecutar el notebook.</p>
+          <div class="sk-cmd-grid" id="sk-cmd-grid"></div>
+
+          <h3>3.1. Reglas de uso que marcan la diferencia</h3>
+          <div class="sk-grid-2">
+            <div class="sk-card good"><h4>✅ Haz</h4><ul>
+              <li>Abre un <strong>chat nuevo</strong> por comando largo: el contexto vive en los ficheros, no en el hilo.</li>
+              <li>Revisa y edita a mano <code>spec.md</code> y <code>data-model.md</code>: son tuyos, Copilot los respeta.</li>
+              <li>Pega la salida del perfilador <strong>completa</strong>, con su cabecera <code>SPECKIT-PROFILE</code>.</li>
+              <li>Implementa por bloques en notebooks largos: <code>/speckit.implement T01-T04</code>.</li>
+              <li>Haz commit de <code>.specify/</code> en Git: es la memoria del equipo.</li>
+            </ul></div>
+            <div class="sk-card bad"><h4>❌ Evita</h4><ul>
+              <li>Pegar <strong>filas de clientes</strong>: el perfilador solo devuelve agregados y códigos de dimensión.</li>
+              <li>Saltarte <code>/discover</code> con tablas nuevas: es donde se evitan los JOINs que duplican.</li>
+              <li>Corregir el notebook a mano sin actualizar la spec: usa <code>/speckit.change</code>.</li>
+              <li>Pedir «hazlo todo» en un solo mensaje fuera del ciclo.</li>
+            </ul></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SECCIÓN 04 · SIMULADOR
+           ===================================================================== -->
+      <section id="simulador" class="transcript-section" data-sk-group="practica">
+        <div class="section-header">
+          <span class="section-number">04</span>
+          <h2 class="section-title">Simulador paso a paso: caída de Circulante cruzada con rentabilidad</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>
+            Recorre un análisis completo tal y como ocurriría en tu VS Code. En cada paso ves <strong>lo que escribes</strong>, <strong>lo que responde Copilot</strong> y <strong>los ficheros que quedan en disco</strong>. Los pasos con borde discontinuo son los que haces tú en Databricks. Fíjate en los contadores: el último paso muestra cómo el <em>segundo</em> análisis sobre las mismas tablas sale mucho más rápido.
+          </p>
+          <p style="font-size:.8rem;color:var(--text-muted,#94a3b8);">Las tablas, columnas y cifras son ficticias y sirven solo como ejemplo.</p>
+
+          <div class="sk-sim" id="sk-sim">
+            <div class="sk-sim-top">
+              <div class="sk-sim-title">▶ SIMULADOR SPEC-DRIVEN · 001-circulante-rentabilidad</div>
+              <div class="sk-kpis">
+                <div class="sk-kpi"><small>Pegados a la IA</small><strong id="sk-k-paste">0</strong></div>
+                <div class="sk-kpi"><small>Tablas en catálogo</small><strong id="sk-k-tables">0</strong></div>
+                <div class="sk-kpi"><small>Cruces validados</small><strong id="sk-k-joins">0</strong></div>
+                <div class="sk-kpi hl"><small>Controles DQ</small><strong id="sk-k-dq">0</strong></div>
+              </div>
+            </div>
+            <div class="sk-steps" id="sk-steps"></div>
+            <div class="sk-sim-body">
+              <div class="sk-panel">
+                <div class="sk-panel-label"><span id="sk-step-label">Paso</span><span id="sk-step-where"></span></div>
+                <div class="sk-chat-you" id="sk-you"></div>
+                <div class="sk-chat-ai" id="sk-ai"></div>
+                <div class="sk-why" id="sk-why"></div>
+              </div>
+              <div class="sk-panel">
+                <div class="sk-panel-label"><span>📄 Ficheros resultantes</span><button class="sk-btn alt" id="sk-sim-copy" type="button">Copiar</button></div>
+                <div class="sk-filetabs" id="sk-filetabs" style="margin-bottom:.55rem;"></div>
+                <pre class="sk-pre" id="sk-file" style="max-height:470px;"></pre>
+              </div>
+            </div>
+            <div class="sk-sim-nav">
+              <button class="sk-btn alt" id="sk-prev" type="button">← Anterior</button>
+              <span class="hint">Usa las flechas ← → del teclado cuando el simulador esté en pantalla</span>
+              <button class="sk-btn primary" id="sk-next" type="button">Siguiente →</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SECCIÓN 05 · KIT
+           ===================================================================== -->
+      <section id="kit" class="transcript-section" data-sk-group="kit setup">
+        <div class="section-header">
+          <span class="section-number">05</span>
+          <h2 class="section-title">Ficheros del kit: copia, descarga o instala todo de una vez</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <div class="sk-installer">
+            <div>
+              <h4>📦 Instalador completo · <span class="sk-mono" id="sk-kit-count">0</span> ficheros</h4>
+              <p>Genera <code>instalar-speckit-data.ps1</code> con todos los ficheros del kit incrustados. Guárdalo en la raíz del proyecto y ejecútalo con <code>powershell -ExecutionPolicy Bypass -File .\instalar-speckit-data.ps1</code>. Si en la sección 06 has generado tu constitución, se incluye en lugar de la de ejemplo.</p>
+            </div>
+            <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
+              <button class="sk-btn primary" type="button" id="sk-dl-installer">⬇ Descargar instalador .ps1</button>
+            </div>
+          </div>
+
+          <div class="sk-vault">
+            <div class="sk-vault-list" id="sk-vault-list"></div>
+            <div>
+              <p class="sk-vault-desc" id="sk-vault-desc"></p>
+              <div class="sk-codehead">
+                <span class="path" id="sk-vault-path"></span>
+                <span style="display:flex;gap:.4rem;">
+                  <button class="sk-btn alt" type="button" id="sk-vault-copy">Copiar</button>
+                  <button class="sk-btn" type="button" id="sk-vault-dl">Descargar</button>
+                </span>
+              </div>
+              <pre class="sk-pre" id="sk-vault-pre" style="max-height:600px;"></pre>
+            </div>
+          </div>
+
+          <h3>5.1. Las dos piezas de Python que más tiempo ahorran</h3>
+          <div class="sk-grid-2">
+            <div class="sk-card good">
+              <h4>🔬 <code>profile_tables()</code></h4>
+              <p>Pégalo una vez en una celda (o déjalo en <code>notebooks/lib/</code>). <code>/speckit.discover</code> te genera la llamada exacta con tablas, filtros, claves candidatas y cruces a probar. La salida empieza por <code>=== SPECKIT-PROFILE ===</code> y está pensada para pegarse entera en Copilot: <strong>sin filas de clientes</strong>, columnas con pinta de dato personal ocultas, y el test de fan-out calculado sin materializar el JOIN.</p>
+            </div>
+            <div class="sk-card good">
+              <h4>🛡️ <code>dq_utils.py</code></h4>
+              <p>Los notebooks generados lo importan desde <code>notebooks/lib/</code>. Cada control escribe una línea ✅/❌ y, por defecto, <strong>detiene la ejecución</strong> si falla. Al final, <code>speckit_run_summary()</code> imprime el bloque <code>SPECKIT-RUN</code> que pegas en <code>/speckit.review</code>.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SECCIÓN 06 · GENERADOR DE CONSTITUCIÓN
+           ===================================================================== -->
+      <section id="constitucion" class="transcript-section" data-sk-group="kit">
+        <div class="section-header">
+          <span class="section-number">06</span>
+          <h2 class="section-title">Generador de tu constitución para Databricks</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>Rellena lo que aplique a tu entorno. La vista previa se actualiza al momento y la versión generada se incorpora automáticamente al instalador de la sección 05.</p>
+          <div class="sk-gen">
+            <div class="sk-form" id="sk-gen-form">
+              <div class="sk-field"><label>Equipo / unidad</label><input type="text" id="g-team" value="Analítica Banca Comercial"></div>
+              <div class="sk-field"><label>Catálogo y esquema por defecto (Unity Catalog)</label><input type="text" id="g-catalog" value="catalog_comercial.gold"></div>
+              <div class="sk-field"><label>Esquema de trabajo para salidas</label><input type="text" id="g-sandbox" value="catalog_comercial.sandbox_analitica"></div>
+              <div class="sk-field"><label>Databricks Runtime</label>
+                <select id="g-dbr"><option>15.4 LTS</option><option>14.3 LTS</option><option>13.3 LTS</option><option>16.x</option></select></div>
+              <div class="sk-field"><label>Formato de periodo mensual</label>
+                <select id="g-period"><option value="INT YYYYMM (id_mes = 202610)">INT YYYYMM (id_mes = 202610)</option><option value="DATE fin de mes (fec_cierre = 2026-10-31)">DATE fin de mes (fec_cierre = 2026-10-31)</option><option value="DATE primer día (fec_mes = 2026-10-01)">DATE primer día (fec_mes = 2026-10-01)</option></select></div>
+              <div class="sk-field"><label>Modo de ejecución</label>
+                <select id="g-exec"><option value="MANUAL">MANUAL · copiar y pegar (hoy)</option><option value="MCP">MCP · Copilot ejecuta vía MCP de Databricks</option></select></div>
+              <div class="sk-field"><label>Tolerancia de cuadre (%)</label><input type="text" id="g-tol" value="0.5"></div>
+              <div class="sk-field"><label>Reglas activas</label>
+                <div class="sk-checks">
+                  <label><input type="checkbox" id="g-r-topandas" checked> Prohibido <code>.toPandas()</code> / <code>.collect()</code> sin agregación o <code>limit</code></label>
+                  <label><input type="checkbox" id="g-r-safejoin" checked> Todo JOIN pasa por <code>safe_join()</code></label>
+                  <label><input type="checkbox" id="g-r-pii" checked> Nunca mostrar columnas personales (NIF, nombre, email, teléfono, IBAN)</label>
+                  <label><input type="checkbox" id="g-r-widgets" checked> Parámetros vía <code>dbutils.widgets</code></label>
+                  <label><input type="checkbox" id="g-r-delta" checked> Salidas persistentes en Delta dentro del esquema de trabajo</label>
+                  <label><input type="checkbox" id="g-r-noudf" checked> Evitar UDFs Python si existe función nativa</label>
+                  <label><input type="checkbox" id="g-r-broadcast"> Broadcast explícito para dimensiones &lt; 100 MB</label>
+                </div></div>
+              <div class="sk-field"><label>Filtros obligatorios conocidos (uno por línea)</label>
+                <textarea id="g-filters">mae_clientes: ind_vigente = 1
+Toda tabla fact: filtrar por periodo antes de cualquier JOIN</textarea></div>
+              <div class="sk-field"><label>Métricas oficiales (nombre: definición)</label>
+                <textarea id="g-metrics">Margen ordinario: imp_margen_ord de fact_rentabilidad_cliente (no recalcular)
+Saldo medio: media diaria del mes, no saldo puntual de cierre</textarea></div>
+            </div>
+            <div>
+              <div class="sk-codehead">
+                <span class="path">.specify/memory/constitution.md</span>
+                <span style="display:flex;gap:.4rem;">
+                  <button class="sk-btn alt" type="button" id="sk-gen-copy">Copiar</button>
+                  <button class="sk-btn" type="button" id="sk-gen-dl">Descargar</button>
+                </span>
+              </div>
+              <pre class="sk-pre" id="sk-gen-out" style="max-height:760px;"></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SECCIÓN 07 · PLANTILLAS DE ANÁLISIS
+           ===================================================================== -->
+      <section id="plantillas" class="transcript-section" data-sk-group="kit practica">
+        <div class="section-header">
+          <span class="section-number">07</span>
+          <h2 class="section-title">Seis plantillas de arranque por tipo de análisis</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p>Cada plantilla es un texto para pegar tras <code>/speckit.specify</code>. Ya trae las preguntas que suelen olvidarse y los controles específicos de ese tipo de análisis. Sustituye lo que está entre <code>&lt;…&gt;</code>.</p>
+          <div class="sk-grid-3" id="sk-tpl-grid"></div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SECCIÓN 08 · CHULETA
+           ===================================================================== -->
+      <section id="chuleta" class="transcript-section" data-sk-group="setup metodo">
+        <div class="section-header">
+          <span class="section-number">08</span>
+          <h2 class="section-title">Chuleta diaria y resolución de problemas</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <div class="sk-table-wrap">
+            <table class="sk-table">
+              <thead><tr><th>Quiero…</th><th>Escribo</th></tr></thead>
+              <tbody>
+                <tr><td>Empezar un análisis</td><td><code>/speckit.specify</code> + pregunta de negocio + tablas que crees que intervienen</td></tr>
+                <tr><td>Algo rápido</td><td><code>/speckit.specify exprés</code> … → <code>/speckit.discover</code> → <code>/speckit.implement</code></td></tr>
+                <tr><td>Saber qué tengo que explorar</td><td><code>/speckit.discover</code> (sin texto)</td></tr>
+                <tr><td>Pasar los resultados del perfilado</td><td><code>/speckit.discover</code> + pegar salida <code>SPECKIT-PROFILE</code></td></tr>
+                <tr><td>Responder a sus preguntas de negocio</td><td><code>/speckit.discover</code> <code>1: excluir · 2: sí · 3: usar default</code></td></tr>
+                <tr><td>Diseñar el notebook</td><td><code>/speckit.plan</code></td></tr>
+                <tr><td>Generar el notebook por partes</td><td><code>/speckit.implement T01-T03</code>, después <code>T04-T07</code></td></tr>
+                <tr><td>Arreglar un error de ejecución</td><td><code>/speckit.review</code> + pegar el traceback</td></tr>
+                <tr><td>Validar resultados</td><td><code>/speckit.review</code> + pegar bloque <code>SPECKIT-RUN</code></td></tr>
+                <tr><td>Cambiar el alcance</td><td><code>/speckit.change</code> + el cambio en lenguaje natural</td></tr>
+                <tr><td>Preparar la presentación</td><td><code>/speckit.insights</code> (opcional: <code>formato: email</code>, <code>payload C09</code>)</td></tr>
+                <tr><td>Reabrir un análisis antiguo</td><td>Cualquier comando + <code>spec 001</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>8.1. Problemas frecuentes</h3>
+          <div class="sk-table-wrap">
+            <table class="sk-table">
+              <thead><tr><th>Síntoma</th><th>Causa probable</th><th>Solución</th></tr></thead>
+              <tbody>
+                <tr><td>No aparecen los comandos <code>/speckit.*</code></td><td>VS Code antiguo, carpeta abierta incorrecta o prompt files desactivados</td><td>Actualiza VS Code, abre la raíz del proyecto, revisa <code>settings.json</code> y recarga la ventana.</td></tr>
+                <tr><td>Copilot responde pero no crea ficheros</td><td>Chat en modo Ask</td><td>Cambia a modo <strong>Agent</strong> en el selector del chat.</td></tr>
+                <tr><td>El perfilado tarda mucho</td><td>Tablas fact enormes sin filtro</td><td>Indica en la spec el periodo; <code>/discover</code> añadirá <code>where</code> por partición. Usa <code>approx=True</code> (por defecto).</td></tr>
+                <tr><td>Copilot usa una columna que no existe</td><td>La columna no estaba en <code>data-model.md</code></td><td>Los prompts lo prohíben: pídele <code>/speckit.review</code> con el error; registrará la columna correcta en el catálogo.</td></tr>
+                <tr><td><code>ModuleNotFoundError: dq_utils</code></td><td>Ruta de <code>lib/</code> distinta en el workspace</td><td>Ajusta <code>LIB_PATH</code> en la celda T00 del notebook o pega <code>dq_utils.py</code> en una celda.</td></tr>
+                <tr><td>La respuesta de Copilot se corta en notebooks largos</td><td>Límite de salida del modelo</td><td>Implementa por rangos de tareas: <code>/speckit.implement T05-T08</code>.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="concept-card highlight">
+            <div class="concept-card-label">🔑 La idea que resume el cuaderno</div>
+            <p>El código del notebook es <strong>desechable</strong>; la especificación y el catálogo de conocimiento son el activo. Si mañana cambia una tabla, no reescribes el notebook: actualizas una ficha y regeneras las celdas afectadas.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Autoevaluación interactiva -->
+      <div class="quiz-target"></div>
+
+    </div><!-- /content-wrapper -->
+
+    <footer class="site-footer">
+      <p class="footer-text">Curso IA Commercial — Cuaderno 10 · Spec-Driven Analytics con Spec-Kit, VS Code Copilot y Databricks</p>
+    </footer>
+  </main>
+
+  <button class="back-to-top" aria-label="Volver arriba">↑</button>
+  <div class="sk-toast" id="sk-toast">Copiado</div>
+
+  <!-- =========================================================================
+       FICHEROS DEL KIT (texto plano; los usa la bóveda y el instalador)
+       ========================================================================= -->
+<script type="text/plain" class="sk-kit" data-group="Configuración VS Code" data-path=".github/copilot-instructions.md" data-desc="Instrucciones globales que Copilot aplica en TODOS los chats del proyecto, también fuera de los comandos /speckit. Si ya tienes este fichero, añade este bloque al final.">
+# Spec-Driven Analytics (Databricks · PySpark)
+
+Este repositorio trabaja con el método Spec-Driven Analytics (adaptación de GitHub Spec-Kit).
+
+## Reglas siempre activas
+1. Antes de escribir código para Databricks, lee `.specify/memory/constitution.md` y las fichas relevantes de `.specify/knowledge/` (tables/, joins.md, metrics.md).
+2. **Nunca inventes nombres de tablas, columnas, valores de dimensión ni formatos de fecha.** Si no están en una ficha de catálogo o en el `data-model.md` del análisis activo, dilo y propone `/speckit.discover`.
+3. Las métricas oficiales se calculan exactamente como dice `metrics.md`. Si una petición contradice esa definición, avisa antes de programar.
+4. Todo JOIN entre tablas fact o entre fact y dimensión usa `safe_join()` de `notebooks/lib/dq_utils.py`.
+5. No muestres ni pidas filas con datos personales. Solo trabajamos con agregados y códigos de dimensión.
+6. Los notebooks son `.ipynb` y cada celda de código empieza por `# COMMAND ---------- Txx · título`.
+7. Si un hallazgo nuevo sobre los datos aparece en cualquier conversación (un filtro, una trampa, un tipo de dato), propón registrarlo en la ficha de la tabla correspondiente.
+
+## Comandos disponibles
+`/speckit.constitution` · `/speckit.specify` · `/speckit.discover` · `/speckit.plan` · `/speckit.implement` · `/speckit.review` · `/speckit.change` · `/speckit.insights`
+</script>
+
+<script type="text/plain" class="sk-kit" data-group="Configuración VS Code" data-path=".vscode/settings.json" data-desc="Activa los Prompt Files (comandos /) y las instrucciones de repositorio. Si ya tienes settings.json, copia estas claves dentro del tuyo.">
+{
+  "chat.promptFiles": true,
+  "github.copilot.chat.codeGeneration.useInstructionFiles": true,
+  "chat.promptFilesLocations": { ".github/prompts": true },
+  "files.associations": { "*.prompt.md": "prompt" }
+}
+</script>
+
+<script type="text/plain" class="sk-kit" data-group="Configuración VS Code" data-path=".vscode/mcp.json.example" data-desc="Plantilla para el futuro servidor MCP de Databricks. No está activa: renómbrala a mcp.json, completa la URL o el comando que te dé tu equipo y cambia EXEC_MODE a MCP en la constitución.">
+// ============================================================================
+// PREPARADO PARA EL MCP DE DATABRICKS (inactivo mientras se llame .example)
+// 1) Renombra a .vscode/mcp.json
+// 2) Completa la opción A (HTTP) o la B (local) según publique tu equipo
+// 3) Cambia "EXEC_MODE: MANUAL" por "EXEC_MODE: MCP" en .specify/memory/constitution.md
+// 4) En Copilot Chat (modo Agent) → icono de herramientas → comprueba que aparece "databricks"
+// ============================================================================
+{
+  "servers": {
+    "databricks": {
+      // --- Opción A · servidor remoto HTTP ---
+      "type": "http",
+      "url": "https://<tu-workspace>/<ruta-del-servidor-mcp>",
+      "headers": { "Authorization": "Bearer ${input:databricks_token}" }
+
+      // --- Opción B · servidor local (stdio) ---
+      // "type": "stdio",
+      // "command": "<ejecutable-del-servidor>",
+      // "args": [],
+      // "env": {
+      //   "DATABRICKS_HOST": "https://<tu-workspace>",
+      //   "DATABRICKS_TOKEN": "${input:databricks_token}"
+      // }
+    }
+  },
+  "inputs": [
+    { "id": "databricks_token", "type": "promptString", "description": "Token de acceso a Databricks", "password": true }
+  ]
+}
+</script>
+
+<script type="text/plain" class="sk-kit" data-group="Comandos /speckit" data-path=".github/prompts/speckit.constitution.prompt.md" data-desc="/speckit.constitution · Crea o actualiza la constitución del proyecto. Se usa una vez al principio y cuando cambian las reglas del equipo.">
+---
+description: Crea o actualiza la constitución de Spec-Driven Analytics (reglas permanentes de Databricks, PySpark, calidad y privacidad)
+agent: agent
+---
+# /speckit.constitution
+
+Eres el responsable de gobierno analítico del proyecto. Tu tarea es crear o actualizar `.specify/memory/constitution.md`.
+
+## Entrada
+La petición del usuario (texto escrito tras el comando). Puede estar vacía, contener reglas sueltas o pedir un cambio concreto.
+
+## Pasos
+1. Si `.specify/memory/constitution.md` existe, léelo completo. Si no existe, parte de la estructura de abajo.
+2. Incorpora lo que pide el usuario **sin borrar reglas existentes** salvo que lo pida de forma explícita.
+3. Si faltan datos imprescindibles (catálogo por defecto, formato de periodo, esquema de salidas), haz **como máximo 5 preguntas** numeradas, cada una con un valor por defecto propuesto. Si el usuario ya respondió, no vuelvas a preguntar.
+4. Incrementa la versión: cambio menor → `x.y+1`; cambio que invalida análisis previos → `x+1.0`. Añade una línea al historial.
+5. Comprueba coherencia con `.specify/knowledge/metrics.md` y avisa de contradicciones.
+6. Termina con un resumen de 3–5 líneas de lo que ha cambiado.
+
+## Estructura obligatoria
+1. Identidad y alcance · 2. Entorno (runtime, Unity Catalog, `EXEC_MODE`) · 3. Principios del método · 4. Estándares PySpark · 5. Calidad de datos obligatoria · 6. Privacidad · 7. Formato de notebooks · 8. Métricas y filtros oficiales · 9. Salidas · 10. Historial de versiones
+
+## Reglas
+- `EXEC_MODE` solo admite `MANUAL` o `MCP`. Si no se indica, `MANUAL`.
+- No introduzcas reglas que no se puedan comprobar en el código.
+</script>
+
+<script type="text/plain" class="sk-kit" data-group="Comandos /speckit" data-path=".github/prompts/speckit.specify.prompt.md" data-desc="/speckit.specify · Convierte una petición de negocio en spec.md dentro de una carpeta nueva de análisis. Marca lo que se sabe, lo supuesto y lo desconocido.">
+---
+description: Crea la especificación de un análisis nuevo (qué y por qué) a partir de una petición de negocio
+agent: agent
+---
+# /speckit.specify
+
+Eres un analista senior de banca comercial. Conviertes una petición en una especificación verificable. **No escribes código en este paso.**
+
+## Entrada
+La petición del usuario. Si empieza por `exprés`, usa el modo EXPRÉS.
+
+## Pasos
+1. Lee `.specify/memory/constitution.md`, `.specify/knowledge/metrics.md`, `.specify/knowledge/joins.md` y la lista de fichas en `.specify/knowledge/tables/`.
+2. Calcula el siguiente número libre en `.specify/specs/` (001, 002…) y crea `.specify/specs/NNN-slug-corto/spec.md` usando `.specify/templates/spec-template.md`.
+3. Rellena cada elemento con una de estas marcas:
+   - `✅` confirmado (lo dijo el usuario o está en el catálogo)
+   - `[SUPUESTO: …]` deducción razonable que el usuario debe validar
+   - `[DESCONOCIDO: …]` hay que averiguarlo con datos o con negocio
+4. En **Tablas candidatas** indica si cada tabla ya tiene ficha en el catálogo y su fecha de verificación.
+5. En **Métricas**, enlaza cada métrica con su definición de `metrics.md`. Si no existe, márcala `[DESCONOCIDO]` y propón una definición.
+6. En **Cifras de referencia**, pide al usuario órdenes de magnitud conocidos (saldo total, nº clientes, margen del periodo). Si no los tiene, deja la fila con `[PENDIENTE]`.
+7. En **Preguntas abiertas**, clasifica cada una como `DATOS` (se resuelve perfilando) o `NEGOCIO` (solo la puede responder una persona) y propone un default.
+
+## Modo EXPRÉS
+Rellena solo: pregunta de negocio, alcance, métricas, tablas y salidas. Máximo 3 preguntas abiertas.
+
+## Salida en el chat
+- Ruta del fichero creado.
+- Tabla corta: cuántos ✅, `[SUPUESTO]` y `[DESCONOCIDO]` hay.
+- Siguiente paso recomendado: `/speckit.discover` (o directamente `/speckit.plan` si todas las tablas están en catálogo, verificadas hace menos de 90 días, y no hay `[DESCONOCIDO]` de tipo DATOS).
+</script>
+
+<script type="text/plain" class="sk-kit" data-group="Comandos /speckit" data-path=".github/prompts/speckit.discover.prompt.md" data-desc="/speckit.discover · El comando clave. Fase A: genera la llamada al perfilador solo para lo que aún no se sabe. Fase B: recibe la salida, escribe data-model.md, actualiza el catálogo y hace las preguntas de negocio que quedan.">
+---
+description: Descubrimiento guiado de datos. Fase A genera el perfilado; Fase B convierte la salida en data-model y conocimiento reutilizable
+agent: agent
+---
+# /speckit.discover
+
+Eres un ingeniero de datos experto en Databricks. Tu objetivo es eliminar los `[DESCONOCIDO]` de tipo DATOS del análisis activo con **el mínimo de idas y vueltas**.
+
+## Análisis activo
+El análisis cuyo número indique el usuario (`spec 003`) o, si no indica ninguno, la carpeta de `.specify/specs/` con el número más alto.
+
+## Detecta la fase
+- Si la entrada contiene `=== SPECKIT-PROFILE` → **Fase B**.
+- Si la entrada contiene respuestas a preguntas numeradas (`1: …`) → **Fase C**.
+- En cualquier otro caso → **Fase A**.
+
+---
+## Fase A · Preparar el perfilado
+1. Lee `spec.md`, la constitución y las fichas de catálogo de las tablas candidatas.
+2. Decide qué perfilar. **No perfiles** lo que ya está en una ficha verificada hace menos de 90 días, salvo que la spec necesite columnas que la ficha no cubre.
+3. Para cada tabla define: filtro de periodo (`where`) para limitar volumen, y claves candidatas (`keys`) que confirmar.
+4. Para cada cruce previsto que no esté en `joins.md`, define un test con `left`, `right`, `on`, filtros y `amount` (la medida principal de la tabla izquierda).
+5. **Modo de ejecución** (lee `EXEC_MODE` en la constitución):
+   - `MANUAL`, o `MCP` sin herramienta de Databricks disponible: entrega **una sola celda** de Python para pegar en Databricks después de `notebooks/lib/profile_tables.py`, con este formato:
+     ```python
+     # COMMAND ---------- SPECKIT · Perfilado spec NNN
+     profile_tables(
+         title="NNN-slug",
+         tables={"cat.esq.tabla": {"where": "...", "keys": [["col_a"], ["col_a", "col_b"]]}},
+         joins=[{"left": "...", "right": "...", "on": ["col"], "left_where": "...", "right_where": "...", "amount": "imp_x"}],
+     )
+     ```
+   - `MCP` con herramienta disponible: ejecuta tú las consultas equivalentes con estas salvaguardas: solo `SELECT`, `DESCRIBE` o `SHOW`; siempre agregadas o con `LIMIT 50`; nunca columnas con pinta de dato personal; ningún DDL ni DML. Después pasa directamente a la Fase B con los resultados.
+6. Explica en 2–4 líneas qué vas a averiguar y por qué. No hagas más preguntas en esta fase.
+
+---
+## Fase B · Interpretar la salida
+1. Lee la salida completa. Si alguna tabla o cruce dio `❌ ERROR`, explica la causa probable y entrega una celda corregida **solo para lo que falló**.
+2. Crea o actualiza `data-model.md` del análisis con `.specify/templates/data-model-template.md`:
+   - granularidad y clave única verificada de cada tabla
+   - columnas que se usarán, con tipo y uso
+   - estrategia de cada cruce: si hay fan-out, **agregar la derecha por la clave antes de cruzar** o añadir claves
+   - trampas detectadas (nulos altos, tipos inesperados, códigos raros, periodos incompletos, negativos)
+   - sumas de referencia de las medidas principales (servirán de cuadre)
+3. **Actualiza el catálogo de conocimiento**:
+   - crea o actualiza `.specify/knowledge/tables/<catalogo.esquema.tabla>.md` con `.specify/templates/table-card-template.md`
+   - añade a `joins.md` cada cruce probado con su resultado
+   - nunca borres hallazgos anteriores: añade una línea al historial de la ficha
+4. En `spec.md`, sustituye los `[DESCONOCIDO]` de tipo DATOS resueltos por `✅` con el dato encontrado.
+5. Formula **como máximo 5 preguntas de NEGOCIO** que los datos no pueden responder (por ejemplo: «¿se excluyen los clientes en dudoso?»). Numéralas y da un default para cada una.
+
+---
+## Fase C · Registrar respuestas
+Aplica las respuestas a `spec.md` (sección Decisiones) y a `data-model.md`. Las que sean reglas generales del negocio, propón añadirlas a `metrics.md` o a la constitución.
+
+---
+## Cierre (todas las fases)
+Termina con el **semáforo de preparación**:
+- 🟢 Listo para `/speckit.plan`: no quedan `[DESCONOCIDO]` críticos
+- 🟡 Se puede planificar con supuestos (enuméralos)
+- 🔴 Falta información (indica qué falta y cómo obtenerla)
+
+## Prohibido
+- Pedir o mostrar filas individuales de clientes.
+- Inventar columnas o valores que no aparezcan en la salida del perfilado o en el catálogo.
+</script>
+
+<script type="text/plain" class="sk-kit" data-group="Comandos /speckit" data-path=".github/prompts/speckit.plan.prompt.md" data-desc="/speckit.plan · Diseña el cómo: plan.md (linaje, estrategia, controles, rendimiento) y tasks.md (una tarea por celda). Incluye la auditoría de coherencia que en Spec-Kit hace /analyze.">
+---
+description: Genera plan técnico, tareas por celda y auditoría de coherencia del análisis activo
+agent: agent
+---
+# /speckit.plan
+
+Eres un arquitecto de datos en Databricks. Diseñas el notebook antes de escribirlo.
+
+## Puerta de entrada
+Lee `spec.md`, `data-model.md`, la constitución, `metrics.md` y las fichas de catálogo usadas. **Detente y explica qué falta** si:
+- quedan `[DESCONOCIDO]` críticos en la spec, o
+- algún cruce de `data-model.md` no tiene estrategia, o
+- se usa una columna que no aparece ni en `data-model.md` ni en el catálogo.
+
+## 1 · `plan.md` (usa `.specify/templates/plan-template.md`)
+- **Linaje** en un diagrama Mermaid `flowchart LR`: tablas origen → DataFrames intermedios → salidas.
+- **Estrategia de cálculo**:
+  - filtros de periodo y filtros obligatorios lo antes posible (aprovechar particiones)
+  - pre-agregaciones antes de cada cruce con fan-out
+  - funciones ventana (`Window.partitionBy(...).orderBy(...)`) para variaciones y tendencias
+  - rendimiento: `broadcast` de dimensiones pequeñas, `cache()` solo en DataFrames reutilizados, evitar UDFs
+- **Controles por etapa**: qué función de `dq_utils` se aplica, con qué claves y umbrales. Debe haber como mínimo: unicidad tras cada agregación, `safe_join` con `sum_cols` en cada cruce y `reconcile` contra cada cifra de referencia disponible.
+- **Salidas**: nombre de las tablas Delta (en el esquema de trabajo de la constitución), visualizaciones y exportaciones.
+- **Riesgos y supuestos**.
+
+## 2 · `tasks.md` (usa `.specify/templates/tasks-template.md`)
+- Una tarea = una celda. IDs `T00` (parámetros y utilidades) … `T99` (resumen `SPECKIT-RUN`).
+- Cada tarea indica: objetivo, DataFrames de entrada y salida, columnas resultantes, controles DQ y criterio de aceptación comprobable.
+- Las tareas de salida deben llamar a `register_output()` con resultados **agregados** (máx. 25 filas) para que `/speckit.review` pueda validarlos.
+- Marca con `[P]` las tareas independientes entre sí.
+
+## 3 · Auditoría de coherencia (sección final de `plan.md`)
+Tabla con estas comprobaciones y su resultado (✅ / ⚠️ / ❌):
+1. Cada pregunta de negocio de la spec queda respondida por al menos una salida.
+2. Cada métrica se calcula según `metrics.md`.
+3. Cada columna usada existe en `data-model.md`.
+4. Cada cruce tiene control `safe_join`.
+5. Cada cifra de referencia tiene `reconcile`.
+6. Se cumplen todas las reglas de la constitución (privacidad, `toPandas`, widgets, formato).
+Si hay ❌, corrige el plan antes de terminar.
+
+## Salida en el chat
+Resumen de 5–8 líneas: número de tareas, controles DQ, riesgos principales y siguiente paso (`/speckit.implement`, o `/speckit.implement T00-T04` si hay más de 10 tareas).
+</script>
+
+<script type="text/plain" class="sk-kit" data-group="Comandos /speckit" data-path=".github/prompts/speckit.implement.prompt.md" data-desc="/speckit.implement · Escribe el notebook .ipynb siguiendo tasks.md, con un marcador # COMMAND ---------- Txx por celda y controles de calidad. Admite rangos de tareas.">
+---
+description: Implementa el notebook .ipynb de Databricks a partir de tasks.md (todo o un rango de tareas)
+agent: agent
+---
+# /speckit.implement
+
+Eres un desarrollador PySpark senior. Escribes exactamente lo que dicen `tasks.md` y `plan.md`, sin añadir ni inventar.
+
+## Entrada
+Opcionalmente un rango de tareas (`T03-T06`) o una lista (`T02,T05`). Sin rango → todas las pendientes.
+
+## Antes de escribir
+1. Lee la constitución, `spec.md`, `data-model.md`, `plan.md`, `tasks.md` y `.specify/templates/notebook-template.ipynb`.
+2. Si `plan.md` no existe o su auditoría tiene ❌, detente y recomienda `/speckit.plan`.
+
+## Fichero
+- Ruta: `notebooks/NNN-slug.ipynb` (mismo nombre que la carpeta del análisis).
+- Formato: JSON válido `nbformat` 4, kernel Python 3. Si el fichero existe, **edita solo las celdas del rango** y conserva el resto.
+
+## Estructura de celdas
+- Primera celda: markdown con título, enlace a la spec, versión de la spec y tabla Tarea → objetivo.
+- Antes de cada celda de código, una celda markdown `## Txx · título` con el objetivo en una línea.
+- **Cada celda de código empieza exactamente así:** `# COMMAND ---------- Txx · título`
+- `T00`: imports, `dbutils.widgets` con los parámetros de la spec, carga de `dq_utils` desde `notebooks/lib` y constante `SPEC`.
+- `T99`: `speckit_run_summary(SPEC)`.
+- No uses comandos mágicos (`%sql`, `%run`) en celdas con marcador; para SQL usa `spark.sql()`. Si necesitas `%pip`, ponlo en una celda propia sin marcador al principio.
+
+## Reglas de código
+- Solo columnas presentes en `data-model.md`. Si una tarea necesita una que no está, **detente**, explícalo y propón `/speckit.discover`.
+- `from pyspark.sql import functions as F` y `Window`; nada de UDFs si existe función nativa.
+- Todo JOIN con `safe_join(left, right, on, how, name, sum_cols, task="Txx")`.
+- Los controles de `tasks.md` se escriben tal cual (`assert_unique`, `reconcile`, `assert_range`…), siempre con `task="Txx"`.
+- Nada de `.toPandas()` ni `.collect()` sobre DataFrames sin agregar.
+- `display()` solo sobre resultados agregados; nunca sobre columnas personales.
+- Resultados finales: `register_output("etiqueta", df_agregado)`.
+- Comentarios breves en español que expliquen el porqué, no el qué.
+
+## Después de escribir
+1. Marca como hechas (`- [x]`) las tareas implementadas en `tasks.md`.
+2. Pon la spec en estado `IMPLEMENTADA` si se completaron todas.
+3. En el chat: lista de celdas creadas o modificadas y las instrucciones de ejecución (subir o sincronizar el `.ipynb` y `notebooks/lib/dq_utils.py` al workspace, ejecutar todo y copiar el bloque `SPECKIT-RUN` o el error para `/speckit.review`).
+</script>
+
+<script type="text/plain" class="sk-kit" data-group="Comandos /speckit" data-path=".github/prompts/speckit.review.prompt.md" data-desc="/speckit.review · Nuevo. Recibe el bloque SPECKIT-RUN o un traceback. Diagnostica errores con corrección mínima, valida cuadres y cifras de referencia, detecta anomalías y alimenta el catálogo con lo aprendido.">
+---
+description: Revisa la ejecución del notebook (resultados SPECKIT-RUN o errores) y registra lo aprendido
+agent: agent
+---
+# /speckit.review
+
+Eres el revisor de calidad del análisis. Tu trabajo es decidir si los resultados son fiables.
+
+## Entrada
+Lo que el usuario pega: el bloque `=== SPECKIT-RUN`, un traceback de error, o ambos.
+
+## Si hay un error
+1. Localiza la celda por su marcador `# COMMAND ---------- Txx`.
+2. Diagnostica la causa usando `data-model.md` y el catálogo (tipo de dato, columna, ambigüedad tras JOIN, memoria, permisos, `DQError`).
+3. Si es un `DQError` (un control falló), **no lo silencies**: explica qué significa en negocio y propone la corrección del cálculo, no del control.
+4. Aplica la corrección mínima en el `.ipynb`, solo en las celdas afectadas.
+5. Si el error revela algo nuevo sobre los datos, regístralo en la ficha de la tabla y en `data-model.md`.
+
+## Si hay resultados
+1. Revisa todos los controles: cualquier ❌ invalida el análisis hasta resolverlo; los ⚠️ se explican.
+2. Compara con las **cifras de referencia** de la spec y con las sumas del perfilado de `data-model.md`.
+3. Busca anomalías: saltos bruscos entre periodos, categorías vacías o inesperadas, % de nulos en salidas, signos raros, concentraciones extremas.
+4. Comprueba que cada pregunta de negocio tiene una salida que la responde.
+5. Escribe `review.md` en la carpeta del análisis con: veredicto (✅ fiable · ⚠️ fiable con salvedades · ❌ no fiable), tabla de comprobaciones, anomalías y acciones.
+6. Añade a las fichas de catálogo las **lecciones** útiles para futuros análisis.
+7. Si el veredicto es ✅ o ⚠️, pon la spec en estado `REVISADA` y recomienda `/speckit.insights`.
+
+## Prohibido
+Dar por bueno un resultado con controles ❌ o inventar explicaciones sin apoyo en los números pegados.
+</script>
+
+<script type="text/plain" class="sk-kit" data-group="Comandos /speckit" data-path=".github/prompts/speckit.change.prompt.md" data-desc="/speckit.change · Nuevo. Gestiona cambios de alcance con análisis de impacto: actualiza spec, data-model, plan y tareas, y modifica solo las celdas afectadas.">
+---
+description: Aplica un cambio de alcance al análisis activo con análisis de impacto y cambios mínimos
+agent: agent
+---
+# /speckit.change
+
+Eres el responsable de cambios del análisis. Proteges lo que ya funciona.
+
+## Entrada
+El cambio pedido en lenguaje natural (por ejemplo: «añade la dimensión canal y excluye pymes inactivas»).
+
+## Pasos
+1. Lee todos los ficheros del análisis activo y el `.ipynb`.
+2. Presenta un **análisis de impacto**:
+   | Artefacto | ¿Afectado? | Qué cambia |
+   para `spec.md`, `data-model.md`, `plan.md`, `tasks.md` y cada celda `Txx` del notebook.
+3. Si el cambio requiere **tablas o columnas** que no están en `data-model.md` ni en el catálogo → detente y recomienda `/speckit.discover` con lo que hay que perfilar.
+4. Si el cambio contradice la constitución o `metrics.md` → avisa y pide confirmación.
+5. Si no hay bloqueos, aplica el cambio:
+   - registra `CHG-n` en el historial de la spec y sube la versión menor
+   - actualiza `data-model.md`, `plan.md` (incluida la auditoría) y `tasks.md` (las tareas nuevas usan IDs libres; las modificadas vuelven a `- [ ]`)
+   - edita **solo** las celdas afectadas del notebook, conservando los marcadores
+6. Indica qué celdas hay que volver a ejecutar y recomienda `/speckit.review` con el nuevo `SPECKIT-RUN`.
+</script>
+
+<script type="text/plain" class="sk-kit" data-group="Comandos /speckit" data-path=".github/prompts/speckit.insights.prompt.md" data-desc="/speckit.insights · Nuevo. Convierte resultados revisados en narrativa ejecutiva (titular de acción, hallazgos, causas, salvedades, acciones) y, si se pide, en el payload window.REPORT_DATA del Cuaderno 09.">
+---
+description: Convierte resultados revisados en narrativa ejecutiva y, opcionalmente, en payload para dashboard HTML o Excel
+agent: agent
+---
+# /speckit.insights
+
+Eres un analista de estrategia comercial que escribe para un comité de dirección.
+
+## Entrada
+Opcionalmente: formato (`comité`, `email`, `una diapositiva`) y `payload C09` si se quiere el bloque de datos para el dashboard HTML. Si no se pegan resultados nuevos, usa el último `SPECKIT-RUN` disponible en `review.md` o en la conversación.
+
+## Requisitos previos
+`review.md` con veredicto ✅ o ⚠️. Si no existe o es ❌, detente y recomienda `/speckit.review`.
+
+## Escribe `insights.md`
+1. **Titular de acción**: una frase con la conclusión y la cifra principal.
+2. **3–5 hallazgos**, cada uno con su número, la comparación que le da sentido (vs periodo anterior, vs objetivo, vs media) y su implicación.
+3. **Causas**: solo las que los datos sostienen; lo demás va como hipótesis a validar.
+4. **Salvedades**: limitaciones de `data-model.md` y de `review.md` que el lector debe conocer.
+5. **Acciones recomendadas**: concretas, con responsable sugerido y métrica de seguimiento.
+
+## Si se pide `payload C09`
+Genera un bloque `window.REPORT_DATA = {...}` con KPIs, series y tablas ya agregadas, listo para el patrón de 3 bloques del Cuaderno 09.
+
+## Reglas
+- **Ninguna cifra que no aparezca en los resultados pegados o en `review.md`.**
+- Redondeo coherente (M€ con 1 decimal, % con 1 decimal). Sin jerga técnica.
+</script>
+
+<script type="text/plain" class="sk-kit" data-group="Plantillas" data-path=".specify/templates/spec-template.md" data-desc="Plantilla que usa /speckit.specify. Las marcas ✅ / [SUPUESTO] / [DESCONOCIDO] permiten ver de un vistazo qué falta.">
+# Spec {{NNN}} · {{Título}}
+> **Estado:** BORRADOR · **Versión:** 1.0 · **Modo:** COMPLETO | EXPRÉS · **Creada:** {{fecha}} · **Responsable:** {{nombre}}
+
+## 1. Pregunta de negocio
+- **Pregunta principal:**
+- **Decisión que habilita** (quién la usará y para qué):
+- **Preguntas secundarias:**
+
+## 2. Alcance
+| Elemento | Definición | Estado |
+|---|---|---|
+| Población | | |
+| Periodo | | |
+| Granularidad de la salida | | |
+| Exclusiones | | |
+
+## 3. Métricas
+| Métrica | Definición de negocio | Referencia en metrics.md | Estado |
+|---|---|---|---|
+
+## 4. Tablas candidatas
+| Tabla | Para qué se usa | Ficha en catálogo (fecha) | Estado |
+|---|---|---|---|
+
+## 5. Cifras de referencia (cuadres)
+| Magnitud | Valor esperado | Fuente | Tolerancia |
+|---|---|---|---|
+
+## 6. Salidas
+- [ ] Tabla Delta en el esquema de trabajo
+- [ ] Tablas y gráficos en el notebook
+- [ ] Excel institucional
+- [ ] Dashboard HTML (Cuaderno 09)
+- [ ] Resumen para email
+
+## 7. Preguntas abiertas
+| # | Pregunta | Tipo (DATOS / NEGOCIO) | Default propuesto | Respuesta |
+|---|---|---|---|---|
+
+## 8. Decisiones registradas
+| Fecha | Decisión | Motivo |
+|---|---|---|
+
+## 9. Historial de cambios
+| Versión | Fecha | Cambio | Secciones afectadas |
+|---|---|---|---|
+| 1.0 | {{fecha}} | Creación | Todas |
+</script>
+
+<script type="text/plain" class="sk-kit" data-group="Plantillas" data-path=".specify/templates/data-model-template.md" data-desc="Plantilla que rellena /speckit.discover con la salida del perfilador. Sustituye al «mega-prompt»: aquí queda la verdad de las tablas.">
+# Data model · {{NNN}} · {{Título}}
+> **Fuente:** SPECKIT-PROFILE del {{fecha}} · **Fichas de catálogo usadas:** {{lista}}
+
+## 1. Tablas
+### `catalogo.esquema.tabla`
+- **Granularidad / clave única verificada:**
+- **Filtros obligatorios:**
+- **Periodo:** columna · formato · rango disponible
+- **Volumen tras filtros:**
+
+| Columna | Tipo | Uso (clave · dimensión · medida · filtro · periodo) | Notas |
+|---|---|---|---|
+
+## 2. Cruces
+| # | Izquierda | Derecha | Clave(s) | Cardinalidad | Fan-out | Huérfanos | Estrategia |
+|---|---|---|---|---|---|---|---|
+
+## 3. Dimensiones
+| Dimensión | Valores válidos | Agrupación / mapeo | Tratamiento de nulos |
+|---|---|---|---|
+
+## 4. Medidas y sumas de referencia
+| Medida | Tabla.columna | Unidad | Suma en el perfilado | Negativos |
+|---|---|---|---|---|
+
+## 5. Trampas detectadas ⚠️
+-
+
+## 6. Datos sensibles 🔒
+- Columnas que no se usarán ni se mostrarán:
+</script>
+
+<script type="text/plain" class="sk-kit" data-group="Plantillas" data-path=".specify/templates/plan-template.md" data-desc="Plantilla de plan técnico: puerta de entrada, linaje, estrategia, controles por etapa, salidas y auditoría de coherencia.">
+# Plan técnico · {{NNN}} · {{Título}}
+
+## 0. Puerta de entrada
+- [ ] Sin `[DESCONOCIDO]` críticos en spec.md
+- [ ] Todos los cruces de data-model.md tienen estrategia
+- [ ] Cifras de referencia definidas (o ausencia justificada)
+
+## 1. Linaje
+```mermaid
+flowchart LR
+  A[tabla_origen] --> B[df_intermedio] --> C[(salida)]
+```
+
+## 2. Estrategia de cálculo
+- **Filtros tempranos:**
+- **Pre-agregaciones:**
+- **Ventanas temporales:**
+- **Rendimiento:** broadcast · cache · particiones
+
+## 3. Controles por etapa
+| Etapa (Txx) | Control | Función dq_utils | Parámetros / umbral |
+|---|---|---|---|
+
+## 4. Salidas
+| Salida | Destino | Granularidad | register_output |
+|---|---|---|---|
+
+## 5. Riesgos y supuestos
+-
+
+## 6. Auditoría de coherencia
+| # | Comprobación | Resultado | Acción |
+|---|---|---|---|
+| 1 | Cada pregunta de negocio tiene una salida | | |
+| 2 | Métricas según metrics.md | | |
+| 3 | Columnas presentes en data-model.md | | |
+| 4 | safe_join en cada cruce | | |
+| 5 | reconcile por cada cifra de referencia | | |
+| 6 | Reglas de la constitución | | |
+</script>
+
+<script type="text/plain" class="sk-kit" data-group="Plantillas" data-path=".specify/templates/tasks-template.md" data-desc="Plantilla de tareas: una tarea por celda del notebook, con controles y criterio de aceptación.">
+# Tareas · {{NNN}} · {{Título}}
+> Una tarea = una celda del notebook. Marcador obligatorio: `# COMMAND ---------- Txx · título`
+> `[P]` = tarea independiente de las demás.
+
+## T00 · Parámetros y utilidades
+- [ ] **Objetivo:** widgets de la spec, imports, carga de dq_utils, constante SPEC
+- **Salida:** constantes de parámetros
+- **Aceptación:** los widgets aparecen y dq_utils se importa sin error
+
+## T01 · {{título}}
+- [ ] **Objetivo:**
+- **Entradas:**
+- **Salida:** `df_...` con columnas [...]
+- **Controles DQ:**
+- **Aceptación:**
+
+## T99 · Resumen SPECKIT-RUN
+- [ ] **Objetivo:** `speckit_run_summary(SPEC)`
+- **Aceptación:** bloque impreso completo para /speckit.review
+</script>
+
+<script type="text/plain" class="sk-kit" data-group="Plantillas" data-path=".specify/templates/table-card-template.md" data-desc="Ficha de tabla del catálogo de conocimiento. /speckit.discover y /speckit.review la crean y la enriquecen; nunca borran el historial.">
+# `catalogo.esquema.tabla`
+> **Última verificación:** {{fecha}} (spec {{NNN}}) · **Fiabilidad:** ALTA | MEDIA | BAJA
+
+## Qué contiene
+-
+
+## Granularidad y clave única
+-
+
+## Filtros obligatorios
+-
+
+## Periodo
+- Columna · formato · rango disponible · frecuencia de carga
+
+## Columnas relevantes
+| Columna | Tipo | Significado | Valores / notas |
+|---|---|---|---|
+
+## Trampas conocidas ⚠️
+-
+
+## Cruces habituales
+- Ver `joins.md`
+
+## Historial
+| Fecha | Spec | Hallazgo |
+|---|---|---|
+</script>
+
+<script type="text/plain" class="sk-kit" data-group="Plantillas" data-path=".specify/templates/notebook-template.ipynb" data-desc="Esqueleto .ipynb que usa /speckit.implement: celda de parámetros con widgets y carga de dq_utils, marcadores # COMMAND en cada celda de código y resumen final.">
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# {{NNN}} · {{Título}}\n",
+    "\n",
+    "**Spec:** `.specify/specs/{{NNN-slug}}/spec.md` · **Versión:** {{version}} · **Generado por:** `/speckit.implement`\n",
+    "\n",
+    "| Tarea | Objetivo |\n",
+    "|---|---|\n",
+    "| T00 | Parámetros y utilidades |\n",
+    "| T99 | Resumen SPECKIT-RUN |"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": ["## T00 · Parámetros y utilidades"]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# COMMAND ---------- T00 · Parámetros y utilidades\n",
+    "import os, sys\n",
+    "from pyspark.sql import functions as F, Window\n",
+    "\n",
+    "dbutils.widgets.text(\"mes_ini\", \"{{mes_ini}}\", \"Mes inicio (YYYYMM)\")\n",
+    "dbutils.widgets.text(\"mes_fin\", \"{{mes_fin}}\", \"Mes fin (YYYYMM)\")\n",
+    "MES_INI = int(dbutils.widgets.get(\"mes_ini\"))\n",
+    "MES_FIN = int(dbutils.widgets.get(\"mes_fin\"))\n",
+    "\n",
+    "# dq_utils vive en notebooks/lib; ajusta LIB_PATH si tu workspace usa otra ruta\n",
+    "LIB_PATH = os.path.abspath(\"./lib\")\n",
+    "if LIB_PATH not in sys.path:\n",
+    "    sys.path.append(LIB_PATH)\n",
+    "from dq_utils import safe_join, assert_unique, assert_not_null, assert_range, assert_rowcount, reconcile, register_output, speckit_run_summary\n",
+    "\n",
+    "SPEC = \"{{NNN-slug}}\"\n",
+    "print(f\"{SPEC} · periodo {MES_INI}-{MES_FIN}\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": ["## T99 · Resumen SPECKIT-RUN"]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# COMMAND ---------- T99 · Resumen SPECKIT-RUN\n",
+    "# Copia TODO el bloque impreso y pégalo en Copilot: /speckit.review\n",
+    "speckit_run_summary(SPEC)"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": { "display_name": "Python 3", "language": "python", "name": "python3" },
+  "language_info": { "name": "python" }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
+</script>
+
+<script type="text/plain" class="sk-kit" data-group="Catálogo de conocimiento" data-path=".specify/knowledge/tables/README.md" data-desc="Explica cómo se nombran y mantienen las fichas de tabla.">
+# Fichas de tabla
+
+- Un fichero por tabla: `catalogo.esquema.tabla.md` (nombre completo de Unity Catalog).
+- Las crean y actualizan `/speckit.discover` y `/speckit.review` a partir del perfilado y de los errores encontrados.
+- Puedes editarlas a mano: Copilot respeta lo que escribas.
+- Una ficha con **Última verificación** de más de 90 días se vuelve a perfilar cuando un análisis la necesite.
+- Nunca guardes aquí valores de clientes; solo estructura, códigos de dimensión y reglas.
+</script>
+
+<script type="text/plain" class="sk-kit" data-group="Catálogo de conocimiento" data-path=".specify/knowledge/joins.md" data-desc="Registro de cruces validados con test de fan-out. Es lo que evita que el segundo análisis vuelva a duplicar importes.">
+# Registro de cruces validados
+
+> Lo mantienen `/speckit.discover` y `/speckit.review`. Un cruce solo entra aquí después de un test de fan-out.
+
+| ID | Izquierda | Derecha | Clave(s) | Cardinalidad | Condición previa | Fan-out | Huérfanos | Verificado (fecha · spec) |
+|---|---|---|---|---|---|---|---|---|
+</script>
+
+<script type="text/plain" class="sk-kit" data-group="Catálogo de conocimiento" data-path=".specify/knowledge/metrics.md" data-desc="Definiciones oficiales de métricas. Sustituye los ejemplos por las de tu entidad; los comandos las aplican tal cual y avisan si una petición las contradice.">
+# Métricas oficiales
+
+> Fuente única de verdad para el cálculo de métricas. Los ejemplos son orientativos: sustitúyelos por las definiciones de tu entidad.
+
+| Métrica | Definición | Fórmula / origen | Granularidad | Notas |
+|---|---|---|---|---|
+| Margen ordinario | Margen de intereses + comisiones netas del cliente | Columna oficial de la tabla de rentabilidad (no recalcular) | cliente · mes | |
+| Saldo medio | Media de saldos diarios del periodo | Columna de saldo medio; nunca el saldo puntual de cierre | contrato · mes | |
+| Variación % | (Actual − Base) / \|Base\| | Base = 0 → nulo, no infinito | según análisis | |
+| RORWA | Beneficio neto / RWA medio | Ver Cuaderno 09 · Diccionario | cliente · año | |
+| Cliente activo | Definición oficial de actividad | | cliente · mes | |
+</script>
+
+<script type="text/plain" class="sk-kit" data-group="Código Python (Databricks)" data-path="notebooks/lib/profile_tables.py" data-desc="Perfilador de solo lectura. Devuelve un bloque Markdown agregado (SPECKIT-PROFILE) para pegar en /speckit.discover. Incluye test de unicidad de claves y test de fan-out de cruces sin materializar el JOIN.">
+# =============================================================================
+# SPECKIT · profile_tables.py · v1.0
+# Perfilador de SOLO LECTURA para /speckit.discover
+#  - Devuelve Markdown compacto y AGREGADO: nunca filas de clientes.
+#  - No muestra valores de columnas con pinta de dato personal.
+#  - Test de fan-out de cruces sin materializar el JOIN.
+# Uso: pega este fichero en una celda (o impórtalo desde notebooks/lib) y
+#      ejecuta la llamada profile_tables(...) que te genere /speckit.discover.
+# =============================================================================
+import re
+from datetime import datetime
+from decimal import Decimal
+from pyspark.sql import functions as F
+
+PII_PATTERN = re.compile(
+    r"(nif|dni|nie|^cif|nombre|apellido|name|email|e_mail|mail|telef|phone|movil|direcc|address|iban|"
+    r"ccc|cuenta_corriente|tarjeta|pan_|fecha_nac|fec_nac|birth)", re.I)
+PERIOD_PATTERN = re.compile(r"(^id_mes$|^mes$|periodo|^fec|fecha|_mes$|anyo|^year|^month|cierre)", re.I)
+ATOMIC = ("string", "int", "bigint", "smallint", "tinyint", "double", "float", "decimal", "date", "timestamp", "boolean")
+NUMERIC = ("int", "bigint", "smallint", "tinyint", "double", "float", "decimal")
+
+
+def _q(c):
+    return F.col("`" + c.replace("`", "``") + "`")
+
+
+def _fmt(v):
+    if v is None:
+        return "∅"
+    if isinstance(v, Decimal):
+        v = float(v)
+    if isinstance(v, float):
+        return f"{v:,.2f}"
+    return str(v).replace("|", "/").replace("\n", " ")[:60]
+
+
+def _n(v):
+    return f"{(v or 0):,}"
+
+
+def _md(headers, rows):
+    out = ["| " + " | ".join(headers) + " |", "|" + "---|" * len(headers)]
+    out += ["| " + " | ".join(_fmt(x) for x in r) + " |" for r in rows]
+    return "\n".join(out)
+
+
+def _role(name, dtype, n, nd):
+    low = name.lower()
+    if PII_PATTERN.search(low):
+        return "🔒 personal"
+    if dtype.startswith(("date", "timestamp")) or PERIOD_PATTERN.search(low):
+        return "periodo"
+    if n and nd is not None and nd >= 0.98 * n:
+        return "clave?"
+    if low.startswith(("id_", "cod_", "key_", "sk_", "pk_")):
+        return "id/código" if (nd or 0) > 60 else "dimensión"
+    if dtype.startswith("string") and nd is not None and nd <= 60:
+        return "dimensión"
+    if dtype.startswith(NUMERIC):
+        return "medida"
+    return ""
+
+
+def profile_table(table, where=None, keys=None, top_n=8, max_dims=10, max_measures=12, approx=True):
+    """Perfila una tabla: esquema, nulos, cardinalidad, periodos, dimensiones, medidas y claves."""
+    df = spark.table(table)
+    if where:
+        df = df.where(where)
+    dtypes = dict(df.dtypes)
+    cols = df.columns
+    atomic = [c for c in cols if dtypes[c].startswith(ATOMIC)]
+
+    aggs = [F.count(F.lit(1)).alias("__n")]
+    aggs += [F.sum(_q(c).isNull().cast("int")).alias(f"n{i}") for i, c in enumerate(cols)]
+    dist = F.approx_count_distinct if approx else F.countDistinct
+    aggs += [dist(_q(c)).alias(f"d{i}") for i, c in enumerate(cols) if c in atomic]
+    st = df.agg(*aggs).collect()[0].asDict()
+    n = st["__n"] or 0
+
+    head = f"- Filas: {_n(n)} · Columnas: {len(cols)}" + (f" · filtro: `{where}`" if where else "")
+    lines = [f"### TABLA `{table}`", head]
+
+    info, rows = {}, []
+    for i, c in enumerate(cols):
+        nn, nd = st[f"n{i}"] or 0, st.get(f"d{i}")
+        role = _role(c, dtypes[c], n, nd)
+        info[c] = (dtypes[c], nd, role)
+        rows.append([c, dtypes[c], f"{(100 * nn / n if n else 0):.1f}%", nd if nd is not None else "n/a", role])
+    lines.append(_md(["columna", "tipo", "% nulos", "distintos≈", "rol sugerido"], rows))
+
+    per = [c for c in cols if info[c][2] == "periodo" and c in atomic]
+    if per:
+        r = df.agg(*[e for i, c in enumerate(per)
+                     for e in (F.min(_q(c)).alias(f"a{i}"), F.max(_q(c)).alias(f"b{i}"))]).collect()[0].asDict()
+        lines.append("**Rangos de periodo**")
+        lines.append(_md(["columna", "mín", "máx", "distintos≈"],
+                         [[c, r[f"a{i}"], r[f"b{i}"], info[c][1]] for i, c in enumerate(per)]))
+
+    dims = [c for c in cols if info[c][2] == "dimensión"][:max_dims]
+    if dims and n:
+        lines.append(f"**Dimensiones** (top {top_n} valores · % de filas)")
+        for c in dims:
+            vc = (df.groupBy(_q(c).alias("v")).count()
+                    .orderBy(F.desc("count")).limit(top_n).collect())
+            vals = " · ".join(f"{_fmt(x['v'])} ({100 * x['count'] / n:.1f}%)" for x in vc)
+            lines.append(f"- `{c}` ({info[c][1]} valores): {vals}")
+
+    meas = [c for c in cols if info[c][2] == "medida"][:max_measures]
+    if meas:
+        r = df.agg(*[e for i, c in enumerate(meas) for e in (
+            F.min(_q(c)).alias(f"a{i}"), F.max(_q(c)).alias(f"b{i}"),
+            F.sum(_q(c)).alias(f"s{i}"), F.sum((_q(c) < 0).cast("int")).alias(f"g{i}"))]).collect()[0].asDict()
+        lines.append("**Medidas** (sumas útiles para cuadres)")
+        lines.append(_md(["columna", "mín", "máx", "suma", "nº negativos"],
+                         [[c, r[f"a{i}"], r[f"b{i}"], r[f"s{i}"], r[f"g{i}"]] for i, c in enumerate(meas)]))
+
+    if keys:
+        lines.append("**Unicidad de claves candidatas**")
+        for k in keys:
+            k = [k] if isinstance(k, str) else list(k)
+            kr = (df.groupBy(*[_q(c) for c in k]).count()
+                    .agg(F.count(F.lit(1)).alias("nk"),
+                         F.sum((F.col("count") > 1).cast("int")).alias("dup"),
+                         F.max("count").alias("mx")).collect()[0])
+            ok = (kr["dup"] or 0) == 0
+            lines.append(f"- {k}: {_n(kr['nk'])} claves · duplicadas: {_n(kr['dup'])} · "
+                         f"multiplicidad máx: {kr['mx']} → {'✅ ÚNICA' if ok else '⚠️ NO ÚNICA'}")
+    return "\n".join(lines)
+
+
+def profile_join(left, right, on, left_where=None, right_where=None, amount=None, name=None):
+    """Test de fan-out de un LEFT JOIN sin materializarlo: filas, huérfanos y efecto sobre una medida."""
+    L, R = spark.table(left), spark.table(right)
+    if left_where:
+        L = L.where(left_where)
+    if right_where:
+        R = R.where(right_where)
+    pairs = [(k, k) if isinstance(k, str) else (k[0], k[1]) for k in on]
+    ks = [f"__k{i}" for i in range(len(pairs))]
+
+    rm = (R.select(*[_q(r).alias(ks[i]) for i, (_, r) in enumerate(pairs)])
+            .groupBy(*ks).count().withColumnRenamed("count", "__m"))
+    rs = rm.agg(F.count(F.lit(1)).alias("nk"), F.max("__m").alias("mx"),
+                F.sum((F.col("__m") > 1).cast("int")).alias("dup")).collect()[0]
+
+    sel = [_q(l).alias(ks[i]) for i, (l, _) in enumerate(pairs)]
+    if amount:
+        sel.append(_q(amount).alias("__amt"))
+    m = F.coalesce(F.col("__m"), F.lit(1))
+    aggs = [F.count(F.lit(1)).alias("nl"), F.sum(m).alias("na"),
+            F.sum(F.col("__m").isNull().cast("int")).alias("orph")]
+    if amount:
+        aggs += [F.sum("__amt").alias("a0"), F.sum(F.col("__amt") * m).alias("a1")]
+    s = L.select(*sel).join(rm, ks, "left").agg(*aggs).collect()[0].asDict()
+
+    nl, na, orph = s["nl"] or 0, s["na"] or 0, s["orph"] or 0
+    fan = na / nl if nl else 0
+    orph_pct = 100 * orph / nl if nl else 0
+    keys_txt = ", ".join(l if l == r else f"{l}={r}" for l, r in pairs)
+    filt = f" · filtros: L[`{left_where or '-'}`] R[`{right_where or '-'}`]" if (left_where or right_where) else ""
+
+    lines = [f"### CRUCE {name or (left + ' ⟕ ' + right)}",
+             f"- Claves: {keys_txt}{filt}",
+             f"- Filas izquierda: {_n(nl)} · tras LEFT JOIN: {_n(na)} · factor: x{fan:.4f}",
+             f"- Derecha: {_n(rs['nk'])} claves · duplicadas: {_n(rs['dup'])} · multiplicidad máx: {rs['mx']}",
+             f"- Huérfanos (izquierda sin pareja): {_n(orph)} ({orph_pct:.2f}%)"]
+    if amount:
+        lines.append(f"- `{amount}`: antes {_fmt(s['a0'])} · después {_fmt(s['a1'])}")
+    if fan > 1.0:
+        lines.append("- ⚠️ FAN-OUT: el cruce multiplica filas. Agrega la derecha por la clave antes de cruzar o añade claves.")
+    elif orph_pct > 5:
+        lines.append("- ⚠️ HUÉRFANOS ALTOS: revisa claves, tipos de dato o filtros de periodo.")
+    else:
+        lines.append("- ✅ Cruce seguro (1:1 o N:1).")
+    return "\n".join(lines)
+
+
+def profile_tables(tables=None, joins=None, title="", **kw):
+    """tables: lista de nombres o dict {tabla: {"where": ..., "keys": [[...]]}} · joins: lista de dicts para profile_join."""
+    out = ["=== SPECKIT-PROFILE v1 ===",
+           f"spec: {title}" if title else "",
+           f"generado: {datetime.now():%Y-%m-%d %H:%M} · spark {spark.version}"]
+    items = tables.items() if isinstance(tables, dict) else [(t, {}) for t in (tables or [])]
+    for t, opt in items:
+        try:
+            out.append(profile_table(t, **{**kw, **(opt or {})}))
+        except Exception as e:
+            out.append(f"### TABLA `{t}`\n- ❌ ERROR: {type(e).__name__}: {str(e)[:300]}")
+    for j in (joins or []):
+        try:
+            out.append(profile_join(**j))
+        except Exception as e:
+            out.append(f"### CRUCE {j.get('left')} ⟕ {j.get('right')}\n- ❌ ERROR: {type(e).__name__}: {str(e)[:300]}")
+    out.append("=== FIN SPECKIT-PROFILE · copia TODO el bloque y pégalo en Copilot: /speckit.discover ===")
+    text = "\n\n".join(x for x in out if x)
+    print(text)
+    return text
+</script>
+
+<script type="text/plain" class="sk-kit" data-group="Código Python (Databricks)" data-path="notebooks/lib/dq_utils.py" data-desc="Controles de calidad para los notebooks generados. Cada control imprime ✅/❌ y, por defecto, detiene la ejecución si falla. speckit_run_summary() imprime el bloque SPECKIT-RUN para /speckit.review.">
+# =============================================================================
+# SPECKIT · dq_utils.py · v1.0
+# Controles de calidad para notebooks generados por /speckit.implement
+#  - Cada control imprime ✅ / ⚠️ / ❌ y queda registrado en DQ_LOG
+#  - STRICT = True → un control fallido detiene el notebook (DQError)
+#  - speckit_run_summary() imprime el bloque SPECKIT-RUN para /speckit.review
+# =============================================================================
+import time
+from decimal import Decimal
+from pyspark.sql import functions as F
+
+STRICT = True
+DQ_LOG = []
+RUN = {"start": time.time(), "outputs": {}}
+
+
+class DQError(AssertionError):
+    """Un control de calidad ha fallado: el resultado no es fiable."""
+
+
+def _num(v):
+    return float(v) if isinstance(v, Decimal) else float(v or 0)
+
+
+def _fmt(v):
+    if v is None:
+        return "∅"
+    if isinstance(v, Decimal):
+        v = float(v)
+    if isinstance(v, float):
+        return f"{v:,.2f}"
+    return str(v).replace("|", "/").replace("\n", " ")[:60]
+
+
+def _log(check, ok, detail, task=None, level="error"):
+    DQ_LOG.append({"task": task or "-", "check": check, "ok": bool(ok), "level": level, "detail": detail})
+    icon = "✅" if ok else ("⚠️" if level == "warn" else "❌")
+    print(f"{icon} [{task or '-'}] {check}: {detail}")
+    if not ok and level == "error" and STRICT:
+        raise DQError(f"[{task}] {check}: {detail}")
+
+
+def assert_unique(df, keys, name="df", task=None):
+    """La combinación de claves no se repite."""
+    keys = [keys] if isinstance(keys, str) else list(keys)
+    r = (df.groupBy(*keys).count()
+           .agg(F.count(F.lit(1)).alias("nk"), F.sum("count").alias("n"),
+                F.sum((F.col("count") > 1).cast("int")).alias("dup")).collect()[0])
+    _log("UNIQUE", (r["dup"] or 0) == 0,
+         f"{name} {keys}: {(r['n'] or 0):,} filas · {(r['nk'] or 0):,} claves · {(r['dup'] or 0):,} duplicadas", task)
+    return df
+
+
+def assert_not_null(df, cols, name="df", task=None, level="error"):
+    """Las columnas indicadas no tienen nulos."""
+    cols = [cols] if isinstance(cols, str) else list(cols)
+    r = df.agg(*[F.sum(F.col(c).isNull().cast("int")).alias(c) for c in cols]).collect()[0].asDict()
+    bad = {c: v for c, v in r.items() if v}
+    _log("NOT_NULL", not bad, f"{name}: {bad if bad else 'sin nulos'} en {cols}", task, level)
+    return df
+
+
+def assert_range(df, col, lo=None, hi=None, name="df", task=None, level="error"):
+    """Todos los valores están dentro de [lo, hi]."""
+    cond = F.lit(False)
+    if lo is not None:
+        cond = cond | (F.col(col) < lo)
+    if hi is not None:
+        cond = cond | (F.col(col) > hi)
+    bad = df.where(cond).count()
+    _log("RANGE", bad == 0, f"{name}.{col} fuera de [{lo}, {hi}]: {bad:,} filas", task, level)
+    return df
+
+
+def assert_rowcount(df, lo=None, hi=None, name="df", task=None, level="error"):
+    """El número de filas está dentro de lo esperado."""
+    n = df.count()
+    ok = (lo is None or n >= lo) and (hi is None or n <= hi)
+    _log("ROWCOUNT", ok, f"{name}: {n:,} filas (esperado [{lo}, {hi}])", task, level)
+    return df
+
+
+def safe_join(left, right, on, how="left", name="join", sum_cols=None, task=None, allow_fanout=False):
+    """JOIN con control de filas y de sumas. sum_cols: medidas de la tabla IZQUIERDA (que no existan en la derecha)."""
+    sum_cols = list(sum_cols or [])
+    a0 = left.agg(F.count(F.lit(1)).alias("__n"), *[F.sum(c).alias(c) for c in sum_cols]).collect()[0].asDict()
+    out = left.join(right, on, how)
+    a1 = out.agg(F.count(F.lit(1)).alias("__n"), *[F.sum(c).alias(c) for c in sum_cols]).collect()[0].asDict()
+    n0, n1 = a0["__n"], a1["__n"]
+    ok = (n1 == n0) if how == "left" else (n1 <= n0) if how == "inner" else True
+    _log("JOIN_ROWS", ok or allow_fanout,
+         f"{name} ({how}): {n0:,} → {n1:,} filas" + (" · FAN-OUT" if n1 > n0 else ""), task)
+    for c in sum_cols:
+        v0, v1 = _num(a0[c]), _num(a1[c])
+        if how == "left":
+            _log("JOIN_SUM", abs(v1 - v0) <= 1e-6 * max(1.0, abs(v0)), f"{name}.{c}: {v0:,.2f} → {v1:,.2f}", task)
+        else:
+            _log("JOIN_SUM", True, f"{name}.{c}: {v0:,.2f} → {v1:,.2f} ({how}: la diferencia es esperable)", task, "warn")
+    return out
+
+
+def reconcile(df, col, expected, tol_pct=0.5, name="df", task=None, level="error"):
+    """Cuadra la suma de una columna contra una cifra de referencia de la spec."""
+    v = _num(df.agg(F.sum(col)).collect()[0][0])
+    if not expected:
+        _log("RECONCILE", False, f"{name}.{col}: {v:,.2f} · referencia vacía o cero", task, "warn")
+        return v
+    diff = 100 * (v - expected) / abs(expected)
+    _log("RECONCILE", abs(diff) <= tol_pct,
+         f"{name}.{col}: {v:,.2f} vs ref {expected:,.2f} (dif {diff:+.2f}% · tol ±{tol_pct}%)", task, level)
+    return v
+
+
+def register_output(label, df=None, value=None, max_rows=25):
+    """Registra un resultado AGREGADO para el bloque SPECKIT-RUN (nunca filas de clientes)."""
+    if df is not None:
+        rows = [list(r) for r in df.limit(max_rows).collect()]
+        RUN["outputs"][label] = (df.columns, rows, df.count())
+    else:
+        RUN["outputs"][label] = value
+    return df if df is not None else value
+
+
+def speckit_run_summary(spec=""):
+    """Imprime el bloque que se pega en /speckit.review."""
+    ok = sum(1 for x in DQ_LOG if x["ok"])
+    ko = len(DQ_LOG) - ok
+    out = ["=== SPECKIT-RUN v1 ===", f"spec: {spec}",
+           f"duración: {time.time() - RUN['start']:.0f} s · controles: {ok} ✅ · {ko} ❌/⚠️",
+           "", "| tarea | control | estado | detalle |", "|---|---|---|---|"]
+    for x in DQ_LOG:
+        st = "✅" if x["ok"] else ("⚠️" if x["level"] == "warn" else "❌")
+        out.append(f"| {x['task']} | {x['check']} | {st} | {x['detail']} |")
+    for label, v in RUN["outputs"].items():
+        out.append("")
+        if isinstance(v, tuple):
+            cols, rows, n = v
+            out.append(f"**{label}** ({n:,} filas; se muestran {len(rows)})")
+            out.append("| " + " | ".join(cols) + " |")
+            out.append("|" + "---|" * len(cols))
+            out += ["| " + " | ".join(_fmt(c) for c in r) + " |" for r in rows]
+        else:
+            out.append(f"- **{label}**: {_fmt(v)}")
+    out.append("")
+    out.append("=== FIN SPECKIT-RUN · pégalo en Copilot: /speckit.review ===")
+    print("\n".join(out))
+</script>
+
+  <!-- =========================================================================
+       MOTOR INTERACTIVO DEL CUADERNO 10
+       ========================================================================= -->
+  <script>
+  (function () {
+    'use strict';
+
+    const $ = (s, ctx = document) => ctx.querySelector(s);
+    const $$ = (s, ctx = document) => Array.from(ctx.querySelectorAll(s));
+
+    function toast(msg) {
+      const el = $('#sk-toast');
+      if (!el) return;
+      el.textContent = msg || 'Copiado';
+      el.classList.add('on');
+      clearTimeout(el._t);
+      el._t = setTimeout(() => el.classList.remove('on'), 1800);
+    }
+
+    function copyText(text, btn, msg) {
+      navigator.clipboard.writeText(text).then(() => {
+        if (btn) {
+          const prev = btn.textContent;
+          btn.classList.add('done');
+          btn.textContent = '✓ Copiado';
+          setTimeout(() => { btn.classList.remove('done'); btn.textContent = prev; }, 1400);
+        }
+        toast(msg || 'Copiado al portapapeles');
+      });
+    }
+
+    function downloadText(filename, text) {
+      const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = filename;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 1500);
+      toast('Descargado: ' + filename);
+    }
+
+    // -------------------------------------------------------------------------
+    // 1. Pestañas de filtro del cuaderno
+    // -------------------------------------------------------------------------
+    $$('.sk-tab').forEach(btn => {
+      btn.addEventListener('click', () => {
+        $$('.sk-tab').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const f = btn.dataset.skFilter;
+        $$('section.transcript-section[data-sk-group]').forEach(sec => {
+          const g = (sec.dataset.skGroup || '').split(/\s+/);
+          sec.setAttribute('data-sk-hidden', f === 'all' || g.includes(f) ? 'false' : 'true');
+        });
+      });
+    });
+
+    // -------------------------------------------------------------------------
+    // 2. Guía de los 8 comandos (Sección 03)
+    // -------------------------------------------------------------------------
+    const CMDS = [
+      {
+        name: '/speckit.constitution', pill: 'once', pillLabel: '1 vez / proyecto',
+        desc: 'Crea o actualiza .specify/memory/constitution.md con las reglas permanentes de tu equipo (runtime, catálogo, controles DQ, privacidad y EXEC_MODE).',
+        writes: '.specify/memory/constitution.md',
+        when: 'Al iniciar el repositorio o cuando cambia una regla del equipo.',
+        ex: '/speckit.constitution Catálogo por defecto catalog_comercial.gold, periodo INT YYYYMM (id_mes), prohibido toPandas sin agregar, tolerancia de cuadre 0.5%.'
+      },
+      {
+        name: '/speckit.specify', pill: 'core', pillLabel: 'Paso 1 · Qué y por qué',
+        desc: 'Convierte tu petición de negocio en spec.md numerada. Cruza con el catálogo de conocimiento y marca ✅ confirmado, [SUPUESTO] o [DESCONOCIDO].',
+        writes: '.specify/specs/NNN-slug/spec.md',
+        when: 'Al arrancar cualquier análisis nuevo (añade "exprés" para consultas rápidas).',
+        ex: '/speckit.specify Analizar caída de facturación en Confirming y Factoring (últimos 6 meses, clientes Empresas) cruzada con margen ordinario. Tablas: mae_clientes, fact_circulante_mes, fact_rentabilidad_cliente.'
+      },
+      {
+        name: '/speckit.discover', pill: 'core', pillLabel: 'Paso 2 · Exploración 1-shot',
+        desc: 'Ida: genera una única llamada a profile_tables() para lo que aún no está en el catálogo. Vuelta: pegando SPECKIT-PROFILE escribe data-model.md y actualiza las fichas de tablas y joins.md.',
+        writes: 'data-model.md + .specify/knowledge/tables/*.md + joins.md',
+        when: 'Antes de planificar cuando hay tablas o cruces no verificados.',
+        ex: '/speckit.discover\n(y en el turno siguiente pegas el bloque === SPECKIT-PROFILE === devuelto por Databricks)'
+      },
+      {
+        name: '/speckit.plan', pill: 'core', pillLabel: 'Paso 3 · Cómo + Auditoría',
+        desc: 'Diseña plan.md (linaje Mermaid, pre-agregaciones anti fan-out, ventanas PySpark y controles DQ) y tasks.md (una tarea Txx por celda), más la tabla de auditoría de coherencia.',
+        writes: 'plan.md + tasks.md',
+        when: 'Cuando el semáforo de /discover está en 🟢 o 🟡.',
+        ex: '/speckit.plan'
+      },
+      {
+        name: '/speckit.implement', pill: 'core', pillLabel: 'Paso 4 · Notebook .ipynb',
+        desc: 'Genera el notebook .ipynb con celdas # COMMAND ---------- Txx, uso obligatorio de safe_join(), assert_unique() y reconcile(), y celda final T99 con speckit_run_summary().',
+        writes: 'notebooks/NNN-slug.ipynb',
+        when: 'Tras aprobar plan.md (admite rangos como T00-T04 en notebooks largos).',
+        ex: '/speckit.implement'
+      },
+      {
+        name: '/speckit.review', pill: 'new', pillLabel: 'Nuevo · Post-ejecución',
+        desc: 'Recibe el bloque SPECKIT-RUN (o un traceback). Valida cuadres contra cifras de referencia, diagnostica errores por celda Txx y guarda lecciones aprendidas en el catálogo.',
+        writes: 'review.md + actualización de fichas en knowledge/',
+        when: 'Justo después de ejecutar el notebook en Databricks.',
+        ex: '/speckit.review\n=== SPECKIT-RUN v1 ===\n...'
+      },
+      {
+        name: '/speckit.change', pill: 'new', pillLabel: 'Nuevo · Control de cambios',
+        desc: 'Analiza qué artefactos y qué celdas exactas (Txx) se ven afectados por un cambio de negocio y modifica únicamente lo necesario sin romper los cruces validados.',
+        writes: 'spec.md (v1.x) + plan.md + tasks.md + celdas afectadas del .ipynb',
+        when: 'Cuando Negocio pide añadir un filtro, dimensión o métrica nueva.',
+        ex: '/speckit.change Añade desglose por dirección territorial y excluye clientes con antigüedad menor a 12 meses.'
+      },
+      {
+        name: '/speckit.insights', pill: 'new', pillLabel: 'Nuevo · Narrativa & C09',
+        desc: 'Redacta insights.md para Comité (titular de acción, hallazgos con cifras verificadas, causas, salvedades y recomendaciones) y opcionalmente genera window.REPORT_DATA para el Cuaderno 09.',
+        writes: 'insights.md (+ payload C09 opcional)',
+        when: 'Con review.md en estado ✅ o ⚠️.',
+        ex: '/speckit.insights formato: comité + payload C09'
+      }
+    ];
+
+    const cmdGrid = $('#sk-cmd-grid');
+    if (cmdGrid) {
+      cmdGrid.innerHTML = CMDS.map(c => `
+        <div class="sk-cmd">
+          <div class="sk-cmd-top">
+            <span class="sk-cmd-name">${c.name}</span>
+            <span class="sk-pill ${c.pill}">${c.pillLabel}</span>
+          </div>
+          <p>${c.desc}</p>
+          <div class="io">
+            <b>Escribe</b><span><code>${c.writes}</code></span>
+            <b>Cuándo</b><span>${c.when}</span>
+          </div>
+          <div class="ex">${c.ex}</div>
+        </div>
+      `).join('');
+    }
+
+    // -------------------------------------------------------------------------
+    // 3. Simulador paso a paso (Sección 04 · Caso Circulante × Rentabilidad)
+    // -------------------------------------------------------------------------
+    const SIM_STEPS = [
+      {
+        id: 'S1', title: '1. /specify', where: 'VS Code · Copilot Chat (Agent)', youRole: false,
+        kpis: { paste: 0, tables: 0, joins: 0, dq: 0 },
+        you: `/speckit.specify Quiero analizar la caída de facturación en Confirming y Factoring de clientes de Banca de Empresas en los últimos 6 meses (202605 a 202610) y cruzarlo con su margen ordinario para identificar fugas de alto valor.
+Tablas en catalog_comercial.gold: mae_clientes, fact_circulante_mes, fact_rentabilidad_cliente.
+Referencia de Control de Gestión: facturación circulante en 202610 ≈ 1.420 M€ (±1%), margen ordinario empresas ≈ 68,5 M€.`,
+        ai: `He creado .specify/specs/001-circulante-rentabilidad/spec.md.
+• Confirmados (✅): objetivo, ventana 202605–202610, 2 cifras de referencia para cuadre.
+• Desconocidos de DATOS (4): clave primaria real de mae_clientes, filtro de vigencia, códigos de producto de Confirming/Factoring y cardinalidad del cruce entre fact_circulante_mes y fact_rentabilidad_cliente.
+👉 Siguiente paso: ejecuta /speckit.discover para generar el perfilado en una sola ejecución.`,
+        why: 'En lugar de empezar a tirar queries sueltas, queda fijado qué queremos responder y qué cifras globales deben cuadrar al final.',
+        files: {
+          'spec.md': `# Spec 001 · Caída de Circulante y Margen en Empresas
+> Estado: BORRADOR · Versión: 1.0 · Modo: COMPLETO
+
+## 1. Pregunta de negocio
+- ¿Qué clientes de Banca de Empresas sufren caída >20% en facturación de Confirming/Factoring (202610 vs media 6M) y cuánto margen ordinario concentran?
+
+## 2. Alcance
+| Elemento | Definición | Estado |
+|---|---|---|
+| Población | Clientes segmento Empresas vigentes | [DESCONOCIDO: columna y código exacto] |
+| Periodo | 202605 a 202610 (6 meses cerrados) | ✅ |
+| Granularidad salida | Cliente (con métricas 6M y mes actual) | ✅ |
+
+## 3. Cifras de referencia (cuadres)
+| Magnitud | Valor esperado (202610) | Tolerancia |
+|---|---|---|
+| Facturación Circulante Empresas | 1.420,0 M€ | ±1,0% |
+| Margen Ordinario Empresas | 68,5 M€ | ±0,5% |
+
+## 4. Preguntas abiertas
+| # | Pregunta | Tipo | Default propuesto |
+|---|---|---|---|
+| 1 | Clave única y filtro de vigencia en mae_clientes | DATOS | Verificar con profile_tables |
+| 2 | Relación entre fact_circulante_mes y fact_rentabilidad_cliente | DATOS | Verificar fan-out |
+| 3 | ¿Incluir clientes en Stage 3 / dudoso? | NEGOCIO | Excluirlos del plan comercial |`
+        }
+      },
+      {
+        id: 'S2', title: '2. /discover (ida)', where: 'VS Code → Celda para Databricks', youRole: false,
+        kpis: { paste: 0, tables: 0, joins: 0, dq: 0 },
+        you: `/speckit.discover`,
+        ai: `Ninguna de las 3 tablas tiene ficha aún en .specify/knowledge/tables/.
+Te genero UNA sola celda con profile_tables() que perfila esquemas, dimensiones, unicidad de claves y prueba en seco los 2 cruces para detectar fan-out antes de escribir el notebook:`,
+        why: 'Un solo script comprueba de golpe las 3 tablas y simula el JOIN sin materializarlo.',
+        files: {
+          'Celda para pegar en Databricks': `# COMMAND ---------- SPECKIT · Perfilado spec 001
+from profile_tables import profile_tables
+
+profile_tables(
+    title="001-circulante-rentabilidad",
+    tables={
+        "catalog_comercial.gold.mae_clientes": {
+            "where": "1=1",
+            "keys": [["id_persona"], ["id_persona", "ind_vigente"]]
+        },
+        "catalog_comercial.gold.fact_circulante_mes": {
+            "where": "id_mes BETWEEN 202605 AND 202610",
+            "keys": [["id_persona", "id_mes"], ["id_contrato", "id_mes"]]
+        },
+        "catalog_comercial.gold.fact_rentabilidad_cliente": {
+            "where": "id_mes BETWEEN 202605 AND 202610",
+            "keys": [["id_persona", "id_mes"]]
+        }
+    },
+    joins=[
+        {
+            "name": "rentabilidad ⟕ circulante (sin pre-agregar)",
+            "left": "catalog_comercial.gold.fact_rentabilidad_cliente",
+            "right": "catalog_comercial.gold.fact_circulante_mes",
+            "on": ["id_persona", "id_mes"],
+            "left_where": "id_mes = 202610",
+            "right_where": "id_mes = 202610",
+            "amount": "imp_margen_ord"
+        }
+    ]
+)`
+        }
+      },
+      {
+        id: 'S3', title: '3. Ejecutas en Databricks', where: 'Databricks · 1 ejecución (12 s)', youRole: true,
+        kpis: { paste: 1, tables: 0, joins: 0, dq: 0 },
+        you: `(Ejecutas la celda en Databricks y copias la salida SPECKIT-PROFILE. Fíjate en lo que descubre el test de cruce sobre imp_margen_ord:)`,
+        ai: `El perfilador ha terminado en 12 segundos. Ha ocultado automáticamente las columnas personales (nif_cif, nombre_razon_social) y ha cazado dos trampas críticas:
+1) En mae_clientes, id_persona NO es único si no filtras ind_vigente = 1.
+2) En el cruce rentabilidad ⟕ circulante por (id_persona, id_mes), las filas se multiplican x2.84 y el margen ordinario pasa de 68,42 M€ a 194,31 M€ (FAN-OUT por múltiples contratos de circulante por cliente).`,
+        why: 'Acabas de evitar el error más caro en banca: duplicar el margen del cliente al cruzar con una tabla a nivel contrato.',
+        files: {
+          'Salida SPECKIT-PROFILE': `=== SPECKIT-PROFILE v1 ===
+spec: 001-circulante-rentabilidad
+generado: 2026-11-01 19:20 · spark 3.5.0
+
+### TABLA \`catalog_comercial.gold.mae_clientes\`
+- Filas: 48,920 · Columnas: 7
+| columna | tipo | % nulos | distintos≈ | rol sugerido |
+|---|---|---|---|---|
+| id_persona | bigint | 0.0% | 41200 | id/código |
+| nif_cif | string | 0.0% | 41200 | 🔒 personal |
+| nombre_razon_social | string | 0.0% | 41180 | 🔒 personal |
+| cod_segmento | string | 0.0% | 4 | dimensión |
+| cod_stage_ifrs9 | int | 0.0% | 3 | dimensión |
+| ind_vigente | int | 0.0% | 2 | dimensión |
+**Dimensiones**
+- \`cod_segmento\` (4 valores): PYMES (61.2%) · EMPRESAS (28.4%) · CORPORATIVA (6.9%) · INSTITUCIONES (3.5%)
+- \`ind_vigente\` (2 valores): 1 (84.2%) · 0 (15.8%)
+**Unicidad de claves candidatas**
+- ['id_persona']: 41,200 claves · duplicadas: 6,810 · multiplicidad máx: 3 → ⚠️ NO ÚNICA
+- ['id_persona', 'ind_vigente']: 44,110 claves · con ind_vigente=1 es 100% ÚNICA (13,890 clientes EMPRESAS)
+
+### TABLA \`catalog_comercial.gold.fact_circulante_mes\`
+- Filas: 189,400 · filtro: \`id_mes BETWEEN 202605 AND 202610\`
+- \`cod_producto\` (5 valores): CONF_NAC (42.1%) · FACT_SIN (29.8%) · CONF_INT (14.5%) · FACT_CON (9.6%) · DESC_COM (4.0%)
+- Medida \`imp_facturado\`: suma 202610 en EMPRESAS (4 productos) = 1,418,600,000.00
+**Unicidad de claves candidatas**
+- ['id_persona', 'id_mes']: ⚠️ NO ÚNICA (máx 9 contratos/cliente)
+- ['id_contrato', 'id_mes']: ✅ ÚNICA
+
+### CRUCE rentabilidad ⟕ circulante (sin pre-agregar)
+- Claves: id_persona, id_mes · filtros: L[\`id_mes = 202610\`] R[\`id_mes = 202610\`]
+- Filas izquierda: 13,890 · tras LEFT JOIN: 39,448 · factor: x2.8400
+- \`imp_margen_ord\`: antes 68,420,000.00 · después 194,312,800.00
+- ⚠️ FAN-OUT: el cruce multiplica filas. Agrega la derecha por (id_persona, id_mes) antes de cruzar.
+=== FIN SPECKIT-PROFILE ===`
+        }
+      },
+      {
+        id: 'S4', title: '4. /discover (vuelta)', where: 'VS Code · Copilot escribe data-model y catálogo', youRole: false,
+        kpis: { paste: 1, tables: 3, joins: 2, dq: 0 },
+        you: `/speckit.discover
+(pegas el bloque === SPECKIT-PROFILE === y respondes: 1: excluir Stage 3, 2: excluir DESC_COM)`,
+        ai: `He procesado el perfilado y tus 2 respuestas:
+1) Creado .specify/specs/001-circulante-rentabilidad/data-model.md con las claves verificadas y la regla de pre-agregar fact_circulante_mes a (id_persona, id_mes) antes de cruzar.
+2) Creadas 3 fichas nuevas en .specify/knowledge/tables/ y registrados 2 cruces en joins.md (¡para el próximo análisis ya no tendrás que perfilarlas!).
+🟢 Semáforo: LISTO para /speckit.plan.`,
+        why: 'Todo lo aprendido queda guardado en disco: tanto en este análisis (data-model.md) como para cualquier análisis futuro (knowledge/).',
+        files: {
+          'data-model.md': `# Data model · 001 · Caída de Circulante y Margen
+> Fuente: SPECKIT-PROFILE · Fichas creadas: mae_clientes, fact_circulante_mes, fact_rentabilidad_cliente
+
+## 1. Tablas y filtros obligatorios
+- \`catalog_comercial.gold.mae_clientes\`: PK \`id_persona\` SOLO tras filtrar \`ind_vigente = 1\`. Filtrar \`cod_segmento = 'EMPRESAS' AND cod_stage_ifrs9 IN (1, 2)\`.
+- \`catalog_comercial.gold.fact_circulante_mes\`: PK \`(id_contrato, id_mes)\`. Filtrar \`cod_producto IN ('CONF_NAC','CONF_INT','FACT_SIN','FACT_CON')\` (se excluye DESC_COM).
+- \`catalog_comercial.gold.fact_rentabilidad_cliente\`: PK \`(id_persona, id_mes)\` verificada.
+
+## 2. Estrategia de Cruces (anti fan-out)
+| # | Izquierda | Derecha | Clave | Riesgo | Estrategia obligatoria |
+|---|---|---|---|---|---|
+| J1 | mae_clientes (vigentes) | fact_rentabilidad_cliente | id_persona | N:1 por mes | Filtrar clientes primero |
+| J2 | rentabilidad (cliente-mes) | fact_circulante_mes | id_persona, id_mes | ⚠️ Fan-out x2.84 | Pre-agregar circulante a (id_persona, id_mes) antes de safe_join |
+
+## 3. Sumas de referencia (202610 · Empresas)
+- \`imp_facturado\` (4 productos Confirming/Factoring): 1.418,6 M€ (ref negocio: 1.420 M€ ±1%)
+- \`imp_margen_ord\`: 68,42 M€ (ref negocio: 68,5 M€ ±0,5%)`,
+          '.specify/knowledge/joins.md': `# Registro de cruces validados
+| ID | Izquierda | Derecha | Clave(s) | Cardinalidad | Condición previa | Fan-out | Verificado |
+|---|---|---|---|---|---|---|---|
+| J-01 | mae_clientes | fact_rentabilidad_cliente | id_persona | 1:N (1 por id_mes) | ind_vigente = 1 en mae_clientes | x1.0000 por mes | 2026-11-01 (spec 001) |
+| J-02 | fact_rentabilidad_cliente | fact_circulante_mes | id_persona, id_mes | 1:N contratos | PRE-AGREGAR fact_circulante_mes por (id_persona, id_mes) | x2.84 sin agregar → x1.00 agregado | 2026-11-01 (spec 001) |`
+        }
+      },
+      {
+        id: 'S5', title: '5. /plan', where: 'VS Code · Diseño y auditoría previa', youRole: false,
+        kpis: { paste: 1, tables: 3, joins: 2, dq: 6 },
+        you: `/speckit.plan`,
+        ai: `He generado plan.md y tasks.md (6 celdas T00–T05 + T99) y ejecutado la auditoría de coherencia:
+• 6 controles automáticos de dq_utils programados (2 assert_unique, 2 safe_join con sum_cols y 2 reconcile contra las cifras de Control de Gestión).
+• Auditoría: 6/6 comprobaciones en ✅. Listo para /speckit.implement.`,
+        why: 'Equivale al «mega-prompt» que antes pedías en el chat, pero auditable, versionado en Git y dividido por celdas.',
+        files: {
+          'plan.md': `# Plan técnico · 001 · Caída de Circulante y Margen
+
+## 1. Estrategia de cálculo
+1. **T01 (Clientes base):** Filtrar \`mae_clientes\` (\`ind_vigente=1\`, \`EMPRESAS\`, \`cod_stage_ifrs9 IN (1,2)\`) + \`assert_unique(id_persona)\`.
+2. **T02 (Pre-agregación Circulante):** Filtrar 202605–202610 y 4 productos; agregar a \`(id_persona, id_mes)\` separando Confirming y Factoring + \`assert_unique\` + \`reconcile\` mes 202610 contra 1.420 M€ (±1%).
+3. **T03 (Cruce seguro con Rentabilidad):** \`safe_join\` 1:1 por \`(id_persona, id_mes)\` vigilando \`sum_cols=["imp_margen_ord"]\` + \`reconcile\` contra 68,5 M€ (±0,5%).
+4. **T04 (Ventana móvil 6M y clasificación):** \`Window.partitionBy("id_persona").orderBy("id_mes")\` para media móvil previos 5M y variación % en 202610.
+
+## 2. Auditoría de coherencia
+| # | Comprobación | Resultado |
+|---|---|---|
+| 1 | Pregunta de negocio respondida por tabla de salida | ✅ |
+| 2 | Columnas verificadas en data-model.md | ✅ |
+| 3 | safe_join en todos los cruces | ✅ |
+| 4 | reconcile para las 2 cifras de referencia | ✅ |
+| 5 | Reglas de constitución (sin PII, sin toPandas, con widgets) | ✅ |`,
+          'tasks.md': `# Tareas · 001 · Caída de Circulante y Margen
+- [x] **T00 · Parámetros y utilidades:** widgets mes_ini=202605, mes_fin=202610 e importación de dq_utils.
+- [x] **T01 · Universo de clientes Empresas:** carga mae_clientes + assert_unique(["id_persona"]).
+- [x] **T02 · Pre-agregación Circulante cliente-mes:** agrupa contratos + assert_unique + reconcile(1.420 M€).
+- [x] **T03 · Panel Cliente-Mes (safe_join):** une rentabilidad y circulante + safe_join(sum_cols=["imp_margen_ord"]) + reconcile(68,5 M€).
+- [x] **T04 · Ventana 6M y matriz de fuga:** calcula caída vs media 5M y segmenta en cuadrantes de valor/caída.
+- [x] **T05 · Salida agregada y tabla Delta:** guarda tabla en sandbox y registra resumen con register_output().
+- [x] **T99 · Resumen SPECKIT-RUN:** imprime bloque de auditoría para /speckit.review.`
+        }
+      },
+      {
+        id: 'S6', title: '6. /implement', where: 'VS Code · Genera el .ipynb con # COMMAND', youRole: false,
+        kpis: { paste: 1, tables: 3, joins: 2, dq: 6 },
+        you: `/speckit.implement`,
+        ai: `He creado notebooks/001-circulante-rentabilidad.ipynb con formato nbformat 4 y marcadores # COMMAND ---------- Txx en cada celda.
+Todas las tareas de tasks.md han quedado marcadas [x]. Ejecútalo en Databricks y pega el bloque final SPECKIT-RUN en /speckit.review.`,
+        why: 'El código sale a la primera porque no inventa nombres de columna ni hace JOINs sin pre-agregar.',
+        files: {
+          'notebooks/001-circulante-rentabilidad.ipynb (celdas clave)': `# COMMAND ---------- T00 · Parámetros y utilidades
+import os, sys
+from pyspark.sql import functions as F, Window
+
+dbutils.widgets.text("mes_ini", "202605", "Mes inicio (YYYYMM)")
+dbutils.widgets.text("mes_fin", "202610", "Mes fin (YYYYMM)")
+MES_INI, MES_FIN = int(dbutils.widgets.get("mes_ini")), int(dbutils.widgets.get("mes_fin"))
+
+sys.path.append(os.path.abspath("./lib"))
+from dq_utils import safe_join, assert_unique, reconcile, register_output, speckit_run_summary
+SPEC = "001-circulante-rentabilidad"
+
+# COMMAND ---------- T01 · Universo de clientes Empresas
+df_cli = (
+    spark.table("catalog_comercial.gold.mae_clientes")
+    .where("ind_vigente = 1 AND cod_segmento = 'EMPRESAS' AND cod_stage_ifrs9 IN (1, 2)")
+    .select("id_persona", "cod_territorial")
+)
+assert_unique(df_cli, ["id_persona"], name="df_cli", task="T01")
+
+# COMMAND ---------- T02 · Pre-agregación Circulante cliente-mes
+PRODS = ["CONF_NAC", "CONF_INT", "FACT_SIN", "FACT_CON"]
+df_circ = (
+    spark.table("catalog_comercial.gold.fact_circulante_mes")
+    .where((F.col("id_mes").between(MES_INI, MES_FIN)) & (F.col("cod_producto").isin(PRODS)))
+    .groupBy("id_persona", "id_mes")
+    .agg(
+        F.sum("imp_facturado").alias("imp_circulante"),
+        F.sum(F.when(F.col("cod_producto").startswith("CONF"), F.col("imp_facturado")).otherwise(0)).alias("imp_confirming"),
+        F.sum(F.when(F.col("cod_producto").startswith("FACT"), F.col("imp_facturado")).otherwise(0)).alias("imp_factoring"),
+    )
+)
+assert_unique(df_circ, ["id_persona", "id_mes"], name="df_circ", task="T02")
+reconcile(df_circ.join(df_cli, "id_persona").where(F.col("id_mes") == MES_FIN),
+          "imp_circulante", expected=1_420_000_000, tol_pct=1.0, name="circ_202610", task="T02")
+
+# COMMAND ---------- T03 · Panel Cliente-Mes con safe_join
+df_rent = (
+    spark.table("catalog_comercial.gold.fact_rentabilidad_cliente")
+    .where(F.col("id_mes").between(MES_INI, MES_FIN))
+    .select("id_persona", "id_mes", "imp_margen_ord", "imp_rwa")
+)
+df_base = safe_join(df_cli, df_rent, on=["id_persona"], how="inner", name="cli_rent", task="T03")
+df_panel = safe_join(df_base, df_circ, on=["id_persona", "id_mes"], how="left",
+                     name="panel_circ", sum_cols=["imp_margen_ord"], task="T03").na.fill(0, ["imp_circulante"])
+reconcile(df_panel.where(F.col("id_mes") == MES_FIN),
+          "imp_margen_ord", expected=68_500_000, tol_pct=0.5, name="margen_202610", task="T03")
+
+# COMMAND ---------- T99 · Resumen SPECKIT-RUN
+speckit_run_summary(SPEC)`
+        }
+      },
+      {
+        id: 'S7', title: '7. /review + /insights', where: 'Databricks → VS Code · Validación y cierre', youRole: false,
+        kpis: { paste: 2, tables: 3, joins: 2, dq: 6 },
+        you: `/speckit.review
+=== SPECKIT-RUN v1 ===
+spec: 001-circulante-rentabilidad · duración: 19 s · controles: 6 ✅ · 0 ❌/⚠️
+| T01 | UNIQUE | ✅ | df_cli ['id_persona']: 13,120 filas · 0 duplicadas |
+| T02 | UNIQUE | ✅ | df_circ ['id_persona', 'id_mes']: 58,410 filas · 0 duplicadas |
+| T02 | RECONCILE | ✅ | circ_202610: 1,418,600,000 vs ref 1,420,000,000 (dif -0.10%) |
+| T03 | JOIN_SUM | ✅ | panel_circ.imp_margen_ord: 68,420,000 → 68,420,000 |
+| T03 | RECONCILE | ✅ | margen_202610: 68,420,000 vs ref 68,500,000 (dif -0.12%) |
+**resumen_cuadrantes_202610**
+| cuadrante | n_clientes | imp_circulante_m | var_6m_pct | margen_ord_anual_m |
+|---|---|---|---|---|
+| ALERTA_VIP (Margen alto + Caída >20%) | 412 | 184.2 | -31.4% | 14.8 |
+| CRECIMIENTO_VIP | 1,180 | 612.5 | +8.2% | 29.1 |
+| RESTO_CARTERA | 11,528 | 621.9 | -1.1% | 24.5 |
+=== FIN SPECKIT-RUN ===`,
+        ai: `Veredicto en review.md: ✅ FIABLE (6/6 controles en verde, cuadre a -0.10% y -0.12%).
+Además, si ejecutas /speckit.insights, te deja redactado insights.md para el Comité.
+💡 Y lo mejor: la semana que viene, cuando abras el análisis 002 sobre estas mismas tablas, el catálogo ya conoce las 3 tablas y los 2 cruces (0 pegados de exploración necesarios).`,
+        why: 'En todo el ciclo solo has hecho 2 pegados a Copilot (el perfilado y el resumen de ejecución) y te queda el catálogo listo para los próximos análisis.',
+        files: {
+          'review.md': `# Revisión de ejecución · 001-circulante-rentabilidad
+> **Veredicto:** ✅ FIABLE · **Controles:** 6/6 en verde
+
+## Comprobación de cuadres
+- Facturación Circulante 202610: **1.418,6 M€** vs 1.420,0 M€ (-0,10% · dentro de ±1,0%).
+- Margen Ordinario post-join: **68,42 M€** exactos antes y después del cruce (-0,12% vs referencia).`,
+          'insights.md': `# Narrativa Ejecutiva · Comité Comercial
+## Titular de acción
+**412 clientes Empresas de alto valor ("Alerta VIP") concentran 14,8 M€ de margen ordinario (21,6% del segmento) y sufren una caída del -31,4% en facturación de Circulante en octubre.**
+
+## Hallazgos clave
+1. **Foco concentrado:** El 3,1% de los clientes explica el 21,6% del margen en riesgo por desvío de remesas de Confirming/Factoring a competidores.
+2. **Cuadre contable certificado:** Base conciliada al 99,9% con Control de Gestión (1.418,6 M€ en circulante; 68,42 M€ en margen mensual).
+
+## Acción recomendada
+- Activar cartera priorizada de 412 clientes en red de Empresas con revisión de líneas de Confirming Nacional antes del cierre de noviembre.`
+        }
+      }
+    ];
+
+    let curStep = 0;
+    let curFileIdx = 0;
+
+    function renderSim() {
+      const s = SIM_STEPS[curStep];
+      $('#sk-k-paste').textContent = s.kpis.paste;
+      $('#sk-k-tables').textContent = s.kpis.tables;
+      $('#sk-k-joins').textContent = s.kpis.joins;
+      $('#sk-k-dq').textContent = s.kpis.dq;
+
+      const stepsBar = $('#sk-steps');
+      stepsBar.innerHTML = SIM_STEPS.map((st, idx) => `
+        <button type="button" class="sk-step ${idx < curStep ? 'done' : ''} ${idx === curStep ? 'active' : ''} ${st.youRole ? 'you' : ''}" data-idx="${idx}">
+          <span class="num">${idx + 1}</span><span>${st.title}</span>
+        </button>
+      `).join('');
+      $$('.sk-step', stepsBar).forEach(b => b.addEventListener('click', () => {
+        curStep = Number(b.dataset.idx);
+        curFileIdx = 0;
+        renderSim();
+      }));
+
+      $('#sk-step-label').textContent = s.title;
+      $('#sk-step-where').textContent = s.where;
+      $('#sk-you').textContent = s.you;
+      $('#sk-ai').textContent = s.ai;
+      $('#sk-why').textContent = '💡 Por qué importa: ' + s.why;
+
+      const fNames = Object.keys(s.files);
+      if (curFileIdx >= fNames.length) curFileIdx = 0;
+      const ftabs = $('#sk-filetabs');
+      ftabs.innerHTML = fNames.map((fn, i) => `
+        <button type="button" class="sk-filetab ${i === curFileIdx ? 'active' : ''}" data-fidx="${i}">${fn}</button>
+      `).join('');
+      $$('.sk-filetab', ftabs).forEach(b => b.addEventListener('click', () => {
+        curFileIdx = Number(b.dataset.fidx);
+        renderSim();
+      }));
+
+      $('#sk-file').textContent = s.files[fNames[curFileIdx]] || '';
+      $('#sk-prev').disabled = curStep === 0;
+      $('#sk-next').textContent = curStep === SIM_STEPS.length - 1 ? '↺ Volver al paso 1' : 'Siguiente →';
+    }
+
+    if ($('#sk-sim')) {
+      $('#sk-prev').addEventListener('click', () => { if (curStep > 0) { curStep--; curFileIdx = 0; renderSim(); } });
+      $('#sk-next').addEventListener('click', () => { curStep = (curStep + 1) % SIM_STEPS.length; curFileIdx = 0; renderSim(); });
+      $('#sk-sim-copy').addEventListener('click', (e) => copyText($('#sk-file').textContent, e.currentTarget));
+      document.addEventListener('keydown', (e) => {
+        const sim = $('#sk-sim');
+        if (!sim) return;
+        const r = sim.getBoundingClientRect();
+        if (r.top < window.innerHeight * 0.75 && r.bottom > 120 && !['INPUT', 'TEXTAREA', 'SELECT'].includes((document.activeElement || {}).tagName)) {
+          if (e.key === 'ArrowRight' && curStep < SIM_STEPS.length - 1) { curStep++; curFileIdx = 0; renderSim(); }
+          if (e.key === 'ArrowLeft' && curStep > 0) { curStep--; curFileIdx = 0; renderSim(); }
+        }
+      });
+      renderSim();
+    }
+
+    // -------------------------------------------------------------------------
+    // 4. Generador de constitución (Sección 06) + conexión con la bóveda
+    // -------------------------------------------------------------------------
+    function buildConstitutionText() {
+      const team = ($('#g-team')?.value || 'Analítica Banca Comercial').trim();
+      const cat = ($('#g-catalog')?.value || 'catalog_comercial.gold').trim();
+      const sbx = ($('#g-sandbox')?.value || 'catalog_comercial.sandbox_analitica').trim();
+      const dbr = $('#g-dbr')?.value || '15.4 LTS';
+      const per = $('#g-period')?.value || 'INT YYYYMM (id_mes = 202610)';
+      const exec = $('#g-exec')?.value || 'MANUAL';
+      const tol = ($('#g-tol')?.value || '0.5').trim();
+      const filters = ($('#g-filters')?.value || '').trim().split('\n').filter(Boolean).map(x => `- ${x}`).join('\n');
+      const metrics = ($('#g-metrics')?.value || '').trim().split('\n').filter(Boolean).map(x => `- ${x}`).join('\n');
+
+      const rules = [];
+      if ($('#g-r-topandas')?.checked) rules.push('- **Anti-OOM:** Prohibido `.toPandas()` o `.collect()` sobre DataFrames sin agregación previa o `.limit(1000)`.');
+      if ($('#g-r-safejoin')?.checked) rules.push('- **Cruces auditados:** Todo JOIN entre tablas debe ejecutarse mediante `safe_join()` de `notebooks/lib/dq_utils.py`.');
+      if ($('#g-r-pii')?.checked) rules.push('- **Privacidad estricta:** Nunca mostrar, imprimir ni pegar en el chat columnas personales (NIF/CIF, nombre, email, teléfono, IBAN).');
+      if ($('#g-r-widgets')?.checked) rules.push('- **Parametrización:** Todos los periodos y umbrales se declaran en la celda `T00` con `dbutils.widgets`.');
+      if ($('#g-r-delta')?.checked) rules.push(`- **Salidas persistentes:** Toda tabla final se escribe en formato Delta dentro de \`${sbx}\`.`);
+      if ($('#g-r-noudf')?.checked) rules.push('- **Vectorización:** Prohibido usar UDFs de Python cuando exista expresión nativa en `pyspark.sql.functions`.');
+      if ($('#g-r-broadcast')?.checked) rules.push('- **Rendimiento en cruces:** Usar `F.broadcast()` explícito al cruzar con dimensiones menores de 100 MB.');
+
+      return `# Constitución de Spec-Driven Analytics · ${team}
+> **Versión:** 1.0 · **Actualizada:** 2026-11-01 · **Ámbito:** Repositorio completo
+
+## 1. Entorno y Ejecución
+- **Databricks Runtime de referencia:** ${dbr}
+- **Catálogo de lectura por defecto (Unity Catalog):** \`${cat}\`
+- **Esquema de trabajo / salidas:** \`${sbx}\`
+- **Formato canónico de periodo mensual:** ${per}
+- **EXEC_MODE:** \`${exec}\` (${exec === 'MCP' ? 'Copilot lanza consultas de solo lectura vía MCP de Databricks' : 'Copilot entrega celda para copiar/pegar y recibe el bloque de salida'})
+
+## 2. Principios del Método
+1. **La especificación manda:** No se escribe código de notebook sin \`spec.md\`, \`data-model.md\` y \`plan.md\` aprobados (salvo modo exprés).
+2. **Cero invención de esquemas:** Prohibido suponer el nombre de una columna o código de dimensión; si no figura en \`data-model.md\` o en \`.specify/knowledge/tables/\`, se perfila con \`/speckit.discover\`.
+3. **Trazabilidad celda ↔ tarea:** Todo notebook es un archivo \`.ipynb\` donde cada celda de código empieza por \`# COMMAND ---------- Txx · título\`.
+
+## 3. Reglas Técnicas y de Calidad (DQ)
+- **Tolerancia de cuadre por defecto:** ±${tol}% frente a las cifras de referencia de \`spec.md\`.
+${rules.join('\n')}
+
+## 4. Filtros Obligatorios Globales
+${filters || '- (Añade aquí los filtros fijos de tus tablas maestras)'}
+
+## 5. Reglas de Métricas Oficiales (ver detalle en \`.specify/knowledge/metrics.md\`)
+${metrics || '- (Añade aquí tus métricas canónicas)'}
+`;
+    }
+
+    // -------------------------------------------------------------------------
+    // 5. Bóveda de ficheros del kit + Instalador PowerShell (Sección 05)
+    // -------------------------------------------------------------------------
+    const kitNodes = $$('script.sk-kit');
+    const KIT_FILES = kitNodes.map(n => ({
+      group: n.dataset.group || 'Otros',
+      path: n.dataset.path,
+      desc: n.dataset.desc || '',
+      getText: () => n.textContent.replace(/^\n+|\n+$/g, '') + '\n'
+    }));
+
+    // Añadimos la constitución viva como primer fichero de Memoria
+    KIT_FILES.push({
+      group: 'Catálogo de conocimiento',
+      path: '.specify/memory/constitution.md',
+      desc: 'Constitución del proyecto (se sincroniza en vivo con lo que configures en la sección 06).',
+      getText: () => buildConstitutionText()
+    });
+
+    let activeKitIdx = 0;
+
+    function renderVaultList() {
+      const listEl = $('#sk-vault-list');
+      if (!listEl) return;
+      $('#sk-kit-count').textContent = KIT_FILES.length;
+      const groups = {};
+      KIT_FILES.forEach((f, idx) => {
+        (groups[f.group] = groups[f.group] || []).push({ f, idx });
+      });
+      listEl.innerHTML = Object.keys(groups).map(g => `
+        <div class="sk-vault-group">${g}</div>
+        ${groups[g].map(({ f, idx }) => `
+          <button type="button" class="sk-vault-item ${idx === activeKitIdx ? 'active' : ''}" data-kidx="${idx}">${f.path}</button>
+        `).join('')}
+      `).join('');
+      $$('.sk-vault-item', listEl).forEach(btn => btn.addEventListener('click', () => {
+        activeKitIdx = Number(btn.dataset.kidx);
+        renderVaultSelection();
+        renderVaultList();
+      }));
+    }
+
+    function renderVaultSelection() {
+      const item = KIT_FILES[activeKitIdx];
+      if (!item) return;
+      $('#sk-vault-desc').textContent = item.desc;
+      $('#sk-vault-path').textContent = item.path;
+      $('#sk-vault-pre').textContent = item.getText();
+    }
+
+    function buildPowerShellInstaller() {
+      const lines = [
+        '# =============================================================================',
+        '# Instalador Spec-Driven Analytics (VS Code + GitHub Copilot + Databricks)',
+        '# Uso: powershell -ExecutionPolicy Bypass -File .\\instalar-speckit-data.ps1',
+        '# Parametro opcional: -Force (sobrescribe ficheros existentes)',
+        '# =============================================================================',
+        'param([switch]$Force)',
+        '$ErrorActionPreference = "Stop"',
+        'function Write-KitFile($RelPath, $B64) {',
+        '  $Full = Join-Path (Get-Location) $RelPath',
+        '  $Dir = Split-Path $Full -Parent',
+        '  if (!(Test-Path $Dir)) { New-Item -ItemType Directory -Force -Path $Dir | Out-Null }',
+        '  if ((Test-Path $Full) -and (-not $Force)) {',
+        '    Write-Host "  [OMITIDO · ya existe] $RelPath (usa -Force para sobrescribir)" -ForegroundColor Yellow',
+        '    return',
+        '  }',
+        '  $Bytes = [System.Convert]::FromBase64String($B64)',
+        '  [System.IO.File]::WriteAllBytes($Full, $Bytes)',
+        '  Write-Host "  [OK] $RelPath" -ForegroundColor Green',
+        '}',
+        'Write-Host "Instalando kit Spec-Driven Analytics..." -ForegroundColor Cyan'
+      ];
+      KIT_FILES.forEach(f => {
+        const utf8 = new TextEncoder().encode(f.getText());
+        let bin = '';
+        utf8.forEach(b => { bin += String.fromCharCode(b); });
+        const b64 = btoa(bin);
+        lines.push(`Write-KitFile "${f.path}" "${b64}"`);
+      });
+      lines.push('New-Item -ItemType Directory -Force -Path (Join-Path (Get-Location) ".specify/specs") | Out-Null');
+      lines.push('Write-Host "`nKit instalado. Recarga la ventana de VS Code (Ctrl+Shift+P -> Reload Window) y escribe /speckit en Copilot Chat." -ForegroundColor Cyan');
+      return lines.join('\r\n') + '\r\n';
+    }
+
+    function updateConstitutionPreview() {
+      const out = $('#sk-gen-out');
+      if (out) out.textContent = buildConstitutionText();
+      if (KIT_FILES[activeKitIdx]?.path === '.specify/memory/constitution.md') {
+        renderVaultSelection();
+      }
+    }
+
+    if ($('#sk-gen-form')) {
+      $$('input, select, textarea', $('#sk-gen-form')).forEach(el => {
+        el.addEventListener('input', updateConstitutionPreview);
+        el.addEventListener('change', updateConstitutionPreview);
+      });
+      $('#sk-gen-copy').addEventListener('click', (e) => copyText(buildConstitutionText(), e.currentTarget));
+      $('#sk-gen-dl').addEventListener('click', () => downloadText('constitution.md', buildConstitutionText()));
+      updateConstitutionPreview();
+    }
+
+    if ($('#sk-vault-list')) {
+      renderVaultList();
+      renderVaultSelection();
+      $('#sk-vault-copy').addEventListener('click', (e) => copyText(KIT_FILES[activeKitIdx].getText(), e.currentTarget));
+      $('#sk-vault-dl').addEventListener('click', () => {
+        const p = KIT_FILES[activeKitIdx].path.split('/').pop();
+        downloadText(p, KIT_FILES[activeKitIdx].getText());
+      });
+      $('#sk-dl-installer').addEventListener('click', () => {
+        downloadText('instalar-speckit-data.ps1', buildPowerShellInstaller());
+      });
+    }
+
+    // -------------------------------------------------------------------------
+    // 6. Seis plantillas de análisis (Sección 07)
+    // -------------------------------------------------------------------------
+    const TPLS = [
+      {
+        title: '1. Alerta temprana de caída / fuga',
+        desc: 'Detecta clientes con caída abrupta frente a su propia media móvil y los cruza con margen o valor.',
+        ctl: 'safe_join cliente-mes + ventana móvil 6M + reconcile de facturación y margen.',
+        prompt: `/speckit.specify Detectar clientes de <segmento> con caída superior al <20%> en <métrica de actividad/volumen> en el mes <YYYYMM> respecto a su media móvil de los <5> meses previos, cruzado con su <margen ordinario> para priorizar retención.
+Tablas candidatas: <catalogo.esquema.mae_clientes>, <catalogo.esquema.fact_actividad>, <catalogo.esquema.fact_rentabilidad>.
+Cifras de referencia: volumen total mes actual ≈ <X M€>, margen total segmento ≈ <Y M€>.`
+      },
+      {
+        title: '2. Puente de variaciones (Price-Volume-Mix)',
+        desc: 'Descompone la variación de margen o saldo entre dos cierres en efecto altas, bajas, volumen y tipo/precio.',
+        ctl: 'Clasificación exhaustiva (altas + bajas + cartera constante = 100% de la variación).',
+        prompt: `/speckit.specify Descomponer la variación de <margen / saldo> del segmento <segmento> entre <mes_base YYYYMM> y <mes_actual YYYYMM> en: efecto altas nuevas, efecto bajas/cancelaciones, efecto volumen y efecto precio/spread en cartera constante.
+Tablas candidatas: <tabla_saldos_tipos_mes>, <mae_clientes>.
+Cifra de referencia: variación neta total entre ambos meses = <+X,X M€> (±0,2%).`
+      },
+      {
+        title: '3. Embudo de conversión multicanal',
+        desc: 'Sigue el paso de oportunidades o solicitudes por etapas (digital + oficina) sin duplicar por reintentos.',
+        ctl: 'Deduplicación por solicitud/cliente antes de contar pasos del embudo.',
+        prompt: `/speckit.specify Construir el embudo de conversión de <producto/campaña> entre <fecha_ini> y <fecha_fin> por canal (<App, Web, Gestor>), midiendo tasas de paso etapa a etapa y tiempo medio hasta formalización.
+Tablas candidatas: <eventos_digitales>, <solicitudes_operaciones>, <contratos_formalizados>.
+Regla clave a verificar en /discover: cómo deduplicar múltiples intentos de un mismo cliente en 30 días.`
+      },
+      {
+        title: '4. Cohortes de retención y vinculación',
+        desc: 'Agrupa las altas por mes de entrada y mide su supervivencia, saldo medio y cruce de productos a M+1, M+3, M+6, M+12.',
+        ctl: 'Control de censura por derecha (no contar como caída los meses aún no transcurridos).',
+        prompt: `/speckit.specify Analizar por cohorte mensual de alta (<YYYYMM inicio> a <YYYYMM fin>) la retención activa y el número medio de productos a +1, +3, +6 y +12 meses en clientes de <segmento>.
+Tablas candidatas: <mae_clientes>, <tenencia_productos_mes>.
+Cifra de referencia: altas totales del periodo ≈ <N clientes>.`
+      },
+      {
+        title: '5. Rentabilidad ajustada al riesgo (RORWA / EVA)',
+        desc: 'Cruza ingresos, costes, pérdida esperada (IFRS 9) y consumo de RWA para identificar destructores de capital.',
+        ctl: 'Pre-agregar contratos a nivel cliente antes de cruzar con RWA y capital.',
+        prompt: `/speckit.specify Calcular RORWA y creación de valor económico (EVA con coste de capital Ke = <10,5%>) a nivel cliente y grupo económico en <segmento> al cierre <YYYYMM>, clasificando la cartera en los 4 cuadrantes Volumen × RORWA.
+Tablas candidatas: <fact_rentabilidad_cliente>, <fact_riesgo_ifrs9_rwa>, <mae_grupos_economicos>.
+Cifras de referencia: RWA total segmento ≈ <X M€>, margen ordinario ≈ <Y M€>.`
+      },
+      {
+        title: '6. Modo exprés (consulta rápida auditada)',
+        desc: 'Para una extracción puntual con 2–3 tablas: salta el plan extenso pero mantiene el perfilado y safe_join.',
+        ctl: 'assert_unique + safe_join automáticos en un notebook corto de 3 celdas.',
+        prompt: `/speckit.specify exprés Obtener el ranking de <dimensión: oficinas / productos / gestores> por <métrica> en el periodo <YYYYMM> para el segmento <segmento>, cruzando <tabla_1> y <tabla_2>.`
+      }
+    ];
+
+    const tplGrid = $('#sk-tpl-grid');
+    if (tplGrid) {
+      tplGrid.innerHTML = TPLS.map((t, i) => `
+        <div class="sk-tpl">
+          <h4>${t.title}</h4>
+          <p>${t.desc}</p>
+          <div class="ctl"><b>Controles incluidos:</b> ${t.ctl}</div>
+          <pre class="sk-pre" style="max-height:170px;font-size:.7rem;white-space:pre-wrap;">${t.prompt.replace(/</g, '&lt;')}</pre>
+          <button type="button" class="sk-btn primary" data-tidx="${i}">📋 Copiar prompt /specify</button>
+        </div>
+      `).join('');
+      $$('button[data-tidx]', tplGrid).forEach(btn => {
+        btn.addEventListener('click', (e) => copyText(TPLS[Number(btn.dataset.tidx)].prompt, e.currentTarget));
+      });
+    }
+  })();
+  </script>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/search-data.js"></script>
+  <script src="../js/search.js"></script>
+  <script src="../js/highlighter.js"></script>
+
+  <!-- Custom Scripts -->
+  <script src="../js/diagrams.js"></script>
+  <script src="../js/edit-mode.js"></script>
+  <script src="../js/playground.js"></script>
+  <script src="../js/glossary.js"></script>
+  <script src="../js/ai-tutor.js"></script>
+  <script src="../js/text-zoom.js"></script>
+  <script src="../js/simulations.js"></script>
+  <script src="../js/quiz.js"></script>
+  <script src="../js/annotations.js"></script>
+  <script src="../js/achievements.js"></script>
+</body>
+</html>
