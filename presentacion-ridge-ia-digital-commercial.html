@@ -1498,14 +1498,23 @@
        ACTO V · BÓVEDA DE LOS 26 VÍDEOS .MP4 LIMPIOS DESCARGADOS EN LOCAL
        ========================================================================= -->
   <section class="st-section st-reveal" id="boveda-mp4" style="padding-top: 20px;">
-    <div class="st-eyebrow">03 · Bóveda Local de Vídeos .MP4 Limpios (Sin Texto Quemado)</div>
+    <div class="st-eyebrow">03 · Bóveda Completa de 92 Vídeos .MP4 Limpios (37 Plantillas Hero + 55 Shaders · Sin Texto Quemado)</div>
     <div class="st-editorial-header">
       <h2 class="st-display-h2">
-        26 fondos cinematográficos <em>.mp4 puros</em> listos para tus proyectos.
+        92 fondos cinematográficos <em>.mp4 puros</em> listos para tus proyectos.
       </h2>
       <p class="st-editorial-lead">
-        Todos los vídeos han sido descargados desde las rutas de producción limpias (<code>/templates/&lt;slug&gt;/hero.mp4</code> y <code>/shaders/*.mp4</code>) y procesados localmente en <code>assets/scrolltide/*.mp4</code> sin ningún texto ni botón quemado en la imagen. Pulsa <strong>«Probar en Hero»</strong> en cualquiera de ellos para verlo al instante en la portada superior.
+        Todos los vídeos han sido descargados desde las rutas de producción limpias (<code>/templates/&lt;slug&gt;/hero.mp4</code>, <code>/shaders/*.mp4</code> y <code>/previews/*.mp4</code>) y procesados localmente en <code>assets/scrolltide/*.mp4</code> sin ningún texto ni botón quemado en la imagen. Pulsa <strong>«Probar en Hero»</strong> en cualquiera de ellos para verlo al instante en la portada superior.
       </p>
+    </div>
+
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;margin-bottom:24px;">
+      <div style="display:flex;flex-wrap:wrap;gap:8px;" id="vault-filter-bar">
+        <button type="button" class="ridge-atmo-btn active" data-vault-filter="all">Todos (92)</button>
+        <button type="button" class="ridge-atmo-btn" data-vault-filter="template">🏔️ Plantillas Hero (37)</button>
+        <button type="button" class="ridge-atmo-btn" data-vault-filter="shader">✨ Shaders .MP4 (55)</button>
+      </div>
+      <input type="search" id="vault-search" placeholder="🔎 Filtrar por nombre, slug o temática..." style="background:rgba(15,23,42,0.85);color:#f8fafc;border:1px solid rgba(125,211,252,0.35);border-radius:999px;padding:8px 16px;font-size:0.78rem;min-width:250px;outline:none;">
     </div>
 
     <div class="st-vault-grid" id="clean-vault-grid"></div>
@@ -1601,34 +1610,102 @@
       }
     });
 
-    // 1B. Selector de atmósfera .MP4 limpia en el Hero y Bóveda de los 26 vídeos limpios
+    // 1B. Selector de atmósfera .MP4 limpia en el Hero y Bóveda de los 92 vídeos limpios
     const CLEAN_VIDEOS = [
-      { slug: 'ridge', name: 'Ridge · Caverna & Planeta', cat: 'Cumbre / Estrategia', r2: 'templates/ridge/hero.mp4', desc: 'Apertura de roca basáltica hacia cordillera nocturna y planeta iluminado. Ideal para OKRs y Visión Comercial.' },
-      { slug: 'zephyr', name: 'Zephyr · Pabellón Flotante', cat: 'Arquitectura / Comité', r2: 'templates/zephyr/hero.mp4', desc: 'Arquitectura minimalista suspendida sobre bruma cálida. Perfecto para Onboarding KYB y gobierno.' },
-      { slug: 'synapse', name: 'Synapse (Aether) · Escalera Aurora', cat: 'IA / Agentes', r2: 'templates/aether/hero.mp4', desc: 'Ascenso luminoso hacia aurora verde-cian nocturna. Ideal para flujos agénticos y Next Best Action.' },
-      { slug: 'helix', name: 'Helix (Aperture) · Domo de Datos', cat: 'Riesgos / Telemetría', r2: 'templates/aperture/hero.mp4', desc: 'Cámara inmersiva 360° con anillos de telemetría financiera y riesgo en tiempo real.' },
-      { slug: 'nebula', name: 'Nebula · Puente de Roca', cat: 'Omnicanal / Red', r2: 'templates/nebula/hero.mp4', desc: 'Arco natural de piedra uniendo dos cumbres sobre un mar de nubes. Metáfora visual del Puente Web ↔ Gestor.' },
-      { slug: 'dune', name: 'Dune · Monolito Solar', cat: 'Horizonte / Expansión', r2: 'templates/dune/hero.mp4', desc: 'Cañón de roca abriéndose hacia un sol ámbar sobre un océano en calma.' },
-      { slug: 'rednova', name: 'Rednova · Eclipse Dorado', cat: 'Impacto / Disrupción', r2: 'templates/rednova/hero.mp4', desc: 'Corona solar y eclipse total sobre dunas oscuras con atmósfera cinematográfica de alto contraste.' },
-      { slug: 'aurora', name: 'Aurora · Horizonte Ámbar', cat: 'Patrimonio / Ejecutiva', r2: 'templates/aurora/hero.mp4', desc: 'Monolito de luz cálida y silueta gran turismo frente a un horizonte dorado.' },
-      { slug: 'selene', name: 'Selene (Moon) · Órbita Lunar', cat: 'Misión / Deep-Tech', r2: 'templates/moon/hero.mp4', desc: 'Superficie lunar con cráteres nítidos y la Luna elevándose en el horizonte espacial.' },
-      { slug: 'glacier', name: 'Glacier · Cielo & Claridad', cat: 'Transparencia / ESG', r2: 'templates/glacier/hero.mp4', desc: 'Vuelo sereno entre nubes doradas al amanecer con máxima limpieza visual.' },
-      { slug: 'eclipse', name: 'Eclipse · Catarata Basáltica', cat: 'Flujo / Liquidez', r2: 'templates/eclipse/hero.mp4', desc: 'Caída de agua cristalina entre columnas de basalto nórdico envueltas en bruma.' },
-      { slug: 'nocturne', name: 'Nocturne · Valle Nocturno', cat: 'Banca Privada / Foco', r2: 'templates/nocturne/hero.mp4', desc: 'Refugio arquitectónico iluminado en medio de un valle alpino bajo la luz de la luna.' },
-      { slug: 'meridian', name: 'Meridian · Travesía Global', cat: 'Comercio Exterior', r2: 'templates/meridian/hero.mp4', desc: 'Horizonte oceánico y líneas de navegación global para presentaciones de Trade Finance.' },
-      { slug: 'kage', name: 'Kage · Geometría Cinética', cat: 'Ciberseguridad / Fraude', r2: 'templates/kage/hero.mp4', desc: 'Contraste dramático en claroscuro con movimiento de cámara de precisión.' },
-      { slug: 'anchor', name: 'Anchor · Solidez Institucional', cat: 'Capital / Solvencia', r2: 'templates/anchor/hero.mp4', desc: 'Escena marítima de alta densidad visual para bloques de solvencia, RORWA y balance.' },
-      { slug: 'clover', name: 'Clover · Ecosistema Orgánico', cat: 'Sostenibilidad / Agro', r2: 'templates/clover/hero.mp4', desc: 'Texturas naturales en movimiento suave para líneas de negocio sostenible y transición.' },
-      { slug: 'ember', name: 'Ember · Forja & Energía', cat: 'Transformación / Industria', r2: 'templates/ember/hero.mp4', desc: 'Partículas incandescentes y energía térmica sobre fondo oscuro de alto contraste.' },
-      { slug: 'frost', name: 'Frost · Cristal Ártico', cat: 'Datos / Lakehouse', r2: 'templates/frost/hero.mp4', desc: 'Formaciones de hielo puro y refracción limpia para arquitecturas de datos y Unity Catalog.' },
-      { slug: 'tide', name: 'Tide · Marea & Liquidez', cat: 'Tesorería / Cash Flow', r2: 'templates/tide/hero.mp4', desc: 'Movimiento hipnótico de olas oscuras para narrativas de circulante y tesorería corporativa.' },
-      { slug: 'comet', name: 'Comet · Velocidad Estelar', cat: 'Automatización STP', r2: 'templates/comet/hero.mp4', desc: 'Estela luminosa cruzando el espacio profundo para ilustrar velocidad de respuesta en segundos.' },
-      { slug: 'shader-chrome', name: 'Shader · Liquid Chrome', cat: 'Shader Abstracto #ST', r2: 'shaders/chrome-liquid.mp4', desc: 'Metal líquido reflectante en bucle continuo sin distracciones figurativas.' },
-      { slug: 'shader-halftone', name: 'Shader · Halftone Matrix', cat: 'Shader Abstracto #ST', r2: 'shaders/halftone.mp4', desc: 'Matriz de puntos cinéticos estilo telemetría de datos para fondos técnicos.' },
-      { slug: 'shader-cobalt', name: 'Shader · Cobalt Waves', cat: 'Shader Abstracto #ST', r2: 'shaders/cobalt.mp4', desc: 'Ondas de seda azul cobalto para portadas financieras elegantes.' },
-      { slug: 'shader-cell', name: 'Shader · Cellular Network', cat: 'Shader Abstracto #ST', r2: 'shaders/cell.mp4', desc: 'Malla orgánica de nodos interconectados para explicar grafos UBO y multi-agentes.' },
-      { slug: 'shader-aurora-noir', name: 'Shader · Aurora Noir', cat: 'Shader Abstracto #ST', r2: 'shaders/aurora-noir.mp4', desc: 'Cortinas de luz esmeralda sobre negro puro para máximo contraste tipográfico.' },
-      { slug: 'shader-noir-mesh', name: 'Shader · Noir Topo Mesh', cat: 'Shader Abstracto #ST', r2: 'shaders/noir-mesh.mp4', desc: 'Superficie topográfica oscura ideal para superponer tablas financieras y KPIs.' }
+      // 37 Plantillas Hero .MP4 Limpias
+      { slug: 'ridge', name: 'Ridge · Caverna & Planeta', kind: 'template', cat: 'Cumbre / Estrategia', r2: 'templates/ridge/hero.mp4', desc: 'Apertura de roca basáltica hacia cordillera nocturna y planeta iluminado. Ideal para OKRs y Visión Comercial.' },
+      { slug: 'zephyr', name: 'Zephyr · Pabellón Flotante', kind: 'template', cat: 'Arquitectura / Comité', r2: 'templates/zephyr/hero.mp4', desc: 'Arquitectura minimalista suspendida sobre bruma cálida. Perfecto para Onboarding KYB y gobierno.' },
+      { slug: 'synapse', name: 'Synapse (Aether) · Escalera Aurora', kind: 'template', cat: 'IA / Agentes', r2: 'templates/aether/hero.mp4', desc: 'Ascenso luminoso hacia aurora verde-cian nocturna. Ideal para flujos agénticos y Next Best Action.' },
+      { slug: 'selene', name: 'Selene (Moon) · Órbita Lunar', kind: 'template', cat: 'Misión / Deep-Tech', r2: 'templates/moon/hero.mp4', desc: 'Superficie lunar con cráteres nítidos y la Luna elevándose en el horizonte espacial.' },
+      { slug: 'helix', name: 'Helix (Aperture) · Domo de Datos', kind: 'template', cat: 'Riesgos / Telemetría', r2: 'templates/aperture/hero.mp4', desc: 'Cámara inmersiva 360° con anillos de telemetría financiera y riesgo en tiempo real.' },
+      { slug: 'nebula', name: 'Nebula · Puente de Roca', kind: 'template', cat: 'Omnicanal / Red', r2: 'templates/nebula/hero.mp4', desc: 'Arco natural de piedra uniendo dos cumbres sobre un mar de nubes. Metáfora visual del Puente Web ↔ Gestor.' },
+      { slug: 'dune', name: 'Dune · Monolito Solar', kind: 'template', cat: 'Horizonte / Expansión', r2: 'templates/dune/hero.mp4', desc: 'Cañón de roca abriéndose hacia un sol ámbar sobre un océano en calma.' },
+      { slug: 'rednova', name: 'Rednova · Eclipse Dorado', kind: 'template', cat: 'Impacto / Disrupción', r2: 'templates/rednova/hero.mp4', desc: 'Corona solar y eclipse total sobre dunas oscuras con atmósfera cinematográfica de alto contraste.' },
+      { slug: 'aurora', name: 'Aurora · Horizonte Ámbar', kind: 'template', cat: 'Patrimonio / Ejecutiva', r2: 'templates/aurora/hero.mp4', desc: 'Monolito de luz cálida y silueta gran turismo frente a un horizonte dorado.' },
+      { slug: 'glacier', name: 'Glacier · Cielo & Claridad', kind: 'template', cat: 'Transparencia / ESG', r2: 'templates/glacier/hero.mp4', desc: 'Vuelo sereno entre nubes doradas al amanecer con máxima limpieza visual.' },
+      { slug: 'eclipse', name: 'Eclipse · Catarata Basáltica', kind: 'template', cat: 'Flujo / Liquidez', r2: 'templates/eclipse/hero.mp4', desc: 'Caída de agua cristalina entre columnas de basalto nórdico envueltas en bruma.' },
+      { slug: 'nocturne', name: 'Nocturne · Valle Nocturno', kind: 'template', cat: 'Banca Privada / Foco', r2: 'templates/nocturne/hero.mp4', desc: 'Refugio arquitectónico iluminado en medio de un valle alpino bajo la luz de la luna.' },
+      { slug: 'meridian', name: 'Meridian · Travesía Global', kind: 'template', cat: 'Comercio Exterior', r2: 'templates/meridian/hero.mp4', desc: 'Horizonte oceánico y líneas de navegación global para presentaciones de Trade Finance.' },
+      { slug: 'kage', name: 'Kage · Geometría Cinética', kind: 'template', cat: 'Ciberseguridad / Fraude', r2: 'templates/kage/hero.mp4', desc: 'Contraste dramático en claroscuro con movimiento de cámara de precisión.' },
+      { slug: 'anchor', name: 'Anchor · Solidez Institucional', kind: 'template', cat: 'Capital / Solvencia', r2: 'templates/anchor/hero.mp4', desc: 'Escena marítima de alta densidad visual para bloques de solvencia, RORWA y balance.' },
+      { slug: 'clover', name: 'Clover · Ecosistema Orgánico', kind: 'template', cat: 'Sostenibilidad / Agro', r2: 'templates/clover/hero.mp4', desc: 'Texturas naturales en movimiento suave para líneas de negocio sostenible y transición.' },
+      { slug: 'ember', name: 'Ember · Forja & Energía', kind: 'template', cat: 'Transformación / Industria', r2: 'templates/ember/hero.mp4', desc: 'Partículas incandescentes y energía térmica sobre fondo oscuro de alto contraste.' },
+      { slug: 'frost', name: 'Frost · Cristal Ártico', kind: 'template', cat: 'Datos / Lakehouse', r2: 'templates/frost/hero.mp4', desc: 'Formaciones de hielo puro y refracción limpia para arquitecturas de datos y Unity Catalog.' },
+      { slug: 'tide', name: 'Tide · Marea & Liquidez', kind: 'template', cat: 'Tesorería / Cash Flow', r2: 'templates/tide/hero.mp4', desc: 'Movimiento hipnótico de olas oscuras para narrativas de circulante y tesorería corporativa.' },
+      { slug: 'comet', name: 'Comet · Velocidad Estelar', kind: 'template', cat: 'Automatización STP', r2: 'templates/comet/hero.mp4', desc: 'Estela luminosa cruzando el espacio profundo para ilustrar velocidad de respuesta en segundos.' },
+      { slug: 'tundra', name: 'Tundra · Horizonte Ártico', kind: 'template', cat: 'Resiliencia / Riesgos', r2: 'templates/tundra/hero.mp4', desc: 'Planicie helada minimalista de máxima serenidad para informes de control de riesgo y capital.' },
+      { slug: 'twilight', name: 'Twilight · Crepúsculo Violeta', kind: 'template', cat: 'Visión / Futuro', r2: 'templates/twilight/hero.mp4', desc: 'Transición lumínica de crepúsculo sobre horizonte limpio para aperturas estratégicas.' },
+      { slug: 'oasis', name: 'Oasis · Refugio de Agua', kind: 'template', cat: 'Liquidez / Equilibrio', r2: 'templates/oasis/hero.mp4', desc: 'Espejo de agua rodeado de formaciones cálidas para presentar equilibrio de balance y liquidez.' },
+      { slug: 'monsoon', name: 'Monsoon · Tormenta & Dinamismo', kind: 'template', cat: 'Stress-Test / Mercados', r2: 'templates/monsoon/hero.mp4', desc: 'Atmósfera de lluvia cinemática y energía acumulada para escenarios de tensión y volatilidad.' },
+      { slug: 'harbor', name: 'Harbor · Puerto & Refugio', kind: 'template', cat: 'Comex / Logística', r2: 'templates/harbor/hero.mp4', desc: 'Aguas tranquilas de puerto seguro para operativas de avales, garantías y comercio internacional.' },
+      { slug: 'aethera', name: 'Aethera · Esfera Etérea', kind: 'template', cat: 'Cloud / IA Generativa', r2: 'templates/aethera/hero.mp4', desc: 'Arquitectura lumínica suspendida en el aire para plataformas cloud y ecosistemas de IA.' },
+      { slug: 'monoio', name: 'Monoio · Estudio Monolítico', kind: 'template', cat: 'Diseño / Producto', r2: 'templates/monoio/hero.mp4', desc: 'Geometría brutalista y sobriedad editorial para lanzamientos de producto digital.' },
+      { slug: 'glowinn', name: 'Glowinn · Santuario Cálido', kind: 'template', cat: 'Fidelización / NPS', r2: 'templates/glowinn/hero.mp4', desc: 'Luz interior dorada en contraste con el paisaje exterior para experiencia de cliente y retención.' },
+      { slug: 'lagoon-hero', name: 'Lagoon · Laguna Cristalina', kind: 'template', cat: 'Transparencia / Datos', r2: 'templates/lagoon-hero/hero.mp4', desc: 'Aguas turquesas de alta pureza visual para cuadros de mando limpios y gobierno del dato.' },
+      { slug: 'brook', name: 'Brook · Corriente Fluida', kind: 'template', cat: 'Pagos / Tiempo Real', r2: 'templates/brook/hero.mp4', desc: 'Curso de agua continuo entre roca natural para representar flujos transaccionales SEPA e instantáneos.' },
+      { slug: 'prairie', name: 'Prairie · Llanura Dorada', kind: 'template', cat: 'Crecimiento / Agro', r2: 'templates/prairie/hero.mp4', desc: 'Horizonte abierto mecidos por el viento para planes de expansión territorial y red comercial.' },
+      { slug: 'meadow', name: 'Meadow · Pradera Serena', kind: 'template', cat: 'ESG / Finanzas Verdes', r2: 'templates/meadow/hero.mp4', desc: 'Campo natural iluminado al amanecer para memorias de sostenibilidad y taxonomía verde.' },
+      { slug: 'willow', name: 'Willow · Brisa & Equilibrio', kind: 'template', cat: 'Banca Patrimonial', r2: 'templates/willow/hero.mp4', desc: 'Movimiento orgánico y pausado que aporta calma visual detrás de métricas de gestión patrimonial.' },
+      { slug: 'arbor', name: 'Arbor · Dosel Forestal', kind: 'template', cat: 'Arquitectura Ramificada', r2: 'templates/arbor/hero.mp4', desc: 'Vista cenital de bosque profundo para ilustrar árboles de decisión y jerarquías de datos.' },
+      { slug: 'orchid', name: 'Orchid · Botánica de Precisión', kind: 'template', cat: 'Banca Privada / Élite', r2: 'templates/orchid/hero.mp4', desc: 'Detalle macro de iluminación escultórica para propuestas de alto valor añadido.' },
+      { slug: 'garden', name: 'Garden · Jardín Contemplativo', kind: 'template', cat: 'Armonía Operativa', r2: 'templates/garden/hero.mp4', desc: 'Composición paisajística equilibrada para cierres de presentación y síntesis ejecutiva.' },
+      { slug: 'flying-garden', name: 'Flying Garden · Isla Suspendida', kind: 'template', cat: 'Visión 2030 / Moonshot', r2: 'templates/flying-garden/hero.mp4', desc: 'Jardín flotante entre nubes para proyectos insignia de innovación disruptiva.' },
+      // 55 Shaders Abstractos .MP4 Limpios
+      { slug: 'shader-chrome', name: 'Shader · Liquid Chrome', kind: 'shader', cat: 'Shader Metal #ST', r2: 'shaders/chrome-liquid.mp4', desc: 'Metal líquido reflectante en bucle continuo sin distracciones figurativas.' },
+      { slug: 'shader-chrome-gold', name: 'Shader · Chrome Gold', kind: 'shader', cat: 'Shader Metal #ST', r2: 'previews/chrome-gold-preview.mp4', desc: 'Oro líquido especular para destacar hitos financieros de rentabilidad y RORWA.' },
+      { slug: 'shader-chrome-melt', name: 'Shader · Chrome Melt', kind: 'shader', cat: 'Shader Metal #ST', r2: 'previews/chrome-melt-preview.mp4', desc: 'Fusión metálica de alto contraste para portadas tecnológicas y motores de IA.' },
+      { slug: 'shader-chrome-oil', name: 'Shader · Chrome Oil', kind: 'shader', cat: 'Shader Metal #ST', r2: 'previews/chrome-oil-preview.mp4', desc: 'Reflejos iridiscentes sobre metal oscuro para transiciones entre capítulos.' },
+      { slug: 'shader-chrome-rose', name: 'Shader · Chrome Rose', kind: 'shader', cat: 'Shader Metal #ST', r2: 'previews/chrome-rose-preview.mp4', desc: 'Cromo cobrizo suave ideal para presentaciones de marca y experiencia digital.' },
+      { slug: 'shader-halftone', name: 'Shader · Halftone Matrix', kind: 'shader', cat: 'Shader Matriz #ST', r2: 'shaders/halftone.mp4', desc: 'Matriz de puntos cinéticos estilo telemetría de datos para fondos técnicos.' },
+      { slug: 'shader-halftone-cyan', name: 'Shader · Halftone Cyan', kind: 'shader', cat: 'Shader Matriz #ST', r2: 'previews/halftone-cyan-preview.mp4', desc: 'Matriz de puntos cian sobre azul abisal para arquitecturas Lakehouse y telemetría.' },
+      { slug: 'shader-halftone-sun', name: 'Shader · Halftone Sun', kind: 'shader', cat: 'Shader Matriz #ST', r2: 'previews/halftone-sun-preview.mp4', desc: 'Trama semitono cálida en tonos ámbar para resaltar KPIs comerciales.' },
+      { slug: 'shader-halftone-forest', name: 'Shader · Halftone Forest', kind: 'shader', cat: 'Shader Matriz #ST', r2: 'previews/halftone-forest-preview.mp4', desc: 'Trama de puntos esmeralda para cuadros de mando de admisión STP y vía verde.' },
+      { slug: 'shader-halftone-mono', name: 'Shader · Halftone Mono', kind: 'shader', cat: 'Shader Matriz #ST', r2: 'previews/halftone-mono-preview.mp4', desc: 'Trama monocromática de máxima sobriedad para informes de auditoría y control.' },
+      { slug: 'shader-cobalt', name: 'Shader · Cobalt Waves', kind: 'shader', cat: 'Shader Fluido #ST', r2: 'shaders/cobalt.mp4', desc: 'Ondas de seda azul cobalto para portadas financieras elegantes.' },
+      { slug: 'shader-cell', name: 'Shader · Cellular Network', kind: 'shader', cat: 'Shader Grafo #ST', r2: 'shaders/cell.mp4', desc: 'Malla orgánica de nodos interconectados para explicar grafos UBO y multi-agentes.' },
+      { slug: 'shader-cell-violet', name: 'Shader · Cellular Violet', kind: 'shader', cat: 'Shader Grafo #ST', r2: 'previews/cell-violet-preview.mp4', desc: 'Red celular en tonos violeta profundo para arquitecturas neuronales y LLMs.' },
+      { slug: 'shader-cell-slate', name: 'Shader · Cellular Slate', kind: 'shader', cat: 'Shader Grafo #ST', r2: 'previews/cell-slate-preview.mp4', desc: 'Malla celular en gris pizarra ejecutivo para fondos discretos de tablas y KPIs.' },
+      { slug: 'shader-cell-amber', name: 'Shader · Cellular Amber', kind: 'shader', cat: 'Shader Grafo #ST', r2: 'previews/cell-amber-preview.mp4', desc: 'Tejido de nodos dorados para visualizar redes de pagos y vinculación comercial.' },
+      { slug: 'shader-cell-coral', name: 'Shader · Cellular Coral', kind: 'shader', cat: 'Shader Grafo #ST', r2: 'previews/cell-coral-preview.mp4', desc: 'Malla orgánica cálida para mapas de calor de riesgo y alertas tempranas.' },
+      { slug: 'shader-aurora-noir', name: 'Shader · Aurora Noir', kind: 'shader', cat: 'Shader Aurora #ST', r2: 'shaders/aurora-noir.mp4', desc: 'Cortinas de luz esmeralda sobre negro puro para máximo contraste tipográfico.' },
+      { slug: 'shader-aurora-solar', name: 'Shader · Aurora Solar', kind: 'shader', cat: 'Shader Aurora #ST', r2: 'previews/aurora-solar-preview.mp4', desc: 'Velo luminoso dorado sobre fondo oscuro para aperturas de alto impacto.' },
+      { slug: 'shader-aurora-ice', name: 'Shader · Aurora Ice', kind: 'shader', cat: 'Shader Aurora #ST', r2: 'previews/aurora-ice-preview.mp4', desc: 'Aurora glacial azul-blanca de gran limpieza para diapositivas con mucho texto.' },
+      { slug: 'shader-aurora-rose', name: 'Shader · Aurora Rose', kind: 'shader', cat: 'Shader Aurora #ST', r2: 'previews/aurora-rose-preview.mp4', desc: 'Velo de luz magenta y cian suave para narrativas de transformación digital.' },
+      { slug: 'shader-aurora-veil', name: 'Shader · Aurora Veil', kind: 'shader', cat: 'Shader Aurora #ST', r2: 'previews/aurora-veil-preview.mp4', desc: 'Cortina atmosférica sutil ideal para mantener legibilidad perfecta en tarjetas 2.5D.' },
+      { slug: 'shader-noir-mesh', name: 'Shader · Noir Topo Mesh', kind: 'shader', cat: 'Shader Mesh #ST', r2: 'shaders/noir-mesh.mp4', desc: 'Superficie topográfica oscura ideal para superponer tablas financieras y KPIs.' },
+      { slug: 'shader-dusk-mesh', name: 'Shader · Dusk Mesh', kind: 'shader', cat: 'Shader Mesh #ST', r2: 'previews/dusk-mesh-preview.mp4', desc: 'Gradiente mallado crepuscular de baja fatiga visual para sesiones largas de Comité.' },
+      { slug: 'shader-mesh-drift', name: 'Shader · Mesh Drift', kind: 'shader', cat: 'Shader Mesh #ST', r2: 'previews/mesh-drift-preview.mp4', desc: 'Corriente suave de color difuso para fondos corporativos modernos.' },
+      { slug: 'shader-mesh-ocean', name: 'Shader · Mesh Ocean', kind: 'shader', cat: 'Shader Mesh #ST', r2: 'previews/mesh-ocean-preview.mp4', desc: 'Gradiente oceánico profundo en movimiento lento para banca corporativa.' },
+      { slug: 'shader-mesh-arctic', name: 'Shader · Mesh Arctic', kind: 'shader', cat: 'Shader Mesh #ST', r2: 'previews/mesh-arctic-preview.mp4', desc: 'Luz ártica difusa en tonos cian y pizarra para presentaciones técnicas.' },
+      { slug: 'shader-mesh-indigo', name: 'Shader · Mesh Indigo', kind: 'shader', cat: 'Shader Mesh #ST', r2: 'previews/mesh-indigo-preview.mp4', desc: 'Atmósfera índigo ejecutiva para bloques de arquitectura de software y seguridad.' },
+      { slug: 'shader-mesh-sunset', name: 'Shader · Mesh Sunset', kind: 'shader', cat: 'Shader Mesh #ST', r2: 'previews/mesh-sunset-preview.mp4', desc: 'Transición cálida de atardecer para cierres e hitos de negocio.' },
+      { slug: 'shader-mesh-neon', name: 'Shader · Mesh Neon', kind: 'shader', cat: 'Shader Mesh #ST', r2: 'previews/mesh-neon-preview.mp4', desc: 'Acentos eléctricos cian-violeta para demos de innovación y agentes en vivo.' },
+      { slug: 'shader-mesh-plum', name: 'Shader · Mesh Plum', kind: 'shader', cat: 'Shader Mesh #ST', r2: 'previews/mesh-plum-preview.mp4', desc: 'Tonos ciruela y noche para presentaciones ejecutivas de alto contraste.' },
+      { slug: 'shader-mesh-rust', name: 'Shader · Mesh Rust', kind: 'shader', cat: 'Shader Mesh #ST', r2: 'previews/mesh-rust-preview.mp4', desc: 'Gradiente terracota y bronce para sectores industriales y cadena de suministro.' },
+      { slug: 'shader-mesh-mocha', name: 'Shader · Mesh Mocha', kind: 'shader', cat: 'Shader Mesh #ST', r2: 'previews/mesh-mocha-preview.mp4', desc: 'Fondo cálido tono café-carbón para informes editoriales y de consultoría.' },
+      { slug: 'shader-mesh-sage', name: 'Shader · Mesh Sage', kind: 'shader', cat: 'Shader Mesh #ST', r2: 'previews/mesh-sage-preview.mp4', desc: 'Verde salvia suave para bloques de sostenibilidad, riesgo climático y ESG.' },
+      { slug: 'shader-mesh-matcha', name: 'Shader · Mesh Matcha', kind: 'shader', cat: 'Shader Mesh #ST', r2: 'previews/mesh-matcha-preview.mp4', desc: 'Gradiente verde orgánico para indicadores de eficiencia y ahorro operativo.' },
+      { slug: 'shader-mesh-lavender', name: 'Shader · Mesh Lavender', kind: 'shader', cat: 'Shader Mesh #ST', r2: 'previews/mesh-lavender-preview.mp4', desc: 'Bruma lavanda oscura para secciones de experiencia de usuario y diseño.' },
+      { slug: 'shader-mesh-citrus', name: 'Shader · Mesh Citrus', kind: 'shader', cat: 'Shader Mesh #ST', r2: 'previews/mesh-citrus-preview.mp4', desc: 'Destellos cítricos dinámicos para llamadas a la acción y lanzamientos.' },
+      { slug: 'shader-mesh-sorbet', name: 'Shader · Mesh Sorbet', kind: 'shader', cat: 'Shader Mesh #ST', r2: 'previews/mesh-sorbet-preview.mp4', desc: 'Gradiente luminoso coral-ámbar para presentaciones de banca retail y marketing.' },
+      { slug: 'shader-mesh-candy', name: 'Shader · Mesh Candy', kind: 'shader', cat: 'Shader Mesh #ST', r2: 'previews/mesh-candy-preview.mp4', desc: 'Combinación vibrante para demos creativas y workshops de producto.' },
+      { slug: 'shader-mesh-blush', name: 'Shader · Mesh Blush', kind: 'shader', cat: 'Shader Mesh #ST', r2: 'previews/mesh-blush-preview.mp4', desc: 'Tono rosado tenue sobre base oscura para narrativas cercanas al cliente.' },
+      { slug: 'shader-mint-haze', name: 'Shader · Mint Haze', kind: 'shader', cat: 'Shader Mesh #ST', r2: 'previews/mint-haze-preview.mp4', desc: 'Neblina menta-esmeralda ideal para resaltar métricas de aprobación STP.' },
+      { slug: 'shader-magma-flow', name: 'Shader · Magma Flow', kind: 'shader', cat: 'Shader Flow #ST', r2: 'previews/magma-flow-preview.mp4', desc: 'Corriente incandescente para ilustrar cuellos de botella o transformación profunda.' },
+      { slug: 'shader-jade-flow', name: 'Shader · Jade Flow', kind: 'shader', cat: 'Shader Flow #ST', r2: 'previews/jade-flow-preview.mp4', desc: 'Fluido color jade imperial para flujos de liquidez, tesorería y margen neto.' },
+      { slug: 'shader-orchid-flow', name: 'Shader · Orchid Flow', kind: 'shader', cat: 'Shader Flow #ST', r2: 'previews/orchid-flow-preview.mp4', desc: 'Ondas fluidas púrpura-cian para orquestación de datos y pipelines en tiempo real.' },
+      { slug: 'shader-ash-flow', name: 'Shader · Ash Flow', kind: 'shader', cat: 'Shader Flow #ST', r2: 'previews/ash-flow-preview.mp4', desc: 'Seda mineral en escala de grises para máxima neutralidad y elegancia institucional.' },
+      { slug: 'shader-flame-azure', name: 'Shader · Flame Azure', kind: 'shader', cat: 'Shader Plasma #ST', r2: 'previews/flame-azure-preview.mp4', desc: 'Plasma azul eléctrico para motores de inferencia y cálculo distribuido.' },
+      { slug: 'shader-flame-violet', name: 'Shader · Flame Violet', kind: 'shader', cat: 'Shader Plasma #ST', r2: 'previews/flame-violet-preview.mp4', desc: 'Energía violeta en movimiento para capas de razonamiento y modelos fundacionales.' },
+      { slug: 'shader-flame-viridian', name: 'Shader · Flame Viridian', kind: 'shader', cat: 'Shader Plasma #ST', r2: 'previews/flame-viridian-preview.mp4', desc: 'Llama verde viridián para destacar aceleración de procesos y reducción de tiempos.' },
+      { slug: 'shader-flame-mono', name: 'Shader · Flame Mono', kind: 'shader', cat: 'Shader Plasma #ST', r2: 'previews/flame-mono-preview.mp4', desc: 'Humo y luz monocromática de estética editorial cinematográfica.' },
+      { slug: 'shader-flame-ember', name: 'Shader · Flame Ember', kind: 'shader', cat: 'Shader Plasma #ST', r2: 'previews/flame-ember-preview.mp4', desc: 'Fuego cálido ascendente para aperturas de impacto y planes de choque.' },
+      { slug: 'shader-swirl-tide', name: 'Shader · Swirl Tide', kind: 'shader', cat: 'Shader Vórtice #ST', r2: 'previews/swirl-tide-preview.mp4', desc: 'Vórtice oceánico suave para representar convergencia de datos en el Lakehouse.' },
+      { slug: 'shader-swirl-mono', name: 'Shader · Swirl Mono', kind: 'shader', cat: 'Shader Vórtice #ST', r2: 'previews/swirl-mono-preview.mp4', desc: 'Espiral hipnótica en blanco y negro de inspiración suiza.' },
+      { slug: 'shader-swirl-rose', name: 'Shader · Swirl Rose', kind: 'shader', cat: 'Shader Vórtice #ST', r2: 'previews/swirl-rose-preview.mp4', desc: 'Remolino sedoso en tonos cálidos para transiciones visuales.' },
+      { slug: 'shader-swirl-citrus', name: 'Shader · Swirl Citrus', kind: 'shader', cat: 'Shader Vórtice #ST', r2: 'previews/swirl-citrus-preview.mp4', desc: 'Espiral energética dorada para cierres de alto dinamismo.' },
+      { slug: 'shader-swirl-band', name: 'Shader · Swirl Band', kind: 'shader', cat: 'Shader Vórtice #ST', r2: 'previews/swirl-band-preview.mp4', desc: 'Bandas torsionales en movimiento continuo para fondos 2.5D.' },
+      { slug: 'shader-ember-wash', name: 'Shader · Ember Wash', kind: 'shader', cat: 'Shader Luz #ST', r2: 'previews/ember-wash-preview.mp4', desc: 'Baño de luz cálida en movimiento lento para portadas ejecutivas.' }
     ];
 
     function setHeroCleanVideo(slug) {
@@ -1651,8 +1728,17 @@
     });
 
     const vaultGrid = document.getElementById('clean-vault-grid');
-    if (vaultGrid) {
-      vaultGrid.innerHTML = CLEAN_VIDEOS.map(v => `
+    let vaultFilter = 'all';
+    let vaultQuery = '';
+    function renderCleanVault() {
+      if (!vaultGrid) return;
+      const q = vaultQuery.trim().toLowerCase();
+      const filtered = CLEAN_VIDEOS.filter(v => {
+        const matchKind = vaultFilter === 'all' || v.kind === vaultFilter;
+        const matchQuery = !q || v.slug.toLowerCase().includes(q) || v.name.toLowerCase().includes(q) || v.desc.toLowerCase().includes(q) || v.cat.toLowerCase().includes(q);
+        return matchKind && matchQuery;
+      });
+      vaultGrid.innerHTML = filtered.map(v => `
         <article class="st-vault-card">
           <div class="st-vault-thumb">
             <video muted loop playsinline preload="metadata" poster="assets/scrolltide/${v.slug}-poster.jpg?v=2" onmouseenter="this.play().catch(()=>{})" onmouseleave="this.pause()">
@@ -1680,6 +1766,25 @@
           document.getElementById('top').scrollIntoView({ behavior: 'smooth' });
         });
       });
+    }
+
+    if (vaultGrid) {
+      renderCleanVault();
+      document.querySelectorAll('#vault-filter-bar [data-vault-filter]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('#vault-filter-bar [data-vault-filter]').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          vaultFilter = btn.dataset.vaultFilter;
+          renderCleanVault();
+        });
+      });
+      const vaultSearch = document.getElementById('vault-search');
+      if (vaultSearch) {
+        vaultSearch.addEventListener('input', () => {
+          vaultQuery = vaultSearch.value || '';
+          renderCleanVault();
+        });
+      }
     }
 
     // 2. Conmutador entre la adaptación a Iniciativas IA Commercial (ES) y el texto original exacto de Ridge (EN)

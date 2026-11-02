@@ -259,16 +259,30 @@ console.log('\n🎨 6. VERIFICACIÓN DE CSS RESPONSIVE\n');
 }
 
 // ============================
-// 7. Bóveda Scrolltide (26 .mp4 limpios + 26 posters + sintaxis JS inline)
+// 7. Bóveda Scrolltide (92 .mp4 limpios + 92 posters + sintaxis JS inline)
 // ============================
 console.log('\n🎬 7. VERIFICACIÓN DE SCROLLTIDE STUDIO & VÍDEOS .MP4 LIMPIOS\n');
 
 const scrolltideSlugs = [
+  // 37 Plantillas Hero .MP4 Limpias
   'ridge', 'zephyr', 'synapse', 'selene', 'helix', 'nebula', 'dune', 'rednova',
   'aurora', 'glacier', 'eclipse', 'nocturne', 'meridian', 'kage', 'anchor',
-  'clover', 'ember', 'frost', 'tide', 'comet',
-  'shader-chrome', 'shader-halftone', 'shader-cobalt', 'shader-cell',
-  'shader-aurora-noir', 'shader-noir-mesh'
+  'clover', 'ember', 'frost', 'tide', 'comet', 'tundra', 'twilight', 'oasis',
+  'monsoon', 'harbor', 'aethera', 'monoio', 'glowinn', 'lagoon-hero', 'brook',
+  'prairie', 'meadow', 'willow', 'arbor', 'orchid', 'garden', 'flying-garden',
+  // 55 Shaders Abstractos .MP4 Limpios
+  'shader-chrome', 'shader-chrome-gold', 'shader-chrome-melt', 'shader-chrome-oil', 'shader-chrome-rose',
+  'shader-halftone', 'shader-halftone-cyan', 'shader-halftone-sun', 'shader-halftone-forest', 'shader-halftone-mono',
+  'shader-cobalt', 'shader-cell', 'shader-cell-violet', 'shader-cell-slate', 'shader-cell-amber', 'shader-cell-coral',
+  'shader-aurora-noir', 'shader-aurora-solar', 'shader-aurora-ice', 'shader-aurora-rose', 'shader-aurora-veil',
+  'shader-noir-mesh', 'shader-dusk-mesh', 'shader-mesh-drift', 'shader-mesh-ocean', 'shader-mesh-arctic',
+  'shader-mesh-indigo', 'shader-mesh-sunset', 'shader-mesh-neon', 'shader-mesh-plum', 'shader-mesh-rust',
+  'shader-mesh-mocha', 'shader-mesh-sage', 'shader-mesh-matcha', 'shader-mesh-lavender', 'shader-mesh-citrus',
+  'shader-mesh-sorbet', 'shader-mesh-candy', 'shader-mesh-blush', 'shader-mint-haze',
+  'shader-magma-flow', 'shader-jade-flow', 'shader-orchid-flow', 'shader-ash-flow',
+  'shader-flame-azure', 'shader-flame-violet', 'shader-flame-viridian', 'shader-flame-mono', 'shader-flame-ember',
+  'shader-swirl-tide', 'shader-swirl-mono', 'shader-swirl-rose', 'shader-swirl-citrus', 'shader-swirl-band',
+  'shader-ember-wash'
 ];
 
 scrolltideSlugs.forEach(slug => {
