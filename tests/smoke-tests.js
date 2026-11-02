@@ -80,6 +80,9 @@ const requiredFiles = [
   'cuadernos/07-migracion-chatgpt-copilot-m365.html',
   'cuadernos/08-agentes-vscode-ux-dashboards.html',
   'cuadernos/09-ingenieria-visual-databricks-m365-vscode.html',
+  'cuadernos/10-spec-driven-analytics-databricks.html',
+  'cuadernos/11-presentaciones-cinematograficas-scrolltide.html',
+  'presentacion-ridge-ia-digital-commercial.html',
   'cuadernos/_template.html'
 ];
 
@@ -98,7 +101,9 @@ const htmlFiles = [
   'cuadernos/03-compendio-tecnico.html', 'cuadernos/04-el-universo-del-transformer.html',
   'cuadernos/05-paradigmas-y-computacion.html', 'cuadernos/06-m365-copilot-banca-comercial.html',
   'cuadernos/07-migracion-chatgpt-copilot-m365.html', 'cuadernos/08-agentes-vscode-ux-dashboards.html',
-  'cuadernos/09-ingenieria-visual-databricks-m365-vscode.html'
+  'cuadernos/09-ingenieria-visual-databricks-m365-vscode.html',
+  'cuadernos/10-spec-driven-analytics-databricks.html',
+  'cuadernos/11-presentaciones-cinematograficas-scrolltide.html'
 ];
 
 htmlFiles.forEach(file => {
@@ -127,7 +132,9 @@ const cuadernoFiles = [
   'cuadernos/03-compendio-tecnico.html', 'cuadernos/04-el-universo-del-transformer.html',
   'cuadernos/05-paradigmas-y-computacion.html', 'cuadernos/06-m365-copilot-banca-comercial.html',
   'cuadernos/07-migracion-chatgpt-copilot-m365.html', 'cuadernos/08-agentes-vscode-ux-dashboards.html',
-  'cuadernos/09-ingenieria-visual-databricks-m365-vscode.html'
+  'cuadernos/09-ingenieria-visual-databricks-m365-vscode.html',
+  'cuadernos/10-spec-driven-analytics-databricks.html',
+  'cuadernos/11-presentaciones-cinematograficas-scrolltide.html'
 ];
 
 cuadernoFiles.forEach(file => {
@@ -250,6 +257,37 @@ console.log('\n🎨 6. VERIFICACIÓN DE CSS RESPONSIVE\n');
   assert(content.includes('skip-to-content'), 'styles.css: tiene skip-to-content accesibilidad');
   assert(content.includes('focus-visible'), 'styles.css: tiene estilos focus-visible');
 }
+
+// ============================
+// 7. Bóveda Scrolltide (26 .mp4 limpios + 26 posters + sintaxis JS inline)
+// ============================
+console.log('\n🎬 7. VERIFICACIÓN DE SCROLLTIDE STUDIO & VÍDEOS .MP4 LIMPIOS\n');
+
+const scrolltideSlugs = [
+  'ridge', 'zephyr', 'synapse', 'selene', 'helix', 'nebula', 'dune', 'rednova',
+  'aurora', 'glacier', 'eclipse', 'nocturne', 'meridian', 'kage', 'anchor',
+  'clover', 'ember', 'frost', 'tide', 'comet',
+  'shader-chrome', 'shader-halftone', 'shader-cobalt', 'shader-cell',
+  'shader-aurora-noir', 'shader-noir-mesh'
+];
+
+scrolltideSlugs.forEach(slug => {
+  assert(fileExists(`assets/scrolltide/${slug}.mp4`), `Vídeo limpio existe: assets/scrolltide/${slug}.mp4`);
+  assert(fileExists(`assets/scrolltide/${slug}-poster.jpg`), `Poster limpio existe: assets/scrolltide/${slug}-poster.jpg`);
+});
+
+['presentacion-ridge-ia-digital-commercial.html', 'cuadernos/11-presentaciones-cinematograficas-scrolltide.html'].forEach(file => {
+  const html = readFile(file);
+  assert(!html.includes('r2.dev/previews/'), `${file}: no utiliza vídeos con texto quemado (r2.dev/previews/)`);
+  const vm = require('vm');
+  const inlineScripts = [...html.matchAll(/<script(?![^>]*src=)[^>]*>([\s\S]*?)<\/script>/gi)];
+  assert(inlineScripts.length > 0, `${file}: contiene bloque <script> inline`);
+  inlineScripts.forEach((m, idx) => {
+    let ok = true, err = '';
+    try { new vm.Script(m[1], { filename: `${file}#inline-${idx}` }); } catch (e) { ok = false; err = e.message; }
+    assert(ok, `${file}: sintaxis JS inline #${idx + 1} válida (AST parse)${err ? ' - ' + err : ''}`);
+  });
+});
 
 // ============================
 // Resumen

@@ -1590,6 +1590,7 @@
       dockHideBtn.addEventListener('click', () => directorDock.classList.add('collapsed'));
     }
     window.addEventListener('keydown', (e) => {
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
       if (['INPUT', 'TEXTAREA', 'SELECT'].includes((e.target && e.target.tagName) || '')) return;
       if (e.key.toLowerCase() === 'd' && directorDock) {
         directorDock.classList.toggle('collapsed');

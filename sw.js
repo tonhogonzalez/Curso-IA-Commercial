@@ -1,4 +1,4 @@
-const CACHE_NAME = 'curso-ia-v17';
+const CACHE_NAME = 'curso-ia-v18';
 const ASSETS = [
   './',
   './index.html',
@@ -11,8 +11,21 @@ const ASSETS = [
   './assets/scrolltide/selene-poster.jpg',
   './assets/scrolltide/synapse-poster.jpg',
   './assets/scrolltide/helix-poster.jpg',
+  './assets/scrolltide/nebula-poster.jpg',
+  './assets/scrolltide/dune-poster.jpg',
+  './assets/scrolltide/rednova-poster.jpg',
+  './assets/scrolltide/frost-poster.jpg',
   './assets/scrolltide/aurora-poster.jpg',
   './assets/scrolltide/glacier-poster.jpg',
+  './assets/scrolltide/ridge.mp4',
+  './assets/scrolltide/zephyr.mp4',
+  './assets/scrolltide/synapse.mp4',
+  './assets/scrolltide/helix.mp4',
+  './assets/scrolltide/nebula.mp4',
+  './assets/scrolltide/selene.mp4',
+  './assets/scrolltide/dune.mp4',
+  './assets/scrolltide/rednova.mp4',
+  './assets/scrolltide/frost.mp4',
   './cuadernos/01-pep-martorell.html',
   './cuadernos/02-javier-ideami.html',
   './cuadernos/03-compendio-tecnico.html',
