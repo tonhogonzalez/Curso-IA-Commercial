@@ -159,15 +159,15 @@
     }
     .st-kinetic-title {
       font-family: var(--font-display, 'Outfit', sans-serif);
-      font-size: 1.65rem; font-weight: 800; line-height: 1.16;
+      font-size: 1.6rem; font-weight: 800; line-height: 1.18;
       margin: 0 0 0.75rem;
       letter-spacing: -0.02em;
-      background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 55%, #a5b4fc 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: #f8fafc;
+      text-shadow: 0 2px 18px rgba(0, 0, 0, 0.65);
     }
     .st-kinetic-word {
       display: inline-block;
+      color: #f8fafc;
       transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1), opacity 420ms ease, filter 420ms ease;
     }
     .st-story-lead {
@@ -205,19 +205,83 @@
       display: block; font-size: 0.74rem; color: #94a3b8; line-height: 1.4;
     }
 
-    /* HUD Flotante Derecho del Objeto 3D */
+    /* Barra compacta de control 3D integrada en el pie del escenario (sin tapar el vídeo) */
     .st-stage-hud {
-      justify-self: end; align-self: start;
-      background: rgba(7, 10, 20, 0.75);
-      backdrop-filter: blur(14px);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 12px; padding: 0.65rem 0.85rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.6rem;
+      background: rgba(11, 16, 30, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 0.45rem 0.75rem;
+      margin-bottom: 0.5rem;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem; color: #94a3b8;
-      pointer-events: auto;
-      max-width: 270px;
+      font-size: 0.68rem;
+      color: #94a3b8;
     }
     .st-stage-hud strong { color: #38bdf8; }
+    .st-clean-video-select {
+      background: #0b1326;
+      color: #f8fafc;
+      border: 1px solid rgba(56, 189, 248, 0.45);
+      border-radius: 8px;
+      padding: 0.28rem 0.55rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .st-mp4-vault-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 0.95rem;
+      margin: 1.1rem 0 1.8rem;
+    }
+    .st-mp4-card {
+      background: #080c17;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 13px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 200ms ease, border-color 200ms ease;
+    }
+    .st-mp4-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(56, 189, 248, 0.55);
+    }
+    .st-mp4-thumb {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      background: #03060c;
+      overflow: hidden;
+    }
+    .st-mp4-thumb video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .st-mp4-cat {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(4, 7, 15, 0.82);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem;
+      color: #67e8f9;
+    }
+    .st-mp4-body {
+      padding: 0.75rem 0.85rem 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      flex: 1;
+    }
 
     /* Barra inferior de Scrollytelling Timeline */
     .st-timeline-bar {
@@ -538,29 +602,60 @@
             <div class="st-cinema-topbar">
               <div class="st-deck-pills" id="st-deck-selector">
                 <span class="st-mono" style="font-size:0.66rem;color:#94a3b8;margin-right:0.2rem;">PLANTILLA:</span>
-                <button type="button" class="st-pill-btn active" data-deck="ridge_ia">⛰️ 1. Ridge (Procesos IA Commercial)</button>
-                <button type="button" class="st-pill-btn" data-deck="ia_proyecto">🏛️ 2. Zephyr (Proyecto IA a Comité)</button>
-                <button type="button" class="st-pill-btn" data-deck="arquitectura">🧬 3. Synapse (Arquitectura Agéntica)</button>
-                <button type="button" class="st-pill-btn" data-deck="comercial">🌕 4. Selene (Estrategia &amp; Red Comercial)</button>
+                <button type="button" class="st-pill-btn active" data-deck="ridge_ia">⛰️ 1. Ridge (Procesos IA)</button>
+                <button type="button" class="st-pill-btn" data-deck="ia_proyecto">🏛️ 2. Zephyr (Comité IA)</button>
+                <button type="button" class="st-pill-btn" data-deck="arquitectura">🧬 3. Synapse (Agentes)</button>
+                <button type="button" class="st-pill-btn" data-deck="comercial">🌕 4. Selene (Red Comercial)</button>
+                <button type="button" class="st-pill-btn" data-deck="helix_riesgos">🌐 5. Helix (Riesgos STP)</button>
+                <button type="button" class="st-pill-btn" data-deck="dune_horizonte">☀️ 6. Dune (Plan 2027)</button>
               </div>
               <div class="st-shader-pills">
-                <span class="st-mono" style="font-size:0.66rem;color:#94a3b8;">ESCENA / FONDO:</span>
-                <button type="button" class="st-pill-btn active" data-shader="ridge">Vídeo Scrolltide HD</button>
+                <span class="st-mono" style="font-size:0.66rem;color:#94a3b8;">FONDO:</span>
+                <button type="button" class="st-pill-btn active" data-shader="video">🎬 Vídeo .MP4 Limpio</button>
+                <select id="st-clean-video-select" class="st-clean-video-select" aria-label="Elegir vídeo .MP4 limpio de Scrolltide">
+                  <option value="ridge">ridge.mp4 · Caverna &amp; Planeta</option>
+                  <option value="zephyr">zephyr.mp4 · Pabellón Flotante</option>
+                  <option value="synapse">synapse.mp4 · Escalera Aurora</option>
+                  <option value="selene">selene.mp4 · Superficie Lunar</option>
+                  <option value="helix">helix.mp4 · Domo Telemetría 360°</option>
+                  <option value="nebula">nebula.mp4 · Puente de Roca</option>
+                  <option value="dune">dune.mp4 · Monolito Solar</option>
+                  <option value="rednova">rednova.mp4 · Eclipse Dorado</option>
+                  <option value="aurora">aurora.mp4 · Horizonte Ámbar</option>
+                  <option value="glacier">glacier.mp4 · Cielo &amp; Claridad</option>
+                  <option value="eclipse">eclipse.mp4 · Catarata Basáltica</option>
+                  <option value="nocturne">nocturne.mp4 · Valle Nocturno</option>
+                  <option value="meridian">meridian.mp4 · Travesía Global</option>
+                  <option value="kage">kage.mp4 · Geometría Cinética</option>
+                  <option value="anchor">anchor.mp4 · Solidez Marítima</option>
+                  <option value="clover">clover.mp4 · Ecosistema Orgánico</option>
+                  <option value="ember">ember.mp4 · Forja &amp; Energía</option>
+                  <option value="frost">frost.mp4 · Cristal Ártico</option>
+                  <option value="tide">tide.mp4 · Marea &amp; Liquidez</option>
+                  <option value="comet">comet.mp4 · Velocidad Estelar</option>
+                  <option value="shader-chrome">shader-chrome.mp4 · Liquid Chrome</option>
+                  <option value="shader-halftone">shader-halftone.mp4 · Halftone Matrix</option>
+                  <option value="shader-cobalt">shader-cobalt.mp4 · Cobalt Waves</option>
+                  <option value="shader-cell">shader-cell.mp4 · Cellular Graph</option>
+                  <option value="shader-aurora-noir">shader-aurora-noir.mp4 · Aurora Noir</option>
+                  <option value="shader-noir-mesh">shader-noir-mesh.mp4 · Noir Topo Mesh</option>
+                </select>
+                <button type="button" class="st-pill-btn" data-shader="ridge">Topográfico 3D</button>
                 <button type="button" class="st-pill-btn" data-shader="liquid">Liquid Metal</button>
                 <button type="button" class="st-pill-btn" data-shader="aurora">Silk Aurora</button>
                 <button type="button" class="st-pill-btn" data-shader="halftone">Halftone Wave</button>
                 <button type="button" class="st-pill-btn" id="st-fullscreen-btn" title="Pantalla completa">⛶ Pantalla Completa</button>
-                <button type="button" class="st-pill-btn emerald" id="st-export-deck-btn">⬇ Descargar Presentación (.HTML)</button>
+                <button type="button" class="st-pill-btn emerald" id="st-export-deck-btn">⬇ Descargar (.HTML)</button>
               </div>
             </div>
 
-            <!-- Escenario 3D + Vídeo Atmosférico Scrolltide + Tarjeta Narrativa -->
+            <!-- Escenario 3D + Vídeo Atmosférico Scrolltide Limpio (sin colisión de capas) -->
             <div class="st-stage-viewport" id="st-viewport">
-              <video id="st-bg-video" autoplay muted loop playsinline poster="../assets/scrolltide/ridge-poster.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:0.92;transition:opacity 0.4s ease;">
-                <source id="st-bg-video-src" src="../assets/scrolltide/ridge.mp4" type="video/mp4">
+              <video id="st-bg-video" autoplay muted loop playsinline poster="../assets/scrolltide/ridge-poster.jpg?v=2" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:0.92;transition:opacity 0.35s ease;">
+                <source id="st-bg-video-src" src="../assets/scrolltide/ridge.mp4?v=2" type="video/mp4">
               </video>
-              <div style="position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(4,7,12,0.45) 0%,rgba(4,7,12,0.12) 45%,rgba(4,7,12,0.82) 100%);"></div>
-              <canvas id="st-shader-canvas" style="opacity:0.35;"></canvas>
+              <div style="position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(4,7,12,0.42) 0%,rgba(4,7,12,0.12) 45%,rgba(4,7,12,0.82) 100%);"></div>
+              <canvas id="st-shader-canvas" style="opacity:0;transition:opacity 0.35s ease;"></canvas>
               <canvas id="st-hero3d-canvas"></canvas>
 
               <div class="st-narrative-layer">
@@ -578,28 +673,27 @@
                     </div>
                   </div>
                 </div>
-
-                <!-- HUD derecho del motor 3D -->
-                <div class="st-stage-hud">
-                  <div style="display:flex;justify-content:space-between;gap:0.5rem;margin-bottom:0.35rem;">
-                    <span>MOTOR 3D EN VIVO</span>
-                    <strong id="st-hud-mode">EXPLODED STACK</strong>
-                  </div>
-                  <div style="margin-bottom:0.45rem;">Progreso timeline: <strong id="st-hud-prog">0.00</strong> · Arrastra el lienzo 3D o usa la rueda del ratón</div>
-                  <div style="display:flex;flex-wrap:wrap;gap:0.28rem;" id="st-model-override">
-                    <button type="button" class="st-pill-btn" style="font-size:0.63rem;padding:0.2rem 0.45rem;" data-model="auto">Auto (por escena)</button>
-                    <button type="button" class="st-pill-btn" style="font-size:0.63rem;padding:0.2rem 0.45rem;" data-model="ring">Anillo 3D</button>
-                    <button type="button" class="st-pill-btn" style="font-size:0.63rem;padding:0.2rem 0.45rem;" data-model="stack">Capas 3D</button>
-                    <button type="button" class="st-pill-btn" style="font-size:0.63rem;padding:0.2rem 0.45rem;" data-model="globe">Esfera Nodos</button>
-                    <button type="button" class="st-pill-btn" style="font-size:0.63rem;padding:0.2rem 0.45rem;" data-model="tunnel">Túnel Z</button>
-                  </div>
-                </div>
               </div>
             </div>
 
-            <!-- Línea de tiempo de escenas inferior -->
+            <!-- Línea de tiempo de escenas inferior + Barra limpia del Motor 3D (fuera del lienzo para no tapar el vídeo) -->
             <div class="st-timeline-bar">
               <div style="width:100%;">
+                <div class="st-stage-hud">
+                  <div style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;">
+                    <span>CAPA OBJETO 3D: <strong id="st-hud-mode">AUTO</strong></span>
+                    <span>· Timeline: <strong id="st-hud-prog">0.00</strong></span>
+                    <span style="color:#cbd5e1;">· Arrastra el lienzo derecho con el ratón o usa la rueda / flechas <code>←</code> <code>→</code></span>
+                  </div>
+                  <div style="display:flex;flex-wrap:wrap;gap:0.28rem;" id="st-model-override">
+                    <button type="button" class="st-pill-btn active" style="font-size:0.63rem;padding:0.2rem 0.5rem;" data-model="auto">Auto (por escena)</button>
+                    <button type="button" class="st-pill-btn" style="font-size:0.63rem;padding:0.2rem 0.5rem;" data-model="none">🎬 Solo Vídeo Limpio (Sin 3D)</button>
+                    <button type="button" class="st-pill-btn" style="font-size:0.63rem;padding:0.2rem 0.5rem;" data-model="ring">Anillo 3D</button>
+                    <button type="button" class="st-pill-btn" style="font-size:0.63rem;padding:0.2rem 0.5rem;" data-model="stack">Capas 3D</button>
+                    <button type="button" class="st-pill-btn" style="font-size:0.63rem;padding:0.2rem 0.5rem;" data-model="globe">Esfera Nodos</button>
+                    <button type="button" class="st-pill-btn" style="font-size:0.63rem;padding:0.2rem 0.5rem;" data-model="tunnel">Túnel Z</button>
+                  </div>
+                </div>
                 <div class="st-scene-steps" id="st-scene-steps"></div>
                 <div class="st-progress-track"><div class="st-progress-fill" id="st-progress-fill"></div></div>
               </div>
@@ -609,17 +703,39 @@
       </section>
 
       <!-- =====================================================================
-           SECCIÓN 02 · CATÁLOGO DE 8 MOTORES VISUALES SCROLLTIDE (#ST-01 A #ST-08)
+           SECCIÓN 02 · BÓVEDA DE 26 VÍDEOS .MP4 LIMPIOS + 8 MOTORES (#ST-01 A #ST-08)
            ===================================================================== -->
       <section id="catalogo-efectos" class="transcript-section" data-st-group="catalog">
         <div class="section-header">
           <span class="section-number">02</span>
-          <h2 class="section-title">Catálogo Interactivo «Pick &amp; Send»: Los 8 Motores Visuales Estilo Scrolltide (<code>#ST-01</code> a <code>#ST-08</code>)</h2>
+          <h2 class="section-title">Bóveda Local de 26 Vídeos <code>.MP4</code> Limpios + Catálogo de 8 Motores Visuales (<code>#ST-01</code> a <code>#ST-08</code>)</h2>
         </div>
         <div class="section-divider"></div>
         <div class="transcript-text">
+          <div class="concept-card highlight" style="margin-bottom:1.25rem;">
+            <div class="concept-card-label">🎬 ¿Por qué antes se solapaban textos en inglés y cómo lo hemos resuelto?</div>
+            <p style="margin-top:0.45rem;line-height:1.6;">
+              En <code>scrolltide.co</code> existen dos rutas distintas de vídeo: las capturas promocionales de pantalla (<code>/previews/*.mp4</code>, que llevan el texto en inglés quemado dentro del vídeo) y los <strong>fondos cinematográficos limpios de producción</strong> (<code>/templates/&lt;slug&gt;/hero.mp4</code> y <code>/shaders/*.mp4</code>). Hemos descargado, limpiado con <code>ffmpeg</code> y subido a la carpeta local <strong><code>assets/scrolltide/</code></strong> del repositorio los <strong>26 vídeos <code>.mp4</code> limpios de texto + sus 26 miniaturas <code>*-poster.jpg</code></strong> para que puedas utilizarlos en cualquier presentación o proyecto sin solapamientos ni dependencia de internet.
+            </p>
+          </div>
+
+          <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:0.8rem;margin:1rem 0 0.6rem;">
+            <div>
+              <h3 style="margin:0;font-size:1.12rem;">2.1. Bóveda Interactiva: Los 26 Vídeos <code>.MP4</code> Limpios en <code>assets/scrolltide/</code></h3>
+              <p style="margin:0.2rem 0 0;font-size:0.82rem;color:var(--text-secondary);">Pasa el ratón por encima para previsualizar el bucle en vivo, cárgales en el Teatro 3D superior en 1 clic, descárgalos o copia su bloque HTML listo para tus proyectos.</p>
+            </div>
+            <div style="display:flex;gap:0.4rem;flex-wrap:wrap;" id="st-mp4-filter-bar">
+              <button type="button" class="st-pill-btn active" data-mp4-filter="all">Todos los Vídeos (26)</button>
+              <button type="button" class="st-pill-btn" data-mp4-filter="template">🏔️ Plantillas Hero (20)</button>
+              <button type="button" class="st-pill-btn" data-mp4-filter="shader">✨ Shaders .MP4 (6)</button>
+            </div>
+          </div>
+
+          <div class="st-mp4-vault-grid" id="st-mp4-vault-grid"></div>
+
+          <h3 style="margin-top:2rem;">2.2. Catálogo «Pick &amp; Send»: Los 8 Motores Visuales Estilo Scrolltide (<code>#ST-01</code> a <code>#ST-08</code>)</h3>
           <p>
-            Cada tarjeta muestra un efecto de <code>scrolltide.co</code> funcionando en miniatura y contiene debajo su <strong>receta de código matemática (Zero-CDN)</strong>. Selecciona los efectos que quieras combinar en tu presentación y pulsa <strong><code>📋 Copiar Prompt con los Motores #ST Seleccionados</code></strong> para que VS Code Copilot construya tu presentación usándolos sin inventar ni recortar código:
+            Selecciona los motores arquitectónicos que quieras combinar en tu presentación y pulsa <strong><code>📋 Copiar Prompt con los Motores #ST Seleccionados</code></strong> para que VS Code Copilot construya tu presentación usándolos sin inventar ni recortar código:
           </p>
 
           <div style="background:rgba(10,15,29,0.95);border:1px solid rgba(16,185,129,0.45);border-radius:14px;padding:1rem 1.2rem;margin:1.2rem 0;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:0.8rem;">
@@ -640,17 +756,57 @@
       </section>
 
       <!-- =====================================================================
-           SECCIÓN 03 · PROMPTS MAESTROS Y COMANDO /scrolltide.deck EN VS CODE
+           SECCIÓN 03 · GUÍA DE APLICACIÓN EN PROYECTOS + COMANDO /scrolltide.deck
            ===================================================================== -->
       <section id="prompts-maestros" class="transcript-section" data-st-group="prompts">
         <div class="section-header">
           <span class="section-number">03</span>
-          <h2 class="section-title">Comando <code>/scrolltide.deck</code> para VS Code Copilot y Prompts de Estudio listos para Ejecutar</h2>
+          <h2 class="section-title">Cómo Aplicar estas Plantillas y Vídeos <code>.MP4</code> en Tus Proyectos + Comando <code>/scrolltide.deck</code></h2>
         </div>
         <div class="section-divider"></div>
         <div class="transcript-text">
+          <p class="editorial-lead">
+            Tienes <strong>tres formas directas de aplicar las plantillas y los 26 vídeos <code>.mp4</code> limpios</strong> en tus proyectos reales, según quieras crear una presentación ejecutiva en un único archivo <code>.html</code>, una landing interna de proyecto o pedirle a GitHub Copilot en VS Code que la construya a partir de tus documentos.
+          </p>
+
+          <div class="st-grid-2" style="margin:1.25rem 0 1.75rem;">
+            <div class="st-comp-card">
+              <div>
+                <span class="st-comp-id">VÍA 1 · USO DIRECTO DE LOS .MP4 LIMPIOS</span>
+                <h4 class="st-comp-title" style="margin-top:0.45rem;">En tus páginas HTML, portales o presentaciones con vídeo</h4>
+                <p class="st-comp-desc" style="margin-bottom:0.65rem;">
+                  Copia la carpeta <code>assets/scrolltide/</code> a tu proyecto (o usa cualquiera de los 26 archivos <code>.mp4</code> descargables de la Sección 02). Coloca siempre <strong>3 capas en orden</strong>: 1) <code>&lt;video autoplay muted loop playsinline&gt;</code> con el <code>.mp4</code> limpio, 2) un overlay oscuro <code>.scrim</code> para garantizar contraste tipográfico AAA, y 3) tu contenido HTML encima.
+                </p>
+                <pre class="st-pre" style="border-radius:8px;font-size:0.69rem;max-height:195px;">&lt;section style="position:relative;min-height:100vh;overflow:hidden;background:#04070d;color:#f8fafc;"&gt;
+  &lt;!-- 1. Vídeo .MP4 100% limpio de texto --&gt;
+  &lt;video autoplay muted loop playsinline poster="assets/scrolltide/ridge-poster.jpg"
+         style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;"&gt;
+    &lt;source src="assets/scrolltide/ridge.mp4" type="video/mp4"&gt;
+  &lt;/video&gt;
+  &lt;!-- 2. Velo atmosférico (Scrim) para legibilidad perfecta --&gt;
+  &lt;div style="position:absolute;inset:0;z-index:1;background:radial-gradient(circle at 50% 42%,rgba(4,9,14,0.18) 0%,rgba(4,8,12,0.84) 100%);"&gt;&lt;/div&gt;
+  &lt;!-- 3. Tu contenido editorial en Español (5 Zonas Ridge) --&gt;
+  &lt;div style="position:relative;z-index:2;padding:3rem;"&gt;
+    &lt;h1&gt;Tu Título Ejecutivo&lt;/h1&gt;
+  &lt;/div&gt;
+&lt;/section&gt;</pre>
+              </div>
+            </div>
+
+            <div class="st-comp-card">
+              <div>
+                <span class="st-comp-id">VÍA 2 · COMANDO /scrolltide.deck + SKILL EN VS CODE</span>
+                <h4 class="st-comp-title" style="margin-top:0.45rem;">Automatizado con GitHub Copilot en este repositorio</h4>
+                <p class="st-comp-desc" style="margin-bottom:0.65rem;">
+                  Ya tienes instalados en este proyecto tanto el comando <strong><code>.github/prompts/scrolltide.deck.prompt.md</code></strong> como la skill <strong><code>skills/scrolltide-cinematic-decks/SKILL.md</code></strong>. Abre el Chat de Copilot en VS Code y escribe:
+                </p>
+                <pre class="st-pre" style="border-radius:8px;font-size:0.69rem;max-height:195px;">/scrolltide.deck Crea una presentación en un archivo presentacion-mi-proyecto.html usando la arquitectura de 5 zonas de Ridge con el vídeo limpio assets/scrolltide/dune.mp4 en el Hero, un carril de 4 tarjetas 3:4 con los vídeos limpios zephyr.mp4, synapse.mp4, helix.mp4 y nebula.mp4 en el Acto II, y un simulador interactivo en el Acto III para defender nuestro proyecto de [TEMA].</pre>
+              </div>
+            </div>
+          </div>
+
           <p>
-            Si lo guardas en <code>.github/prompts/scrolltide.deck.prompt.md</code> dentro de tu proyecto de VS Code (junto a los comandos <code>/speckit.*</code> del Cuaderno 10), tendrás el comando <strong><code>/scrolltide.deck</code></strong> siempre disponible en el chat de GitHub Copilot. Lleva el motor matemático incrustado para que Copilot solo tenga que diseñar el guion visual de tus escenas y entregarte un archivo <code>.html</code> impecable.
+            Aquí tienes el archivo oficial <code>.github/prompts/scrolltide.deck.prompt.md</code> ya instalado en el repositorio (puedes copiarlo o descargarlo para llevarlo a otros proyectos de VS Code):
           </p>
 
           <div class="st-codehead">
@@ -661,32 +817,22 @@
             </div>
           </div>
           <pre class="st-pre" id="st-skill-pre">---
-description: Genera una presentación interactiva 2.5D/3D estilo Scrolltide en un único archivo .HTML autónomo con Shaders en vivo, Objeto Héroe 3D y Scrollytelling
+description: Genera una presentación interactiva 2.5D/3D estilo Scrolltide en un único archivo .HTML autónomo con Vídeos .MP4 Limpios o Shaders en vivo, Objeto Héroe 3D y Scrollytelling
 agent: agent
 ---
-# /scrolltide.deck · Generador de Presentaciones Cinematográficas 2.5D/3D (Zero-CDN)
+# /scrolltide.deck · Generador de Presentaciones Cinematográficas 2.5D/3D (Vídeos .MP4 Limpios + Zero-CDN Shaders)
 
 Actúa como Principal Creative Technologist (nivel Apple Keynote / Linear / Scrolltide).
-Tu objetivo es crear un **único archivo `.html` 100% autónomo (sin librerías externas ni CDNs que puedan bloquearse)** que funcione como una presentación cinematográfica interactiva sobre el tema que indique el usuario.
+Tu objetivo es crear un **archivo `.html` autónomo** que funcione como una presentación cinematográfica interactiva sobre el tema que indique el usuario, sin solapamientos visuales ni textos quemados.
 
 ## Reglas de Arquitectura Obligatorias (NO NEGOCIABLES)
-1. **Patrón Single Sticky Stage + Cámara Lerp ($p \in [0, 1]$):**
-   - El usuario avanza entre $N$ escenas (por defecto 5) usando la rueda del ratón (`wheel`), las teclas `ArrowRight`/`ArrowLeft`/`Space` o la barra inferior de capítulos.
-   - Mantén dos variables globales: `targetP` (índice de escena o progreso continuo) y `currentP` interpolado en cada frame con `currentP += (targetP - currentP) * 0.075` dentro de `requestAnimationFrame`.
-2. **Tres Capas Visuales Superpuestas a 60 FPS:**
-   - **Capa 1 (`&lt;canvas id="bg-shader"&gt;`):** Fondo procedural animado en tiempo real (ondas topográficas 3D tipo *RIDGE*, *Liquid Metal*, *Silk Aurora* o *Halftone Matrix*) reactivo a la posición del cursor `(mx, my)` y al progreso `currentP`.
-   - **Capa 2 (`&lt;canvas id="hero-3d"&gt;`):** Objeto Héroe 3D proyectado con perspectiva real (`fov / (fov + z)`), rotable con el ratón y cuyas coordenadas `(x, y, z)` hacen **morphing continuo entre escenas** según `currentP`:
-     * Estado `ring`: Anillo orbital 3D de nodos/pilares que gira al cambiar de escena.
-     * Estado `stack`: Arquitectura isométrica en capas que se separa verticalmente (*Exploded View*) para explicar cómo funciona el sistema por dentro.
-     * Estado `globe`: Esfera geodésica 3D con arcos luminosos entre nodos.
-     * Estado `tunnel`: Túnel en el eje Z por el que avanza la cámara.
-   - **Capa 3 (Tarjeta Narrativa 2.5D + Tipografía Cinética):**
-     * Panel en cristal óptico (`backdrop-filter: blur(22px) saturate(170%)`, borde `1px solid rgba(255,255,255,0.14)`), con inclinación magnética 3D (`rotateX`, `rotateY`) al mover el ratón.
-     * Al cambiar de escena, el titular emerge palabra por palabra con transición de desenfoque (`filter: blur(10px) -&gt; blur(0px)` + `translateY`).
-3. **Estructura en 3 Bloques Limpios:**
-   - `&lt;style&gt;`: Design tokens oscuros (`#04060d`), cristal esmerilado y controles.
-   - `&lt;script id="deck-data"&gt;`: Objeto `window.DECK_SCENES = [...]` con `kicker`, `title`, `lead`, `pillars` (3–4 puntos clave con insignia y descripción), `metric` destacada y `model` (`ring` | `stack` | `globe` | `tunnel`) de cada escena.
-   - `&lt;script id="deck-engine"&gt;`: Motor completo de renderizado 2D/3D, bucle `requestAnimationFrame` y controles de teclado/pantalla completa.
+1. **Prohibido usar vídeos con texto quemado (`/previews/*.mp4`):**
+   - Utiliza siempre los **26 vídeos `.mp4` limpios** en `assets/scrolltide/<slug>.mp4` (`ridge.mp4`, `zephyr.mp4`, `synapse.mp4`, `selene.mp4`, `helix.mp4`, `nebula.mp4`, `dune.mp4`, `rednova.mp4`, `aurora.mp4`, `glacier.mp4`, `eclipse.mp4`, `nocturne.mp4`, `meridian.mp4`, `kage.mp4`, `anchor.mp4`, `clover.mp4`, `ember.mp4`, `frost.mp4`, `tide.mp4`, `comet.mp4`, `shader-chrome.mp4`, `shader-halftone.mp4`, `shader-cobalt.mp4`, `shader-cell.mp4`, `shader-aurora-noir.mp4`, `shader-noir-mesh.mp4`) o un Shader procedural en `&lt;canvas&gt;`.
+2. **Separación Estricta de Capas (Cero Solapamientos):**
+   - Nunca apiles a la vez un vídeo figurativo y un shader de partículas opaco sin conmutar su opacidad (`opacity: 0` en el que no esté activo).
+   - En los títulos cinéticos con `&lt;span&gt;` hijos animados (`transform` / `filter: blur`), usa color sólido `#f8fafc` y nunca `-webkit-text-fill-color: transparent` en el contenedor padre.
+3. **Patrón Single Sticky Stage + Cámara Lerp ($p \in [0, 1]$) o 5 Zonas Editoriales Ridge:**
+   - Interpolación suave `currentP += (targetP - currentP) * 0.08` a 60 FPS, control con rueda del ratón, teclado (`ArrowRight`/`ArrowLeft`) y barra de escenas.
 4. **Prohibido truncar código:** Entrega el archivo `.html` íntegro y funcional de principio a fin.</pre>
 
           <h3 style="margin-top:2rem;">3.1. Tres Prompts Directos para Casos Habituales (Copiar y Pegar en VS Code o M365 Copilot)</h3>
@@ -700,12 +846,12 @@ Tu objetivo es crear un **único archivo `.html` 100% autónomo (sin librerías 
       <section id="ensamblador-deck" class="transcript-section" data-st-group="builder">
         <div class="section-header">
           <span class="section-number">04</span>
-          <h2 class="section-title">Generador en Vivo: Crea tu Propia Presentación Estilo Scrolltide en 60 Segundos</h2>
+          <h2 class="section-title">Generador en Vivo: Crea tu Propia Presentación con Vídeos <code>.MP4</code> Limpios o Shaders en 60 Segundos</h2>
         </div>
         <div class="section-divider"></div>
         <div class="transcript-text">
           <p>
-            Personaliza el título, el estilo de Shader y el guion de tus escenas. Puedes <strong>cargar tu guion directamente en el Teatro 3D de la Sección 01 para verlo en vivo</strong>, <strong>descargar el archivo <code>.html</code> terminado</strong> o <strong>copiar el prompt completo</strong> para que Copilot lo amplíe en VS Code:
+            Elige el título, selecciona cualquiera de los <strong>26 vídeos <code>.mp4</code> limpios de Scrolltide</strong> (o un Shader procedural Zero-CDN) y personaliza el guion de tus escenas. Puedes <strong>cargar tu presentación en el Teatro 3D de la Sección 01</strong> o <strong>descargar el archivo <code>.html</code> terminado</strong> listo para usar en tus proyectos:
           </p>
 
           <div class="st-builder-grid">
@@ -715,16 +861,43 @@ Tu objetivo es crear un **único archivo `.html` 100% autónomo (sin librerías 
                 <input type="text" id="b-deck-title" value="Transformación Agéntica en Banca de Empresas 2027">
               </div>
               <div class="st-field">
-                <label>Fondo Shader por defecto</label>
+                <label>Fondo Cinematográfico (Vídeo .MP4 Limpio o Shader Procedural)</label>
                 <select id="b-shader">
-                  <option value="ridge">RIDGE 3D Topographic Contours (Curvas de nivel en perspectiva)</option>
-                  <option value="liquid">Liquid Metal Chrome (Cromo oscuro reflectante)</option>
-                  <option value="aurora">Silk Aurora (Cortinas de luz ejecutivas)</option>
-                  <option value="halftone">Halftone Wave Matrix (Matriz de ondas)</option>
+                  <optgroup label="🎬 Vídeos .MP4 Limpios (Carpeta assets/scrolltide/)">
+                    <option value="mp4:ridge">Vídeo Limpio · ridge.mp4 (Caverna &amp; Planeta)</option>
+                    <option value="mp4:dune">Vídeo Limpio · dune.mp4 (Monolito Solar)</option>
+                    <option value="mp4:rednova">Vídeo Limpio · rednova.mp4 (Eclipse Dorado)</option>
+                    <option value="mp4:zephyr">Vídeo Limpio · zephyr.mp4 (Pabellón Flotante)</option>
+                    <option value="mp4:synapse">Vídeo Limpio · synapse.mp4 (Escalera Aurora)</option>
+                    <option value="mp4:helix">Vídeo Limpio · helix.mp4 (Domo Telemetría 360°)</option>
+                    <option value="mp4:nebula">Vídeo Limpio · nebula.mp4 (Puente de Roca)</option>
+                    <option value="mp4:selene">Vídeo Limpio · selene.mp4 (Órbita Lunar)</option>
+                    <option value="mp4:aurora">Vídeo Limpio · aurora.mp4 (Horizonte Ámbar)</option>
+                    <option value="mp4:glacier">Vídeo Limpio · glacier.mp4 (Cielo &amp; Claridad)</option>
+                    <option value="mp4:eclipse">Vídeo Limpio · eclipse.mp4 (Catarata Basáltica)</option>
+                    <option value="mp4:nocturne">Vídeo Limpio · nocturne.mp4 (Valle Nocturno)</option>
+                    <option value="mp4:meridian">Vídeo Limpio · meridian.mp4 (Travesía Global)</option>
+                    <option value="mp4:kage">Vídeo Limpio · kage.mp4 (Geometría Cinética)</option>
+                    <option value="mp4:anchor">Vídeo Limpio · anchor.mp4 (Solidez Marítima)</option>
+                    <option value="mp4:clover">Vídeo Limpio · clover.mp4 (Ecosistema Orgánico)</option>
+                    <option value="mp4:ember">Vídeo Limpio · ember.mp4 (Forja &amp; Energía)</option>
+                    <option value="mp4:frost">Vídeo Limpio · frost.mp4 (Cristal Ártico)</option>
+                    <option value="mp4:tide">Vídeo Limpio · tide.mp4 (Marea &amp; Liquidez)</option>
+                    <option value="mp4:comet">Vídeo Limpio · comet.mp4 (Velocidad Estelar)</option>
+                    <option value="mp4:shader-chrome">Vídeo Shader · shader-chrome.mp4 (Liquid Chrome)</option>
+                    <option value="mp4:shader-cobalt">Vídeo Shader · shader-cobalt.mp4 (Cobalt Waves)</option>
+                    <option value="mp4:shader-aurora-noir">Vídeo Shader · shader-aurora-noir.mp4 (Aurora Noir)</option>
+                  </optgroup>
+                  <optgroup label="✨ Shaders Procedurales en Canvas (Zero-Asset)">
+                    <option value="ridge">Shader Canvas · RIDGE 3D Topographic Contours</option>
+                    <option value="liquid">Shader Canvas · Liquid Metal Chrome</option>
+                    <option value="aurora">Shader Canvas · Silk Aurora</option>
+                    <option value="halftone">Shader Canvas · Halftone Wave Matrix</option>
+                  </optgroup>
                 </select>
               </div>
               <div class="st-field">
-                <label>Guion de Escenas (1 línea por escena: <code>Título | Idea clave | Modelo 3D [ring/stack/globe/tunnel] | Insignia final</code>)</label>
+                <label>Guion de Escenas (1 línea por escena: <code>Título | Idea clave | Modelo 3D [ring/stack/globe/tunnel/none] | Insignia final</code>)</label>
                 <textarea id="b-scenes" style="min-height:165px;">El cuello de botella actual | El 70% del tiempo analítico se pierde validando cruces manuales y hojas desconectadas. | tunnel | OBJETIVO: CERO FRICCIÓN
 Arquitectura en 3 Capas | Separamos Constitución, Catálogo Persistente de Tablas y Especificación Auditable por proyecto. | stack | ARQUITECTURA BLINDADA
 Los 4 Pilares del Motor | Perfilado en 1 ejecución, safe_join automático, memoria compartida y narrativa ejecutiva. | ring | 4 PILARES EN PRODUCCIÓN
@@ -1096,14 +1269,144 @@ Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de aná
             ]
           }
         ]
+      },
+      helix_riesgos: {
+        name: '5. HELIX · Admisión & Riesgos STP en Tiempo Real',
+        shader: 'video',
+        videoSlug: 'helix',
+        scenes: [
+          {
+            kicker: 'DOMO 01 / 04 · TELEMETRÍA CREDITICIA 360°',
+            title: 'De expedientes estáticos a evaluación continua de circulante',
+            lead: 'Sustituimos la revisión trimestral manual por un domo de señales transaccionales, fiscales y registrales conectadas en tiempo real.',
+            model: 'ring',
+            metric: 'TASA DE DECISIÓN AUTOMÁTICA (STP): 78% EN RENOVACIONES',
+            pillars: [
+              { b: 'CASH', t: 'Ventana móvil de 90 días', d: 'Monitorización automática de flujos de cobro, pago y concentración de deudores.', hl: true },
+              { b: 'RORWA', t: 'Cálculo instantáneo de suelo EVA', d: 'Calibración en vivo del precio mínimo que garantiza creación de valor económico.', hl: true }
+            ]
+          },
+          {
+            kicker: 'DOMO 02 / 04 · AUDITORÍA MULTIMODAL DE FACTURAS',
+            title: 'Lectura y verificación de remesas de Factoring en 12 segundos',
+            lead: 'El agente documental cruza cada factura cedida con el histórico de pagos del librado y bloquea duplicidades antes del desembolso.',
+            model: 'stack',
+            metric: '0,0% DUPLICIDADES · DESEMBOLSO EN LA MISMA SESIÓN WEB',
+            pillars: [
+              { b: 'DOC-AI', t: 'Extracción de facturas y albaranes', d: 'Validación de NIF, vencimientos y límites por deudor sin carga manual.', hl: true },
+              { b: 'ALERTA', t: 'Detección temprana de dilución', d: 'Identifica abonos o devoluciones anómalas en la cartera cedida.', hl: false }
+            ]
+          },
+          {
+            kicker: 'DOMO 03 / 04 · DOSSIER PRE-REDACTADO PARA ANALISTA',
+            title: 'En el 22% no automático, el Comité recibe la nota redactada',
+            lead: 'Cuando una operación supera el corredor STP, el especialista de riesgos recibe el expediente conciliado con citas directas al balance.',
+            model: 'globe',
+            metric: '-65% TIEMPO DE PREPARACIÓN DE COMITÉ DE RIESGOS',
+            pillars: [
+              { b: 'MEMO', t: 'Síntesis ejecutiva con trazabilidad', d: 'Cada ratio financiero enlaza con la casilla exacta del Modelo 200.', hl: true },
+              { b: 'IFRS9', t: 'Simulación de impacto en provisiones', d: 'Pre-evaluación de triggers SICR y consumo de capital.', hl: true }
+            ]
+          },
+          {
+            kicker: 'DOMO 04 / 04 · IMPACTO EN CARTERA EMPRESAS',
+            title: 'Crecimiento sano con menor coste operativo y máxima trazabilidad',
+            lead: 'Liberamos a la red y a riesgos de tareas mecánicas para concentrar el talento en la estructuración de operaciones de alto valor.',
+            model: 'tunnel',
+            metric: '+24 PB DE MEJORA EN RORWA DE NUEVA PRODUCCIÓN',
+            pillars: [
+              { b: 'VELOCIDAD', t: 'Respuesta en el día al cliente', d: 'Elimina la fuga de operaciones hacia competidores por demora.', hl: true }
+            ]
+          }
+        ]
+      },
+      dune_horizonte: {
+        name: '6. DUNE · Plan Director de Banca de Empresas 2027',
+        shader: 'video',
+        videoSlug: 'dune',
+        scenes: [
+          {
+            kicker: 'HORIZONTE 01 / 04 · VISIÓN 2027',
+            title: 'Un nuevo estándar de relación digital y humana con las empresas',
+            lead: 'Combinamos la inmediatez del autoservicio digital con el asesoramiento experto apoyado por copilotos especializados.',
+            model: 'globe',
+            metric: 'OBJETIVO 2027: LIDERAZGO EN NPS Y EFICIENCIA COMERCIAL',
+            pillars: [
+              { b: 'OMNI', t: 'Continuidad total Web ↔ Gestor', d: 'El cliente nunca repite un documento ni una simulación al cambiar de canal.', hl: true },
+              { b: 'DATOS', t: 'Plataforma única sobre Lakehouse', d: 'Un solo catálogo gobernado para Comercial, Riesgos y Canales Digitales.', hl: true }
+            ]
+          },
+          {
+            kicker: 'HORIZONTE 02 / 04 · LAS 3 PALANCAS DE CRECIMIENTO',
+            title: 'Captación ágil, vinculación transaccional y retención predictiva',
+            lead: 'Tres motores de IA conectados directamente a la cuenta de resultados de cada Dirección Territorial.',
+            model: 'ring',
+            metric: '+18,4 M€ DE IMPACTO ANUALIZADO EN MARGEN ORDINARIO',
+            pillars: [
+              { b: 'ALTA', t: 'Onboarding KYB en 45 segundos', d: 'Eliminación del cuello de botella jurídico en captación de pymes.', hl: true },
+              { b: 'NBA', t: 'Ofertas en el segundo exacto', d: 'Inyección contextual de Confirming y divisa en el flujo de pagos.', hl: true }
+            ]
+          },
+          {
+            kicker: 'HORIZONTE 03 / 04 · ARQUITECTURA ESCALABLE',
+            title: 'Especificaciones reutilizables y seguridad bancaria por diseño',
+            lead: 'Cada caso de uso se construye sobre contratos auditables con cero exposición de datos personales.',
+            model: 'stack',
+            metric: '85% DE REUTILIZACIÓN DE COMPONENTES ENTRE PROYECTOS',
+            pillars: [
+              { b: 'SPEC-KIT', t: 'Desarrollo guiado por especificaciones', d: 'Trazabilidad completa desde el requisito de negocio hasta el código.', hl: true }
+            ]
+          },
+          {
+            kicker: 'HORIZONTE 04 / 04 · CALENDARIO DE EJECUCIÓN',
+            title: 'Despliegue trimestral con retorno medible desde el Día 30',
+            lead: 'Avanzamos por olas trimestrales priorizadas por impacto en margen y facilidad de adopción en la red.',
+            model: 'tunnel',
+            metric: 'DECISIÓN: LANZAMIENTO DE OLA 1 EN 2 TERRITORIALES PILOTO',
+            pillars: [
+              { b: 'Q1–Q4', t: 'Seguimiento mensual en Comité', d: 'Cuadro de mando de adopción, conversión y ahorro de horas.', hl: true }
+            ]
+          }
+        ]
       }
     };
 
+    // Catálogo completo de los 26 vídeos .MP4 limpios descargados en assets/scrolltide/
+    const CLEAN_MP4_CATALOG = [
+      { slug: 'ridge', name: 'Ridge · Caverna & Planeta', kind: 'template', r2: 'templates/ridge/hero.mp4', desc: 'Apertura de roca basáltica hacia cordillera nocturna y planeta iluminado. Ideal para OKRs y Visión Comercial.' },
+      { slug: 'zephyr', name: 'Zephyr · Pabellón Flotante', kind: 'template', r2: 'templates/zephyr/hero.mp4', desc: 'Arquitectura minimalista suspendida sobre bruma cálida. Perfecto para Onboarding KYB y gobierno.' },
+      { slug: 'synapse', name: 'Synapse (Aether) · Escalera Aurora', kind: 'template', r2: 'templates/aether/hero.mp4', desc: 'Ascenso luminoso hacia aurora verde-cian nocturna. Ideal para flujos agénticos y Next Best Action.' },
+      { slug: 'selene', name: 'Selene (Moon) · Órbita Lunar', kind: 'template', r2: 'templates/moon/hero.mp4', desc: 'Superficie lunar con cráteres nítidos y la Luna elevándose en el horizonte espacial.' },
+      { slug: 'helix', name: 'Helix (Aperture) · Domo de Datos', kind: 'template', r2: 'templates/aperture/hero.mp4', desc: 'Cámara inmersiva 360° con anillos de telemetría financiera y riesgo en tiempo real.' },
+      { slug: 'nebula', name: 'Nebula · Puente de Roca', kind: 'template', r2: 'templates/nebula/hero.mp4', desc: 'Arco natural de piedra uniendo dos cumbres sobre un mar de nubes. Metáfora del Puente Web ↔ Gestor.' },
+      { slug: 'dune', name: 'Dune · Monolito Solar', kind: 'template', r2: 'templates/dune/hero.mp4', desc: 'Cañón de roca abriéndose hacia un sol ámbar sobre un océano en calma.' },
+      { slug: 'rednova', name: 'Rednova · Eclipse Dorado', kind: 'template', r2: 'templates/rednova/hero.mp4', desc: 'Corona solar y eclipse total sobre dunas oscuras con atmósfera cinematográfica.' },
+      { slug: 'aurora', name: 'Aurora · Horizonte Ámbar', kind: 'template', r2: 'templates/aurora/hero.mp4', desc: 'Monolito de luz cálida y silueta gran turismo frente a un horizonte dorado.' },
+      { slug: 'glacier', name: 'Glacier · Cielo & Claridad', kind: 'template', r2: 'templates/glacier/hero.mp4', desc: 'Vuelo sereno entre nubes doradas al amanecer con máxima limpieza visual.' },
+      { slug: 'eclipse', name: 'Eclipse · Catarata Basáltica', kind: 'template', r2: 'templates/eclipse/hero.mp4', desc: 'Caída de agua cristalina entre columnas de basalto nórdico envueltas en bruma.' },
+      { slug: 'nocturne', name: 'Nocturne · Valle Nocturno', kind: 'template', r2: 'templates/nocturne/hero.mp4', desc: 'Refugio arquitectónico iluminado en medio de un valle alpino bajo la luz de la luna.' },
+      { slug: 'meridian', name: 'Meridian · Travesía Global', kind: 'template', r2: 'templates/meridian/hero.mp4', desc: 'Horizonte oceánico y líneas de navegación global para presentaciones de Trade Finance.' },
+      { slug: 'kage', name: 'Kage · Geometría Cinética', kind: 'template', r2: 'templates/kage/hero.mp4', desc: 'Contraste dramático en claroscuro con movimiento de cámara de precisión.' },
+      { slug: 'anchor', name: 'Anchor · Solidez Institucional', kind: 'template', r2: 'templates/anchor/hero.mp4', desc: 'Escena marítima de alta densidad visual para bloques de solvencia, RORWA y balance.' },
+      { slug: 'clover', name: 'Clover · Ecosistema Orgánico', kind: 'template', r2: 'templates/clover/hero.mp4', desc: 'Texturas naturales en movimiento suave para líneas de negocio sostenible y transición.' },
+      { slug: 'ember', name: 'Ember · Forja & Energía', kind: 'template', r2: 'templates/ember/hero.mp4', desc: 'Partículas incandescentes y energía térmica sobre fondo oscuro de alto contraste.' },
+      { slug: 'frost', name: 'Frost · Cristal Ártico', kind: 'template', r2: 'templates/frost/hero.mp4', desc: 'Formaciones de hielo puro y refracción limpia para arquitecturas de datos y Unity Catalog.' },
+      { slug: 'tide', name: 'Tide · Marea & Liquidez', kind: 'template', r2: 'templates/tide/hero.mp4', desc: 'Movimiento hipnótico de olas oscuras para narrativas de circulante y tesorería corporativa.' },
+      { slug: 'comet', name: 'Comet · Velocidad Estelar', kind: 'template', r2: 'templates/comet/hero.mp4', desc: 'Estela luminosa cruzando el espacio profundo para ilustrar velocidad de respuesta en segundos.' },
+      { slug: 'shader-chrome', name: 'Shader · Liquid Chrome', kind: 'shader', r2: 'shaders/chrome-liquid.mp4', desc: 'Metal líquido reflectante en bucle continuo sin distracciones figurativas.' },
+      { slug: 'shader-halftone', name: 'Shader · Halftone Matrix', kind: 'shader', r2: 'shaders/halftone.mp4', desc: 'Matriz de puntos cinéticos estilo telemetría de datos para fondos técnicos.' },
+      { slug: 'shader-cobalt', name: 'Shader · Cobalt Waves', kind: 'shader', r2: 'shaders/cobalt.mp4', desc: 'Ondas de seda azul cobalto para portadas financieras elegantes.' },
+      { slug: 'shader-cell', name: 'Shader · Cellular Network', kind: 'shader', r2: 'shaders/cell.mp4', desc: 'Malla orgánica de nodos interconectados para explicar grafos UBO y multi-agentes.' },
+      { slug: 'shader-aurora-noir', name: 'Shader · Aurora Noir', kind: 'shader', r2: 'shaders/aurora-noir.mp4', desc: 'Cortinas de luz esmeralda sobre negro puro para máximo contraste tipográfico.' },
+      { slug: 'shader-noir-mesh', name: 'Shader · Noir Topo Mesh', kind: 'shader', r2: 'shaders/noir-mesh.mp4', desc: 'Superficie topográfica oscura ideal para superponer tablas financieras y KPIs.' }
+    ];
+
     // -------------------------------------------------------------------------
-    // 3. Motor Gráfico en Vivo (Shader Canvas + 3D Morphing Canvas + Scrollytelling)
+    // 3. Motor Gráfico en Vivo (Vídeo .MP4 Limpio ó Shader Canvas + 3D Morphing)
     // -------------------------------------------------------------------------
     let activeDeckKey = 'ridge_ia';
-    let activeShader = 'ridge';
+    let activeShader = 'video'; // 'video' | 'ridge' | 'liquid' | 'aurora' | 'halftone'
+    let activeVideoSlug = 'ridge';
     let modelOverride = 'auto';
     let sceneIdx = 0;
     let targetP = 0;   // 0 .. scenes.length - 1
@@ -1158,7 +1461,7 @@ Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de aná
     });
 
     function getActiveDeck() {
-      return DECKS[activeDeckKey] || DECKS.ia_proyecto;
+      return DECKS[activeDeckKey] || DECKS.ridge_ia;
     }
 
     function getActiveModelMode() {
@@ -1168,16 +1471,45 @@ Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de aná
       return s.model || 'ring';
     }
 
+    function syncStageLayers() {
+      const bgVideo = $('#st-bg-video');
+      const shCanvas = $('#st-shader-canvas');
+      if (!bgVideo || !shCanvas) return;
+      if (activeShader === 'video') {
+        bgVideo.style.opacity = '0.92';
+        shCanvas.style.opacity = '0';
+      } else {
+        bgVideo.style.opacity = '0';
+        shCanvas.style.opacity = '0.96';
+      }
+      $$('[data-shader]').forEach(b => b.classList.toggle('active', b.dataset.shader === activeShader));
+    }
+
+    function setStageCleanVideo(slug) {
+      activeVideoSlug = slug || 'ridge';
+      activeShader = 'video';
+      const bgVideo = $('#st-bg-video');
+      const sel = $('#st-clean-video-select');
+      if (sel && sel.value !== activeVideoSlug) sel.value = activeVideoSlug;
+      if (bgVideo) {
+        bgVideo.poster = `../assets/scrolltide/${activeVideoSlug}-poster.jpg?v=2`;
+        bgVideo.src = `../assets/scrolltide/${activeVideoSlug}.mp4?v=2`;
+        bgVideo.load();
+        bgVideo.play().catch(() => {});
+      }
+      syncStageLayers();
+    }
+
     function renderNarrativeCard() {
       const deck = getActiveDeck();
       const s = deck.scenes[sceneIdx] || deck.scenes[0];
 
       $('#st-scene-kicker').textContent = s.kicker;
-      // Kinetic Title: palabra por palabra con escalonado
+      // Kinetic Title: palabra por palabra con escalonado y color nítido (#f8fafc)
       const words = s.title.split(' ');
       const titleEl = $('#st-scene-title');
       titleEl.innerHTML = words.map((w, idx) =>
-        `<span class="st-kinetic-word" style="opacity:0;filter:blur(10px);transform:translateY(10px);transition-delay:${idx * 32}ms">${w}&nbsp;</span>`
+        `<span class="st-kinetic-word" style="opacity:0;filter:blur(8px);transform:translateY(8px);transition-delay:${idx * 28}ms">${w}&nbsp;</span>`
       ).join('');
       requestAnimationFrame(() => {
         $$('.st-kinetic-word', titleEl).forEach(el => {
@@ -1222,19 +1554,18 @@ Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de aná
       renderNarrativeCard();
     }
 
-    // Dibujo del Shader Procedural en Canvas 2D de alta velocidad
+    // Dibujo del Shader Procedural en Canvas 2D (solo cuando activeShader !== 'video')
     function drawShader(ctx, w, h, t) {
       ctx.clearRect(0, 0, w, h);
+      if (activeShader === 'video') return;
       const grd = ctx.createLinearGradient(0, 0, w, h);
       if (activeShader === 'ridge') {
-        // RIDGE 3D Topographic Contour Shader (Estilo scrolltide.co/templates/ridge)
         grd.addColorStop(0, '#04060c');
         grd.addColorStop(0.55, '#0b1325');
         grd.addColorStop(1, '#070b14');
         ctx.fillStyle = grd;
         ctx.fillRect(0, 0, w, h);
 
-        // Sol de horizonte topográfico reactivo a currentP
         const sunX = w * (0.64 + Math.sin(currentP * 0.7) * 0.08 + (mouseUV.x - 0.5) * 0.06);
         const sunY = h * 0.34;
         const sunGlow = ctx.createRadialGradient(sunX, sunY, 10, sunX, sunY, Math.max(w, h) * 0.48);
@@ -1244,10 +1575,9 @@ Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de aná
         ctx.fillStyle = sunGlow;
         ctx.fillRect(0, 0, w, h);
 
-        // 28 crestas de elevación 3D con oclusión del pintor (atrás hacia adelante)
         const rows = 28;
         for (let r = 0; r < rows; r++) {
-          const depth = r / (rows - 1); // 0 = horizonte, 1 = frente
+          const depth = r / (rows - 1);
           const baseY = h * (0.28 + Math.pow(depth, 1.32) * 0.68);
           const amp = (18 + depth * 52);
           ctx.beginPath();
@@ -1279,7 +1609,6 @@ Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de aná
         grd.addColorStop(1, '#050814');
         ctx.fillStyle = grd;
         ctx.fillRect(0, 0, w, h);
-        // Ondas de cromo líquido
         for (let k = 0; k < 7; k++) {
           ctx.beginPath();
           const baseY = h * (0.18 + k * 0.11);
@@ -1314,7 +1643,6 @@ Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de aná
           ctx.fillRect(0, 0, w, h);
         });
       } else {
-        // Halftone Wave Matrix
         ctx.fillStyle = '#040711';
         ctx.fillRect(0, 0, w, h);
         const step = 28;
@@ -1334,15 +1662,15 @@ Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de aná
       }
     }
 
-    // Dibujo del Objeto Héroe 3D a la derecha del escenario
+    // Dibujo del Objeto Héroe 3D a la derecha del escenario (se oculta si mode === 'none')
     function drawHero3D(ctx, w, h, t) {
       ctx.clearRect(0, 0, w, h);
       const mode = getActiveModelMode();
+      if (mode === 'none') return;
       const centerX = w > 860 ? w * 0.69 : w * 0.5;
       const centerY = w > 860 ? h * 0.5 : h * 0.32;
       const fov = 440;
 
-      // Rotación suave + efecto de currentP
       if (!dragging) {
         rotY += 0.0055;
       }
@@ -1351,7 +1679,6 @@ Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de aná
       const cosY = Math.cos(effRotY), sinY = Math.sin(effRotY);
       const cosX = Math.cos(effRotX), sinX = Math.sin(effRotX);
 
-      // Si estamos en modo stack, dibujamos los 3 planos isométricos translúcidos
       if (mode === 'stack') {
         [-78, 0, 78].forEach((ly, idx) => {
           const corners = [
@@ -1378,7 +1705,6 @@ Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de aná
       const projected = [];
       nodes3D.forEach(n => {
         const tgt = n.targets[mode] || n.targets.ring;
-        // Interpolación elástica hacia la geometría de la escena activa
         n.x += (tgt.x - n.x) * 0.08;
         n.y += (tgt.y - n.y) * 0.08;
         n.z += (tgt.z - n.z) * 0.08;
@@ -1405,7 +1731,6 @@ Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de aná
 
       projected.sort((a, b) => b.z - a.z);
 
-      // Conectores luminosos entre nodos cercanos
       ctx.lineWidth = 0.85;
       for (let i = 0; i < projected.length; i++) {
         const a = projected[i];
@@ -1428,7 +1753,6 @@ Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de aná
         }
       }
 
-      // Dibujo de nodos 3D con brillo
       projected.forEach(p => {
         const r = Math.max(1.6, 4.2 * p.scale);
         const col = p.layer === 0 ? '#c4b5fd' : p.layer === 1 ? '#38bdf8' : '#34d399';
@@ -1469,13 +1793,12 @@ Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de aná
       resizeCanvases();
       window.addEventListener('resize', resizeCanvases);
 
-      // Interacción de rueda (Scrollytelling por pasos con bloqueo suave)
       let wheelCooldown = 0;
       viewport.addEventListener('wheel', (e) => {
         const deck = getActiveDeck();
         const atStart = sceneIdx === 0 && e.deltaY < 0;
         const atEnd = sceneIdx === deck.scenes.length - 1 && e.deltaY > 0;
-        if (atStart || atEnd) return; // deja hacer scroll de la página si está en los extremos
+        if (atStart || atEnd) return;
         e.preventDefault();
         const now = performance.now();
         if (now - wheelCooldown < 420) return;
@@ -1483,7 +1806,6 @@ Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de aná
         setScene(sceneIdx + (e.deltaY > 0 ? 1 : -1));
       }, { passive: false });
 
-      // Inclinación magnética 3D de la tarjeta y coordenadas del cursor
       viewport.addEventListener('mousemove', (e) => {
         const r = viewport.getBoundingClientRect();
         mouseUV.x = (e.clientX - r.left) / r.width;
@@ -1512,18 +1834,19 @@ Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de aná
       });
       window.addEventListener('mouseup', () => { dragging = false; });
 
-      // Botones del Teatro
       $('#st-prev-scene').addEventListener('click', () => setScene(sceneIdx - 1));
       $('#st-next-scene').addEventListener('click', () => {
         const deck = getActiveDeck();
         setScene((sceneIdx + 1) % deck.scenes.length);
       });
 
-      const DECK_VIDEOS = {
-        ridge_ia: { mp4: '../assets/scrolltide/ridge.mp4', poster: '../assets/scrolltide/ridge-poster.jpg' },
-        ia_proyecto: { mp4: '../assets/scrolltide/zephyr.mp4', poster: '../assets/scrolltide/zephyr-poster.jpg' },
-        arquitectura: { mp4: '../assets/scrolltide/synapse.mp4', poster: '../assets/scrolltide/synapse-poster.jpg' },
-        comercial: { mp4: '../assets/scrolltide/selene.mp4', poster: '../assets/scrolltide/selene-poster.jpg' }
+      const DECK_DEFAULT_SLUG = {
+        ridge_ia: 'ridge',
+        ia_proyecto: 'zephyr',
+        arquitectura: 'synapse',
+        comercial: 'selene',
+        helix_riesgos: 'helix',
+        dune_horizonte: 'dune'
       };
 
       $$('#st-deck-selector [data-deck]').forEach(btn => {
@@ -1531,33 +1854,31 @@ Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de aná
           $$('#st-deck-selector [data-deck]').forEach(b => b.classList.remove('active'));
           btn.classList.add('active');
           activeDeckKey = btn.dataset.deck;
-          activeShader = getActiveDeck().shader || 'ridge';
-          $$('[data-shader]').forEach(b => b.classList.toggle('active', b.dataset.shader === activeShader));
-          const bgVideo = $('#st-bg-video');
-          const vAsset = DECK_VIDEOS[activeDeckKey] || DECK_VIDEOS.ridge_ia;
-          if (bgVideo && vAsset) {
-            bgVideo.poster = vAsset.poster;
-            if (!bgVideo.src.endsWith(vAsset.mp4.replace('..', ''))) {
-              bgVideo.src = vAsset.mp4;
-              bgVideo.load();
-              bgVideo.play().catch(() => {});
-            }
-          }
-          modelOverride = 'auto';
+          const slug = DECK_DEFAULT_SLUG[activeDeckKey] || 'ridge';
+          setStageCleanVideo(slug);
           setScene(0);
         });
       });
 
+      const cleanVideoSelect = $('#st-clean-video-select');
+      if (cleanVideoSelect) {
+        cleanVideoSelect.addEventListener('change', () => {
+          setStageCleanVideo(cleanVideoSelect.value);
+          toast('Fondo .MP4 limpio activado: ' + cleanVideoSelect.value + '.mp4');
+        });
+      }
+
       $$('[data-shader]').forEach(btn => {
         btn.addEventListener('click', () => {
-          $$('[data-shader]').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
           activeShader = btn.dataset.shader;
+          syncStageLayers();
         });
       });
 
       $$('#st-model-override [data-model]').forEach(btn => {
         btn.addEventListener('click', () => {
+          $$('#st-model-override [data-model]').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
           modelOverride = btn.dataset.model;
           $('#st-hud-mode').textContent = getActiveModelMode().toUpperCase();
         });
@@ -1569,7 +1890,6 @@ Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de aná
         setTimeout(resizeCanvases, 60);
       });
 
-      // Bucle de animación a 60 FPS (pausado cuando no está en pantalla)
       let inView = true;
       if ('IntersectionObserver' in window) {
         new IntersectionObserver((entries) => { inView = entries[0].isIntersecting; }, { rootMargin: '120px' }).observe(viewport);
@@ -1590,16 +1910,89 @@ Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de aná
         }
         requestAnimationFrame(loop);
       }
+      syncStageLayers();
       renderNarrativeCard();
       requestAnimationFrame(loop);
     }
 
     // -------------------------------------------------------------------------
-    // 4. Exportador de Presentación .HTML Autónoma (1-Click)
+    // 3B. Renderizado de la Bóveda de 26 Vídeos .MP4 Limpios en la Sección 02
     // -------------------------------------------------------------------------
-    function buildStandaloneDeckHtml(deckTitle, shaderMode, scenesArray) {
+    let activeMp4Filter = 'all';
+    function renderMp4Vault() {
+      const grid = $('#st-mp4-vault-grid');
+      if (!grid) return;
+      const items = CLEAN_MP4_CATALOG.filter(v => activeMp4Filter === 'all' || v.kind === activeMp4Filter);
+      grid.innerHTML = items.map(v => `
+        <article class="st-mp4-card">
+          <div class="st-mp4-thumb">
+            <video muted loop playsinline preload="metadata" poster="../assets/scrolltide/${v.slug}-poster.jpg?v=2" onmouseenter="this.play().catch(()=>{})" onmouseleave="this.pause()">
+              <source src="../assets/scrolltide/${v.slug}.mp4?v=2" type="video/mp4">
+            </video>
+            <span class="st-mp4-cat">${v.kind === 'shader' ? 'SHADER .MP4' : 'PLANTILLA HERO'}</span>
+          </div>
+          <div class="st-mp4-body">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:0.4rem;">
+              <strong style="font-size:0.84rem;color:#fff;">${v.name}</strong>
+              <code style="font-size:0.65rem;color:#67e8f9;">${v.slug}.mp4</code>
+            </div>
+            <p style="font-size:0.74rem;color:#94a3b8;line-height:1.42;margin:0;flex:1;">${v.desc}</p>
+            <div style="display:flex;gap:0.35rem;flex-wrap:wrap;margin-top:0.35rem;">
+              <button type="button" class="st-pill-btn active" style="flex:1;font-size:0.68rem;padding:0.32rem 0.45rem;" data-try-mp4="${v.slug}">▶ Probar en Teatro</button>
+              <a class="st-pill-btn emerald" style="text-decoration:none;font-size:0.68rem;padding:0.32rem 0.5rem;" href="../assets/scrolltide/${v.slug}.mp4" download="${v.slug}.mp4">⬇ .MP4</a>
+              <button type="button" class="st-pill-btn" style="font-size:0.68rem;padding:0.32rem 0.5rem;" data-copy-mp4="${v.slug}">📋 HTML</button>
+            </div>
+          </div>
+        </article>
+      `).join('');
+
+      $$('[data-try-mp4]', grid).forEach(btn => {
+        btn.addEventListener('click', () => {
+          setStageCleanVideo(btn.dataset.tryMp4);
+          $('#st-cinema-root').scrollIntoView({ behavior: 'smooth', block: 'center' });
+          toast(`Cargado ${btn.dataset.tryMp4}.mp4 limpio en el Teatro 3D`);
+        });
+      });
+
+      $$('[data-copy-mp4]', grid).forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const item = CLEAN_MP4_CATALOG.find(x => x.slug === btn.dataset.copyMp4) || CLEAN_MP4_CATALOG[0];
+          const snippet = `<!-- Fondo Cinematográfico Limpio Scrolltide: ${item.name} -->\n<div style="position:relative;min-height:100vh;overflow:hidden;background:#04070d;color:#f8fafc;">\n  <video autoplay muted loop playsinline poster="assets/scrolltide/${item.slug}-poster.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;">\n    <source src="assets/scrolltide/${item.slug}.mp4" type="video/mp4">\n    <source src="https://pub-1e5b4001b36b47e28e6a2fb775966a79.r2.dev/${item.r2}" type="video/mp4">\n  </video>\n  <div style="position:absolute;inset:0;z-index:1;background:radial-gradient(circle at 50% 42%,rgba(4,9,14,0.18) 0%,rgba(4,8,12,0.84) 100%);"></div>\n  <div style="position:relative;z-index:2;padding:3rem;">\n    <h1>Título de tu Presentación</h1>\n  </div>\n</div>`;
+          copyText(snippet, e.currentTarget, `Código <video> de ${item.slug}.mp4 copiado`);
+        });
+      });
+    }
+
+    if ($('#st-mp4-vault-grid')) {
+      renderMp4Vault();
+      $$('#st-mp4-filter-bar [data-mp4-filter]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          $$('#st-mp4-filter-bar [data-mp4-filter]').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          activeMp4Filter = btn.dataset.mp4Filter;
+          renderMp4Vault();
+        });
+      });
+    }
+
+    // -------------------------------------------------------------------------
+    // 4. Exportador de Presentación .HTML Autónoma (con Vídeo .MP4 Limpio o Shader)
+    // -------------------------------------------------------------------------
+    function buildStandaloneDeckHtml(deckTitle, shaderOrMp4Mode, scenesArray, explicitVideoSlug) {
       const scenesJson = JSON.stringify(scenesArray, null, 2);
-      const shMode = shaderMode || 'ridge';
+      const rawMode = shaderOrMp4Mode || 'video';
+      const isVideoMode = rawMode === 'video' || rawMode.startsWith('mp4:');
+      const vSlug = explicitVideoSlug || (rawMode.startsWith('mp4:') ? rawMode.slice(4) : activeVideoSlug || 'ridge');
+      const vMeta = CLEAN_MP4_CATALOG.find(x => x.slug === vSlug) || CLEAN_MP4_CATALOG[0];
+      const shMode = isVideoMode ? 'video' : rawMode;
+      const videoTagHtml = isVideoMode
+        ? `<video id="bg-vid" autoplay muted loop playsinline poster="assets/scrolltide/${vMeta.slug}-poster.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:0.9;">
+      <source src="assets/scrolltide/${vMeta.slug}.mp4" type="video/mp4">
+      <source src="https://pub-1e5b4001b36b47e28e6a2fb775966a79.r2.dev/${vMeta.r2}" type="video/mp4">
+    </video>
+    <div style="position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(4,7,12,0.42) 0%,rgba(4,7,12,0.14) 45%,rgba(4,7,12,0.84) 100%);"></div>`
+        : '';
+
       return `<!DOCTYPE html>
 <html lang="es">
 <head>
@@ -1615,9 +2008,9 @@ Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de aná
   canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
   #hero { z-index: 2; cursor: grab; }
   .layer { position: absolute; inset: 0; z-index: 3; pointer-events: none; display: grid; grid-template-columns: minmax(300px, 500px) 1fr; align-items: center; padding: 2.5rem 3.5rem; }
-  .card { pointer-events: auto; background: rgba(9,13,26,0.74); backdrop-filter: blur(22px) saturate(170%); border: 1px solid rgba(255,255,255,0.15); border-radius: 18px; padding: 1.8rem; box-shadow: 0 25px 60px rgba(0,0,0,0.65); }
+  .card { pointer-events: auto; background: rgba(9,13,26,0.76); backdrop-filter: blur(22px) saturate(170%); border: 1px solid rgba(255,255,255,0.15); border-radius: 18px; padding: 1.8rem; box-shadow: 0 25px 60px rgba(0,0,0,0.65); }
   .kicker { display: inline-block; font-family: monospace; font-size: 0.7rem; font-weight: 800; color: #67e8f9; background: rgba(6,182,212,0.15); border: 1px solid rgba(6,182,212,0.38); padding: 0.22rem 0.6rem; border-radius: 999px; margin-bottom: 0.8rem; }
-  h1 { font-size: 1.85rem; line-height: 1.15; margin-bottom: 0.8rem; background: linear-gradient(135deg,#fff,#a5b4fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  h1 { font-size: 1.85rem; line-height: 1.16; margin-bottom: 0.8rem; color: #f8fafc; text-shadow: 0 2px 16px rgba(0,0,0,0.6); }
   .lead { font-size: 0.92rem; line-height: 1.6; color: #cbd5e1; margin-bottom: 1.1rem; }
   .pillar { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 0.6rem 0.8rem; margin-bottom: 0.5rem; display: flex; gap: 0.65rem; }
   .badge { font-family: monospace; font-size: 0.7rem; font-weight: 800; color: #c4b5fd; background: rgba(139,92,246,0.2); border: 1px solid rgba(139,92,246,0.4); border-radius: 6px; padding: 0.15rem 0.45rem; height: fit-content; }
@@ -1636,7 +2029,8 @@ Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de aná
     <div style="font-family:monospace;font-size:0.75rem;color:#94a3b8;">Usa la rueda del ratón o las flechas ← / → para cambiar de escena</div>
   </div>
   <div class="stage" id="st">
-    \x3ccanvas id="bg">\x3c/canvas>
+    ${videoTagHtml}
+    \x3ccanvas id="bg" style="${isVideoMode ? 'opacity:0;' : 'opacity:1;'}">\x3c/canvas>
     \x3ccanvas id="hero">\x3c/canvas>
     <div class="layer">
       <div class="card">
@@ -1689,40 +2083,45 @@ window.addEventListener('resize', rsz); rsz(); setScene(0);
 function frame(now){
   const t = now*0.001, w = bg.width, h = bg.height;
   currentP += (targetP - currentP)*0.08; rotY += 0.006;
-  bctx.fillStyle = '#050814'; bctx.fillRect(0,0,w,h);
-  if (SHADER === 'ridge') {
-    for(let r=0;r<24;r++){
-      const d = r/23, baseY = h*(0.28 + Math.pow(d,1.3)*0.68), amp = 16 + d*48;
-      bctx.beginPath();
-      for(let x=0;x<=w;x+=16){
-        const nx = x/w, pk = Math.exp(-Math.pow((nx-0.66)/0.22,2));
-        const y = baseY - (Math.sin(nx*6.5+r*0.4-t*0.5+currentP)+pk*1.1)*amp;
-        x===0?bctx.moveTo(x,y):bctx.lineTo(x,y);
+  if (SHADER !== 'video') {
+    bctx.fillStyle = '#050814'; bctx.fillRect(0,0,w,h);
+    if (SHADER === 'ridge') {
+      for(let r=0;r<24;r++){
+        const d = r/23, baseY = h*(0.28 + Math.pow(d,1.3)*0.68), amp = 16 + d*48;
+        bctx.beginPath();
+        for(let x=0;x<=w;x+=16){
+          const nx = x/w, pk = Math.exp(-Math.pow((nx-0.66)/0.22,2));
+          const y = baseY - (Math.sin(nx*6.5+r*0.4-t*0.5+currentP)+pk*1.1)*amp;
+          x===0?bctx.moveTo(x,y):bctx.lineTo(x,y);
+        }
+        bctx.strokeStyle = r%4===0?'rgba(245,158,11,0.45)':'rgba(56,189,248,0.22)'; bctx.lineWidth = r%4===0?1.6:0.9; bctx.stroke();
       }
-      bctx.strokeStyle = r%4===0?'rgba(245,158,11,0.45)':'rgba(56,189,248,0.22)'; bctx.lineWidth = r%4===0?1.6:0.9; bctx.stroke();
-    }
-  } else {
-    for(let k=0;k<6;k++){
-      bctx.beginPath();
-      for(let x=0;x<=w;x+=20){
-        const y = h*(0.2+k*0.12) + Math.sin(x/w*5+t+k)*26 + Math.cos(x/w*9-t+currentP)*14;
-        x===0?bctx.moveTo(x,y):bctx.lineTo(x,y);
+    } else {
+      for(let k=0;k<6;k++){
+        bctx.beginPath();
+        for(let x=0;x<=w;x+=20){
+          const y = h*(0.2+k*0.12) + Math.sin(x/w*5+t+k)*26 + Math.cos(x/w*9-t+currentP)*14;
+          x===0?bctx.moveTo(x,y):bctx.lineTo(x,y);
+        }
+        bctx.strokeStyle = k%2?'rgba(56,189,248,0.12)':'rgba(167,139,250,0.14)'; bctx.lineWidth = 22; bctx.stroke();
       }
-      bctx.strokeStyle = k%2?'rgba(56,189,248,0.12)':'rgba(167,139,250,0.14)'; bctx.lineWidth = 22; bctx.stroke();
     }
   }
   hctx.clearRect(0,0,w,h);
-  const mode = SCENES[idx].model || 'ring', cx = w*0.68, cy = h*0.5, cyR = Math.cos(rotY+currentP*0.8), syR = Math.sin(rotY+currentP*0.8);
-  const pts = nodes.map(n => {
-    const tg = n.targets[mode] || n.targets.ring;
-    n.x += (tg.x-n.x)*0.08; n.y += (tg.y-n.y)*0.08; n.z += (tg.z-n.z)*0.08;
-    const x1 = n.x*cyR - n.z*syR, z1 = n.z*cyR + n.x*syR, sc = 440/Math.max(90, 660+z1);
-    return {px:cx+x1*sc, py:cy+n.y*sc, sc, layer:n.layer};
-  });
-  pts.forEach(p => {
-    hctx.fillStyle = p.layer===0?'#c4b5fd':p.layer===1?'#38bdf8':'#34d399';
-    hctx.beginPath(); hctx.arc(p.px,p.py,Math.max(1.8,4*p.sc),0,Math.PI*2); hctx.fill();
-  });
+  const mode = SCENES[idx].model || 'ring';
+  if (mode !== 'none') {
+    const cx = w*0.68, cy = h*0.5, cyR = Math.cos(rotY+currentP*0.8), syR = Math.sin(rotY+currentP*0.8);
+    const pts = nodes.map(n => {
+      const tg = n.targets[mode] || n.targets.ring;
+      n.x += (tg.x-n.x)*0.08; n.y += (tg.y-n.y)*0.08; n.z += (tg.z-n.z)*0.08;
+      const x1 = n.x*cyR - n.z*syR, z1 = n.z*cyR + n.x*syR, sc = 440/Math.max(90, 660+z1);
+      return {px:cx+x1*sc, py:cy+n.y*sc, sc, layer:n.layer};
+    });
+    pts.forEach(p => {
+      hctx.fillStyle = p.layer===0?'#c4b5fd':p.layer===1?'#38bdf8':'#34d399';
+      hctx.beginPath(); hctx.arc(p.px,p.py,Math.max(1.8,4*p.sc),0,Math.PI*2); hctx.fill();
+    });
+  }
   requestAnimationFrame(frame);
 }
 requestAnimationFrame(frame);
@@ -1734,7 +2133,7 @@ requestAnimationFrame(frame);
     if ($('#st-export-deck-btn')) {
       $('#st-export-deck-btn').addEventListener('click', () => {
         const deck = getActiveDeck();
-        const html = buildStandaloneDeckHtml(deck.name, activeShader, deck.scenes);
+        const html = buildStandaloneDeckHtml(deck.name, activeShader, deck.scenes, activeVideoSlug);
         downloadText(`presentacion-${activeDeckKey}.html`, html, 'text/html;charset=utf-8');
       });
     }
@@ -1896,11 +2295,12 @@ requestAnimationFrame(frame);
       const raw = ($('#b-scenes')?.value || '').trim().split('\n').filter(Boolean);
       return raw.map((line, i) => {
         const parts = line.split('|').map(s => s.trim());
+        const m = (parts[2] || '').toLowerCase();
         return {
           kicker: `ESCENA 0${i + 1} / 0${raw.length}`,
           title: parts[0] || `Escena ${i + 1}`,
           lead: parts[1] || '',
-          model: ['ring', 'stack', 'globe', 'tunnel'].includes((parts[2] || '').toLowerCase()) ? parts[2].toLowerCase() : 'ring',
+          model: ['ring', 'stack', 'globe', 'tunnel', 'none'].includes(m) ? m : 'ring',
           metric: parts[3] || 'SCROLLTIDE INTERACTIVE STAGE',
           pillars: [
             { b: `0${i + 1}.A`, t: parts[0] || 'Punto clave', d: parts[1] || 'Detalle de la escena', hl: true }
@@ -1913,11 +2313,16 @@ requestAnimationFrame(frame);
       const out = $('#b-prompt-out');
       if (!out) return;
       const title = $('#b-deck-title')?.value || 'Presentación Ejecutiva';
-      const sh = $('#b-shader')?.value || 'liquid';
+      const sh = $('#b-shader')?.value || 'mp4:ridge';
+      const isMp4 = sh.startsWith('mp4:');
+      const vSlug = isMp4 ? sh.slice(4) : '';
+      const bgLabel = isMp4
+        ? `Vídeo .MP4 Limpio (assets/scrolltide/${vSlug}.mp4 + poster assets/scrolltide/${vSlug}-poster.jpg, sin texto quemado)`
+        : `Shader Procedural en Canvas (${sh})`;
       const scenes = parseCustomScenes();
       const picked = ST_MOTORS.filter(m => m.picked);
 
-      out.textContent = `/scrolltide.deck Crea una presentación interactiva 2.5D/3D en un único archivo .HTML autónomo (Zero-CDN) titulada "${title}" con fondo Shader "${sh}" y las siguientes ${scenes.length} escenas sincronizadas con el scroll y las flechas del teclado:\n\n` +
+      out.textContent = `/scrolltide.deck Crea una presentación interactiva 2.5D/3D en un único archivo .HTML autónomo titulada "${title}" con fondo "${bgLabel}" y las siguientes ${scenes.length} escenas sincronizadas con el scroll y las flechas del teclado:\n\n` +
         scenes.map((s, idx) => `${idx + 1}. [${s.kicker}] "${s.title}" (Objeto 3D: ${s.model}) -> ${s.lead} (Insignia: ${s.metric})`).join('\n') +
         `\n\nMotores visuales obligatorios que debes incluir en el código:\n` +
         picked.map(m => `- ${m.id} (${m.title}): \`${m.recipe.replace(/\n/g, ' ')}\``).join('\n');
@@ -1933,17 +2338,23 @@ requestAnimationFrame(frame);
       $('#b-copy-prompt').addEventListener('click', (e) => copyText($('#b-prompt-out').textContent, e.currentTarget));
       $('#b-preview-in-stage').addEventListener('click', () => {
         const title = $('#b-deck-title').value || 'Presentación Personalizada';
-        const sh = $('#b-shader').value || 'liquid';
-        DECKS.custom_user = { name: title, shader: sh, scenes: parseCustomScenes() };
+        const sh = $('#b-shader').value || 'mp4:ridge';
+        const isMp4 = sh.startsWith('mp4:');
+        DECKS.custom_user = { name: title, shader: isMp4 ? 'video' : sh, scenes: parseCustomScenes() };
         activeDeckKey = 'custom_user';
-        activeShader = sh;
+        if (isMp4) {
+          setStageCleanVideo(sh.slice(4));
+        } else {
+          activeShader = sh;
+          syncStageLayers();
+        }
         setScene(0);
         $('#st-cinema-root').scrollIntoView({ behavior: 'smooth', block: 'center' });
         toast('Presentación cargada en el Teatro 3D');
       });
       $('#b-download-html').addEventListener('click', () => {
         const title = $('#b-deck-title').value || 'Presentacion-Scrolltide';
-        const sh = $('#b-shader').value || 'liquid';
+        const sh = $('#b-shader').value || 'mp4:ridge';
         const html = buildStandaloneDeckHtml(title, sh, parseCustomScenes());
         downloadText('mi-presentacion-scrolltide.html', html, 'text/html;charset=utf-8');
       });

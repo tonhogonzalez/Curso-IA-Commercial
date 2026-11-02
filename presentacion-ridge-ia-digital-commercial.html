@@ -842,20 +842,163 @@
       pointer-events: none;
       margin: 24px 0;
     }
+
+    /* Barra flotante de cambio de atmósfera .MP4 limpia en el Hero */
+    .ridge-atmo-switcher {
+      position: absolute;
+      top: 86px;
+      right: clamp(24px, 4.5vw, 64px);
+      z-index: 25;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(5, 8, 15, 0.72);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+    .ridge-atmo-label {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal-glow);
+      padding: 0 6px;
+    }
+    .ridge-atmo-btn {
+      padding: 5px 11px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      background: rgba(255, 255, 255, 0.05);
+      color: rgba(226, 232, 240, 0.78);
+      font-family: var(--font-sans);
+      font-size: 0.72rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .ridge-atmo-btn:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.12);
+    }
+    .ridge-atmo-btn.active {
+      background: rgba(42, 157, 143, 0.28);
+      border-color: rgba(94, 234, 212, 0.55);
+      color: #ffffff;
+      box-shadow: 0 0 18px rgba(42, 157, 143, 0.3);
+    }
+
+    /* Galería de Vídeos .MP4 Limpios en Acto V */
+    .st-vault-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
+      gap: 18px;
+      margin-top: 28px;
+    }
+    .st-vault-card {
+      border-radius: 16px;
+      overflow: hidden;
+      background: rgba(11, 16, 28, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.25s ease, border-color 0.25s ease;
+    }
+    .st-vault-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(94, 234, 212, 0.45);
+    }
+    .st-vault-thumb {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      background: #020409;
+      overflow: hidden;
+    }
+    .st-vault-thumb video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .st-vault-pill {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: rgba(3, 6, 13, 0.78);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      font-family: var(--font-mono);
+      font-size: 0.64rem;
+      letter-spacing: 0.08em;
+      color: var(--teal-glow);
+      backdrop-filter: blur(8px);
+    }
+    .st-vault-body {
+      padding: 14px 16px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+    .st-vault-title {
+      font-size: 0.96rem;
+      font-weight: 700;
+      color: #f8fafc;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .st-vault-desc {
+      font-size: 0.8rem;
+      color: var(--ink-secondary);
+      line-height: 1.45;
+      flex: 1;
+    }
+    .st-vault-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 6px;
+    }
+    .st-vault-btn {
+      flex: 1;
+      padding: 7px 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.05);
+      color: #f8fafc;
+      font-size: 0.73rem;
+      font-weight: 600;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .st-vault-btn:hover {
+      background: rgba(42, 157, 143, 0.28);
+      border-color: var(--teal-glow);
+    }
+    @media (max-width: 900px) {
+      .ridge-atmo-switcher {
+        display: none;
+      }
+    }
   </style>
 </head>
 <body>
 
   <!-- =========================================================================
-       ACTO I · HERO «RIDGE» (COMPOSICIÓN EXACTA DE SCROLLTIDE.CO/TEMPLATES/RIDGE)
+       ACTO I · HERO «RIDGE» (VÍDEO .MP4 100% LIMPIO DE TEXTO QUEMADO)
        ========================================================================= -->
   <section class="ridge-hero-wrapper" id="top">
-    <!-- Fondo de Vídeo Cinematográfico de Ridge (Local + CDN R2 Fallback) -->
+    <!-- Fondo de Vídeo Cinematográfico Limpio de Ridge (Local + CDN R2 Clean Template Fallback) -->
     <div class="ridge-media-layer">
-      <video class="ridge-video" id="hero-video" autoplay muted loop playsinline poster="assets/scrolltide/ridge-poster.jpg">
-        <source src="assets/scrolltide/ridge.mp4" type="video/mp4">
-        <source src="https://pub-1e5b4001b36b47e28e6a2fb775966a79.r2.dev/previews/ridge.webm" type="video/webm">
-        <source src="https://pub-1e5b4001b36b47e28e6a2fb775966a79.r2.dev/previews/ridge.mp4" type="video/mp4">
+      <video class="ridge-video" id="hero-video" autoplay muted loop playsinline poster="assets/scrolltide/ridge-poster.jpg?v=2">
+        <source id="hero-video-src-local" src="assets/scrolltide/ridge.mp4?v=2" type="video/mp4">
+        <source id="hero-video-src-r2" src="https://pub-1e5b4001b36b47e28e6a2fb775966a79.r2.dev/templates/ridge/hero.mp4" type="video/mp4">
       </video>
       <div class="ridge-atmosphere-overlay"></div>
     </div>
@@ -869,12 +1012,25 @@
         <a href="#iniciativas">Iniciativas</a>
         <a href="#simulador">Arquitectura</a>
         <a href="#roadmap">Hoja de Ruta</a>
-        <button type="button" class="ridge-scene-pill" id="toggle-copy-mode" title="Alternar entre copia en Español (Iniciativas IA Commercial) y copia original en Inglés de la plantilla Ridge">
+        <a href="#boveda-mp4">Vídeos .MP4 (26)</a>
+        <button type="button" class="ridge-scene-pill" id="toggle-copy-mode" title="Alternar entre copia en Español (Iniciativas IA Commercial) y copia original en Inglés de la plantilla Ridge sobre el vídeo limpio">
           ES · IA Commercial ⇄ Original Ridge
         </button>
         <a href="cuadernos/11-presentaciones-cinematograficas-scrolltide.html" class="ridge-scene-pill">↩ Cuaderno 11</a>
       </nav>
     </header>
+
+    <!-- Selector en vivo de Atmósfera .MP4 Limpia para probar fondos sin texto -->
+    <div class="ridge-atmo-switcher" aria-label="Selector de vídeo de fondo limpio">
+      <span class="ridge-atmo-label">Fondo .MP4 Limpio:</span>
+      <button type="button" class="ridge-atmo-btn active" data-hero-slug="ridge">Ridge · Cumbre</button>
+      <button type="button" class="ridge-atmo-btn" data-hero-slug="dune">Dune · Arco Solar</button>
+      <button type="button" class="ridge-atmo-btn" data-hero-slug="rednova">Rednova · Eclipse</button>
+      <button type="button" class="ridge-atmo-btn" data-hero-slug="nebula">Nebula · Puente</button>
+      <button type="button" class="ridge-atmo-btn" data-hero-slug="aurora">Aurora · Monolito</button>
+      <button type="button" class="ridge-atmo-btn" data-hero-slug="selene">Selene · Lunar</button>
+      <button type="button" class="ridge-atmo-btn" data-hero-slug="eclipse">Eclipse · Basalto</button>
+    </div>
 
     <!-- ZONA 3 · Foco Central en la Apertura de la Caverna y el Planeta -->
     <div class="ridge-center-stage" id="hero-center">
@@ -926,14 +1082,14 @@
       </p>
     </div>
 
-    <!-- Las 4 Tarjetas Cinematográficas 3:4 con vídeos reales de Scrolltide -->
+    <!-- Las 4 Tarjetas Cinematográficas 3:4 con vídeos .MP4 100% limpios de texto -->
     <div class="st-mission-reel" id="mission-reel">
       <!-- Iniciativa 01 -->
       <article class="st-mission-card active" data-idx="0">
         <div class="st-mission-visual">
-          <video class="st-mission-Visual-video" autoplay muted loop playsinline poster="assets/scrolltide/zephyr-poster.jpg">
-            <source src="assets/scrolltide/zephyr.mp4" type="video/mp4">
-            <source src="https://pub-1e5b4001b36b47e28e6a2fb775966a79.r2.dev/previews/zephyr.mp4" type="video/mp4">
+          <video class="st-mission-Visual-video" autoplay muted loop playsinline poster="assets/scrolltide/zephyr-poster.jpg?v=2">
+            <source src="assets/scrolltide/zephyr.mp4?v=2" type="video/mp4">
+            <source src="https://pub-1e5b4001b36b47e28e6a2fb775966a79.r2.dev/templates/zephyr/hero.mp4" type="video/mp4">
           </video>
           <div class="st-mission-visual-shade"></div>
           <span class="st-mission-tag">CUMBRE 01 · ALTA &amp; KYB</span>
@@ -956,9 +1112,9 @@
       <!-- Iniciativa 02 -->
       <article class="st-mission-card" data-idx="1">
         <div class="st-mission-visual">
-          <video class="st-mission-Visual-video" autoplay muted loop playsinline poster="assets/scrolltide/synapse-poster.jpg">
-            <source src="assets/scrolltide/synapse.mp4" type="video/mp4">
-            <source src="https://pub-1e5b4001b36b47e28e6a2fb775966a79.r2.dev/previews/synapse.mp4" type="video/mp4">
+          <video class="st-mission-Visual-video" autoplay muted loop playsinline poster="assets/scrolltide/synapse-poster.jpg?v=2">
+            <source src="assets/scrolltide/synapse.mp4?v=2" type="video/mp4">
+            <source src="https://pub-1e5b4001b36b47e28e6a2fb775966a79.r2.dev/templates/aether/hero.mp4" type="video/mp4">
           </video>
           <div class="st-mission-visual-shade"></div>
           <span class="st-mission-tag">CUMBRE 02 · CONTEXTUAL AI</span>
@@ -981,9 +1137,9 @@
       <!-- Iniciativa 03 -->
       <article class="st-mission-card" data-idx="2">
         <div class="st-mission-visual">
-          <video class="st-mission-Visual-video" autoplay muted loop playsinline poster="assets/scrolltide/helix-poster.jpg">
-            <source src="assets/scrolltide/helix.mp4" type="video/mp4">
-            <source src="https://pub-1e5b4001b36b47e28e6a2fb775966a79.r2.dev/previews/helix.mp4" type="video/mp4">
+          <video class="st-mission-Visual-video" autoplay muted loop playsinline poster="assets/scrolltide/helix-poster.jpg?v=2">
+            <source src="assets/scrolltide/helix.mp4?v=2" type="video/mp4">
+            <source src="https://pub-1e5b4001b36b47e28e6a2fb775966a79.r2.dev/templates/aperture/hero.mp4" type="video/mp4">
           </video>
           <div class="st-mission-visual-shade"></div>
           <span class="st-mission-tag">CUMBRE 03 · CRÉDITO STP</span>
@@ -1006,9 +1162,9 @@
       <!-- Iniciativa 04 -->
       <article class="st-mission-card" data-idx="3">
         <div class="st-mission-visual">
-          <video class="st-mission-Visual-video" autoplay muted loop playsinline poster="assets/scrolltide/selene-poster.jpg">
-            <source src="assets/scrolltide/selene.mp4" type="video/mp4">
-            <source src="https://pub-1e5b4001b36b47e28e6a2fb775966a79.r2.dev/previews/selene.mp4" type="video/mp4">
+          <video class="st-mission-Visual-video" autoplay muted loop playsinline poster="assets/scrolltide/nebula-poster.jpg?v=2">
+            <source src="assets/scrolltide/nebula.mp4?v=2" type="video/mp4">
+            <source src="https://pub-1e5b4001b36b47e28e6a2fb775966a79.r2.dev/templates/nebula/hero.mp4" type="video/mp4">
           </video>
           <div class="st-mission-visual-shade"></div>
           <span class="st-mission-tag">CUMBRE 04 · RED &amp; GESTOR</span>
@@ -1139,6 +1295,23 @@
     </div>
   </section>
 
+  <!-- =========================================================================
+       ACTO V · BÓVEDA DE LOS 26 VÍDEOS .MP4 LIMPIOS DESCARGADOS EN LOCAL
+       ========================================================================= -->
+  <section class="st-section" id="boveda-mp4" style="padding-top: 20px;">
+    <div class="st-eyebrow">03 · Bóveda Local de Vídeos .MP4 Limpios (Sin Texto Quemado)</div>
+    <div class="st-editorial-header">
+      <h2 class="st-display-h2">
+        26 fondos cinematográficos <em>.mp4 puros</em> listos para tus proyectos.
+      </h2>
+      <p class="st-editorial-lead">
+        Todos los vídeos han sido descargados desde las rutas de producción limpias (<code>/templates/&lt;slug&gt;/hero.mp4</code> y <code>/shaders/*.mp4</code>) y procesados localmente en <code>assets/scrolltide/*.mp4</code> sin ningún texto ni botón quemado en la imagen. Pulsa <strong>«Probar en Hero»</strong> en cualquiera de ellos para verlo al instante en la portada superior.
+      </p>
+    </div>
+
+    <div class="st-vault-grid" id="clean-vault-grid"></div>
+  </section>
+
   <!-- Pie de página monumental -->
   <footer class="st-footer">
     <p style="font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--teal-glow);">
@@ -1174,6 +1347,87 @@
         }
       }
     }, { passive: true });
+
+    // 1B. Selector de atmósfera .MP4 limpia en el Hero y Bóveda de los 26 vídeos limpios
+    const CLEAN_VIDEOS = [
+      { slug: 'ridge', name: 'Ridge · Caverna & Planeta', cat: 'Cumbre / Estrategia', r2: 'templates/ridge/hero.mp4', desc: 'Apertura de roca basáltica hacia cordillera nocturna y planeta iluminado. Ideal para OKRs y Visión Comercial.' },
+      { slug: 'zephyr', name: 'Zephyr · Pabellón Flotante', cat: 'Arquitectura / Comité', r2: 'templates/zephyr/hero.mp4', desc: 'Arquitectura minimalista suspendida sobre bruma cálida. Perfecto para Onboarding KYB y gobierno.' },
+      { slug: 'synapse', name: 'Synapse (Aether) · Escalera Aurora', cat: 'IA / Agentes', r2: 'templates/aether/hero.mp4', desc: 'Ascenso luminoso hacia aurora verde-cian nocturna. Ideal para flujos agénticos y Next Best Action.' },
+      { slug: 'helix', name: 'Helix (Aperture) · Domo de Datos', cat: 'Riesgos / Telemetría', r2: 'templates/aperture/hero.mp4', desc: 'Cámara inmersiva 360° con anillos de telemetría financiera y riesgo en tiempo real.' },
+      { slug: 'nebula', name: 'Nebula · Puente de Roca', cat: 'Omnicanal / Red', r2: 'templates/nebula/hero.mp4', desc: 'Arco natural de piedra uniendo dos cumbres sobre un mar de nubes. Metáfora visual del Puente Web ↔ Gestor.' },
+      { slug: 'dune', name: 'Dune · Monolito Solar', cat: 'Horizonte / Expansión', r2: 'templates/dune/hero.mp4', desc: 'Cañón de roca abriéndose hacia un sol ámbar sobre un océano en calma.' },
+      { slug: 'rednova', name: 'Rednova · Eclipse Dorado', cat: 'Impacto / Disrupción', r2: 'templates/rednova/hero.mp4', desc: 'Corona solar y eclipse total sobre dunas oscuras con atmósfera cinematográfica de alto contraste.' },
+      { slug: 'aurora', name: 'Aurora · Horizonte Ámbar', cat: 'Patrimonio / Ejecutiva', r2: 'templates/aurora/hero.mp4', desc: 'Monolito de luz cálida y silueta gran turismo frente a un horizonte dorado.' },
+      { slug: 'selene', name: 'Selene (Moon) · Órbita Lunar', cat: 'Misión / Deep-Tech', r2: 'templates/moon/hero.mp4', desc: 'Superficie lunar con cráteres nítidos y la Luna elevándose en el horizonte espacial.' },
+      { slug: 'glacier', name: 'Glacier · Cielo & Claridad', cat: 'Transparencia / ESG', r2: 'templates/glacier/hero.mp4', desc: 'Vuelo sereno entre nubes doradas al amanecer con máxima limpieza visual.' },
+      { slug: 'eclipse', name: 'Eclipse · Catarata Basáltica', cat: 'Flujo / Liquidez', r2: 'templates/eclipse/hero.mp4', desc: 'Caída de agua cristalina entre columnas de basalto nórdico envueltas en bruma.' },
+      { slug: 'nocturne', name: 'Nocturne · Valle Nocturno', cat: 'Banca Privada / Foco', r2: 'templates/nocturne/hero.mp4', desc: 'Refugio arquitectónico iluminado en medio de un valle alpino bajo la luz de la luna.' },
+      { slug: 'meridian', name: 'Meridian · Travesía Global', cat: 'Comercio Exterior', r2: 'templates/meridian/hero.mp4', desc: 'Horizonte oceánico y líneas de navegación global para presentaciones de Trade Finance.' },
+      { slug: 'kage', name: 'Kage · Geometría Cinética', cat: 'Ciberseguridad / Fraude', r2: 'templates/kage/hero.mp4', desc: 'Contraste dramático en claroscuro con movimiento de cámara de precisión.' },
+      { slug: 'anchor', name: 'Anchor · Solidez Institucional', cat: 'Capital / Solvencia', r2: 'templates/anchor/hero.mp4', desc: 'Escena marítima de alta densidad visual para bloques de solvencia, RORWA y balance.' },
+      { slug: 'clover', name: 'Clover · Ecosistema Orgánico', cat: 'Sostenibilidad / Agro', r2: 'templates/clover/hero.mp4', desc: 'Texturas naturales en movimiento suave para líneas de negocio sostenible y transición.' },
+      { slug: 'ember', name: 'Ember · Forja & Energía', cat: 'Transformación / Industria', r2: 'templates/ember/hero.mp4', desc: 'Partículas incandescentes y energía térmica sobre fondo oscuro de alto contraste.' },
+      { slug: 'frost', name: 'Frost · Cristal Ártico', cat: 'Datos / Lakehouse', r2: 'templates/frost/hero.mp4', desc: 'Formaciones de hielo puro y refracción limpia para arquitecturas de datos y Unity Catalog.' },
+      { slug: 'tide', name: 'Tide · Marea & Liquidez', cat: 'Tesorería / Cash Flow', r2: 'templates/tide/hero.mp4', desc: 'Movimiento hipnótico de olas oscuras para narrativas de circulante y tesorería corporativa.' },
+      { slug: 'comet', name: 'Comet · Velocidad Estelar', cat: 'Automatización STP', r2: 'templates/comet/hero.mp4', desc: 'Estela luminosa cruzando el espacio profundo para ilustrar velocidad de respuesta en segundos.' },
+      { slug: 'shader-chrome', name: 'Shader · Liquid Chrome', cat: 'Shader Abstracto #ST', r2: 'shaders/chrome-liquid.mp4', desc: 'Metal líquido reflectante en bucle continuo sin distracciones figurativas.' },
+      { slug: 'shader-halftone', name: 'Shader · Halftone Matrix', cat: 'Shader Abstracto #ST', r2: 'shaders/halftone.mp4', desc: 'Matriz de puntos cinéticos estilo telemetría de datos para fondos técnicos.' },
+      { slug: 'shader-cobalt', name: 'Shader · Cobalt Waves', cat: 'Shader Abstracto #ST', r2: 'shaders/cobalt.mp4', desc: 'Ondas de seda azul cobalto para portadas financieras elegantes.' },
+      { slug: 'shader-cell', name: 'Shader · Cellular Network', cat: 'Shader Abstracto #ST', r2: 'shaders/cell.mp4', desc: 'Malla orgánica de nodos interconectados para explicar grafos UBO y multi-agentes.' },
+      { slug: 'shader-aurora-noir', name: 'Shader · Aurora Noir', cat: 'Shader Abstracto #ST', r2: 'shaders/aurora-noir.mp4', desc: 'Cortinas de luz esmeralda sobre negro puro para máximo contraste tipográfico.' },
+      { slug: 'shader-noir-mesh', name: 'Shader · Noir Topo Mesh', cat: 'Shader Abstracto #ST', r2: 'shaders/noir-mesh.mp4', desc: 'Superficie topográfica oscura ideal para superponer tablas financieras y KPIs.' }
+    ];
+
+    function setHeroCleanVideo(slug) {
+      const item = CLEAN_VIDEOS.find(v => v.slug === slug) || CLEAN_VIDEOS[0];
+      if (!heroVideo) return;
+      heroVideo.poster = `assets/scrolltide/${item.slug}-poster.jpg?v=2`;
+      heroVideo.innerHTML = `
+        <source src="assets/scrolltide/${item.slug}.mp4?v=2" type="video/mp4">
+        <source src="https://pub-1e5b4001b36b47e28e6a2fb775966a79.r2.dev/${item.r2}" type="video/mp4">
+      `;
+      heroVideo.load();
+      heroVideo.play().catch(() => {});
+      document.querySelectorAll('.ridge-atmo-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.heroSlug === item.slug);
+      });
+    }
+
+    document.querySelectorAll('.ridge-atmo-btn').forEach(btn => {
+      btn.addEventListener('click', () => setHeroCleanVideo(btn.dataset.heroSlug));
+    });
+
+    const vaultGrid = document.getElementById('clean-vault-grid');
+    if (vaultGrid) {
+      vaultGrid.innerHTML = CLEAN_VIDEOS.map(v => `
+        <article class="st-vault-card">
+          <div class="st-vault-thumb">
+            <video muted loop playsinline preload="metadata" poster="assets/scrolltide/${v.slug}-poster.jpg?v=2" onmouseenter="this.play().catch(()=>{})" onmouseleave="this.pause()">
+              <source src="assets/scrolltide/${v.slug}.mp4?v=2" type="video/mp4">
+            </video>
+            <span class="st-vault-pill">${v.cat}</span>
+          </div>
+          <div class="st-vault-body">
+            <div class="st-vault-title">
+              <span>${v.name}</span>
+              <code style="font-family:var(--font-mono);font-size:0.68rem;color:var(--teal-glow);">${v.slug}.mp4</code>
+            </div>
+            <p class="st-vault-desc">${v.desc}</p>
+            <div class="st-vault-actions">
+              <button type="button" class="st-vault-btn" data-try-hero="${v.slug}">▶ Probar en Hero</button>
+              <a class="st-vault-btn" href="assets/scrolltide/${v.slug}.mp4" download="${v.slug}.mp4">⬇ .MP4 Limpio</a>
+            </div>
+          </div>
+        </article>
+      `).join('');
+
+      vaultGrid.querySelectorAll('[data-try-hero]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          setHeroCleanVideo(btn.dataset.tryHero);
+          document.getElementById('top').scrollIntoView({ behavior: 'smooth' });
+        });
+      });
+    }
 
     // 2. Conmutador entre la adaptación a Iniciativas IA Commercial (ES) y el texto original exacto de Ridge (EN)
     let isEnglishRidge = false;
