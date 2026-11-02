@@ -521,22 +521,46 @@
     }
 
     /* ==========================================================================
-       ACTO III · DEEP-DIVE STAGE INTERACTIVO (ESTILO SYNAPSE + ZEPHYR)
-       Al hacer clic en cualquiera de las 4 cumbres, muestra la sesión en vivo
+       ACTO III · DEEP-DIVE STAGE INTERACTIVO (CON VÍDEO DINÁMICO + SIMULADOR VIVO)
        ========================================================================== */
     .st-deepdive-stage {
+      position: relative;
+      overflow: hidden;
       margin-top: 56px;
-      border-radius: 24px;
-      border: 1px solid var(--line);
-      background:
-        radial-gradient(60% 80% at 80% 30%, rgba(56, 189, 248, 0.09), transparent 70%),
-        radial-gradient(50% 60% at 20% 80%, rgba(94, 234, 212, 0.06), transparent 70%),
-        rgba(9, 14, 22, 0.85);
-      padding: 48px;
+      border-radius: 26px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: #060a12;
+      padding: 52px;
       display: grid;
-      grid-template-columns: 1.15fr 1fr;
+      grid-template-columns: 1.18fr 1fr;
       gap: 48px;
       align-items: center;
+      box-shadow: 0 40px 90px -20px rgba(0, 0, 0, 0.85);
+    }
+    .st-dd-video-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.28;
+      filter: saturate(1.1) contrast(1.05);
+      transition: opacity 0.45s ease;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .st-dd-scrim {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background:
+        radial-gradient(65% 85% at 80% 30%, rgba(56, 189, 248, 0.14), transparent 70%),
+        linear-gradient(95deg, rgba(5, 9, 16, 0.94) 0%, rgba(6, 11, 19, 0.82) 55%, rgba(5, 9, 16, 0.92) 100%);
+    }
+    .st-deepdive-stage > * {
+      position: relative;
+      z-index: 2;
     }
     @media (max-width: 980px) {
       .st-deepdive-stage { grid-template-columns: 1fr; padding: 28px; gap: 28px; }
@@ -554,7 +578,7 @@
       padding: 8px 14px;
       border-radius: 999px;
       border: 1px solid var(--line);
-      background: rgba(255, 255, 255, 0.03);
+      background: rgba(255, 255, 255, 0.04);
       color: var(--mist);
       cursor: pointer;
       transition: all 0.2s ease;
@@ -578,7 +602,7 @@
       font-size: 0.96rem;
       line-height: 1.65;
       color: var(--mist);
-      margin-bottom: 28px;
+      margin-bottom: 24px;
     }
 
     /* Zephyr 4-Step Floor Rail dentro del proceso seleccionado */
@@ -591,19 +615,39 @@
       .st-zephyr-rail { grid-template-columns: repeat(2, 1fr); }
     }
     .st-rail-box {
+      position: relative;
       border: 1px solid rgba(255, 255, 255, 0.14);
-      background: rgba(255, 255, 255, 0.03);
+      background: rgba(8, 14, 24, 0.68);
+      backdrop-filter: blur(12px);
       border-radius: 12px;
       padding: 16px 14px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      min-height: 108px;
-      transition: border-color 0.25s ease, background 0.25s ease;
+      min-height: 112px;
+      cursor: pointer;
+      transition: all 0.3s var(--ease-out-expo);
+      overflow: hidden;
     }
-    .st-rail-box:hover {
-      border-color: rgba(255, 255, 255, 0.32);
-      background: rgba(255, 255, 255, 0.06);
+    .st-rail-box::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.12);
+      transition: background 0.3s ease;
+    }
+    .st-rail-box:hover,
+    .st-rail-box.step-active {
+      border-color: rgba(94, 234, 212, 0.65);
+      background: rgba(20, 42, 54, 0.72);
+      transform: translateY(-3px);
+      box-shadow: 0 14px 28px -10px rgba(0, 0, 0, 0.7);
+    }
+    .st-rail-box.step-active::before {
+      background: linear-gradient(90deg, var(--teal-glow), var(--sage-accent));
     }
     .st-rail-icon {
       font-family: var(--font-mono);
@@ -622,6 +666,58 @@
       font-size: 0.68rem;
       color: var(--dim);
       margin-top: 8px;
+    }
+
+    /* Barra de simulación interactiva + Slider de impacto en vivo */
+    .st-sim-controls {
+      margin-top: 20px;
+      padding: 14px 18px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+    .st-sim-run-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(94, 234, 212, 0.5);
+      background: rgba(42, 157, 143, 0.25);
+      color: #ffffff;
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .st-sim-run-btn:hover {
+      background: rgba(42, 157, 143, 0.45);
+      transform: translateY(-1px);
+    }
+    .st-sim-slider-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+      min-width: 220px;
+      justify-content: flex-end;
+    }
+    .st-sim-slider-wrap label {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--mist);
+      white-space: nowrap;
+    }
+    .st-sim-slider-wrap input[type="range"] {
+      accent-color: var(--sage-accent);
+      cursor: pointer;
+      width: 120px;
     }
 
     /* Tarjeta Derecha estilo Synapse ("Live Session Card assembling context") */
@@ -843,41 +939,114 @@
       margin: 24px 0;
     }
 
-    /* Barra flotante de cambio de atmósfera .MP4 limpia en el Hero */
-    .ridge-atmo-switcher {
+    /* Coreografía de aparición progresiva al hacer scroll (Scroll-Triggered Reveal) */
+    .st-reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      filter: blur(8px);
+      transition: opacity 0.85s var(--ease-out-expo), transform 0.85s var(--ease-out-expo), filter 0.85s var(--ease-out-expo);
+    }
+    .st-reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0px);
+    }
+
+    /* Indicador lateral de capítulos (Estilo Keynote / Scrolltide Studio) */
+    .st-chapter-rail {
+      position: fixed;
+      right: 22px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 90;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 10px 8px;
+      border-radius: 999px;
+      background: rgba(5, 9, 16, 0.62);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(14px);
+    }
+    .st-chap-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.25);
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: all 0.25s var(--ease-out-expo);
+      position: relative;
+    }
+    .st-chap-dot.active {
+      height: 24px;
+      background: var(--sage-accent);
+      box-shadow: 0 0 12px rgba(94, 234, 212, 0.6);
+    }
+    .st-chap-dot:hover::after {
+      content: attr(data-label);
       position: absolute;
-      top: 86px;
-      right: clamp(24px, 4.5vw, 64px);
-      z-index: 25;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(5, 9, 16, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      padding: 4px 9px;
+      border-radius: 6px;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+
+    /* Director Dock plegable inferior (Deja el cielo del Hero 100% limpio) */
+    .ridge-director-dock {
+      position: fixed;
+      bottom: 22px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 95;
       display: flex;
       align-items: center;
       gap: 6px;
-      flex-wrap: wrap;
-      padding: 6px 10px;
+      padding: 7px 12px;
       border-radius: 999px;
-      background: rgba(5, 8, 15, 0.72);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      background: rgba(5, 9, 17, 0.84);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75);
+      transition: transform 0.35s var(--ease-out-expo), opacity 0.35s ease;
+      max-width: 94vw;
+      overflow-x: auto;
+    }
+    .ridge-director-dock.collapsed {
+      transform: translateX(-50%) translateY(120%);
+      opacity: 0;
+      pointer-events: none;
     }
     .ridge-atmo-label {
       font-family: var(--font-mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.12em;
+      font-size: 0.64rem;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--teal-glow);
       padding: 0 6px;
+      white-space: nowrap;
     }
     .ridge-atmo-btn {
       padding: 5px 11px;
       border-radius: 999px;
       border: 1px solid transparent;
       background: rgba(255, 255, 255, 0.05);
-      color: rgba(226, 232, 240, 0.78);
+      color: rgba(226, 232, 240, 0.82);
       font-family: var(--font-sans);
       font-size: 0.72rem;
       font-weight: 600;
       cursor: pointer;
+      white-space: nowrap;
       transition: all 0.2s ease;
     }
     .ridge-atmo-btn:hover {
@@ -885,8 +1054,8 @@
       background: rgba(255, 255, 255, 0.12);
     }
     .ridge-atmo-btn.active {
-      background: rgba(42, 157, 143, 0.28);
-      border-color: rgba(94, 234, 212, 0.55);
+      background: rgba(42, 157, 143, 0.32);
+      border-color: rgba(94, 234, 212, 0.6);
       color: #ffffff;
       box-shadow: 0 0 18px rgba(42, 157, 143, 0.3);
     }
@@ -954,7 +1123,7 @@
     }
     .st-vault-desc {
       font-size: 0.8rem;
-      color: var(--ink-secondary);
+      color: var(--mist);
       line-height: 1.45;
       flex: 1;
     }
@@ -982,16 +1151,37 @@
       border-color: var(--teal-glow);
     }
     @media (max-width: 900px) {
-      .ridge-atmo-switcher {
-        display: none;
-      }
+      .st-chapter-rail { display: none; }
     }
   </style>
 </head>
 <body>
 
+  <!-- Indicador Lateral de Capítulos (Teclas 1–5) -->
+  <nav class="st-chapter-rail" aria-label="Capítulos de la presentación">
+    <button type="button" class="st-chap-dot active" data-target="#top" data-label="01 · Cumbre Ridge (Tecla 1)"></button>
+    <button type="button" class="st-chap-dot" data-target="#iniciativas" data-label="02 · Las 4 Iniciativas 3:4 (Tecla 2)"></button>
+    <button type="button" class="st-chap-dot" data-target="#simulador" data-label="03 · Simulador en Vivo (Tecla 3)"></button>
+    <button type="button" class="st-chap-dot" data-target="#roadmap" data-label="04 · Hoja de Ruta Q1-Q4 (Tecla 4)"></button>
+    <button type="button" class="st-chap-dot" data-target="#boveda-mp4" data-label="05 · Bóveda 26 Vídeos .MP4 (Tecla 5)"></button>
+  </nav>
+
+  <!-- Director Dock Plegable Inferior para alternar cualquiera de los fondos .MP4 limpios sin ensuciar el cielo del Hero -->
+  <div class="ridge-director-dock" id="director-dock" aria-label="Director Dock de atmósfera .MP4 limpia">
+    <span class="ridge-atmo-label">🎬 Estudio .MP4:</span>
+    <button type="button" class="ridge-atmo-btn active" data-hero-slug="ridge">Ridge · Cumbre</button>
+    <button type="button" class="ridge-atmo-btn" data-hero-slug="dune">Dune · Arco Solar</button>
+    <button type="button" class="ridge-atmo-btn" data-hero-slug="rednova">Rednova · Eclipse</button>
+    <button type="button" class="ridge-atmo-btn" data-hero-slug="nebula">Nebula · Puente</button>
+    <button type="button" class="ridge-atmo-btn" data-hero-slug="aurora">Aurora · Monolito</button>
+    <button type="button" class="ridge-atmo-btn" data-hero-slug="selene">Selene · Lunar</button>
+    <button type="button" class="ridge-atmo-btn" data-hero-slug="eclipse">Eclipse · Basalto</button>
+    <button type="button" class="ridge-atmo-btn" data-hero-slug="zephyr">Zephyr · Pabellón</button>
+    <button type="button" class="ridge-atmo-btn" id="dock-hide-btn" title="Ocultar barra (Tecla D)">✕</button>
+  </div>
+
   <!-- =========================================================================
-       ACTO I · HERO «RIDGE» (VÍDEO .MP4 100% LIMPIO DE TEXTO QUEMADO)
+       ACTO I · HERO «RIDGE» (5 ZONAS MONUMENTALES · VÍDEO .MP4 100% LIMPIO)
        ========================================================================= -->
   <section class="ridge-hero-wrapper" id="top">
     <!-- Fondo de Vídeo Cinematográfico Limpio de Ridge (Local + CDN R2 Clean Template Fallback) -->
@@ -1010,27 +1200,18 @@
       </a>
       <nav class="ridge-nav">
         <a href="#iniciativas">Iniciativas</a>
-        <a href="#simulador">Arquitectura</a>
+        <a href="#simulador">Simulador Vivo</a>
         <a href="#roadmap">Hoja de Ruta</a>
         <a href="#boveda-mp4">Vídeos .MP4 (26)</a>
+        <button type="button" class="ridge-scene-pill" id="toggle-dock-btn" title="Mostrar u ocultar el selector de fondos .MP4 limpios (Tecla D)">
+          🎬 Fondos .MP4
+        </button>
         <button type="button" class="ridge-scene-pill" id="toggle-copy-mode" title="Alternar entre copia en Español (Iniciativas IA Commercial) y copia original en Inglés de la plantilla Ridge sobre el vídeo limpio">
-          ES · IA Commercial ⇄ Original Ridge
+          ES ⇄ EN Ridge
         </button>
         <a href="cuadernos/11-presentaciones-cinematograficas-scrolltide.html" class="ridge-scene-pill">↩ Cuaderno 11</a>
       </nav>
     </header>
-
-    <!-- Selector en vivo de Atmósfera .MP4 Limpia para probar fondos sin texto -->
-    <div class="ridge-atmo-switcher" aria-label="Selector de vídeo de fondo limpio">
-      <span class="ridge-atmo-label">Fondo .MP4 Limpio:</span>
-      <button type="button" class="ridge-atmo-btn active" data-hero-slug="ridge">Ridge · Cumbre</button>
-      <button type="button" class="ridge-atmo-btn" data-hero-slug="dune">Dune · Arco Solar</button>
-      <button type="button" class="ridge-atmo-btn" data-hero-slug="rednova">Rednova · Eclipse</button>
-      <button type="button" class="ridge-atmo-btn" data-hero-slug="nebula">Nebula · Puente</button>
-      <button type="button" class="ridge-atmo-btn" data-hero-slug="aurora">Aurora · Monolito</button>
-      <button type="button" class="ridge-atmo-btn" data-hero-slug="selene">Selene · Lunar</button>
-      <button type="button" class="ridge-atmo-btn" data-hero-slug="eclipse">Eclipse · Basalto</button>
-    </div>
 
     <!-- ZONA 3 · Foco Central en la Apertura de la Caverna y el Planeta -->
     <div class="ridge-center-stage" id="hero-center">
@@ -1071,7 +1252,7 @@
   <!-- =========================================================================
        ACTO II · LAS 4 INICIATIVAS DIGITALES (REEL CINEMATOGRÁFICO 3:4)
        ========================================================================= -->
-  <section class="st-section" id="iniciativas">
+  <section class="st-section st-reveal" id="iniciativas">
     <div class="st-eyebrow">01 · El Mapa de Ascensión Digital</div>
     <div class="st-editorial-header">
       <h2 class="st-display-h2">
@@ -1186,9 +1367,15 @@
     </div>
 
     <!-- =======================================================================
-         ACTO III · ESCENARIO DE ARQUITECTURA EN VIVO (ZEPHYR RAIL + SYNAPSE CARD)
+         ACTO III · ESCENARIO DE ARQUITECTURA EN VIVO (CON VÍDEO DINÁMICO + SIMULADOR)
          ======================================================================= -->
-    <div class="st-deepdive-stage" id="simulador">
+    <div class="st-deepdive-stage st-reveal" id="simulador">
+      <!-- Fondo de vídeo limpio sincronizado con la Cumbre seleccionada -->
+      <video class="st-dd-video-bg" id="dd-bg-video" autoplay muted loop playsinline poster="assets/scrolltide/zephyr-poster.jpg?v=2">
+        <source src="assets/scrolltide/zephyr.mp4?v=2" type="video/mp4">
+      </video>
+      <div class="st-dd-scrim"></div>
+
       <div>
         <div class="st-dd-tabs" id="dd-tabs">
           <button type="button" class="st-dd-tab active" data-idx="0">01 · Onboarding KYB</button>
@@ -1205,19 +1392,31 @@
 
         <!-- Carril de 4 Pasos (Estilo Zephyr Floor Rail) -->
         <div class="st-zephyr-rail" id="dd-rail"></div>
+
+        <!-- Controles interactivos de simulación en vivo + Calculadora de ROI por volumen -->
+        <div class="st-sim-controls">
+          <button type="button" class="st-sim-run-btn" id="dd-run-sim">
+            <span>▶ Ejecutar Simulación en Vivo (Pasos 01→04)</span>
+          </button>
+          <div class="st-sim-slider-wrap">
+            <label for="dd-vol-slider">Volumen/mes: <strong id="dd-vol-label" style="color:#fff;">450 ops</strong></label>
+            <input type="range" id="dd-vol-slider" min="100" max="2000" step="50" value="450">
+            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--sage-accent);font-weight:700;" id="dd-sim-roi">+1.620 h/mes ahorradas</span>
+          </div>
+        </div>
       </div>
 
       <!-- Tarjeta Interactiva Derecha (Estilo Synapse Live Context Card) -->
-      <div class="st-synapse-card">
+      <div class="st-synapse-card" id="dd-synapse-card">
         <div class="st-syn-top">
           <span class="st-syn-badge">✦ Sesión Agéntica en Vivo</span>
           <span class="st-syn-live" id="dd-sla-pill">LATENCIA: 420 MS</span>
         </div>
         <div class="st-syn-promptbar">
           <span id="dd-prompt-label">Analizando escritura_poderes_pyme.pdf + Modelo 200…</span>
-          <span class="circle-btn">→</span>
+          <span class="circle-btn" id="dd-step-indicator">→</span>
         </div>
-        <div class="st-syn-segments">
+        <div class="st-syn-segments" id="dd-segments">
           <div class="st-syn-seg on"></div>
           <div class="st-syn-seg on"></div>
           <div class="st-syn-seg on"></div>
@@ -1239,7 +1438,7 @@
   <!-- =========================================================================
        ACTO IV · HOJA DE RUTA E IMPACTO CONSOLIDADO
        ========================================================================= -->
-  <section class="st-section" id="roadmap" style="padding-top: 20px;">
+  <section class="st-section st-reveal" id="roadmap" style="padding-top: 20px;">
     <div class="st-eyebrow">02 · La Ascensión por Olas Trimestrales</div>
     <div class="st-editorial-header">
       <h2 class="st-display-h2">
@@ -1298,7 +1497,7 @@
   <!-- =========================================================================
        ACTO V · BÓVEDA DE LOS 26 VÍDEOS .MP4 LIMPIOS DESCARGADOS EN LOCAL
        ========================================================================= -->
-  <section class="st-section" id="boveda-mp4" style="padding-top: 20px;">
+  <section class="st-section st-reveal" id="boveda-mp4" style="padding-top: 20px;">
     <div class="st-eyebrow">03 · Bóveda Local de Vídeos .MP4 Limpios (Sin Texto Quemado)</div>
     <div class="st-editorial-header">
       <h2 class="st-display-h2">
@@ -1330,9 +1529,11 @@
   (function () {
     'use strict';
 
-    // 1. Parallax sutil del Hero de Ridge al hacer scroll y mover el ratón
+    // 1. Parallax sutil del Hero de Ridge al hacer scroll + actualización del Chapter Rail
     const heroVideo = document.getElementById('hero-video');
     const heroCenter = document.getElementById('hero-center');
+    const chapDots = Array.from(document.querySelectorAll('.st-chap-dot'));
+    const chapTargets = ['#top', '#iniciativas', '#simulador', '#roadmap', '#boveda-mp4'];
 
     window.addEventListener('scroll', () => {
       const y = window.scrollY;
@@ -1346,7 +1547,58 @@
           heroCenter.style.opacity = String(Math.max(0, 1 - p * 1.35));
         }
       }
+      // Capítulo activo según scroll
+      let activeIdx = 0;
+      chapTargets.forEach((sel, idx) => {
+        const el = document.querySelector(sel);
+        if (el && el.getBoundingClientRect().top <= window.innerHeight * 0.45) {
+          activeIdx = idx;
+        }
+      });
+      chapDots.forEach((d, i) => d.classList.toggle('active', i === activeIdx));
     }, { passive: true });
+
+    chapDots.forEach(dot => {
+      dot.addEventListener('click', () => {
+        const target = document.querySelector(dot.dataset.target);
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+
+    // Coreografía Scroll-Triggered Reveal (IntersectionObserver)
+    if ('IntersectionObserver' in window) {
+      const revObs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+          }
+        });
+      }, { threshold: 0.12 });
+      document.querySelectorAll('.st-reveal').forEach(el => revObs.observe(el));
+    } else {
+      document.querySelectorAll('.st-reveal').forEach(el => el.classList.add('is-visible'));
+    }
+
+    // Director Dock Plegable y Atajos de Sala (Teclas 1–5 y D)
+    const directorDock = document.getElementById('director-dock');
+    const toggleDockBtn = document.getElementById('toggle-dock-btn');
+    const dockHideBtn = document.getElementById('dock-hide-btn');
+    if (toggleDockBtn && directorDock) {
+      toggleDockBtn.addEventListener('click', () => directorDock.classList.toggle('collapsed'));
+    }
+    if (dockHideBtn && directorDock) {
+      dockHideBtn.addEventListener('click', () => directorDock.classList.add('collapsed'));
+    }
+    window.addEventListener('keydown', (e) => {
+      if (['INPUT', 'TEXTAREA', 'SELECT'].includes((e.target && e.target.tagName) || '')) return;
+      if (e.key.toLowerCase() === 'd' && directorDock) {
+        directorDock.classList.toggle('collapsed');
+      } else if (['1', '2', '3', '4', '5'].includes(e.key)) {
+        const idx = Number(e.key) - 1;
+        const t = document.querySelector(chapTargets[idx]);
+        if (t) t.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
 
     // 1B. Selector de atmósfera .MP4 limpia en el Hero y Bóveda de los 26 vídeos limpios
     const CLEAN_VIDEOS = [
@@ -1388,12 +1640,12 @@
       `;
       heroVideo.load();
       heroVideo.play().catch(() => {});
-      document.querySelectorAll('.ridge-atmo-btn').forEach(btn => {
+      document.querySelectorAll('.ridge-atmo-btn[data-hero-slug]').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.heroSlug === item.slug);
       });
     }
 
-    document.querySelectorAll('.ridge-atmo-btn').forEach(btn => {
+    document.querySelectorAll('.ridge-atmo-btn[data-hero-slug]').forEach(btn => {
       btn.addEventListener('click', () => setHeroCleanVideo(btn.dataset.heroSlug));
     });
 
@@ -1467,18 +1719,20 @@
       document.getElementById('hero-secondary-cta').textContent = c.secCta;
     });
 
-    // 3. Datos de las 4 Iniciativas para el Escenario Interactivo (Acto III)
+    // 3. Datos de las 4 Iniciativas para el Escenario Interactivo (Acto III) con Vídeo y Simulador en Vivo
     const INITIATIVES = [
       {
+        videoSlug: 'zephyr',
+        hoursPerOp: 3.6,
         title: 'De 90 páginas de escritura notarial a cuenta operativa en 45 segundos.',
         lead: 'El cliente arrastra su documentación societaria y fiscal en el portal digital. Sin abandonar la pantalla, el motor extrae facultades, valida titulares reales frente al Registro y habilita la operativa.',
         sla: 'LATENCIA: 45 SEG',
         prompt: 'Analizando escritura_poderes_pyme.pdf + Modelo 200…',
         steps: [
-          { icon: '↗ DOC', label: 'Ingesta PDF Notarial & Fiscal', num: '01' },
-          { icon: '⬡ UBO', label: 'Grafo Societario & Poderes', num: '02' },
-          { icon: '✓ AML', label: 'Contraste Registral en Vivo', num: '03' },
-          { icon: '⚡ STP', label: 'Activación de Cuenta 1-Click', num: '04' }
+          { icon: '↗ DOC', label: 'Ingesta PDF Notarial & Fiscal', num: '01', trace: 'Paso 01/04 · OCR estructural sobre 92 págs de escritura y Modelos 200/303 (120 ms)…' },
+          { icon: '⬡ UBO', label: 'Grafo Societario & Poderes', num: '02', trace: 'Paso 02/04 · Árbol de titulares reales (UBO >25%) y facultades mancomunadas verificadas…' },
+          { icon: '✓ AML', label: 'Contraste Registral en Vivo', num: '03', trace: 'Paso 03/04 · Cruce positivo BORME + listas sancionadoras sin alertas críticas…' },
+          { icon: '⚡ STP', label: 'Activación de Cuenta 1-Click', num: '04', trace: 'Paso 04/04 · Expediente KYB aprobado STP (45 seg). Cuenta e IBAN activos en sesión.' }
         ],
         metrics: [
           ['Proceso Clásico Manual', '72 horas', false],
@@ -1491,15 +1745,17 @@
         code: 'KYB-STP · READY'
       },
       {
+        videoSlug: 'synapse',
+        hoursPerOp: 1.8,
         title: 'La oferta exacta en el segundo exacto dentro del flujo transaccional.',
         lead: 'Sustituimos los banners genéricos por inteligencia contextual: cuando la empresa carga un fichero de pagos o nóminas con punta de tesorería, el portal le ofrece financiarlo en un clic.',
         sla: 'SEÑAL EN VIVO: 120 MS',
         prompt: 'Detectado pico de tesorería en remesa_proveedores_Q2.xml…',
         steps: [
-          { icon: '◈ SEÑAL', label: 'Lectura de Remesa en Sesión', num: '01' },
-          { icon: '⚖ RORWA', label: 'Cálculo de Disponible y Precio', num: '02' },
-          { icon: '✦ UI', label: 'Oferta Embebida en Pantalla', num: '03' },
-          { icon: '⚡ FIRMA', label: 'Abono Inmediato sin Papeleo', num: '04' }
+          { icon: '◈ SEÑAL', label: 'Lectura de Remesa en Sesión', num: '01', trace: 'Paso 01/04 · Fichero ISO-20022 leído en memoria: 38 facturas por 185.000 €…' },
+          { icon: '⚖ RORWA', label: 'Cálculo de Disponible y Precio', num: '02', trace: 'Paso 02/04 · Límite pre-aprobado verificado y tipo suelo RORWA calculado (EVA +420 €)…' },
+          { icon: '✦ UI', label: 'Oferta Embebida en Pantalla', num: '03', trace: 'Paso 03/04 · Tarjeta Confirming Dinámico inyectada sin salir de la pantalla de pagos…' },
+          { icon: '⚡ FIRMA', label: 'Abono Inmediato sin Papeleo', num: '04', trace: 'Paso 04/04 · Aceptación en 1 clic con firma OTP. Proveedores pagados al instante.' }
         ],
         metrics: [
           ['Conversión Campaña Tradicional', '0,9% (T+15 días)', false],
@@ -1512,15 +1768,17 @@
         code: 'NBA-REALTIME · LIVE'
       },
       {
+        videoSlug: 'helix',
+        hoursPerOp: 4.2,
         title: 'Renovación y admisión digital de Circulante con pricing RORWA en tiempo real.',
         lead: 'Conectamos el portal de empresas con el motor de riesgos y capital: auditoría instantánea de facturas cedidas y renovación en 1 clic para carteras sanas.',
         sla: 'TASA STP: 78%',
         prompt: 'Simulando renovación póliza 450k€ · Stage 1 · Hurdle Rate…',
         steps: [
-          { icon: '⛁ CASH', label: 'Scoring Conductual 90 Días', num: '01' },
-          { icon: '∑ EVA', label: 'Cálculo Tipo Suelo RORWA', num: '02' },
-          { icon: '⇄ SLIDER', label: 'Ajuste Interactivo de Plazo', num: '03' },
-          { icon: '✓ IFRS9', label: 'Formalización & Archivo STP', num: '04' }
+          { icon: '⛁ CASH', label: 'Scoring Conductual 90 Días', num: '01', trace: 'Paso 01/04 · Flujos de cobro/pago 90d auditados en Unity Catalog (0 impagos)…' },
+          { icon: '∑ EVA', label: 'Cálculo Tipo Suelo RORWA', num: '02', trace: 'Paso 02/04 · Hurdle rate institucional cubierto con +24 pb de margen sobre Ke…' },
+          { icon: '⇄ SLIDER', label: 'Ajuste Interactivo de Plazo', num: '03', trace: 'Paso 03/04 · Corredor de importe y plazo personalizado para el tesorero de la pyme…' },
+          { icon: '✓ IFRS9', label: 'Formalización & Archivo STP', num: '04', trace: 'Paso 04/04 · Póliza renovada automáticamente sin carga manual para la oficina.' }
         ],
         metrics: [
           ['Tiempo Medio de Renovación', 'De 9 días a Hoy', true],
@@ -1533,15 +1791,17 @@
         code: 'RORWA-ENGINE · OK'
       },
       {
+        videoSlug: 'nebula',
+        hoursPerOp: 4.0,
         title: 'Cuando el canal digital escala a persona, el gestor recibe el trabajo hecho.',
         lead: 'En operaciones complejas o a medida, el cliente inicia la simulación en la web y su Especialista recibe al instante el dossier financiero conciliado y el borrador de nota para Comité.',
         sla: 'AHORRO: 9,5 H/SEMANA',
         prompt: 'Ensamblando dossier Comité + memoria de sesión digital…',
         steps: [
-          { icon: '⇄ HANDOFF', label: 'Traspaso con Memoria 100%', num: '01' },
-          { icon: '📊 CUADRE', label: 'Posiciones y CIRBE Conciliados', num: '02' },
-          { icon: '✍ MEMO', label: 'Nota de Comité Auto-Redactada', num: '03' },
-          { icon: '📱 CIERRE', label: 'Firma Final en Móvil del Cliente', num: '04' }
+          { icon: '⇄ HANDOFF', label: 'Traspaso con Memoria 100%', num: '01', trace: 'Paso 01/04 · Contexto completo de la simulación web capturado sin pérdida…' },
+          { icon: '📊 CUADRE', label: 'Posiciones y CIRBE Conciliados', num: '02', trace: 'Paso 02/04 · Cuadre automático de pool bancario CIRBE, garantías y ventas TPV…' },
+          { icon: '✍ MEMO', label: 'Nota de Comité Auto-Redactada', num: '03', trace: 'Paso 03/04 · Propuesta ejecutiva redactada con citas verificables al balance…' },
+          { icon: '📱 CIERRE', label: 'Firma Final en Móvil del Cliente', num: '04', trace: 'Paso 04/04 · Oferta aprobada por especialista y enviada a la App de la empresa.' }
         ],
         metrics: [
           ['Preparación Manual Expediente', '4,5 horas', false],
@@ -1555,10 +1815,54 @@
       }
     ];
 
+    let activeInitIdx = 0;
+    let simTimer = null;
+
+    function updateRoiCalculator() {
+      const volSlider = document.getElementById('dd-vol-slider');
+      const volLabel = document.getElementById('dd-vol-label');
+      const roiOut = document.getElementById('dd-sim-roi');
+      if (!volSlider || !volLabel || !roiOut) return;
+      const ops = Number(volSlider.value || 450);
+      const data = INITIATIVES[activeInitIdx] || INITIATIVES[0];
+      volLabel.textContent = `${ops} ops`;
+      const hoursSaved = Math.round(ops * data.hoursPerOp);
+      roiOut.textContent = `+${hoursSaved.toLocaleString('es-ES')} h/mes liberadas`;
+    }
+
+    function activateRailStep(stepIdx) {
+      const data = INITIATIVES[activeInitIdx] || INITIATIVES[0];
+      const boxes = document.querySelectorAll('#dd-rail .st-rail-box');
+      boxes.forEach((b, i) => b.classList.toggle('step-active', i === stepIdx));
+      const segs = document.querySelectorAll('#dd-segments .st-syn-seg');
+      segs.forEach((s, i) => s.classList.toggle('on', i <= stepIdx + 1));
+      const stepObj = data.steps[stepIdx];
+      if (stepObj && stepObj.trace) {
+        document.getElementById('dd-prompt-label').textContent = stepObj.trace;
+        const ind = document.getElementById('dd-step-indicator');
+        if (ind) ind.textContent = stepObj.num;
+      }
+    }
+
     function selectInitiative(idx) {
+      activeInitIdx = idx;
+      clearInterval(simTimer);
       const data = INITIATIVES[idx];
       document.querySelectorAll('.st-mission-card').forEach((c, i) => c.classList.toggle('active', i === idx));
       document.querySelectorAll('.st-dd-tab').forEach((t, i) => t.classList.toggle('active', i === idx));
+
+      // Cambiar el vídeo atmosférico de fondo del Acto III con crossfade suave
+      const ddVideo = document.getElementById('dd-bg-video');
+      if (ddVideo && data.videoSlug) {
+        ddVideo.style.opacity = '0.06';
+        setTimeout(() => {
+          ddVideo.poster = `assets/scrolltide/${data.videoSlug}-poster.jpg?v=2`;
+          ddVideo.src = `assets/scrolltide/${data.videoSlug}.mp4?v=2`;
+          ddVideo.load();
+          ddVideo.play().catch(() => {});
+          ddVideo.style.opacity = '0.28';
+        }, 160);
+      }
 
       document.getElementById('dd-title').textContent = data.title;
       document.getElementById('dd-lead').textContent = data.lead;
@@ -1568,8 +1872,8 @@
       document.getElementById('dd-footer-sub').textContent = data.footerSub;
       document.getElementById('dd-footer-code').textContent = data.code;
 
-      document.getElementById('dd-rail').innerHTML = data.steps.map(s => `
-        <div class="st-rail-box">
+      document.getElementById('dd-rail').innerHTML = data.steps.map((s, sIdx) => `
+        <div class="st-rail-box ${sIdx === 0 ? 'step-active' : ''}" data-step-idx="${sIdx}">
           <div class="st-rail-icon">${s.icon}</div>
           <div>
             <div class="st-rail-label">${s.label}</div>
@@ -1578,12 +1882,42 @@
         </div>
       `).join('');
 
+      document.querySelectorAll('#dd-rail .st-rail-box').forEach(box => {
+        box.addEventListener('click', () => activateRailStep(Number(box.dataset.stepIdx)));
+      });
+
       document.getElementById('dd-metrics').innerHTML = data.metrics.map(([label, val, hl]) => `
         <div class="st-syn-metric-box ${hl ? 'highlight' : ''}">
           <small>${label}</small>
           <strong>${val}</strong>
         </div>
       `).join('');
+
+      updateRoiCalculator();
+    }
+
+    const runSimBtn = document.getElementById('dd-run-sim');
+    if (runSimBtn) {
+      runSimBtn.addEventListener('click', () => {
+        clearInterval(simTimer);
+        let s = 0;
+        activateRailStep(0);
+        runSimBtn.innerHTML = '<span>⚡ Simulando telemetría en vivo…</span>';
+        simTimer = setInterval(() => {
+          s++;
+          if (s < 4) {
+            activateRailStep(s);
+          } else {
+            clearInterval(simTimer);
+            runSimBtn.innerHTML = '<span>✓ Simulación Completada · Volver a Ejecutar</span>';
+          }
+        }, 850);
+      });
+    }
+
+    const volSlider = document.getElementById('dd-vol-slider');
+    if (volSlider) {
+      volSlider.addEventListener('input', updateRoiCalculator);
     }
 
     document.querySelectorAll('.st-mission-card').forEach(card => {
