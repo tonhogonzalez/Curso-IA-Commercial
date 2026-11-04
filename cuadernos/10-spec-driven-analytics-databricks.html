@@ -187,6 +187,7 @@
       <div class="sidebar-section-title">Contenido del cuaderno</div>
       <a href="#intro" class="sidebar-link active"><span class="sidebar-link-number">00</span> Tu método vs. Spec-Driven</a>
       <a href="#arquitectura" class="sidebar-link"><span class="sidebar-link-number">01</span> Arquitectura del kit</a>
+      <a href="#karpathy" class="sidebar-link"><span class="sidebar-link-number">01B</span> Principios de Karpathy</a>
       <a href="#instalacion" class="sidebar-link"><span class="sidebar-link-number">02</span> Instalación en VS Code</a>
       <a href="#comandos" class="sidebar-link"><span class="sidebar-link-number">03</span> Guía de comandos</a>
       <a href="#simulador" class="sidebar-link"><span class="sidebar-link-number">04</span> Simulador: caso Circulante</a>
@@ -232,6 +233,7 @@
               <div class="bloom-col-header understand">🧠 1. Comprender</div>
               <ul>
                 <li>Por qué el flujo «chat + mega-prompt» se degrada y cómo lo resuelve la <strong>especificación como fuente de verdad</strong>.</li>
+                <li>Los <strong>4 Principios de Andrej Karpathy</strong> para evitar sobreingeniería, supuestos ocultos y roturas colaterales en notebooks de datos.</li>
                 <li>Cómo funcionan los <strong>Prompt Files</strong> de Copilot (<code>.github/prompts/*.prompt.md</code>) como comandos <code>/</code>.</li>
               </ul>
             </div>
@@ -255,6 +257,7 @@
         <div class="sk-tabs" role="tablist" aria-label="Vista del cuaderno">
           <button class="sk-tab active" data-sk-filter="all">📚 Todo</button>
           <button class="sk-tab" data-sk-filter="metodo">🧭 Método</button>
+          <button class="sk-tab" data-sk-filter="karpathy">🧠 Principios de Karpathy</button>
           <button class="sk-tab" data-sk-filter="setup">⚙️ Instalación &amp; comandos</button>
           <button class="sk-tab" data-sk-filter="practica">🧪 Simulador</button>
           <button class="sk-tab" data-sk-filter="kit">📦 Kit &amp; generadores</button>
@@ -431,8 +434,144 @@
       </section>
 
       <!-- =====================================================================
-           SECCIÓN 02 · INSTALACIÓN
+           SECCIÓN 01B · LOS 4 PRINCIPIOS DE ANDREJ KARPATHY EN ANALYTICS
            ===================================================================== -->
+      <section id="karpathy" class="transcript-section" data-sk-group="metodo karpathy">
+        <div class="section-header">
+          <span class="section-number">01B</span>
+          <h2 class="section-title">Los 4 Principios de Andrej Karpathy: el marco mental de Spec-Driven Analytics</h2>
+        </div>
+        <div class="section-divider"></div>
+        <div class="transcript-text">
+          <p class="editorial-lead">
+            Un fallo de un LLM en desarrollo web suele ser un botón mal alineado o un estilo roto. En <strong>Banca Comercial y Analítica en Databricks</strong>, un supuesto no contrastado en una cláusula <code>WHERE</code>, una UDF sobrecomplicada o un JOIN con fan-out multiplica importes contables en decenas de millones de euros o tumba el cluster Spark por Out-Of-Memory (OOM).
+          </p>
+
+          <p>
+            <a href="https://x.com/karpathy/status/2015883857489522876" target="_blank" rel="noopener">Andrej Karpathy</a> (ex-director de IA en Tesla y cofundador de OpenAI) sintetizó los vicios capitales de los modelos de lenguaje al escribir código:
+          </p>
+
+          <blockquote style="border-left: 3px solid var(--accent-emerald, #10b981); padding: 0.8rem 1.2rem; margin: 1.2rem 0; background: rgba(16,185,129,0.06); border-radius: 0 10px 10px 0; font-style: italic; color: var(--text-primary); font-size: 0.88rem; line-height: 1.6;">
+            «Los modelos hacen suposiciones erróneas en tu nombre y siguen adelante sin verificar. No gestionan su confusión, no piden aclaraciones, no señalan inconsistencias, no presentan tradeoffs y no discuten cuando deberían... Les encanta sobrecomplicar código, crear abstracciones infladas e implementar construcciones de 1.000 líneas cuando 50 bastaban... Y a veces modifican o eliminan código que no entienden como efecto colateral.»
+          </blockquote>
+
+          <p>
+            <strong>Spec-Driven Analytics</strong> es la respuesta estructural a estos cuatro problemas. A continuación analizamos cómo se traduce cada principio al trabajo diario con PySpark, SQL y Databricks:
+          </p>
+
+          <div class="sk-grid-2">
+            <!-- Principio 1 -->
+            <div class="sk-card warn">
+              <h4>🧠 1. Think Before Coding (Piensa antes de programar)</h4>
+              <p style="font-size:0.75rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:0.4rem;">Don't assume · Don't hide confusion · Surface tradeoffs</p>
+              <ul style="font-size:0.82rem; line-height:1.55;">
+                <li><strong>El vicio del LLM:</strong> Si le pides <em>«analiza clientes activos con riesgo»</em>, la IA asume silenciosamente que activo es <code>saldo &gt; 0</code> o <code>estado = 'ACTIVO'</code>. Si en Unity Catalog hay tres tablas (<code>bronze.crm</code>, <code>silver.clientes</code>, <code>gold.posicion</code>), elige una sin preguntar.</li>
+                <li><strong>La regla en Spec-Driven:</strong> La IA tiene <strong>prohibido asumir en silencio</strong>. Antes de escribir código, en <code>/speckit.specify</code> y <code>/speckit.discover</code> debe listar sus supuestos y plantear alternativas: <em>«¿Cliente activo con contrato vigente, con movimientos en 90 días o con margen positivo? ¿Usamos Silver (frescura diaria) o Gold (cuadre contable cerrado)?»</em>.</li>
+              </ul>
+            </div>
+
+            <!-- Principio 2 -->
+            <div class="sk-card good">
+              <h4>⚡ 2. Simplicity First (Simplicidad ante todo)</h4>
+              <p style="font-size:0.75rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:0.4rem;">Minimum code · Nothing speculative · Native PySpark</p>
+              <ul style="font-size:0.82rem; line-height:1.55;">
+                <li><strong>El vicio del LLM:</strong> Escribir UDFs lentas en Python (que anulan el Catalyst Optimizer de Spark y serializan fila a fila), pipelines de 15 DataFrames intermedios redundantes o clases abstractas para cálculos de una sola ejecución.</li>
+                <li><strong>La regla en Spec-Driven:</strong> Código mínimo viable. Priorizar siempre funciones nativas de PySpark (<code>F.when</code>, <code>F.coalesce</code>, <code>F.sum().over(window)</code>). Si una celda tiene 150 líneas y se resuelve en 35 con Spark SQL limpio, <strong>se reescribe</strong>. Filtro: <em>«¿Un Principal Data Engineer diría que esto está sobrecomplicado?»</em>.</li>
+              </ul>
+            </div>
+
+            <!-- Principio 3 -->
+            <div class="sk-card info">
+              <h4>🎯 3. Surgical Changes (Cambios quirúrgicos)</h4>
+              <p style="font-size:0.75rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:0.4rem;">Touch only what you must · Clean up your own mess</p>
+              <ul style="font-size:0.82rem; line-height:1.55;">
+                <li><strong>El vicio del LLM:</strong> Al pedirle corregir un cálculo en la celda 12 de un notebook de Databricks, reescribe celdas previas, altera nombres de variables globales (rompiendo dependencias aguas abajo) o elimina comentarios de negocio.</li>
+                <li><strong>La regla en Spec-Driven:</strong> Toca única y exclusivamente la celda y tarea identificada (<code># COMMAND ---------- Txx</code>). No refactorices celdas adyacentes que ya funcionan. Si tu cambio crea DataFrames temporales, libéralos con <code>df.unpersist()</code>. Cada línea en el diff debe vincularse a una tarea de <code>tasks.md</code>.</li>
+              </ul>
+            </div>
+
+            <!-- Principio 4 -->
+            <div class="sk-card good">
+              <h4>🛡️ 4. Goal-Driven Execution (Ejecución guiada por metas)</h4>
+              <p style="font-size:0.75rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:0.4rem;">Define success criteria · Loop until verified</p>
+              <ul style="font-size:0.82rem; line-height:1.55;">
+                <li><strong>El vicio del LLM:</strong> Decir <em>«Listo, he completado el análisis»</em> sin haber comprobado si el cruce duplicó filas, si el saldo total coincide o si hay nulos inesperados.</li>
+                <li><strong>La regla en Spec-Driven:</strong> Toda tarea es un test previo: antes del JOIN, define <code>assert_unique()</code>; tras el cruce, ejecuta <code>safe_join()</code> y <code>reconcile()</code>. La tarea solo se da por finalizada cuando el bloque <code>SPECKIT-RUN</code> devuelve todos los checks en verde.</li>
+              </ul>
+            </div>
+          </div>
+
+          <h3>1B.1. El Mapeo: Los Principios de Karpathy en el flujo Spec-Kit</h3>
+          <p>
+            Cada uno de los comandos <code>/speckit.*</code> que aprendes en este cuaderno está diseñado para imponer uno de los principios de Karpathy de forma automática:
+          </p>
+
+          <div class="sk-table-wrap">
+            <table class="sk-table">
+              <thead><tr><th>Principio de Karpathy</th><th>Comando Spec-Kit</th><th>Cómo lo impone en Databricks</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>1. Think Before Coding</strong></td>
+                  <td><code>/speckit.specify</code> · <code>/speckit.discover</code></td>
+                  <td>Explicita población, fechas, filtros y cifras de referencia antes de programar. El perfilador (<code>profile_tables</code>) descubre la verdad de las tablas antes de escribir código.</td>
+                </tr>
+                <tr>
+                  <td><strong>2. Simplicity First</strong></td>
+                  <td><code>/speckit.plan</code> · <code>/speckit.constitution</code></td>
+                  <td>La constitución prohíbe UDFs innecesarias y fuerza PySpark nativo. El plan descompone el notebook en celdas atómicas de una sola responsabilidad.</td>
+                </tr>
+                <tr>
+                  <td><strong>3. Surgical Changes</strong></td>
+                  <td><code>/speckit.implement</code> · <code>/speckit.change</code></td>
+                  <td>Genera celdas trazables (<code># COMMAND ---------- Txx</code>). Si se modifica una métrica, <code>/speckit.change</code> hace análisis de impacto y toca solo la celda afectada.</td>
+                </tr>
+                <tr>
+                  <td><strong>4. Goal-Driven Execution</strong></td>
+                  <td><code>/speckit.review</code> · <code>dq_utils.py</code></td>
+                  <td>No hay entrega sin validación. <code>safe_join()</code> detiene la ejecución ante fan-outs y <code>reconcile()</code> comprueba el cuadre contable contra el origen.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>1B.2. Reglas de Karpathy listas para tu <code>copilot-instructions.md</code></h3>
+          <p>
+            Para que GitHub Copilot Chat o Claude Code apliquen esta disciplina de forma permanente en tus proyectos de Databricks, añade el siguiente bloque a tu archivo <code>.github/copilot-instructions.md</code>:
+          </p>
+
+          <div class="sk-installer" style="background:var(--bg-card); border-color:var(--border-subtle); margin:1rem 0;">
+            <div style="flex:1;">
+              <h4 style="display:flex; align-items:center; gap:0.5rem;">
+                📋 Bloque de Instrucciones Karpathy para Copilot Databricks
+              </h4>
+              <p>Pega este bloque al final de tu <code>.github/copilot-instructions.md</code>. Fuerza a Copilot a ser quirúrgico, declarar supuestos y no sobrecomplicar celdas PySpark.</p>
+            </div>
+            <button class="sk-btn alt" id="sk-karpathy-copy" type="button">Copiar reglas</button>
+          </div>
+
+          <pre class="sk-pre" id="sk-karpathy-code" style="max-height:360px;"># DIRECTRICES KARPATHY PARA DATABRICKS &amp; PYSPARK
+
+1. THINK BEFORE CODING (NO ASUMAS EN SILENCIO)
+- Declara explícitamente tus supuestos sobre filtros, fechas, estados y claves de cruce.
+- Si una métrica o filtro es ambiguo, detente y pregunta antes de generar código.
+- Presenta trade-offs de rendimiento (ej. tabla Silver vs Gold, broadcast join vs sort-merge).
+
+2. SIMPLICITY FIRST (CERO SOBREINGENIERÍA)
+- Código mínimo que resuelva el requisito de negocio. Cero código especulativo.
+- Prohibidas UDFs de Python si existe función nativa equivalente en pyspark.sql.functions.
+- Si una transformación ocupa 100 líneas y se puede hacer en 30 con Spark SQL nativo, reescríbela.
+- Pregunta de control: "¿Un Principal Data Engineer consideraría esta celda sobrecomplicada?".
+
+3. SURGICAL CHANGES (CAMBIOS QUIRÚRGICOS)
+- Toca únicamente la celda y tarea (# COMMAND ---------- Txx) solicitada.
+- No modifiques ni "mejores" celdas adyacentes ni borres comentarios de negocio preexistentes.
+- Si tu cambio genera DataFrames intermedios huérfanos, límpialos explícitamente con unpersist().
+
+4. GOAL-DRIVEN EXECUTION (VERIFICACIÓN ANTES DE DAR POR BUENO)
+- Transforma cada paso en un control verificable: assert_unique() antes del JOIN, safe_join() durante el cruce, reconcile() al final.
+- No des una tarea por finalizada hasta verificar que el bloque SPECKIT-RUN devuelve 0 errores.</pre>
+        </div>
+      </section>
       <section id="instalacion" class="transcript-section" data-sk-group="setup">
         <div class="section-header">
           <span class="section-number">02</span>
@@ -2489,6 +2628,14 @@ Cifras de referencia: RWA total segmento ≈ <X M€>, margen ordinario ≈ <Y M
       `).join('');
       $$('button[data-tidx]', tplGrid).forEach(btn => {
         btn.addEventListener('click', (e) => copyText(TPLS[Number(btn.dataset.tidx)].prompt, e.currentTarget));
+      });
+    }
+
+    const karpathyCopyBtn = $('#sk-karpathy-copy');
+    if (karpathyCopyBtn) {
+      karpathyCopyBtn.addEventListener('click', (e) => {
+        const codeEl = $('#sk-karpathy-code');
+        if (codeEl) copyText(codeEl.textContent, e.currentTarget, 'Reglas de Karpathy copiadas');
       });
     }
   })();
