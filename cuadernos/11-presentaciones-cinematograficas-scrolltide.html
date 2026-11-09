@@ -972,10 +972,16 @@
                     </div>
                   </div>
                   <div style="display:flex;align-items:center;gap:0.45rem;flex-wrap:wrap;">
-                    <span>OBJETO 3D: <strong id="st-hud-mode">AUTO</strong> · <strong id="st-hud-prog">0.00</strong></span>
+                    <span>VISUALIZADOR 3D / DATOS: <strong id="st-hud-mode">AUTO</strong> · <strong id="st-hud-prog">0.00</strong></span>
                     <div style="display:flex;flex-wrap:wrap;gap:0.25rem;" id="st-model-override">
                       <button type="button" class="st-pill-btn active" style="font-size:0.62rem;padding:0.18rem 0.48rem;" data-model="auto">Auto</button>
                       <button type="button" class="st-pill-btn" style="font-size:0.62rem;padding:0.18rem 0.48rem;" data-model="none">🎬 Solo Vídeo</button>
+                      <button type="button" class="st-pill-btn" style="font-size:0.62rem;padding:0.18rem 0.48rem;" data-model="sankey">🌊 Sankey STP</button>
+                      <button type="button" class="st-pill-btn" style="font-size:0.62rem;padding:0.18rem 0.48rem;" data-model="radar">🎯 Radar 360°</button>
+                      <button type="button" class="st-pill-btn" style="font-size:0.62rem;padding:0.18rem 0.48rem;" data-model="waterfall">📊 Waterfall ROI</button>
+                      <button type="button" class="st-pill-btn" style="font-size:0.62rem;padding:0.18rem 0.48rem;" data-model="medallion">🧬 Grafo MCP</button>
+                      <button type="button" class="st-pill-btn" style="font-size:0.62rem;padding:0.18rem 0.48rem;" data-model="matrix">❖ Matriz 2x2</button>
+                      <button type="button" class="st-pill-btn" style="font-size:0.62rem;padding:0.18rem 0.48rem;" data-model="surfaces">📈 Superficie 3D</button>
                       <button type="button" class="st-pill-btn" style="font-size:0.62rem;padding:0.18rem 0.48rem;" data-model="ring">Anillo 3D</button>
                       <button type="button" class="st-pill-btn" style="font-size:0.62rem;padding:0.18rem 0.48rem;" data-model="stack">Capas 3D</button>
                       <button type="button" class="st-pill-btn" style="font-size:0.62rem;padding:0.18rem 0.48rem;" data-model="globe">Esfera</button>
@@ -992,12 +998,12 @@
       </section>
 
       <!-- =====================================================================
-           SECCIÓN 02 · BÓVEDA DE 92 VÍDEOS .MP4 LIMPIOS + 8 MOTORES (#ST-01 A #ST-08)
+           SECCIÓN 02 · BÓVEDA DE 92 VÍDEOS .MP4 LIMPIOS + 12 MOTORES (#ST-01 A #ST-12)
            ===================================================================== -->
       <section id="catalogo-efectos" class="transcript-section" data-st-group="catalog">
         <div class="section-header">
           <span class="section-number">02</span>
-          <h2 class="section-title">Bóveda Local Completa: 92 Vídeos <code>.MP4</code> Limpios (37 Plantillas Hero + 55 Shaders) + 8 Motores (<code>#ST-01</code> a <code>#ST-08</code>)</h2>
+          <h2 class="section-title">Bóveda Local Completa: 92 Vídeos <code>.MP4</code> Limpios (37 Plantillas Hero + 55 Shaders) + 12 Motores y Visualizadores Avanzados (<code>#ST-01</code> a <code>#ST-12</code>)</h2>
         </div>
         <div class="section-divider"></div>
         <div class="transcript-text">
@@ -1023,20 +1029,20 @@
 
           <div class="st-mp4-vault-grid" id="st-mp4-vault-grid"></div>
 
-          <h3 style="margin-top:2rem;">2.2. Catálogo «Pick &amp; Send»: Los 8 Motores Visuales Estilo Scrolltide (<code>#ST-01</code> a <code>#ST-08</code>)</h3>
+          <h3 style="margin-top:2rem;">2.2. Catálogo «Pick &amp; Send»: Los 12 Motores Visuales y Gráficos Ejecutivos (<code>#ST-01</code> a <code>#ST-12</code>)</h3>
           <p>
-            Selecciona los motores arquitectónicos que quieras combinar en tu presentación y pulsa <strong><code>📋 Copiar Prompt con los Motores #ST Seleccionados</code></strong> para que VS Code Copilot construya tu presentación usándolos sin inventar ni recortar código:
+            Selecciona los motores arquitectónicos y visualizaciones de datos (Sankey STP, Radar 360°, Puente Waterfall, Grafo Medallion MCP) que quieras combinar en tu presentación y pulsa <strong><code>📋 Copiar Prompt con los Motores #ST Seleccionados</code></strong>:
           </p>
 
           <div style="background:rgba(10,15,29,0.95);border:1px solid rgba(16,185,129,0.45);border-radius:14px;padding:1rem 1.2rem;margin:1.2rem 0;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:0.8rem;">
             <div>
-              <div class="st-mono" style="font-size:0.68rem;color:#34d399;font-weight:800;">🎯 SCROLLTIDE EFFECT PICKER · SELECCIONA TUS RECETAS</div>
+              <div class="st-mono" style="font-size:0.68rem;color:#34d399;font-weight:800;">🎯 SCROLLTIDE EFFECT &amp; DATA VIZ PICKER · SELECCIONA TUS RECETAS</div>
               <div style="font-size:0.86rem;color:#f8fafc;font-weight:700;margin-top:0.2rem;">
-                <span id="st-picked-count">5</span> motores seleccionados para inyectar en el prompt
+                <span id="st-picked-count">7</span> motores seleccionados para inyectar en el prompt
               </div>
             </div>
             <div style="display:flex;flex-wrap:wrap;gap:0.45rem;">
-              <button type="button" class="st-pill-btn" id="st-pick-all">Seleccionar los 8</button>
+              <button type="button" class="st-pill-btn" id="st-pick-all">Seleccionar los 12</button>
               <button type="button" class="st-pill-btn emerald" id="st-copy-picked-btn">📋 Copiar Prompt Blindado con los #ST Elegidos</button>
             </div>
           </div>
@@ -1316,12 +1322,12 @@ Tu objetivo es crear un **archivo `.html` autónomo** que funcione como una pres
                 </div>
               </div>
               <div class="st-field">
-                <label>Guion de Escenas (1 línea por escena: <code>Título | Idea clave | Modelo 3D [ring/stack/globe/tunnel/none] | Insignia final | Pilar 1; Pilar 2; Pilar 3</code>)</label>
-                <textarea id="b-scenes" style="min-height:165px;">El cuello de botella actual | El 70% del tiempo analítico se pierde validando cruces manuales y hojas desconectadas. | tunnel | OBJETIVO: CERO FRICCIÓN | Diagnóstico: Cruces lentos; Impacto: 72h de espera; Meta: Decisión en sesión
-Arquitectura en 3 Capas | Separamos Constitución, Catálogo Persistente de Tablas y Especificación Auditable por proyecto. | stack | ARQUITECTURA BLINDADA | Capa 01: Reglas de negocio; Capa 02: Data Contracts; Capa 03: Agentes deterministas
-Los 4 Pilares del Motor | Perfilado en 1 ejecución, safe_join automático, memoria compartida y narrativa ejecutiva. | ring | 4 PILARES EN PRODUCCIÓN | KYB 45s: Lectura notarial; NBA: Oferta en vivo; STP 78%: Riesgo al vuelo
-Despliegue en Red y Territorios | Escalado progresivo a las direcciones territoriales y equipos de Riesgos y Comercial. | globe | COBERTURA 100% RED | Ola 1: 2 Territoriales; Ola 2: Red Empresas; Ola 3: Negocio Internacional
-Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de análisis y 0 errores de cuadre en Comité. | stack | IMPACTO: -65% TIEMPO | Payback: 4,2 meses; Margen: +310 pb RORWA; Auditoría: 100% trazable</textarea>
+                <label>Guion de Escenas (1 línea por escena: <code>Título | Idea clave | Visualización [ring / stack / globe / tunnel / sankey / radar / waterfall / medallion / matrix / surfaces / none] | Insignia final | Pilar 1; Pilar 2; Pilar 3</code>)</label>
+                <textarea id="b-scenes" style="min-height:165px;">El cuello de botella actual | El 70% del tiempo analítico se pierde validando cruces manuales y hojas desconectadas. | sankey | OBJETIVO: CERO FRICCIÓN | Diagnóstico: Cruces lentos; Impacto: 72h de espera; Meta: Decisión en sesión
+Arquitectura en 3 Capas | Separamos Constitución, Catálogo Persistente de Tablas y Especificación Auditable por proyecto. | medallion | ARQUITECTURA BLINDADA | Capa 01: Reglas de negocio; Capa 02: Data Contracts; Capa 03: Agentes deterministas
+Los 4 Pilares del Motor | Perfilado en 1 ejecución, safe_join automático, memoria compartida y narrativa ejecutiva. | radar | 4 PILARES EN PRODUCCIÓN | KYB 45s: Lectura notarial; NBA: Oferta en vivo; STP 78%: Riesgo al vuelo
+Priorización por Impacto y RORWA | Clasificamos las iniciativas según retorno ajustado al riesgo y velocidad de implantación. | matrix | CARTERA PRIORIZADA | Quick Wins: Despliegue 30d; Core IA: Alto RORWA; Escala: Red completa
+Puente de Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de análisis y +310 pb en rentabilidad RORWA. | waterfall | IMPACTO: -65% TIEMPO | Payback: 4,2 meses; Margen: +310 pb RORWA; Auditoría: 100% trazable</textarea>
               </div>
               <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
                 <button type="button" class="st-pill-btn active" id="b-preview-in-stage">▶ Ver en el Teatro 3D (Sección 01)</button>
@@ -1639,10 +1645,10 @@ Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de aná
         shader: 'halftone',
         scenes: [
           {
-            kicker: 'ACTO 01 / 05 · CONTEXTO DE MERCADO',
+            kicker: 'ACTO 01 / 05 · DIAGNÓSTICO MULTIDIMENSIONAL',
             title: 'Compresión de márgenes y batalla por el circulante empresarial',
             lead: 'En un entorno de normalización de tipos, defender el volumen transaccional y la vinculación en Empresas es la palanca número uno del ROE.',
-            model: 'globe',
+            model: 'radar',
             metric: 'FOCO ESTRATÉGICO: PROTEGER 68,5 M€/MES DE MARGEN ORDINARIO',
             pillars: [
               { b: 'RET-1', t: 'Desvío silencioso de remesas', d: 'El cliente reduce Confirming y Factoring 60 días antes de cancelar líneas.', hl: true },
@@ -1651,10 +1657,10 @@ Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de aná
             ]
           },
           {
-            kicker: 'ACTO 02 / 05 · SEGMENTACIÓN DE PRECISIÓN',
+            kicker: 'ACTO 02 / 05 · SEGMENTACIÓN DE PRECISIÓN (MATRIZ 2X2)',
             title: 'Cuatro cuadrantes de actuación sobre la cartera de Empresas',
             lead: 'Cruzamos variación de actividad en ventana móvil de 6 meses con rentabilidad ajustada al riesgo (RORWA) para priorizar cada gesto comercial.',
-            model: 'ring',
+            model: 'matrix',
             metric: '412 CLIENTES VIP CONCENTRAN EL 21,6% DEL MARGEN EN RIESGO',
             pillars: [
               { b: 'Q1 · VIP', t: 'Retención Inmediata (Margen Alto + Caída >20%)', d: 'Visita conjunta Director Empresas + Especialista de Circulante.', hl: true },
@@ -1664,10 +1670,10 @@ Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de aná
             ]
           },
           {
-            kicker: 'ACTO 03 / 05 · MODELO OPERATIVO EN 3 CAPAS',
+            kicker: 'ACTO 03 / 05 · LINAJE MEDALLION & AGENTES MCP',
             title: 'Del dato en el Lakehouse a la alerta en la mesa del gestor',
             lead: 'Conectamos la inteligencia analítica con la ejecución diaria en oficinas y canales digitales sin fricción.',
-            model: 'stack',
+            model: 'medallion',
             metric: 'CICLO SEMANAL AUTOMATIZADO DE GENERACIÓN DE OPORTUNIDADES',
             pillars: [
               { b: 'CAPA 1', t: 'Detección en Databricks', d: 'Cálculo semanal de caídas de facturación y utilización de líneas.', hl: true },
@@ -1676,11 +1682,11 @@ Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de aná
             ]
           },
           {
-            kicker: 'ACTO 04 / 05 · ACELERACIÓN HACIA EL OBJETIVO',
-            title: 'Hoja de ruta de implantación en 90 días',
-            lead: 'Un despliegue rápido con hitos medibles cada 30 días y seguimiento en Comité Comercial.',
-            model: 'tunnel',
-            metric: 'HORIZONTE 90 DÍAS · 3 OLAS DE DESPLIEGUE',
+            kicker: 'ACTO 04 / 05 · FLUJO DE ADMISIÓN Y ACTIVACIÓN (SANKEY STP)',
+            title: 'Hoja de ruta y embudo de conversión omnicanal en 90 días',
+            lead: 'Un despliegue rápido con enrutamiento inteligente en 3 carriles y seguimiento en Comité Comercial.',
+            model: 'sankey',
+            metric: 'HORIZONTE 90 DÍAS · 78% ENRUTAMIENTO AUTOMÁTICO STP',
             pillars: [
               { b: 'DÍA 30', t: 'Ola 1 · Piloto en 2 Territoriales', d: 'Foco en los 150 mayores grupos empresariales en alerta.', hl: true },
               { b: 'DÍA 60', t: 'Ola 2 · Extensión a toda la Red de Empresas', d: 'Integración del cuadro de seguimiento de retención.', hl: false },
@@ -1688,10 +1694,10 @@ Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de aná
             ]
           },
           {
-            kicker: 'ACTO 05 / 05 · COMPROMISO DE RESULTADOS',
-            title: 'Impacto esperado en cuenta de resultados',
+            kicker: 'ACTO 05 / 05 · PUENTE DE CREACIÓN DE VALOR (WATERFALL)',
+            title: 'Impacto cuantificado en cuenta de resultados y RORWA',
             lead: 'La defensa proactiva del circulante protege tanto el margen financiero como las comisiones de servicio.',
-            model: 'globe',
+            model: 'waterfall',
             metric: 'IMPACTO ESTIMADO: +4,2 M€ DE MARGEN ORDINARIO DEFENDIDO',
             pillars: [
               { b: '+35%', t: 'Tasa de recuperación de clientes en caída', d: 'Frente a la gestión reactiva tradicional a cierre de trimestre.', hl: true },
@@ -2228,7 +2234,433 @@ Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de aná
       }
     }
 
-    // Dibujo del Objeto Héroe 3D a la derecha del escenario (se oculta si mode === 'none')
+    // Dibujo de las 6 Visualizaciones Ejecutivas Avanzadas (Sankey, Radar, Waterfall, Medallion, Matriz 2x2, Superficie 3D)
+    function drawAdvancedViz(ctx, mode, centerX, centerY, w, h, t) {
+      const boxW = Math.min(430, Math.max(290, w * 0.40));
+      const boxH = Math.min(315, Math.max(225, h * 0.56));
+      const left = centerX - boxW * 0.5;
+      const top = centerY - boxH * 0.5;
+
+      // Marco de cristal técnico con esquinas HUD
+      ctx.save();
+      ctx.fillStyle = 'rgba(6, 11, 22, 0.72)';
+      ctx.strokeStyle = 'rgba(148, 163, 184, 0.24)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(left - 18, top - 28, boxW + 36, boxH + 52, 16);
+      else ctx.rect(left - 18, top - 28, boxW + 36, boxH + 52);
+      ctx.fill();
+      ctx.stroke();
+
+      const VIZ_TITLES = {
+        sankey: 'SANKEY STP · FLUJO DE ADMISIÓN EN 3 CARRILES',
+        radar: 'RADAR 360° · PROCESO CLÁSICO VS MOTOR IA',
+        waterfall: 'WATERFALL BRIDGE · GENERACIÓN DE MARGEN RORWA',
+        medallion: 'GRAFO MEDALLION & MALLA MULTI-AGENTE MCP',
+        matrix: 'MATRIZ 2X2 · PRIORIZACIÓN IMPACTO VS COMPLEJIDAD',
+        surfaces: 'SUPERFICIE 3D · ELASTICIDAD PRECIO × RORWA'
+      };
+      ctx.font = '700 10px "JetBrains Mono", monospace';
+      ctx.fillStyle = '#67e8f9';
+      ctx.textAlign = 'left';
+      ctx.fillText('● ' + (VIZ_TITLES[mode] || mode.toUpperCase()), left - 4, top - 10);
+      ctx.textAlign = 'right';
+      ctx.fillStyle = '#6ee7b7';
+      ctx.fillText('LIVE CANVAS · 60 FPS', left + boxW + 4, top - 10);
+
+      if (mode === 'sankey') {
+        const srcX = left + 16;
+        const dstX = left + boxW - 16;
+        const srcY = centerY;
+        const lanes = [
+          { label: '78% CARRIL VERDE STP', sub: 'Firma en 45s · 0 analistas', y: top + boxH * 0.20, w: 30, col: '#10b981', glow: 'rgba(16,185,129,0.28)' },
+          { label: '14% ÁMBAR · GARANTÍA', sub: 'Covenant pre-calculado', y: top + boxH * 0.54, w: 14, col: '#f59e0b', glow: 'rgba(245,158,11,0.25)' },
+          { label: '8% ESPECIALISTA', sub: 'Dossier pre-redactado IA', y: top + boxH * 0.84, w: 9, col: '#a855f7', glow: 'rgba(168,85,247,0.25)' }
+        ];
+
+        lanes.forEach((ln, idx) => {
+          const sy = srcY + (idx - 1) * 14;
+          const cp1x = srcX + boxW * 0.38;
+          const cp2x = dstX - boxW * 0.36;
+
+          ctx.beginPath();
+          ctx.moveTo(srcX, sy);
+          ctx.bezierCurveTo(cp1x, sy, cp2x, ln.y, dstX - 115, ln.y);
+          ctx.strokeStyle = ln.glow;
+          ctx.lineWidth = ln.w;
+          ctx.lineCap = 'round';
+          ctx.stroke();
+
+          ctx.beginPath();
+          ctx.moveTo(srcX, sy);
+          ctx.bezierCurveTo(cp1x, sy, cp2x, ln.y, dstX - 115, ln.y);
+          ctx.strokeStyle = ln.col;
+          ctx.lineWidth = 2;
+          ctx.stroke();
+
+          // Fotones animados de flujo de expedientes
+          for (let p = 0; p < 4; p++) {
+            const u = ((t * (0.42 - idx * 0.06) + p * 0.25 + idx * 0.17) % 1);
+            const inv = 1 - u;
+            const px = inv*inv*inv*srcX + 3*inv*inv*u*cp1x + 3*inv*u*u*cp2x + u*u*u*(dstX - 115);
+            const py = inv*inv*inv*sy + 3*inv*inv*u*sy + 3*inv*u*u*ln.y + u*u*u*ln.y;
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            ctx.arc(px, py, 3.2, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
+          // Tarjeta receptora de cada carril
+          ctx.fillStyle = 'rgba(15, 23, 42, 0.9)';
+          ctx.strokeStyle = ln.col;
+          ctx.lineWidth = 1.2;
+          ctx.beginPath();
+          ctx.rect(dstX - 110, ln.y - 18, 114, 36);
+          ctx.fill();
+          ctx.stroke();
+
+          ctx.textAlign = 'left';
+          ctx.font = '800 9.5px "Plus Jakarta Sans", sans-serif';
+          ctx.fillStyle = '#f8fafc';
+          ctx.fillText(ln.label, dstX - 103, ln.y - 3);
+          ctx.font = '500 8.5px "Plus Jakarta Sans", sans-serif';
+          ctx.fillStyle = '#94a3b8';
+          ctx.fillText(ln.sub, dstX - 103, ln.y + 10);
+        });
+
+        // Nodo origen
+        ctx.fillStyle = '#0f172a';
+        ctx.strokeStyle = '#38bdf8';
+        ctx.lineWidth = 1.6;
+        ctx.beginPath();
+        ctx.rect(srcX - 8, srcY - 36, 78, 72);
+        ctx.fill();
+        ctx.stroke();
+        ctx.textAlign = 'center';
+        ctx.font = '800 10px "JetBrains Mono", monospace';
+        ctx.fillStyle = '#38bdf8';
+        ctx.fillText('ENTRADA', srcX + 31, srcY - 10);
+        ctx.font = '800 13px "Plus Jakarta Sans", sans-serif';
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText('100% OPS', srcX + 31, srcY + 8);
+        ctx.font = '600 8.5px "Plus Jakarta Sans", sans-serif';
+        ctx.fillStyle = '#94a3b8';
+        ctx.fillText('Canal + Red', srcX + 31, srcY + 23);
+      } else if (mode === 'radar') {
+        const rMax = Math.min(boxW, boxH) * 0.36;
+        const axes = [
+          { name: 'Velocidad KYB', base: 0.32, ai: 0.94 },
+          { name: 'Conversión NBA', base: 0.38, ai: 0.88 },
+          { name: 'Admisión STP', base: 0.28, ai: 0.86 },
+          { name: 'Trazabilidad', base: 0.52, ai: 0.96 },
+          { name: 'RORWA Cartera', base: 0.48, ai: 0.85 },
+          { name: 'Adopción Red', base: 0.42, ai: 0.91 }
+        ];
+
+        // Anillos concéntricos
+        [0.25, 0.5, 0.75, 1].forEach(level => {
+          ctx.beginPath();
+          axes.forEach((_, i) => {
+            const ang = -Math.PI / 2 + (i * Math.PI * 2) / axes.length;
+            const px = centerX + Math.cos(ang) * rMax * level;
+            const py = centerY + Math.sin(ang) * rMax * level;
+            if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+          });
+          ctx.closePath();
+          ctx.strokeStyle = 'rgba(148, 163, 184, 0.2)';
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        });
+
+        // Ejes y etiquetas
+        axes.forEach((ax, i) => {
+          const ang = -Math.PI / 2 + (i * Math.PI * 2) / axes.length;
+          const ex = centerX + Math.cos(ang) * rMax;
+          const ey = centerY + Math.sin(ang) * rMax;
+          ctx.beginPath();
+          ctx.moveTo(centerX, centerY);
+          ctx.lineTo(ex, ey);
+          ctx.strokeStyle = 'rgba(148, 163, 184, 0.22)';
+          ctx.stroke();
+
+          const lx = centerX + Math.cos(ang) * (rMax + 24);
+          const ly = centerY + Math.sin(ang) * (rMax + 16);
+          ctx.textAlign = Math.abs(Math.cos(ang)) < 0.2 ? 'center' : (Math.cos(ang) > 0 ? 'left' : 'right');
+          ctx.font = '700 9.5px "Plus Jakarta Sans", sans-serif';
+          ctx.fillStyle = '#e2e8f0';
+          ctx.fillText(ax.name, lx, ly + 3);
+        });
+
+        // Polígono Base (Proceso Clásico)
+        ctx.beginPath();
+        axes.forEach((ax, i) => {
+          const ang = -Math.PI / 2 + (i * Math.PI * 2) / axes.length;
+          const px = centerX + Math.cos(ang) * rMax * ax.base;
+          const py = centerY + Math.sin(ang) * rMax * ax.base;
+          if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+        });
+        ctx.closePath();
+        ctx.fillStyle = 'rgba(245, 158, 11, 0.14)';
+        ctx.fill();
+        ctx.setLineDash([4, 3]);
+        ctx.strokeStyle = '#f59e0b';
+        ctx.lineWidth = 1.6;
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Polígono IA (Motor Objetivo con pulso suave)
+        const pulse = 1 + Math.sin(t * 2.2) * 0.025;
+        ctx.beginPath();
+        axes.forEach((ax, i) => {
+          const ang = -Math.PI / 2 + (i * Math.PI * 2) / axes.length;
+          const v = Math.min(1, ax.ai * pulse);
+          const px = centerX + Math.cos(ang) * rMax * v;
+          const py = centerY + Math.sin(ang) * rMax * v;
+          if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+        });
+        ctx.closePath();
+        ctx.fillStyle = 'rgba(16, 185, 129, 0.24)';
+        ctx.fill();
+        ctx.strokeStyle = '#34d399';
+        ctx.lineWidth = 2.2;
+        ctx.stroke();
+
+        axes.forEach((ax, i) => {
+          const ang = -Math.PI / 2 + (i * Math.PI * 2) / axes.length;
+          const v = Math.min(1, ax.ai * pulse);
+          const px = centerX + Math.cos(ang) * rMax * v;
+          const py = centerY + Math.sin(ang) * rMax * v;
+          ctx.fillStyle = '#6ee7b7';
+          ctx.beginPath();
+          ctx.arc(px, py, 3.6, 0, Math.PI * 2);
+          ctx.fill();
+        });
+      } else if (mode === 'waterfall') {
+        const bars = [
+          { name: 'Base Actual', val: '+180 pb', from: 0, to: 0.42, col: '#64748b' },
+          { name: '+KYB Digital', val: '+38 pb', from: 0.42, to: 0.56, col: '#10b981' },
+          { name: '+Motor NBA', val: '+52 pb', from: 0.56, to: 0.75, col: '#10b981' },
+          { name: '+Riesgo STP', val: '+48 pb', from: 0.75, to: 0.92, col: '#38bdf8' },
+          { name: '-Coste Cloud', val: '-8 pb', from: 0.92, to: 0.87, col: '#f59e0b' },
+          { name: 'RORWA Meta', val: '+310 pb', from: 0, to: 0.87, col: '#a855f7' }
+        ];
+        const chartTop = top + 28;
+        const chartBot = top + boxH - 34;
+        const chartH = chartBot - chartTop;
+        const stepW = boxW / bars.length;
+
+        ctx.strokeStyle = 'rgba(148,163,184,0.22)';
+        ctx.beginPath();
+        ctx.moveTo(left, chartBot);
+        ctx.lineTo(left + boxW, chartBot);
+        ctx.stroke();
+
+        bars.forEach((b, i) => {
+          const bx = left + i * stepW + stepW * 0.16;
+          const bw = stepW * 0.68;
+          const y1 = chartBot - b.from * chartH;
+          const y2 = chartBot - b.to * chartH;
+          const topY = Math.min(y1, y2);
+          const bh = Math.max(6, Math.abs(y2 - y1));
+
+          ctx.fillStyle = b.col;
+          ctx.beginPath();
+          ctx.rect(bx, topY, bw, bh);
+          ctx.fill();
+
+          if (i < bars.length - 1) {
+            ctx.setLineDash([3, 3]);
+            ctx.strokeStyle = 'rgba(226,232,240,0.4)';
+            ctx.beginPath();
+            ctx.moveTo(bx + bw, y2);
+            ctx.lineTo(bx + stepW, y2);
+            ctx.stroke();
+            ctx.setLineDash([]);
+          }
+
+          ctx.textAlign = 'center';
+          ctx.font = '800 9.5px "JetBrains Mono", monospace';
+          ctx.fillStyle = '#f8fafc';
+          ctx.fillText(b.val, bx + bw / 2, topY - 6);
+
+          ctx.font = '600 8.5px "Plus Jakarta Sans", sans-serif';
+          ctx.fillStyle = '#cbd5e1';
+          ctx.fillText(b.name, bx + bw / 2, chartBot + 15);
+        });
+      } else if (mode === 'medallion') {
+        const cols = [
+          { title: 'INGESTA', sub: 'Core / CIRBE', x: left + boxW * 0.12, nodes: ['Saldos', 'Escrituras', 'SEPA'], col: '#94a3b8' },
+          { title: 'MEDALLION', sub: 'Bronze·Silver·Gold', x: left + boxW * 0.40, nodes: ['Bronze Raw', 'Silver Clean', 'Gold RORWA'], col: '#38bdf8' },
+          { title: 'AGENTES MCP', sub: 'Zero-Leakage', x: left + boxW * 0.69, nodes: ['Agente KYB', 'Scoring IA', 'Copiloto'], col: '#a855f7' },
+          { title: 'SALIDA', sub: 'Omnicanal', x: left + boxW * 0.92, nodes: ['App 45s', 'Comité'], col: '#10b981' }
+        ];
+
+        // Conexiones y paquetes de datos animados entre etapas
+        for (let c = 0; c < cols.length - 1; c++) {
+          const c1 = cols[c], c2 = cols[c + 1];
+          c1.nodes.forEach((_, i1) => {
+            const y1 = top + 45 + (i1 + 0.5) * ((boxH - 65) / c1.nodes.length);
+            c2.nodes.forEach((__, i2) => {
+              const y2 = top + 45 + (i2 + 0.5) * ((boxH - 65) / c2.nodes.length);
+              ctx.strokeStyle = 'rgba(56, 189, 248, 0.18)';
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.moveTo(c1.x, y1);
+              ctx.lineTo(c2.x, y2);
+              ctx.stroke();
+
+              if ((i1 + i2) % 2 === 0) {
+                const u = (t * 0.55 + c * 0.28 + i1 * 0.19) % 1;
+                const px = c1.x + (c2.x - c1.x) * u;
+                const py = y1 + (y2 - y1) * u;
+                ctx.fillStyle = '#6ee7b7';
+                ctx.beginPath();
+                ctx.arc(px, py, 2.5, 0, Math.PI * 2);
+                ctx.fill();
+              }
+            });
+          });
+        }
+
+        cols.forEach(c => {
+          ctx.textAlign = 'center';
+          ctx.font = '800 9px "JetBrains Mono", monospace';
+          ctx.fillStyle = c.col;
+          ctx.fillText(c.title, c.x, top + 18);
+          ctx.font = '500 8px "Plus Jakarta Sans", sans-serif';
+          ctx.fillStyle = '#94a3b8';
+          ctx.fillText(c.sub, c.x, top + 30);
+
+          c.nodes.forEach((nd, idx) => {
+            const ny = top + 45 + (idx + 0.5) * ((boxH - 65) / c.nodes.length);
+            ctx.fillStyle = 'rgba(15, 23, 42, 0.94)';
+            ctx.strokeStyle = c.col;
+            ctx.lineWidth = 1.4;
+            ctx.beginPath();
+            ctx.rect(c.x - 36, ny - 14, 72, 28);
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.font = '700 8.5px "Plus Jakarta Sans", sans-serif';
+            ctx.fillStyle = '#f8fafc';
+            ctx.fillText(nd, c.x, ny + 3);
+          });
+        });
+      } else if (mode === 'matrix') {
+        const pad = 28;
+        const mxL = left + pad, mxR = left + boxW - pad;
+        const mxT = top + 20, mxB = top + boxH - 24;
+        const midX = (mxL + mxR) / 2, midY = (mxT + mxB) / 2;
+
+        ctx.strokeStyle = 'rgba(148,163,184,0.28)';
+        ctx.strokeRect(mxL, mxT, mxR - mxL, mxB - mxT);
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath();
+        ctx.moveTo(midX, mxT); ctx.lineTo(midX, mxB);
+        ctx.moveTo(mxL, midY); ctx.lineTo(mxR, midY);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        ctx.font = '700 8.5px "JetBrains Mono", monospace';
+        ctx.fillStyle = 'rgba(16,185,129,0.75)';
+        ctx.textAlign = 'left';
+        ctx.fillText('Q1 · ALTO IMPACTO / DESPLIEGUE RÁPIDO', mxL + 8, mxT + 14);
+        ctx.textAlign = 'right';
+        ctx.fillStyle = 'rgba(56,189,248,0.75)';
+        ctx.fillText('Q2 · APUESTAS ESTRATÉGICAS', mxR - 8, mxT + 14);
+
+        const bubbles = [
+          { name: 'KYB 45s', x: 0.26, y: 0.24, r: 22, col: '#10b981', kpi: '+94% vel' },
+          { name: 'Motor NBA', x: 0.36, y: 0.35, r: 25, col: '#34d399', kpi: '3,8x conv' },
+          { name: 'Renov. STP', x: 0.70, y: 0.26, r: 24, col: '#38bdf8', kpi: '78% auto' },
+          { name: 'Copiloto Red', x: 0.24, y: 0.68, r: 18, col: '#a855f7', kpi: '-65% t.' },
+          { name: 'Pricing EVA', x: 0.74, y: 0.64, r: 19, col: '#f59e0b', kpi: '+310 pb' }
+        ];
+
+        bubbles.forEach((b, i) => {
+          const bx = mxL + b.x * (mxR - mxL);
+          const by = mxT + b.y * (mxB - mxT) + Math.sin(t * 2 + i) * 2.5;
+          ctx.fillStyle = b.col + '33';
+          ctx.strokeStyle = b.col;
+          ctx.lineWidth = 1.8;
+          ctx.beginPath();
+          ctx.arc(bx, by, b.r, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
+
+          ctx.textAlign = 'center';
+          ctx.font = '800 9px "Plus Jakarta Sans", sans-serif';
+          ctx.fillStyle = '#ffffff';
+          ctx.fillText(b.name, bx, by - 1);
+          ctx.font = '700 7.5px "JetBrains Mono", monospace';
+          ctx.fillStyle = '#cbd5e1';
+          ctx.fillText(b.kpi, bx, by + 9);
+        });
+
+        ctx.textAlign = 'center';
+        ctx.font = '700 8.5px "JetBrains Mono", monospace';
+        ctx.fillStyle = '#94a3b8';
+        ctx.fillText('COMPLEJIDAD DE INTEGRACIÓN →', midX, mxB + 15);
+      } else if (mode === 'surfaces') {
+        // Superficie Topográfica 3D Isométrica de Precio × RORWA × Probabilidad de Conversión
+        const cols = 13, rows = 13;
+        const span = Math.min(boxW, boxH) * 0.66;
+        const cY = Math.cos(rotY * 0.7 + 0.6), sY = Math.sin(rotY * 0.7 + 0.6);
+        const cX = Math.cos(0.52), sX = Math.sin(0.52);
+
+        const gridPts = [];
+        for (let r = 0; r < rows; r++) {
+          const rowArr = [];
+          for (let c = 0; c < cols; c++) {
+            const u = (c / (cols - 1)) - 0.5;
+            const v = (r / (rows - 1)) - 0.5;
+            const d2 = u * u + v * v;
+            const elev = Math.exp(-d2 * 7.5) * 72 + Math.sin(u * 5 + t * 1.4) * 10 + Math.cos(v * 5 - t) * 8;
+            const x3 = u * span;
+            const z3 = v * span;
+            const y3 = -elev + 24;
+
+            const rx = x3 * cY - z3 * sY;
+            const rz = z3 * cY + x3 * sY;
+            const ry = y3 * cX - rz * sX;
+            rowArr.push({ px: centerX + rx, py: centerY + ry, elev });
+          }
+          gridPts.push(rowArr);
+        }
+
+        for (let r = 0; r < rows - 1; r++) {
+          for (let c = 0; c < cols - 1; c++) {
+            const p1 = gridPts[r][c], p2 = gridPts[r][c + 1];
+            const p3 = gridPts[r + 1][c + 1], p4 = gridPts[r + 1][c];
+            const high = p1.elev > 38;
+            ctx.beginPath();
+            ctx.moveTo(p1.px, p1.py);
+            ctx.lineTo(p2.px, p2.py);
+            ctx.lineTo(p3.px, p3.py);
+            ctx.lineTo(p4.px, p4.py);
+            ctx.closePath();
+            ctx.fillStyle = high ? 'rgba(16, 185, 129, 0.22)' : 'rgba(56, 189, 248, 0.08)';
+            ctx.fill();
+            ctx.strokeStyle = high ? 'rgba(52, 211, 153, 0.75)' : 'rgba(56, 189, 248, 0.35)';
+            ctx.lineWidth = 0.9;
+            ctx.stroke();
+          }
+        }
+
+        const peak = gridPts[Math.floor(rows / 2)][Math.floor(cols / 2)];
+        ctx.fillStyle = '#f59e0b';
+        ctx.beginPath();
+        ctx.arc(peak.px, peak.py, 5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.textAlign = 'center';
+        ctx.font = '800 9.5px "JetBrains Mono", monospace';
+        ctx.fillStyle = '#fef3c7';
+        ctx.fillText('ÓPTIMO RORWA: +310 pb', peak.px, peak.py - 12);
+      }
+      ctx.restore();
+    }
+
+    // Dibujo del Objeto Héroe 3D / Visualización Avanzada a la derecha del escenario (se oculta si mode === 'none')
     function drawHero3D(ctx, w, h, t) {
       ctx.clearRect(0, 0, w, h);
       const mode = getActiveModelMode();
@@ -2240,6 +2672,12 @@ Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de aná
       if (!dragging) {
         rotY += 0.0055;
       }
+
+      if (['sankey', 'radar', 'waterfall', 'medallion', 'matrix', 'surfaces'].includes(mode)) {
+        drawAdvancedViz(ctx, mode, centerX, centerY, w, h, t);
+        return;
+      }
+
       const effRotY = rotY + currentP * 0.85;
       const effRotX = rotX + Math.sin(currentP * 1.2) * 0.18;
       const cosY = Math.cos(effRotY), sinY = Math.sin(effRotY);
@@ -2455,7 +2893,15 @@ Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de aná
           $$('#st-model-override [data-model]').forEach(b => b.classList.remove('active'));
           btn.classList.add('active');
           modelOverride = btn.dataset.model;
-          $('#st-hud-mode').textContent = getActiveModelMode().toUpperCase();
+          // Si el usuario activa explícitamente una visualización 3D o de Datos y la arquitectura actual taparía el lienzo derecho (ridge o synapse), pasamos a "selene" (Cristal Izquierda + Escenario 3D/Datos Derecha)
+          if (modelOverride !== 'none' && modelOverride !== 'auto') {
+            const curLay = getActiveLayoutMode();
+            if (curLay === 'ridge' || curLay === 'synapse') {
+              layoutOverride = 'selene';
+              $$('#st-layout-override [data-layout]').forEach(b => b.classList.toggle('active', b.dataset.layout === 'selene'));
+            }
+          }
+          renderNarrativeCard();
         });
       });
 
@@ -2912,16 +3358,71 @@ function frame(now) {
     }
   }
   hctx.clearRect(0, 0, w, h);
-  const mode = (LAYOUT !== 'selene' && SHADER === 'video') ? 'none' : ((SCENES[idx] && SCENES[idx].model) || 'ring');
+  const rawM = (SCENES[idx] && SCENES[idx].model) || 'ring';
+  const isAdv = ['sankey','radar','waterfall','medallion','matrix','surfaces'].includes(rawM);
+  const mode = (LAYOUT !== 'selene' && SHADER === 'video' && !isAdv) ? 'none' : rawM;
   if (mode !== 'none' && LAYOUT !== 'synapse') {
     const cx = w > 860 ? w * 0.7 : w * 0.5, cy = w > 860 ? h * 0.5 : h * 0.3, cyR = Math.cos(rotY + currentP * 0.8), syR = Math.sin(rotY + currentP * 0.8);
-    nodes.forEach(n => {
-      const tg = n.targets[mode] || n.targets.ring;
-      n.x += (tg.x - n.x) * 0.08; n.y += (tg.y - n.y) * 0.08; n.z += (tg.z - n.z) * 0.08;
-      const x1 = n.x * cyR - n.z * syR, z1 = n.z * cyR + n.x * syR, sc = 440 / Math.max(90, 660 + z1);
-      hctx.fillStyle = n.layer === 0 ? '#c4b5fd' : n.layer === 1 ? '#38bdf8' : '#34d399';
-      hctx.beginPath(); hctx.arc(cx + x1 * sc, cy + n.y * sc, Math.max(1.8, 4 * sc), 0, Math.PI * 2); hctx.fill();
-    });
+    if (isAdv) {
+      const bw = Math.min(390, w * 0.38), bh = Math.min(280, h * 0.52), lx = cx - bw / 2, ty = cy - bh / 2;
+      hctx.fillStyle = 'rgba(6,11,22,0.78)'; hctx.strokeStyle = 'rgba(56,189,248,0.35)'; hctx.lineWidth = 1;
+      hctx.fillRect(lx - 14, ty - 24, bw + 28, bh + 44); hctx.strokeRect(lx - 14, ty - 24, bw + 28, bh + 44);
+      hctx.font = '700 10px "Space Mono", monospace'; hctx.fillStyle = '#67e8f9'; hctx.textAlign = 'left';
+      hctx.fillText('● VISUALIZACIÓN EJECUTIVA · ' + mode.toUpperCase(), lx - 2, ty - 8);
+      if (mode === 'sankey') {
+        [['78% STP Verde', 0.22, 24, '#10b981'], ['14% Ámbar', 0.54, 12, '#f59e0b'], ['8% Comité', 0.84, 8, '#a855f7']].forEach((ln, i) => {
+          const sy = cy + (i - 1) * 12, dy = ty + bh * ln[1];
+          hctx.beginPath(); hctx.moveTo(lx + 40, sy); hctx.bezierCurveTo(lx + bw * 0.45, sy, lx + bw * 0.55, dy, lx + bw - 95, dy);
+          hctx.strokeStyle = ln[3] + '55'; hctx.lineWidth = ln[2]; hctx.stroke();
+          hctx.strokeStyle = ln[3]; hctx.lineWidth = 2; hctx.stroke();
+          const u = (t * 0.4 + i * 0.27) % 1, px = (1 - u) * (lx + 40) + u * (lx + bw - 95), py = (1 - u) * sy + u * dy;
+          hctx.fillStyle = '#fff'; hctx.beginPath(); hctx.arc(px, py, 3, 0, Math.PI * 2); hctx.fill();
+          hctx.fillStyle = '#f8fafc'; hctx.font = '700 10px sans-serif'; hctx.fillText(ln[0], lx + bw - 88, dy + 3);
+        });
+      } else if (mode === 'radar') {
+        const R = Math.min(bw, bh) * 0.36, V = [0.94, 0.88, 0.86, 0.95, 0.85, 0.91], L = ['KYB','NBA','STP','Audit','RORWA','Red'];
+        [0.5, 1].forEach(lv => { hctx.beginPath(); L.forEach((_, i) => { const a = -1.57 + i * 1.047; i ? hctx.lineTo(cx + Math.cos(a)*R*lv, cy + Math.sin(a)*R*lv) : hctx.moveTo(cx + Math.cos(a)*R*lv, cy + Math.sin(a)*R*lv); }); hctx.closePath(); hctx.strokeStyle = 'rgba(148,163,184,0.25)'; hctx.stroke(); });
+        hctx.beginPath(); V.forEach((v, i) => { const a = -1.57 + i * 1.047; i ? hctx.lineTo(cx + Math.cos(a)*R*v, cy + Math.sin(a)*R*v) : hctx.moveTo(cx + Math.cos(a)*R*v, cy + Math.sin(a)*R*v); }); hctx.closePath(); hctx.fillStyle = 'rgba(16,185,129,0.25)'; hctx.fill(); hctx.strokeStyle = '#34d399'; hctx.lineWidth = 2; hctx.stroke();
+      } else if (mode === 'waterfall') {
+        [['Base',0,0.42,'#64748b'],['+KYB',0.42,0.58,'#10b981'],['+NBA',0.58,0.76,'#10b981'],['+STP',0.76,0.92,'#38bdf8'],['Meta',0,0.92,'#a855f7']].forEach((b, i) => {
+          const sw = bw / 5, bx = lx + i * sw + 8, y1 = ty + bh - 18 - b[1]*(bh-36), y2 = ty + bh - 18 - b[2]*(bh-36);
+          hctx.fillStyle = b[3]; hctx.fillRect(bx, Math.min(y1,y2), sw - 16, Math.max(6, Math.abs(y2-y1)));
+          hctx.fillStyle = '#e2e8f0'; hctx.font = '700 9px sans-serif'; hctx.textAlign = 'center'; hctx.fillText(b[0], bx + (sw-16)/2, ty + bh - 4);
+        });
+      } else if (mode === 'medallion') {
+        ['INGESTA','MEDALLION','AGENTES MCP','SALIDA'].forEach((c, ci) => {
+          const x = lx + (ci + 0.5) * (bw / 4);
+          [0.28, 0.55, 0.82].forEach(ry => {
+            const y = ty + bh * ry;
+            if (ci < 3) { hctx.strokeStyle = 'rgba(56,189,248,0.28)'; hctx.beginPath(); hctx.moveTo(x, y); hctx.lineTo( x + bw/4, y); hctx.stroke(); }
+            hctx.fillStyle = '#0f172a'; hctx.strokeStyle = '#38bdf8'; hctx.fillRect(x - 28, y - 10, 56, 20); hctx.strokeRect(x - 28, y - 10, 56, 20);
+          });
+          hctx.fillStyle = '#67e8f9'; hctx.font = '700 8px monospace'; hctx.textAlign = 'center'; hctx.fillText(c, x, ty + 14);
+        });
+      } else if (mode === 'matrix') {
+        hctx.strokeStyle = 'rgba(148,163,184,0.3)'; hctx.strokeRect(lx + 16, ty + 14, bw - 32, bh - 28);
+        hctx.beginPath(); hctx.moveTo(cx, ty + 14); hctx.lineTo(cx, ty + bh - 14); hctx.moveTo(lx + 16, cy); hctx.lineTo(lx + bw - 16, cy); hctx.stroke();
+        [['KYB',0.28,0.28,18,'#10b981'],['NBA',0.38,0.38,22,'#34d399'],['STP',0.72,0.28,20,'#38bdf8'],['EVA',0.72,0.68,16,'#f59e0b']].forEach(b => {
+          const bx = lx + 16 + b[1]*(bw-32), by = ty + 14 + b[2]*(bh-28);
+          hctx.fillStyle = b[4] + '44'; hctx.strokeStyle = b[4]; hctx.beginPath(); hctx.arc(bx, by, b[3], 0, Math.PI*2); hctx.fill(); hctx.stroke();
+          hctx.fillStyle = '#fff'; hctx.font = '700 9px sans-serif'; hctx.textAlign = 'center'; hctx.fillText(b[0], bx, by + 3);
+        });
+      } else if (mode === 'surfaces') {
+        for (let r = 0; r < 9; r++) for (let c = 0; c < 9; c++) {
+          const u = c / 8 - 0.5, v = r / 8 - 0.5, el = Math.exp(-(u*u+v*v)*7)*52;
+          const px = cx + (u * cyR - v * syR) * 180, py = cy + (u * syR + v * cyR) * 90 - el;
+          hctx.fillStyle = el > 26 ? '#34d399' : '#38bdf8'; hctx.fillRect(px - 2, py - 2, 4, 4);
+        }
+      }
+    } else {
+      nodes.forEach(n => {
+        const tg = n.targets[mode] || n.targets.ring;
+        n.x += (tg.x - n.x) * 0.08; n.y += (tg.y - n.y) * 0.08; n.z += (tg.z - n.z) * 0.08;
+        const x1 = n.x * cyR - n.z * syR, z1 = n.z * cyR + n.x * syR, sc = 440 / Math.max(90, 660 + z1);
+        hctx.fillStyle = n.layer === 0 ? '#c4b5fd' : n.layer === 1 ? '#38bdf8' : '#34d399';
+        hctx.beginPath(); hctx.arc(cx + x1 * sc, cy + n.y * sc, Math.max(1.8, 4 * sc), 0, Math.PI * 2); hctx.fill();
+      });
+    }
   }
   requestAnimationFrame(frame);
 }
@@ -3233,6 +3734,30 @@ document.getElementById('sbtn').addEventListener('click', () => {
         desc: 'Interpolador amortiguado currentP += (targetP - currentP) * 0.08 que sincroniza vídeo, 3D y tarjetas a 60 FPS.',
         preview: `<video autoplay muted loop playsinline poster="../assets/scrolltide/ridge-poster.jpg" style="width:100%;height:100%;object-fit:cover;filter:hue-rotate(35deg) contrast(1.1);"><source src="../assets/scrolltide/ridge.mp4" type="video/mp4"></video>`,
         recipe: `/* #ST-08 · Lerp Camera Loop */\nlet targetP = 0, currentP = 0;\nfunction tick(){ currentP += (targetP - currentP) * 0.08; requestAnimationFrame(tick); }`
+      },
+      {
+        id: '#ST-09', title: 'Sankey Flow Stream · Embudo & Enrutamiento STP en 3 Carriles', picked: true,
+        desc: 'Diagrama Sankey animado en Canvas con curvas Bézier cúbicas y partículas de flujo en tiempo real (78% Carril Verde STP, 14% Ámbar, 8% Especialista).',
+        preview: `<div style="width:100%;height:100%;background:radial-gradient(circle at 30% 50%,#0b192e,#050811);display:flex;align-items:center;justify-content:center;padding:0.6rem;"><svg viewBox="0 0 260 110" style="width:100%;height:100%;"><rect x="8" y="32" width="44" height="46" rx="6" fill="#0f172a" stroke="#38bdf8" stroke-width="1.5"/><text x="30" y="53" fill="#38bdf8" font-size="8" font-family="monospace" text-anchor="middle" font-weight="bold">100%</text><text x="30" y="65" fill="#cbd5e1" font-size="7" font-family="sans-serif" text-anchor="middle">ENTRADA</text><path d="M52,44 C115,44 125,22 182,22" fill="none" stroke="#10b981" stroke-width="11" stroke-opacity="0.35"/><path d="M52,44 C115,44 125,22 182,22" fill="none" stroke="#10b981" stroke-width="2"/><path d="M52,55 C115,55 125,55 182,55" fill="none" stroke="#f59e0b" stroke-width="6" stroke-opacity="0.35"/><path d="M52,55 C115,55 125,55 182,55" fill="none" stroke="#f59e0b" stroke-width="1.8"/><path d="M52,66 C115,66 125,88 182,88" fill="none" stroke="#a855f7" stroke-width="4" stroke-opacity="0.35"/><path d="M52,66 C115,66 125,88 182,88" fill="none" stroke="#a855f7" stroke-width="1.5"/><rect x="184" y="11" width="68" height="22" rx="4" fill="#0f172a" stroke="#10b981"/><text x="218" y="25" fill="#6ee7b7" font-size="7.5" font-family="monospace" text-anchor="middle" font-weight="bold">78% STP</text><rect x="184" y="44" width="68" height="22" rx="4" fill="#0f172a" stroke="#f59e0b"/><text x="218" y="58" fill="#fcd34d" font-size="7.5" font-family="monospace" text-anchor="middle" font-weight="bold">14% ÁMBAR</text><rect x="184" y="77" width="68" height="22" rx="4" fill="#0f172a" stroke="#a855f7"/><text x="218" y="91" fill="#d8b4fe" font-size="7.5" font-family="monospace" text-anchor="middle" font-weight="bold">8% COMITÉ</text></svg></div>`,
+        recipe: `/* #ST-09 · Sankey STP 3-Lane Stream (model: 'sankey') */\nctx.bezierCurveTo(cp1x, sy, cp2x, targetY, dstX, targetY);\n// Fotones animados: u = (t * 0.42 + p * 0.25) % 1`
+      },
+      {
+        id: '#ST-10', title: 'Radar 360° Hexagonal · Comparativa Proceso Clásico vs Motor IA', picked: true,
+        desc: ' Polígono multivariable de 6 ejes (Velocidad KYB, Conversión NBA, Admisión STP, Trazabilidad, RORWA y Adopción Red) con superposición antes/después.',
+        preview: `<div style="width:100%;height:100%;background:radial-gradient(circle at 50% 50%,#0c192c,#050811);display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 220 110" style="width:100%;height:100%;"><polygon points="110,12 148,32 148,78 110,98 72,78 72,32" fill="none" stroke="rgba(148,163,184,0.3)" stroke-width="1"/><polygon points="110,36 127,45 124,68 110,76 93,66 95,44" fill="rgba(245,158,11,0.18)" stroke="#f59e0b" stroke-width="1.4" stroke-dasharray="3,2"/><polygon points="110,15 145,34 142,75 110,95 77,74 76,34" fill="rgba(16,185,129,0.25)" stroke="#34d399" stroke-width="2"/><circle cx="110" cy="15" r="2.8" fill="#6ee7b7"/><circle cx="145" cy="34" r="2.8" fill="#6ee7b7"/><circle cx="142" cy="75" r="2.8" fill="#6ee7b7"/><circle cx="110" cy="95" r="2.8" fill="#6ee7b7"/><circle cx="77" cy="74" r="2.8" fill="#6ee7b7"/><circle cx="76" cy="34" r="2.8" fill="#6ee7b7"/></svg></div>`,
+        recipe: `/* #ST-10 · 6-Axis Executive Radar (model: 'radar') */\naxes.forEach((ax, i) => { const a = -Math.PI/2 + i*Math.PI*2/6; ctx.lineTo(cx+Math.cos(a)*R*ax.ai, cy+Math.sin(a)*R*ax.ai); });`
+      },
+      {
+        id: '#ST-11', title: 'Financial Waterfall Bridge · Puente de Margen, RORWA y EVA', picked: false,
+        desc: 'Gráfico de cascada financiera para Comité de Dirección que desglosa cómo cada palanca (+KYB, +NBA, +STP, -Cloud) construye el RORWA objetivo (+310 pb).',
+        preview: `<div style="width:100%;height:100%;background:radial-gradient(circle at 50% 50%,#0c172a,#050811);display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 240 110" style="width:100%;height:100%;"><rect x="20" y="52" width="26" height="42" fill="#64748b" rx="2"/><rect x="58" y="38" width="26" height="14" fill="#10b981" rx="2"/><rect x="96" y="24" width="26" height="14" fill="#10b981" rx="2"/><rect x="134" y="14" width="26" height="10" fill="#38bdf8" rx="2"/><rect x="172" y="14" width="26" height="6" fill="#f59e0b" rx="2"/><rect x="204" y="20" width="24" height="74" fill="#a855f7" rx="2"/><text x="120" y="106" fill="#94a3b8" font-size="7.5" font-family="monospace" text-anchor="middle">PUENTE DE VALOR: +180 pb → +310 pb RORWA</text></svg></div>`,
+        recipe: `/* #ST-11 · Executive ROI & RORWA Waterfall (model: 'waterfall') */\n// Soporta 'waterfall', 'matrix' (Matriz 2x2) y 'surfaces' (Superficie 3D RORWA)`
+      },
+      {
+        id: '#ST-12', title: 'Medallion & MCP Agent Lineage + 3D RORWA Surface', picked: false,
+        desc: 'Grafo dirigido en 4 etapas (Ingesta → Bronze/Silver/Gold → Malla de Agentes MCP → Salida Omnicanal) y malla topográfica 3D de elasticidad Precio × RORWA.',
+        preview: `<div style="width:100%;height:100%;background:radial-gradient(circle at 50% 50%,#0b1a2e,#050811);display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 250 110" style="width:100%;height:100%;"><line x1="45" y1="35" x2="100" y2="35" stroke="#38bdf8" stroke-opacity="0.45"/><line x1="45" y1="75" x2="100" y2="55" stroke="#38bdf8" stroke-opacity="0.45"/><line x1="100" y1="35" x2="160" y2="35" stroke="#a855f7" stroke-opacity="0.5"/><line x1="100" y1="55" x2="160" y2="75" stroke="#a855f7" stroke-opacity="0.5"/><line x1="160" y1="35" x2="215" y2="55" stroke="#10b981" stroke-opacity="0.6"/><line x1="160" y1="75" x2="215" y2="55" stroke="#10b981" stroke-opacity="0.6"/><rect x="16" y="24" width="46" height="22" rx="4" fill="#0f172a" stroke="#94a3b8"/><text x="39" y="38" fill="#e2e8f0" font-size="7" font-family="monospace" text-anchor="middle">INGESTA</text><rect x="16" y="64" width="46" height="22" rx="4" fill="#0f172a" stroke="#94a3b8"/><text x="39" y="78" fill="#e2e8f0" font-size="7" font-family="monospace" text-anchor="middle">CIRBE</text><rect x="78" y="24" width="48" height="22" rx="4" fill="#0f172a" stroke="#38bdf8"/><text x="102" y="38" fill="#67e8f9" font-size="7" font-family="monospace" text-anchor="middle">SILVER</text><rect x="78" y="48" width="48" height="22" rx="4" fill="#0f172a" stroke="#38bdf8"/><text x="102" y="62" fill="#67e8f9" font-size="7" font-family="monospace" text-anchor="middle">GOLD</text><rect x="140" y="24" width="48" height="22" rx="4" fill="#0f172a" stroke="#a855f7"/><text x="164" y="38" fill="#d8b4fe" font-size="7" font-family="monospace" text-anchor="middle">MCP KYB</text><rect x="140" y="64" width="48" height="22" rx="4" fill="#0f172a" stroke="#a855f7"/><text x="164" y="78" fill="#d8b4fe" font-size="7" font-family="monospace" text-anchor="middle">SCORING</text><rect x="198" y="42" width="42" height="26" rx="5" fill="#0f172a" stroke="#10b981"/><text x="219" y="58" fill="#6ee7b7" font-size="7.5" font-family="monospace" text-anchor="middle" font-weight="bold">APP 45s</text></svg></div>`,
+        recipe: `/* #ST-12 · Medallion Lineage & 3D Surface (model: 'medallion' | 'surfaces') */\n// Nodos conectados con paquetes de datos en vivo y superficie isométrica 3D`
       }
     ];
 
@@ -3394,52 +3919,54 @@ document.getElementById('sbtn').addEventListener('click', () => {
       comite_ia: {
         title: 'Transformación Agéntica en Banca de Empresas 2027',
         shader: 'mp4:ridge',
-        layout: 'ridge',
+        layout: 'selene',
         scenes: [
-          'El cuello de botella actual | El 70% del tiempo analítico se pierde validando cruces manuales y hojas desconectadas. | tunnel | OBJETIVO: CERO FRICCIÓN | Diagnóstico: Cruces lentos; Impacto: 72h de espera; Meta: Decisión en sesión',
-          'Arquitectura en 3 Capas | Separamos Constitución, Catálogo Persistente de Tablas y Especificación Auditable por proyecto. | stack | ARQUITECTURA BLINDADA | Capa 01: Reglas de negocio; Capa 02: Data Contracts; Capa 03: Agentes deterministas',
-          'Los 4 Pilares del Motor | Perfilado en 1 ejecución, safe_join automático, memoria compartida y narrativa ejecutiva. | ring | 4 PILARES EN PRODUCCIÓN | KYB 45s: Lectura notarial; NBA: Oferta en vivo; STP 78%: Riesgo al vuelo',
-          'Despliegue en Red y Territorios | Escalado progresivo a las direcciones territoriales y equipos de Riesgos y Comercial. | globe | COBERTURA 100% RED | Ola 1: 2 Territoriales; Ola 2: Red Empresas; Ola 3: Negocio Internacional',
-          'Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de análisis y 0 errores de cuadre en Comité. | stack | IMPACTO: -65% TIEMPO | Payback: 4,2 meses; Margen: +310 pb RORWA; Auditoría: 100% trazable'
+          'El cuello de botella actual | El 70% del tiempo analítico se pierde validando cruces manuales y hojas desconectadas. | sankey | OBJETIVO: CERO FRICCIÓN | Diagnóstico: Cruces lentos; Impacto: 72h de espera; Meta: Decisión en sesión',
+          'Arquitectura en 3 Capas | Separamos Constitución, Catálogo Persistente de Tablas y Especificación Auditable por proyecto. | medallion | ARQUITECTURA BLINDADA | Capa 01: Reglas de negocio; Capa 02: Data Contracts; Capa 03: Agentes deterministas',
+          'Los 4 Pilares del Motor | Perfilado en 1 ejecución, safe_join automático, memoria compartida y narrativa ejecutiva. | radar | 4 PILARES EN PRODUCCIÓN | KYB 45s: Lectura notarial; NBA: Oferta en vivo; STP 78%: Riesgo al vuelo',
+          'Priorización por Impacto y RORWA | Clasificamos las iniciativas según retorno ajustado al riesgo y velocidad de implantación. | matrix | CARTERA PRIORIZADA | Ola 1: 2 Territoriales; Ola 2: Red Empresas; Ola 3: Negocio Internacional',
+          'Puente de Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de análisis y +310 pb en rentabilidad RORWA. | waterfall | IMPACTO: -65% TIEMPO | Payback: 4,2 meses; Margen: +310 pb RORWA; Auditoría: 100% trazable'
         ].join('\n')
       },
       lakehouse_agentes: {
         title: 'Arquitectura Medallion & Orquestación Multi-Agente MCP',
         shader: 'mp4:frost',
-        layout: 'synapse',
+        layout: 'selene',
         scenes: [
-          'Del Silo al Contrato de Datos | Eliminamos las extracciones manuales mediante esquemas versionados en el Lakehouse corporativo. | stack | LINAJE 100% CERTIFICADO | Bronze: Ingesta cruda; Silver: Limpieza tipada; Gold: Métricas de Comité',
-          'Pasarela Segura de Herramientas MCP | Los agentes consultan saldos, CIRBE y garantías sin exponer credenciales ni datos sensibles. | tunnel | ZERO DATA LEAKAGE | Sandbox: Ejecución aislada; RBAC: Permisos por rol; Logs: Hash inmutable',
-          'Malla de Agentes Especializados | Un supervisor coordina agentes de Lectura Registral, Scoring y Redacción de Propuestas. | ring | 4 AGENTES EN PARALELO | Agente KYB: Poderes y UBO; Agente Financiero: Cashflow; Agente Legal: Covenants',
+          'Del Silo al Contrato de Datos | Eliminamos las extracciones manuales mediante esquemas versionados en el Lakehouse corporativo. | medallion | LINAJE 100% CERTIFICADO | Bronze: Ingesta cruda; Silver: Limpieza tipada; Gold: Métricas de Comité',
+          'Pasarela Segura de Herramientas MCP | Los agentes consultan saldos, CIRBE y garantías sin exponer credenciales ni datos sensibles. | sankey | ZERO DATA LEAKAGE | Sandbox: Ejecución aislada; RBAC: Permisos por rol; Logs: Hash inmutable',
+          'Malla de Agentes Especializados | Un supervisor coordina agentes de Lectura Registral, Scoring y Redacción de Propuestas. | radar | 4 AGENTES EN PARALELO | Agente KYB: Poderes y UBO; Agente Financiero: Cashflow; Agente Legal: Covenants',
           'Control Determinista de Alucinaciones | Cada cifra publicada en el informe se vincula a su consulta SQL/Python verificada. | stack | 0 ERRORES DE CUADRE | Validación: Doble check; Umbral: Escalado humano; Trazabilidad: Línea a línea',
-          'Operación Continua y Observabilidad | Monitorización en tiempo real de latencia, coste por expediente y deriva de modelos. | globe | SLA < 2,5 SEGUNDOS | Latencia media: 1,4s; Disponibilidad: 99,95%; Ahorro: -68% coste operativo'
+          'Operación Continua y Observabilidad | Monitorización en tiempo real de latencia, coste por expediente y deriva de modelos. | waterfall | SLA < 2,5 SEGUNDOS | Latencia media: 1,4s; Disponibilidad: 99,95%; Ahorro: -68% coste operativo'
         ].join('\n')
       },
       red_comercial: {
         title: 'Plan Director de Red Comercial & Circulante 2027',
         shader: 'mp4:dune',
-        layout: 'zephyr',
+        layout: 'selene',
         scenes: [
-          'Batalla por el Circulante Empresarial | Detectamos necesidades de liquidez 30 días antes del vencimiento de líneas e impuestos. | tunnel | ANTICIPACIÓN PROACTIVA | Señal 01: Picos de IVA; Señal 02: Flujo Comex; Señal 03: Cobros TPV',
-          'Segmentación Dinámica de Cartera | Clasificamos cada grupo empresarial según vinculación, margen RORWA y potencial de cruce. | globe | 4 CUADRANTES DE VALOR | Fidelizar: Top margen; Desarrollar: Cruce Confirming; Defender: Alerta fuga',
-          'Copiloto del Gestor en Visita | Preparación automática de la reunión en 30 segundos con oferta pre-calificada lista para firma. | ring | -65% TIEMPO PREPARACIÓN | Ficha 360: Resumen 1 pág; Simulador: Precio suelo; Argumentario: Personalizado',
-          'Despliegue en Direcciones Territoriales | Acompañamiento semanal en rituales comerciales con cuadros de mando de conversión. | stack | 100% ADOPCIÓN EN RED | Día 30: Piloto 150 grupos; Día 60: Toda la Red; Día 90: Comex y Divisa',
-          'Impacto en Cuenta de Resultados | Incremento sostenido de volumen financiado y mejora de la rentabilidad ajustada al riesgo. | ring | +24% VOLUMEN CIRCULANTE | Conversión: 11,4% (3,8x); Retención: +18% cartera; NPS Empresas: +22 pts'
+          'Batalla por el Circulante Empresarial | Detectamos necesidades de liquidez 30 días antes del vencimiento de líneas e impuestos. | radar | ANTICIPACIÓN PROACTIVA | Señal 01: Picos de IVA; Señal 02: Flujo Comex; Señal 03: Cobros TPV',
+          'Segmentación Dinámica de Cartera | Clasificamos cada grupo empresarial según vinculación, margen RORWA y potencial de cruce. | matrix | 4 CUADRANTES DE VALOR | Fidelizar: Top margen; Desarrollar: Cruce Confirming; Defender: Alerta fuga',
+          'Elasticidad de Precio y Suelo RORWA | Calibración en tiempo real del tipo de interés óptimo según rating y garantías. | surfaces | +310 PB RORWA | Ficha 360: Resumen 1 pág; Simulador: Precio suelo; Argumentario: Personalizado',
+          'Despliegue en Direcciones Territoriales | Acompañamiento semanal en rituales comerciales con cuadros de mando de conversión. | sankey | 100% ADOPCIÓN EN RED | Día 30: Piloto 150 grupos; Día 60: Toda la Red; Día 90: Comex y Divisa',
+          'Impacto en Cuenta de Resultados | Incremento sostenido de volumen financiado y mejora de la rentabilidad ajustada al riesgo. | waterfall | +24% VOLUMEN CIRCULANTE | Conversión: 11,4% (3,8x); Retención: +18% cartera; NPS Empresas: +22 pts'
         ].join('\n')
       },
       producto_digital: {
         title: 'Lanzamiento Canal Digital Empresas & Admisión STP',
         shader: 'mp4:rednova',
-        layout: 'ridge',
+        layout: 'selene',
         scenes: [
-          'Fricción Cero en el Alta Digital | De 5 días de intercambio de correos y PDFs a una experiencia guiada de 45 segundos. | tunnel | ALTA EN 45 SEGUNDOS | Escrituras: Lectura IA; Bastanteo: Automático; Firma: En la misma sesión',
-          'Crédito Instantáneo en el Flujo de Pagos | El cliente financia remesas de proveedores o impuestos con un solo clic desde su bandeja. | ring | CONVERSIÓN 3,8X | Momento: Subida SEPA; Precio: Dinámico RORWA; Abono: Inmediato en cuenta',
-          'Motor de Admisión STP en 3 Carriles | El 78% de las renovaciones se aprueban sin carga manual respetando todas las políticas. | stack | 78% ADMISIÓN STP | Verde: Aprobación 1 clic; Ámbar: Garantía guiada; Rojo: Especialista con dossier',
-          'Puente Omnicanal con el Especialista | Cuando una operación requiere estudio a medida, el gestor recibe el expediente ya simulado. | globe | CERO RETRABAJO | Contexto: 100% preservado; Nota Comité: Pre-redactada; SLA respuesta: < 2 horas',
-          'Escalado y Economía Unitaria | Crecimiento exponencial de operaciones digitales sin incrementar la estructura de back-office. | stack | PAYBACK 4,2 MESES | Coste unitario: -72%; Volumen digital: x3,1; Satisfacción: 4,9 / 5'
+          'Fricción Cero en el Alta Digital | De 5 días de intercambio de correos y PDFs a una experiencia guiada de 45 segundos. | sankey | ALTA EN 45 SEGUNDOS | Escrituras: Lectura IA; Bastanteo: Automático; Firma: En la misma sesión',
+          'Crédito Instantáneo en el Flujo de Pagos | El cliente financia remesas de proveedores o impuestos con un solo clic desde su bandeja. | surfaces | CONVERSIÓN 3,8X | Momento: Subida SEPA; Precio: Dinámico RORWA; Abono: Inmediato en cuenta',
+          'Motor de Admisión STP en 3 Carriles | El 78% de las renovaciones se aprueban sin carga manual respetando todas las políticas. | radar | 78% ADMISIÓN STP | Verde: Aprobación 1 clic; Ámbar: Garantía guiada; Rojo: Especialista con dossier',
+          'Puente Omnicanal con el Especialista | Cuando una operación requiere estudio a medida, el gestor recibe el expediente ya simulado. | medallion | CERO RETRABAJO | Contexto: 100% preservado; Nota Comité: Pre-redactada; SLA respuesta: < 2 horas',
+          'Escalado y Economía Unitaria | Crecimiento exponencial de operaciones digitales sin incrementar la estructura de back-office. | waterfall | PAYBACK 4,2 MESES | Coste unitario: -72%; Volumen digital: x3,1; Satisfacción: 4,9 / 5'
         ].join('\n')
       }
     };
+
+    const VALID_VIZ_MODES = ['ring', 'stack', 'globe', 'tunnel', 'sankey', 'radar', 'waterfall', 'medallion', 'matrix', 'surfaces', 'none'];
 
     function parseCustomScenes() {
       const raw = ($('#b-scenes')?.value || '').trim().split('\n').filter(Boolean);
@@ -3466,7 +3993,7 @@ document.getElementById('sbtn').addEventListener('click', () => {
           kicker: `ESCENA 0${i + 1} / 0${raw.length}`,
           title: parts[0] || `Escena ${i + 1}`,
           lead: parts[1] || '',
-          model: ['ring', 'stack', 'globe', 'tunnel', 'none'].includes(m) ? m : 'ring',
+          model: VALID_VIZ_MODES.includes(m) ? m : 'sankey',
           metric: parts[3] || 'SCROLLTIDE INTERACTIVE STAGE',
           pillars: parsedPillars
         };
@@ -3488,7 +4015,7 @@ document.getElementById('sbtn').addEventListener('click', () => {
       const picked = ST_MOTORS.filter(m => m.picked);
 
       out.textContent = `/scrolltide.deck Crea una presentación interactiva 2.5D/3D en un único archivo .HTML autónomo titulada "${title}" con arquitectura espacial "${lay}" y fondo "${bgLabel}", incluyendo las siguientes ${scenes.length} escenas sincronizadas con el scroll y las flechas del teclado:\n\n` +
-        scenes.map((s, idx) => `${idx + 1}. [${s.kicker}] "${s.title}" (Objeto 3D: ${s.model}) -> ${s.lead} (Insignia: ${s.metric})`).join('\n') +
+        scenes.map((s, idx) => `${idx + 1}. [${s.kicker}] "${s.title}" (Visualización 3D/Datos: ${s.model}) -> ${s.lead} (Insignia: ${s.metric})`).join('\n') +
         `\n\nMotores visuales obligatorios que debes incluir en el código:\n` +
         picked.map(m => `- ${m.id} (${m.title}): \`${m.recipe.replace(/\n/g, ' ')}\``).join('\n');
     }
@@ -3507,7 +4034,7 @@ document.getElementById('sbtn').addEventListener('click', () => {
       }
       if (!blocks.length) blocks = [clean];
 
-      const modelsCycle = ['tunnel', 'stack', 'ring', 'globe', 'stack', 'ring'];
+      const modelsCycle = ['radar', 'sankey', 'medallion', 'matrix', 'waterfall', 'surfaces'];
       const lines = blocks.slice(0, 6).map((blk, i) => {
         const flat = blk.replace(/\s+/g, ' ').replace(/\|/g, '·').trim();
         let title = '';

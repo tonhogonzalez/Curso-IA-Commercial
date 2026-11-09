@@ -43,3 +43,15 @@ Nunca uses vídeos de `/previews/*-preview.mp4` con texto en inglés quemado com
    - **Acto III (Escenario Deep-Dive Interactivo):** Selector de las 4 iniciativas + carril de 4 pasos estilo *Zephyr* a la izquierda + tarjeta de telemetría en vivo estilo *Synapse* a la derecha.
    - **Acto IV (Hoja de Ruta por Olas + Footer Monumental):** 3 columnas trimestrales con KPI de impacto y cierre tipográfico.
 5. **Entrega 100% íntegra:** Nunca cortes ni abrevies el archivo `.html`.
+
+
+## 3. Catálogo de 10 Visualizaciones 3D y de Datos Ejecutivos (`model`) + Modo Estudio Local (DLP-Safe)
+- **Visualizaciones 3D Point-Cloud:** `ring` (Anillo Orbital), `stack` (Capas Isométricas), `globe` (Esfera Fibonacci), `tunnel` (Túnel de Flujo).
+- **Visualizaciones Ejecutivas Avanzadas (60 FPS en Canvas):**
+  - `sankey`: Flujo de admisión STP en 3 carriles con curvas Bézier cúbicas y fotones animados (`Entrada 100%` → `78% STP Verde`, `14% Ámbar`, `8% Comité`).
+  - `radar`: Radar hexagonal 360° comparando `Proceso Clásico` (línea discontinua ámbar) frente a `Motor IA` (polígono esmeralda/cian).
+  - `waterfall`: Puente financiero de creación de margen/RORWA (`Base` → `+KYB` → `+NBA` → `+STP` → `-Cloud` → `RORWA Meta`).
+  - `medallion`: Grafo de linaje en 4 etapas (`Ingesta` → `Bronze/Silver/Gold` → `Agentes MCP` → `Salida Omnicanal`) con paquetes de datos en vivo.
+  - `matrix`: Matriz ejecutiva 2x2 de priorización (`Impacto RORWA vs. Complejidad`) con burbujas de iniciativa.
+  - `surfaces`: Superficie topográfica 3D isométrica de elasticidad `Precio × RORWA` con marcador de óptimo.
+- **Modo Estudio Local Seguro (DLP-Safe · Cero Subida):** Incluye siempre los botones `✎ Editar en Pantalla` (`contenteditable="true"`), `💾 Guardar .HTML` (que reescribe `SCENES` y descarga una copia local `.html` sin subir datos) y `🖨️ PDF`.
