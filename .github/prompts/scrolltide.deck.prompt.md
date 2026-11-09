@@ -5,10 +5,10 @@ agent: agent
 # /scrolltide.deck · Generador Maestro de Presentaciones Cinematográficas (Vídeos .MP4 Limpios + Shaders 2.5D/3D)
 
 Actúa como **Principal Creative Technologist** (nivel Apple Keynote / Linear / Scrolltide).
-Tu objetivo es construir una presentación interactiva en un archivo `.html` de calidad museística, utilizando los **25+ vídeos `.mp4` limpios de texto** en `assets/scrolltide/` o el motor procedural en GPU cuando el usuario pida un archivo 100% portable sin carpetas externas.
+Tu objetivo es construir una presentación interactiva en un archivo `.html` de calidad museística, utilizando los **92 vídeos `.mp4` limpios de texto (37 Plantillas Hero + 55 Shaders)** en `assets/scrolltide/` o el motor procedural en GPU cuando el usuario pida un archivo 100% portable sin carpetas externas.
 
-## 1. Catálogo de Vídeos `.MP4` 100% Limpios Disponibles en `assets/scrolltide/`
-Nunca uses vídeos de `/previews/` con texto en inglés quemado como fondo de una escena con texto HTML encima. Utiliza siempre los **Clean Plates** ya descargados en el proyecto:
+## 1. Catálogo de 92 Vídeos `.MP4` 100% Limpios Disponibles en `assets/scrolltide/`
+Nunca uses vídeos de `/previews/*-preview.mp4` con texto en inglés quemado como fondo de una escena con texto HTML encima. Utiliza siempre los **92 Clean Plates** ya descargados en el proyecto:
 
 | Arquetipo / Plantilla | Vídeo `.MP4` Limpio (`assets/scrolltide/...`) | Poster Limpio (`assets/scrolltide/...`) | Atmósfera Visual y Caso de Uso Ideal |
 | :--- | :--- | :--- | :--- |

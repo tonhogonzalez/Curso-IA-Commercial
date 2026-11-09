@@ -640,6 +640,58 @@
       border-radius: 7px; padding: 0.48rem 0.65rem; font-size: 0.8rem; font-family: inherit;
     }
     .st-field textarea { min-height: 92px; font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; }
+    .st-work-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+      margin: 1.15rem 0 1.6rem;
+    }
+    .st-work-card {
+      background: #080d1a;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
+      padding: 1.15rem 1.25rem;
+      color: #f1f5f9;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+    .st-work-card.featured {
+      border-color: rgba(52, 211, 153, 0.55);
+      background: linear-gradient(180deg, rgba(16, 185, 129, 0.11) 0%, #080d1a 100%);
+    }
+    .st-step-list {
+      list-style: none;
+      margin: 0.4rem 0 0;
+      padding: 0;
+      display: grid;
+      gap: 0.55rem;
+    }
+    .st-step-list li {
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 9px;
+      padding: 0.55rem 0.75rem;
+      font-size: 0.79rem;
+      line-height: 1.5;
+      color: #cbd5e1;
+    }
+    .st-step-list li strong {
+      color: #f8fafc;
+    }
+    .st-step-num {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.66rem;
+      font-weight: 800;
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.14);
+      border: 1px solid rgba(56, 189, 248, 0.38);
+      border-radius: 5px;
+      padding: 0.08rem 0.4rem;
+      margin-right: 0.35rem;
+    }
     .st-toast {
       position: fixed; bottom: 26px; left: 50%;
       transform: translateX(-50%) translateY(20px);
@@ -678,10 +730,10 @@
     <div class="sidebar-section">
       <div class="sidebar-section-title">Contenido del cuaderno</div>
       <a href="#intro-scrolltide" class="sidebar-link active"><span class="sidebar-link-number">00</span> Anatomía Scrolltide 2.5D/3D</a>
-      <a href="#teatro-vivo" class="sidebar-link"><span class="sidebar-link-number">01</span> 3 Presentaciones en Vivo</a>
-      <a href="#catalogo-efectos" class="sidebar-link"><span class="sidebar-link-number">02</span> Catálogo de 8 Motores (#ST)</a>
-      <a href="#prompts-maestros" class="sidebar-link"><span class="sidebar-link-number">03</span> Prompts &amp; Comando /scrolltide</a>
-      <a href="#ensamblador-deck" class="sidebar-link"><span class="sidebar-link-number">04</span> Generador de Presentaciones</a>
+      <a href="#teatro-vivo" class="sidebar-link"><span class="sidebar-link-number">01</span> 6 Presentaciones en Vivo</a>
+      <a href="#catalogo-efectos" class="sidebar-link"><span class="sidebar-link-number">02</span> 92 Vídeos .MP4 + 8 Motores</a>
+      <a href="#prompts-maestros" class="sidebar-link"><span class="sidebar-link-number">03</span> Guía Paso a Paso en el Trabajo</a>
+      <a href="#ensamblador-deck" class="sidebar-link"><span class="sidebar-link-number">04</span> Generador + Notas a Escenas</a>
     </div>
   </aside>
   <div class="sidebar-overlay"></div>
@@ -711,7 +763,7 @@
           <div class="bloom-header">
             <h3 class="bloom-title">🎯 Objetivos de Aprendizaje &amp; Competencias Operativas</h3>
             <div class="bloom-meta-pills">
-              <span class="bloom-pill time">⏱️ 35 min lectura · 3 presentaciones descargables</span>
+              <span class="bloom-pill time">⏱️ 35 min lectura · 6 presentaciones + 92 vídeos .MP4</span>
               <span class="bloom-pill diff-intermediate">Nivel: Estudio Creativo / Principal Architect</span>
             </div>
           </div>
@@ -720,21 +772,21 @@
               <div class="bloom-col-header understand">🧠 1. Comprender</div>
               <ul>
                 <li>Por qué un prompt genérico falla al pedir animaciones 3D y cómo funciona la arquitectura <strong>Single Sticky Stage + Timeline Normalizado $p \in [0,1]$</strong> de Scrolltide.</li>
-                <li>Cómo generar fondos tipo <strong>Liquid Metal, Silk Aurora o Halftone Matrix</strong> por código matemático sin archivos de vídeo pesados.</li>
+                <li>Cómo combinar los <strong>92 vídeos <code>.MP4</code> limpios</strong> con fondos <strong>Liquid Metal, Silk Aurora o Topográfico 3D</strong> sin depender de servidores externos.</li>
               </ul>
             </div>
             <div class="bloom-col">
               <div class="bloom-col-header analyze">⚖️ 2. Experimentar en Vivo</div>
               <ul>
-                <li>Interactuar en la Sección 01 con <strong>3 presentaciones completas integradas</strong> (Proyecto IA a Comité, Arquitectura Agéntica en Capas y Hoja de Ruta Comercial) y descargarlas como <code>.html</code> independiente.</li>
-                <li>Probar y combinar las <strong>8 mecánicas visuales (<code>#ST-01</code> a <code>#ST-08</code>)</strong> en la Sección 02.</li>
+                <li>Interactuar en la Sección 01 con <strong>6 plantillas completas integradas</strong> (Ridge, Zephyr, Synapse, Selene, Helix y Dune) y descargarlas como <code>.html</code> independiente.</li>
+                <li>Explorar en la Sección 02 los <strong>92 fondos <code>.MP4</code> locales</strong> y las <strong>8 mecánicas visuales (<code>#ST-01</code> a <code>#ST-08</code>)</strong>.</li>
               </ul>
             </div>
             <div class="bloom-col">
-              <div class="bloom-col-header apply">🚀 3. Aplicar en VS Code</div>
+              <div class="bloom-col-header apply">🚀 3. Usar en el Trabajo</div>
               <ul>
-                <li>Instalar el comando <code>/scrolltide.deck</code> (<code>.github/prompts/scrolltide.deck.prompt.md</code>) que ya inyecta el motor físico y 3D a GitHub Copilot.</li>
-                <li>Usar el <strong>Ensamblador de la Sección 04</strong> para generar el prompt exacto de tu próxima presentación o exportar el HTML al instante.</li>
+                <li>Seguir la <strong>Guía Paso a Paso de la Sección 03</strong> para llevar <code>/scrolltide.deck</code> a cualquier carpeta de proyecto nueva de tu portátil corporativo o compartir por Teams/correo.</li>
+                <li>Usar el <strong>Convertidor de Notas del Trabajo de la Sección 04</strong> para pegar un texto de Word/correo y descargar la presentación <code>.html</code> en 60 segundos.</li>
               </ul>
             </div>
           </div>
@@ -742,10 +794,10 @@
 
         <div class="st-tabs" role="tablist">
           <button class="st-tab active" data-st-filter="all">🎬 Todo el Cuaderno</button>
-          <button class="st-tab" data-st-filter="live">✨ 1. Teatro en Vivo (3 Presentaciones)</button>
-          <button class="st-tab" data-st-filter="catalog">🧩 2. Catálogo 8 Efectos (#ST-01 a #ST-08)</button>
-          <button class="st-tab" data-st-filter="prompts">🤖 3. Prompts &amp; Comando /scrolltide.deck</button>
-          <button class="st-tab" data-st-filter="builder">🛠️ 4. Generador de tu Presentación</button>
+          <button class="st-tab" data-st-filter="live">✨ 1. Teatro en Vivo (6 Plantillas)</button>
+          <button class="st-tab" data-st-filter="catalog">🧩 2. Bóveda 92 Vídeos + 8 Motores</button>
+          <button class="st-tab" data-st-filter="prompts">🏢 3. Cómo Usarlo en el Trabajo (Paso a Paso)</button>
+          <button class="st-tab" data-st-filter="builder">🛠️ 4. Generador + Tus Notas a .HTML</button>
         </div>
       </div>
 
@@ -994,57 +1046,132 @@
       </section>
 
       <!-- =====================================================================
-           SECCIÓN 03 · GUÍA DE APLICACIÓN EN PROYECTOS + COMANDO /scrolltide.deck
+           SECCIÓN 03 · MANUAL OPERATIVO PASO A PASO PARA EL ENTORNO DE TRABAJO
            ===================================================================== -->
       <section id="prompts-maestros" class="transcript-section" data-st-group="prompts">
         <div class="section-header">
           <span class="section-number">03</span>
-          <h2 class="section-title">Cómo Aplicar estas Plantillas y Vídeos <code>.MP4</code> en Tus Proyectos + Comando <code>/scrolltide.deck</code></h2>
+          <h2 class="section-title">Manual Paso a Paso: Cómo Usarlo en el Trabajo (Sin VS Code, en Carpetas Nuevas de Proyecto o para Enviar por Teams)</h2>
         </div>
         <div class="section-divider"></div>
         <div class="transcript-text">
           <p class="editorial-lead">
-            Tienes <strong>tres formas directas de aplicar las plantillas y los 26 vídeos <code>.mp4</code> limpios</strong> en tus proyectos reales, según quieras crear una presentación ejecutiva en un único archivo <code>.html</code>, una landing interna de proyecto o pedirle a GitHub Copilot en VS Code que la construya a partir de tus documentos.
+            Cuando estás en tu portátil del trabajo con un proyecto real (una propuesta comercial, un análisis de Databricks, una nota para Comité o una arquitectura técnica), tienes <strong>3 formas reales de aplicar este cuaderno</strong> según el tiempo que tengas y si quieres usar o no VS Code. Aquí tienes el paso a paso exacto de cada una:
           </p>
 
-          <div class="st-grid-2" style="margin:1.25rem 0 1.75rem;">
-            <div class="st-comp-card">
+          <!-- LOS 3 ESCENARIOS DE TRABAJO PASO A PASO -->
+          <div class="st-work-steps">
+            <!-- ESCENARIO 1 -->
+            <div class="st-work-card featured">
               <div>
-                <span class="st-comp-id">VÍA 1 · USO DIRECTO DE LOS .MP4 LIMPIOS</span>
-                <h4 class="st-comp-title" style="margin-top:0.45rem;">En tus páginas HTML, portales o presentaciones con vídeo</h4>
-                <p class="st-comp-desc" style="margin-bottom:0.65rem;">
-                  Copia la carpeta <code>assets/scrolltide/</code> a tu proyecto (o usa cualquiera de los 26 archivos <code>.mp4</code> descargables de la Sección 02). Coloca siempre <strong>3 capas en orden</strong>: 1) <code>&lt;video autoplay muted loop playsinline&gt;</code> con el <code>.mp4</code> limpio, 2) un overlay oscuro <code>.scrim</code> para garantizar contraste tipográfico AAA, y 3) tu contenido HTML encima.
-                </p>
-                <pre class="st-pre" style="border-radius:8px;font-size:0.69rem;max-height:195px;">&lt;section style="position:relative;min-height:100vh;overflow:hidden;background:#04070d;color:#f8fafc;"&gt;
-  &lt;!-- 1. Vídeo .MP4 100% limpio de texto --&gt;
-  &lt;video autoplay muted loop playsinline poster="assets/scrolltide/ridge-poster.jpg"
-         style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;"&gt;
-    &lt;source src="assets/scrolltide/ridge.mp4" type="video/mp4"&gt;
-  &lt;/video&gt;
-  &lt;!-- 2. Velo atmosférico (Scrim) para legibilidad perfecta --&gt;
-  &lt;div style="position:absolute;inset:0;z-index:1;background:radial-gradient(circle at 50% 42%,rgba(4,9,14,0.18) 0%,rgba(4,8,12,0.84) 100%);"&gt;&lt;/div&gt;
-  &lt;!-- 3. Tu contenido editorial en Español (5 Zonas Ridge) --&gt;
-  &lt;div style="position:relative;z-index:2;padding:3rem;"&gt;
-    &lt;h1&gt;Tu Título Ejecutivo&lt;/h1&gt;
-  &lt;/div&gt;
-&lt;/section&gt;</pre>
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:0.4rem;">
+                  <span class="st-comp-id" style="background:rgba(16,185,129,0.2);color:#6ee7b7;border-color:rgba(16,185,129,0.45);">ESCENARIO 1 · EN 2 MINUTOS</span>
+                  <span class="st-mono" style="font-size:0.65rem;color:#34d399;font-weight:700;">SIN CÓDIGO NI VS CODE</span>
+                </div>
+                <h4 class="st-comp-title" style="margin-top:0.5rem;">Desde este mismo navegador (Sección 04) → Descargar <code>.HTML</code></h4>
+                <p class="st-comp-desc">Ideal cuando tienes una reunión hoy o mañana y quieres llevar una presentación de 4–6 escenas lista para proyectar o mandar por Teams/correo.</p>
+                <ol class="st-step-list">
+                  <li><span class="st-step-num">PASO 1</span>Ve a la <a href="#ensamblador-deck" style="color:#38bdf8;font-weight:700;">Sección 04 (Generador)</a> de este cuaderno.</li>
+                  <li><span class="st-step-num">PASO 2</span>Elige uno de los <strong>4 Kits de Proyecto</strong> o pega directamente tus notas de Word/correo en el cuadro <strong>«Pegar Notas en Bruto»</strong> y pulsa <code>✨ Convertir mis notas en escenas</code>.</li>
+                  <li><span class="st-step-num">PASO 3</span>Elige la <strong>Arquitectura Espacial</strong> (<code>⛰️ 5-Zonas Ridge</code>, <code>🏛️ Raíl Zephyr</code>, <code>🧬 Split Synapse</code> o <code>🌕 Cristal + 3D</code>) y el fondo (cualquiera de los <strong>92 vídeos <code>.mp4</code></strong> o un <strong>Shader Canvas</strong>).</li>
+                  <li><span class="st-step-num">PASO 4</span>Pulsa <strong><code>⬇ Descargar mi Presentación (.HTML)</code></strong>. Haz doble clic en el archivo descargado, pulsa <code>F11</code> (o el botón <code>⛶</code>) y avanza con la rueda del ratón o las flechas <code>←</code> / <code>→</code>.</li>
+                </ol>
               </div>
+              <a href="#ensamblador-deck" class="st-pill-btn emerald" style="text-decoration:none;text-align:center;">Ir al Generador de 60 Segundos (Sección 04) ↓</a>
             </div>
 
-            <div class="st-comp-card">
+            <!-- ESCENARIO 2 -->
+            <div class="st-work-card">
               <div>
-                <span class="st-comp-id">VÍA 2 · COMANDO /scrolltide.deck + SKILL EN VS CODE</span>
-                <h4 class="st-comp-title" style="margin-top:0.45rem;">Automatizado con GitHub Copilot en este repositorio</h4>
-                <p class="st-comp-desc" style="margin-bottom:0.65rem;">
-                  Ya tienes instalados en este proyecto tanto el comando <strong><code>.github/prompts/scrolltide.deck.prompt.md</code></strong> como la skill <strong><code>skills/scrolltide-cinematic-decks/SKILL.md</code></strong>. Abre el Chat de Copilot en VS Code y escribe:
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:0.4rem;">
+                  <span class="st-comp-id">ESCENARIO 2 · EN 5 MINUTOS</span>
+                  <span class="st-mono" style="font-size:0.65rem;color:#38bdf8;font-weight:700;">EN CUALQUIER CARPETA DE VS CODE</span>
+                </div>
+                <h4 class="st-comp-title" style="margin-top:0.5rem;">Usar <code>/scrolltide.deck</code> en tus propias carpetas de trabajo</h4>
+                <p class="st-comp-desc">Ideal cuando trabajas en una carpeta nueva de tu portátil (ej. <code>C:\Proyectos\Campana_Q4\</code>) donde ya tienes tus archivos <code>.md</code>, <code>.sql</code> o <code>.csv</code> y quieres que Copilot arme la presentación leyendo tus datos.</p>
+                <ol class="st-step-list">
+                  <li><span class="st-step-num">PASO 1</span><strong>Lleva el comando a tu proyecto:</strong> Crea en tu carpeta de trabajo la subcarpeta <code>.github/prompts/</code> y guarda dentro <code>scrolltide.deck.prompt.md</code> (puedes descargarlo abajo o usar el <strong>Inicializador PowerShell en 1 clic</strong> de la sección 3.1).</li>
+                  <li><span class="st-step-num">PASO 2</span><strong>(Opcional) Lleva tus vídeos favoritos:</strong> Si quieres fondos <code>.mp4</code> sin depender de internet, copia la carpeta <code>assets/scrolltide/</code> (o solo los 2–3 vídeos que vayas a usar) dentro de tu proyecto.</li>
+                  <li><span class="st-step-num">PASO 3</span><strong>Ejecuta el comando en Copilot Chat:</strong> Abre el chat en modo <strong>Agent</strong> o <strong>Edits</strong> y escribe:<br><code>/scrolltide.deck Lee mi archivo #informe.md y crea presentacion-comite.html con 5 escenas estilo Ridge y fondo assets/scrolltide/ridge.mp4</code></li>
+                </ol>
+              </div>
+              <button type="button" class="st-pill-btn active" onclick="document.getElementById('st-ps-helper').scrollIntoView({behavior:'smooth',block:'center'})">⚡ Ver Inicializador Automático de Carpeta (3.1) ↓</button>
+            </div>
+
+            <!-- ESCENARIO 3 -->
+            <div class="st-work-card">
+              <div>
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:0.4rem;">
+                  <span class="st-comp-id">ESCENARIO 3 · EN 10 MINUTOS</span>
+                  <span class="st-mono" style="font-size:0.65rem;color:#c4b5fd;font-weight:700;">PLANTILLA MAESTRA 4 ACTOS</span>
+                </div>
+                <h4 class="st-comp-title" style="margin-top:0.5rem;">Clonar la Presentación Grande (4 Actos + Simulador en Vivo)</h4>
+                <p class="st-comp-desc">Ideal cuando quieres presentar un proyecto estratégico en un micrositio completo (Portada 5 Zonas + 4 Tarjetas 3:4 en vídeo + Simulador interactivo + Hoja de ruta).</p>
+                <ol class="st-step-list">
+                  <li><span class="st-step-num">PASO 1</span>Copia el archivo <a href="../presentacion-ridge-ia-digital-commercial.html" target="_blank" style="color:#38bdf8;font-weight:700;"><code>presentacion-ridge-ia-digital-commercial.html</code></a> a la carpeta de tu proyecto y renómbralo (ej. <code>presentacion-mi-proyecto.html</code>).</li>
+                  <li><span class="st-step-num">PASO 2</span>Coloca en esa misma carpeta tu documento de trabajo con los datos reales (ej. <code>notas_proyecto.md</code> o un resumen pegado en el chat).</li>
+                  <li><span class="st-step-num">PASO 3</span>Pídele a GitHub Copilot en VS Code:<br><code>Toma como plantilla #presentacion-mi-proyecto.html conservando intacto todo su CSS, estructura de 4 Actos y motor JavaScript, y sustituye todos los textos, KPIs, las 4 tarjetas y los 4 casos del simulador por los de mi documento #notas_proyecto.md.</code></li>
+                </ol>
+              </div>
+              <button type="button" class="st-pill-btn" id="st-copy-clone-prompt-btn">📋 Copiar Prompt para Clonar Plantilla de 4 Actos</button>
+            </div>
+          </div>
+
+          <!-- 3.1 ASISTENTE POWERSHELL PARA INICIALIZAR CUALQUIER PROYECTO NUEVO EN EL TRABAJO -->
+          <div id="st-ps-helper" style="background:linear-gradient(135deg,rgba(15,23,42,0.96) 0%,rgba(8,13,26,0.98) 100%);border:1px solid rgba(56,189,248,0.45);border-radius:15px;padding:1.25rem 1.4rem;margin:1.5rem 0;">
+            <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:0.8rem;margin-bottom:0.85rem;">
+              <div>
+                <div class="st-mono" style="font-size:0.68rem;color:#38bdf8;font-weight:800;">⚡ 3.1. INICIALIZADOR EN 1 CLIC PARA CARPETAS NUEVAS DE TU PORTÁTIL (POWERSHELL)</div>
+                <h3 style="margin:0.2rem 0 0;font-size:1.05rem;color:#fff;">Lleva el comando <code>/scrolltide.deck</code>, la Plantilla Ridge y los vídeos a cualquier carpeta nueva</h3>
+                <p style="margin:0.2rem 0 0;font-size:0.8rem;color:#cbd5e1;">Escribe abajo la ruta de la carpeta de tu nuevo proyecto de trabajo y copia el comando PowerShell: creará automáticamente la carpeta, instalará el comando de Copilot, la plantilla maestra y los vídeos limpios esenciales.</p>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:0.75rem;margin-bottom:0.8rem;">
+              <div class="st-field">
+                <label>Ruta de la carpeta de tu proyecto en el trabajo</label>
+                <input type="text" id="st-ps-target" value="C:\Proyectos\Mi_Presentacion_Comite">
+              </div>
+              <div class="st-field">
+                <label>¿Qué vídeos <code>.MP4</code> quieres copiar a tu carpeta?</label>
+                <select id="st-ps-pack">
+                  <option value="top6">Pack Ligero Comité (6 vídeos clave: ridge, zephyr, synapse, selene, helix, dune)</option>
+                  <option value="all92">Colección Completa (Los 92 vídeos .MP4 + posters de assets/scrolltide/)</option>
+                  <option value="none">Solo Comando Copilot + Plantilla (0 vídeos, usaré Shaders Zero-Asset)</option>
+                </select>
+              </div>
+            </div>
+            <div class="st-codehead">
+              <span class="path">Comando PowerShell listo para pegar en la terminal de Windows / VS Code</span>
+              <button type="button" class="st-pill-btn emerald" id="st-copy-ps-btn">📋 Copiar Comando PowerShell</button>
+            </div>
+            <pre class="st-pre" id="st-ps-out" style="max-height:190px;font-size:0.72rem;"></pre>
+          </div>
+
+          <!-- 3.2 GUÍA DE COMPARTICIÓN POR TEAMS, CORREO O SHAREPOINT EN BANCA -->
+          <div class="concept-card highlight" style="margin:1.5rem 0;">
+            <div class="concept-card-label">📨 3.2. ¿Cómo envío o comparto mi presentación <code>.HTML</code> con mi jefe o el Comité por Teams / Correo?</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;margin-top:0.65rem;">
+              <div style="background:rgba(4,9,18,0.65);border:1px solid rgba(52,211,153,0.35);border-radius:10px;padding:0.85rem 1rem;">
+                <strong style="color:#6ee7b7;font-size:0.86rem;display:block;margin-bottom:0.3rem;">Opción A · Enviar 1 único archivo <code>.html</code> suelto (~20 KB)</strong>
+                <p style="font-size:0.79rem;line-height:1.55;margin:0;color:#cbd5e1;">
+                  Si vas a enviar solo el archivo <code>mi-presentacion.html</code> por Teams o correo sin carpetas adjuntas:
+                  <br>• <strong>Con fondos Shader Canvas</strong> (<em>Topográfico 3D, Liquid Metal, Silk Aurora, Halftone</em>): funciona al 100% sin internet ni vídeos externos.
+                  <br>• <strong>Con fondos <code>.MP4</code></strong>: si el ordenador de tu director tiene salida a internet, reproduce el vídeo automáticamente desde la copia online; y si está en una red interna cerrada sin la carpeta <code>assets/</code>, <strong>conmuta solo al Shader Topográfico 3D</strong> para que la presentación nunca se vea rota.
                 </p>
-                <pre class="st-pre" style="border-radius:8px;font-size:0.69rem;max-height:195px;">/scrolltide.deck Crea una presentación en un archivo presentacion-mi-proyecto.html usando la arquitectura de 5 zonas de Ridge con el vídeo limpio assets/scrolltide/dune.mp4 en el Hero, un carril de 4 tarjetas 3:4 con los vídeos limpios zephyr.mp4, synapse.mp4, helix.mp4 y nebula.mp4 en el Acto II, y un simulador interactivo en el Acto III para defender nuestro proyecto de [TEMA].</pre>
+              </div>
+              <div style="background:rgba(4,9,18,0.65);border:1px solid rgba(56,189,248,0.35);border-radius:10px;padding:0.85rem 1rem;">
+                <strong style="color:#7dd3fc;font-size:0.86rem;display:block;margin-bottom:0.3rem;">Opción B · Con vídeos <code>.MP4</code> 100% Offline (Carpeta o <code>.ZIP</code>)</strong>
+                <p style="font-size:0.79rem;line-height:1.55;margin:0;color:#cbd5e1;">
+                  Si vas a proyectar en una sala sin Wi-Fi o enviar un paquete cerrado con vídeo HD:
+                  <br>• Pon tu archivo <code>presentacion.html</code> y al lado una subcarpeta <code>assets/scrolltide/</code> que contenga <strong>únicamente el archivo <code>.mp4</code> y su <code>-poster.jpg</code></strong> que hayas usado (pesan solo ~1,5 MB cada uno).
+                  <br>• Comprime ambos en un <code>.zip</code> o súbelos a una carpeta compartida de OneDrive / SharePoint.
+                </p>
               </div>
             </div>
           </div>
 
           <p>
-            Aquí tienes el archivo oficial <code>.github/prompts/scrolltide.deck.prompt.md</code> ya instalado en el repositorio (puedes copiarlo o descargarlo para llevarlo a otros proyectos de VS Code):
+            Aquí tienes también el archivo oficial <code>.github/prompts/scrolltide.deck.prompt.md</code> ya instalado en este repositorio por si prefieres copiarlo o descargarlo manualmente:
           </p>
 
           <div class="st-codehead">
@@ -1058,14 +1185,14 @@
 description: Genera una presentación interactiva 2.5D/3D estilo Scrolltide en un único archivo .HTML autónomo con Vídeos .MP4 Limpios o Shaders en vivo, Objeto Héroe 3D y Scrollytelling
 agent: agent
 ---
-# /scrolltide.deck · Generador de Presentaciones Cinematográficas 2.5D/3D (Vídeos .MP4 Limpios + Zero-CDN Shaders)
+# /scrolltide.deck · Generador de Presentaciones Cinematográficas 2.5D/3D (92 Vídeos .MP4 Limpios + Zero-CDN Shaders)
 
 Actúa como Principal Creative Technologist (nivel Apple Keynote / Linear / Scrolltide).
 Tu objetivo es crear un **archivo `.html` autónomo** que funcione como una presentación cinematográfica interactiva sobre el tema que indique el usuario, sin solapamientos visuales ni textos quemados.
 
 ## Reglas de Arquitectura Obligatorias (NO NEGOCIABLES)
-1. **Prohibido usar vídeos con texto quemado (`/previews/*.mp4`):**
-   - Utiliza siempre los **26 vídeos `.mp4` limpios** en `assets/scrolltide/<slug>.mp4` (`ridge.mp4`, `zephyr.mp4`, `synapse.mp4`, `selene.mp4`, `helix.mp4`, `nebula.mp4`, `dune.mp4`, `rednova.mp4`, `aurora.mp4`, `glacier.mp4`, `eclipse.mp4`, `nocturne.mp4`, `meridian.mp4`, `kage.mp4`, `anchor.mp4`, `clover.mp4`, `ember.mp4`, `frost.mp4`, `tide.mp4`, `comet.mp4`, `shader-chrome.mp4`, `shader-halftone.mp4`, `shader-cobalt.mp4`, `shader-cell.mp4`, `shader-aurora-noir.mp4`, `shader-noir-mesh.mp4`) o un Shader procedural en `&lt;canvas&gt;`.
+1. **Prohibido usar vídeos con texto quemado (`/previews/*-preview.mp4`):**
+   - Utiliza siempre los **92 vídeos `.mp4` limpios** en `assets/scrolltide/<slug>.mp4` (37 Plantillas Hero como `ridge.mp4`, `zephyr.mp4`, `synapse.mp4`, `selene.mp4`, `helix.mp4`, `nebula.mp4`, `dune.mp4`, `rednova.mp4`, `aurora.mp4`, `glacier.mp4`, `eclipse.mp4`, `nocturne.mp4`, `meridian.mp4`, `kage.mp4`, `anchor.mp4`, `clover.mp4`, `ember.mp4`, `frost.mp4`, `tide.mp4`, `comet.mp4`, `tundra.mp4`, `twilight.mp4`, `oasis.mp4`, `monsoon.mp4`, `harbor.mp4`, `aethera.mp4`, `monoio.mp4`, `glowinn.mp4`, `lagoon-hero.mp4`, `brook.mp4`, `prairie.mp4`, `meadow.mp4`, `willow.mp4`, `arbor.mp4`, `orchid.mp4`, `garden.mp4`, `flying-garden.mp4` + 55 Shaders `shader-*.mp4`) o un Shader procedural en `&lt;canvas&gt;`.
 2. **Separación Estricta de Capas (Cero Solapamientos):**
    - Nunca apiles a la vez un vídeo figurativo y un shader de partículas opaco sin conmutar su opacidad (`opacity: 0` en el que no esté activo).
    - En los títulos cinéticos con `&lt;span&gt;` hijos animados (`transform` / `filter: blur`), usa color sólido `#f8fafc` y nunca `-webkit-text-fill-color: transparent` en el contenedor padre.
@@ -1073,7 +1200,7 @@ Tu objetivo es crear un **archivo `.html` autónomo** que funcione como una pres
    - Interpolación suave `currentP += (targetP - currentP) * 0.08` a 60 FPS, control con rueda del ratón, teclado (`ArrowRight`/`ArrowLeft`) y barra de escenas.
 4. **Prohibido truncar código:** Entrega el archivo `.html` íntegro y funcional de principio a fin.</pre>
 
-          <h3 style="margin-top:2rem;">3.1. Tres Prompts Directos para Casos Habituales (Copiar y Pegar en VS Code o M365 Copilot)</h3>
+          <h3 style="margin-top:2rem;">3.3. Prompts Directos para Casos Habituales del Trabajo (Copiar y Pegar en VS Code o M365 Copilot)</h3>
           <div class="st-grid-2" id="st-ready-prompts"></div>
         </div>
       </section>
@@ -1084,12 +1211,12 @@ Tu objetivo es crear un **archivo `.html` autónomo** que funcione como una pres
       <section id="ensamblador-deck" class="transcript-section" data-st-group="builder">
         <div class="section-header">
           <span class="section-number">04</span>
-          <h2 class="section-title">Generador en Vivo: Crea tu Propia Presentación con Vídeos <code>.MP4</code> Limpios o Shaders en 60 Segundos</h2>
+          <h2 class="section-title">Generador en Vivo: Convierte tus Notas del Trabajo en una Presentación <code>.HTML</code> en 60 Segundos</h2>
         </div>
         <div class="section-divider"></div>
         <div class="transcript-text">
           <p>
-            Elige uno de los <strong>4 Kits de Proyecto Pre-Configurados en 1 clic</strong> o personaliza el título, cualquiera de los <strong>26 vídeos <code>.mp4</code> limpios de Scrolltide</strong> y el guion de tus escenas. Puedes <strong>cargar tu presentación en el Teatro 3D de la Sección 01</strong> o <strong>descargar el archivo <code>.html</code> terminado</strong> listo para usar en tus proyectos:
+            Elige uno de los <strong>4 Kits de Proyecto en 1 clic</strong>, o pega abajo cualquier texto en bruto de un Word, correo o PowerPoint de tu trabajo para convertirlo automáticamente en escenas. Después pulsa <strong><code>▶ Cargar y Ver en el Teatro 3D</code></strong> o <strong><code>⬇ Descargar mi Presentación (.HTML)</code></strong>:
           </p>
 
           <div class="st-kits-bar" id="st-kits-bar">
@@ -1115,55 +1242,81 @@ Tu objetivo es crear un **archivo `.html` autónomo** que funcione como una pres
             </button>
           </div>
 
+          <!-- CONVERTIDOR AUTOMÁTICO DE NOTAS EN BRUTO DEL TRABAJO -->
+          <div style="background:rgba(11,18,34,0.92);border:1px solid rgba(167,139,250,0.42);border-radius:14px;padding:1rem 1.2rem;margin:1rem 0 1.25rem;">
+            <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:0.6rem;margin-bottom:0.55rem;">
+              <div>
+                <span class="st-mono" style="font-size:0.66rem;color:#c4b5fd;font-weight:800;">✨ OPCIONAL · PEGA TUS NOTAS EN BRUTO DE WORD / CORREO / POWERPOINT</span>
+                <div style="font-size:0.82rem;color:#e2e8f0;margin-top:0.15rem;">Pega párrafos o viñetas de tu proyecto sin formato especial; el asistente los divide y estructura automáticamente en escenas listas para descargar.</div>
+              </div>
+              <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
+                <button type="button" class="st-pill-btn" id="b-sample-notes-btn">📄 Cargar Ejemplo de Notas de Reunión</button>
+                <button type="button" class="st-pill-btn emerald" id="b-convert-notes-btn">✨ Convertir mis notas en escenas automáticamente</button>
+              </div>
+            </div>
+            <textarea id="b-raw-notes" placeholder="Pega aquí cualquier texto de tu trabajo (por ejemplo, 4 o 5 párrafos o puntos de un documento Word o correo explicando el problema, la propuesta, la arquitectura y el impacto esperado)..." style="width:100%;min-height:86px;background:#060a14;border:1px solid rgba(255,255,255,0.14);color:#f8fafc;border-radius:8px;padding:0.55rem 0.75rem;font-size:0.77rem;font-family:inherit;"></textarea>
+          </div>
+
           <div class="st-builder-grid">
             <div class="st-form-box" id="st-custom-form">
               <div class="st-field">
                 <label>Título general de la presentación</label>
                 <input type="text" id="b-deck-title" value="Transformación Agéntica en Banca de Empresas 2027">
               </div>
-              <div class="st-field">
-                <label>Fondo Cinematográfico (Vídeo .MP4 Limpio o Shader Procedural)</label>
-                <select id="b-shader">
-                  <optgroup label="🎬 Vídeos .MP4 Limpios (Carpeta assets/scrolltide/)">
-                    <option value="mp4:ridge">Vídeo Limpio · ridge.mp4 (Caverna &amp; Planeta)</option>
-                    <option value="mp4:dune">Vídeo Limpio · dune.mp4 (Monolito Solar)</option>
-                    <option value="mp4:rednova">Vídeo Limpio · rednova.mp4 (Eclipse Dorado)</option>
-                    <option value="mp4:zephyr">Vídeo Limpio · zephyr.mp4 (Pabellón Flotante)</option>
-                    <option value="mp4:synapse">Vídeo Limpio · synapse.mp4 (Escalera Aurora)</option>
-                    <option value="mp4:helix">Vídeo Limpio · helix.mp4 (Domo Telemetría 360°)</option>
-                    <option value="mp4:nebula">Vídeo Limpio · nebula.mp4 (Puente de Roca)</option>
-                    <option value="mp4:selene">Vídeo Limpio · selene.mp4 (Órbita Lunar)</option>
-                    <option value="mp4:aurora">Vídeo Limpio · aurora.mp4 (Horizonte Ámbar)</option>
-                    <option value="mp4:glacier">Vídeo Limpio · glacier.mp4 (Cielo &amp; Claridad)</option>
-                    <option value="mp4:eclipse">Vídeo Limpio · eclipse.mp4 (Catarata Basáltica)</option>
-                    <option value="mp4:nocturne">Vídeo Limpio · nocturne.mp4 (Valle Nocturno)</option>
-                    <option value="mp4:meridian">Vídeo Limpio · meridian.mp4 (Travesía Global)</option>
-                    <option value="mp4:kage">Vídeo Limpio · kage.mp4 (Geometría Cinética)</option>
-                    <option value="mp4:anchor">Vídeo Limpio · anchor.mp4 (Solidez Marítima)</option>
-                    <option value="mp4:clover">Vídeo Limpio · clover.mp4 (Ecosistema Orgánico)</option>
-                    <option value="mp4:ember">Vídeo Limpio · ember.mp4 (Forja &amp; Energía)</option>
-                    <option value="mp4:frost">Vídeo Limpio · frost.mp4 (Cristal Ártico)</option>
-                    <option value="mp4:tide">Vídeo Limpio · tide.mp4 (Marea &amp; Liquidez)</option>
-                    <option value="mp4:comet">Vídeo Limpio · comet.mp4 (Velocidad Estelar)</option>
-                    <option value="mp4:shader-chrome">Vídeo Shader · shader-chrome.mp4 (Liquid Chrome)</option>
-                    <option value="mp4:shader-cobalt">Vídeo Shader · shader-cobalt.mp4 (Cobalt Waves)</option>
-                    <option value="mp4:shader-aurora-noir">Vídeo Shader · shader-aurora-noir.mp4 (Aurora Noir)</option>
-                  </optgroup>
-                  <optgroup label="✨ Shaders Procedurales en Canvas (Zero-Asset)">
-                    <option value="ridge">Shader Canvas · RIDGE 3D Topographic Contours</option>
-                    <option value="liquid">Shader Canvas · Liquid Metal Chrome</option>
-                    <option value="aurora">Shader Canvas · Silk Aurora</option>
-                    <option value="halftone">Shader Canvas · Halftone Wave Matrix</option>
-                  </optgroup>
-                </select>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0.65rem;">
+                <div class="st-field">
+                  <label>Fondo Cinematográfico (92 .MP4 o Shader)</label>
+                  <select id="b-shader">
+                    <optgroup label="🎬 Vídeos .MP4 Limpios (Carpeta assets/scrolltide/)">
+                      <option value="mp4:ridge">Vídeo Limpio · ridge.mp4 (Caverna &amp; Planeta)</option>
+                      <option value="mp4:dune">Vídeo Limpio · dune.mp4 (Monolito Solar)</option>
+                      <option value="mp4:rednova">Vídeo Limpio · rednova.mp4 (Eclipse Dorado)</option>
+                      <option value="mp4:zephyr">Vídeo Limpio · zephyr.mp4 (Pabellón Flotante)</option>
+                      <option value="mp4:synapse">Vídeo Limpio · synapse.mp4 (Escalera Aurora)</option>
+                      <option value="mp4:helix">Vídeo Limpio · helix.mp4 (Domo Telemetría 360°)</option>
+                      <option value="mp4:nebula">Vídeo Limpio · nebula.mp4 (Puente de Roca)</option>
+                      <option value="mp4:selene">Vídeo Limpio · selene.mp4 (Órbita Lunar)</option>
+                      <option value="mp4:aurora">Vídeo Limpio · aurora.mp4 (Horizonte Ámbar)</option>
+                      <option value="mp4:glacier">Vídeo Limpio · glacier.mp4 (Cielo &amp; Claridad)</option>
+                      <option value="mp4:eclipse">Vídeo Limpio · eclipse.mp4 (Catarata Basáltica)</option>
+                      <option value="mp4:nocturne">Vídeo Limpio · nocturne.mp4 (Valle Nocturno)</option>
+                      <option value="mp4:meridian">Vídeo Limpio · meridian.mp4 (Travesía Global)</option>
+                      <option value="mp4:kage">Vídeo Limpio · kage.mp4 (Geometría Cinética)</option>
+                      <option value="mp4:anchor">Vídeo Limpio · anchor.mp4 (Solidez Marítima)</option>
+                      <option value="mp4:clover">Vídeo Limpio · clover.mp4 (Ecosistema Orgánico)</option>
+                      <option value="mp4:ember">Vídeo Limpio · ember.mp4 (Forja &amp; Energía)</option>
+                      <option value="mp4:frost">Vídeo Limpio · frost.mp4 (Cristal Ártico)</option>
+                      <option value="mp4:tide">Vídeo Limpio · tide.mp4 (Marea &amp; Liquidez)</option>
+                      <option value="mp4:comet">Vídeo Limpio · comet.mp4 (Velocidad Estelar)</option>
+                      <option value="mp4:shader-chrome">Vídeo Shader · shader-chrome.mp4 (Liquid Chrome)</option>
+                      <option value="mp4:shader-cobalt">Vídeo Shader · shader-cobalt.mp4 (Cobalt Waves)</option>
+                      <option value="mp4:shader-aurora-noir">Vídeo Shader · shader-aurora-noir.mp4 (Aurora Noir)</option>
+                    </optgroup>
+                    <optgroup label="✨ Shaders Procedurales en Canvas (Zero-Asset)">
+                      <option value="ridge">Shader Canvas · RIDGE 3D Topographic Contours</option>
+                      <option value="liquid">Shader Canvas · Liquid Metal Chrome</option>
+                      <option value="aurora">Shader Canvas · Silk Aurora</option>
+                      <option value="halftone">Shader Canvas · Halftone Wave Matrix</option>
+                    </optgroup>
+                  </select>
+                </div>
+                <div class="st-field">
+                  <label>Arquitectura Espacial de las Escenas</label>
+                  <select id="b-layout">
+                    <option value="ridge">⛰️ 5-Zonas Monumental (Estilo Ridge)</option>
+                    <option value="zephyr">🏛️ Titular + Raíl Inferior (Estilo Zephyr)</option>
+                    <option value="synapse">🧬 Split + Telemetría en Vivo (Estilo Synapse)</option>
+                    <option value="selene">🌕 Tarjeta Cristal + Objeto 3D (Estilo Selene)</option>
+                  </select>
+                </div>
               </div>
               <div class="st-field">
-                <label>Guion de Escenas (1 línea por escena: <code>Título | Idea clave | Modelo 3D [ring/stack/globe/tunnel/none] | Insignia final</code>)</label>
-                <textarea id="b-scenes" style="min-height:165px;">El cuello de botella actual | El 70% del tiempo analítico se pierde validando cruces manuales y hojas desconectadas. | tunnel | OBJETIVO: CERO FRICCIÓN
-Arquitectura en 3 Capas | Separamos Constitución, Catálogo Persistente de Tablas y Especificación Auditable por proyecto. | stack | ARQUITECTURA BLINDADA
-Los 4 Pilares del Motor | Perfilado en 1 ejecución, safe_join automático, memoria compartida y narrativa ejecutiva. | ring | 4 PILARES EN PRODUCCIÓN
-Despliegue en Red y Territorios | Escalado progresivo a las direcciones territoriales y equipos de Riesgos y Comercial. | globe | COBERTURA 100% RED
-Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de análisis y 0 errores de cuadre en Comité. | stack | IMPACTO: -65% TIEMPO</textarea>
+                <label>Guion de Escenas (1 línea por escena: <code>Título | Idea clave | Modelo 3D [ring/stack/globe/tunnel/none] | Insignia final | Pilar 1; Pilar 2; Pilar 3</code>)</label>
+                <textarea id="b-scenes" style="min-height:165px;">El cuello de botella actual | El 70% del tiempo analítico se pierde validando cruces manuales y hojas desconectadas. | tunnel | OBJETIVO: CERO FRICCIÓN | Diagnóstico: Cruces lentos; Impacto: 72h de espera; Meta: Decisión en sesión
+Arquitectura en 3 Capas | Separamos Constitución, Catálogo Persistente de Tablas y Especificación Auditable por proyecto. | stack | ARQUITECTURA BLINDADA | Capa 01: Reglas de negocio; Capa 02: Data Contracts; Capa 03: Agentes deterministas
+Los 4 Pilares del Motor | Perfilado en 1 ejecución, safe_join automático, memoria compartida y narrativa ejecutiva. | ring | 4 PILARES EN PRODUCCIÓN | KYB 45s: Lectura notarial; NBA: Oferta en vivo; STP 78%: Riesgo al vuelo
+Despliegue en Red y Territorios | Escalado progresivo a las direcciones territoriales y equipos de Riesgos y Comercial. | globe | COBERTURA 100% RED | Ola 1: 2 Territoriales; Ola 2: Red Empresas; Ola 3: Negocio Internacional
+Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de análisis y 0 errores de cuadre en Comité. | stack | IMPACTO: -65% TIEMPO | Payback: 4,2 meses; Margen: +310 pb RORWA; Auditoría: 100% trazable</textarea>
               </div>
               <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
                 <button type="button" class="st-pill-btn active" id="b-preview-in-stage">▶ Cargar y Ver en el Teatro 3D (Sección 01)</button>
@@ -2827,6 +2980,11 @@ requestAnimationFrame(frame);
 - Escena 2 (tunnel): Ingesta, perfilado y validación en origen sin exposición de datos personales.
 - Escena 3 (ring): Orquestación de módulos y reglas de transformación.
 - Escena 4 (globe): Integración con consumidores finales y gobierno del dato.`
+      },
+      {
+        title: '🏔️ Prompt C · Convertir tus Notas o Documento .MD en el Micrositio de 4 Actos (Estilo Ridge)',
+        desc: 'Ideal cuando ya tienes un documento de trabajo en tu carpeta y quieres adaptarlo a la plantilla maestra de 4 actos con simulador interactivo.',
+        text: `Toma como plantilla exacta #presentacion-ridge-ia-digital-commercial.html (manteniendo intacto su CSS, estructura de 4 Actos, fuentes y motor JavaScript) y crea presentacion-mi-proyecto.html sustituyendo todos los textos, métricas, las 4 tarjetas verticales 3:4 y los 4 escenarios del simulador por el contenido real de mi documento #mi_documento.md.`
       }
     ];
 
@@ -2843,6 +3001,56 @@ requestAnimationFrame(frame);
       `).join('');
       $$('[data-ridx]', $('#st-ready-prompts')).forEach(btn => {
         btn.addEventListener('click', (e) => copyText(READY_PROMPTS[Number(btn.dataset.ridx)].text, e.currentTarget));
+      });
+    }
+
+    if ($('#st-copy-clone-prompt-btn')) {
+      $('#st-copy-clone-prompt-btn').addEventListener('click', (e) => {
+        copyText(
+          `Toma como plantilla exacta #presentacion-mi-proyecto.html conservando intacto todo su CSS, estructura de 4 Actos y motor JavaScript, y sustituye todos los textos, KPIs, las 4 tarjetas 3:4 y los 4 casos del simulador por los de mi documento #notas_proyecto.md.`,
+          e.currentTarget,
+          'Prompt para clonar la plantilla de 4 Actos copiado'
+        );
+      });
+    }
+
+    // Generador del comando PowerShell para inicializar carpetas nuevas de trabajo (Sección 3.1)
+    function updatePsCommand() {
+      const out = $('#st-ps-out');
+      if (!out) return;
+      const dst = ($('#st-ps-target')?.value || 'C:\\Proyectos\\Mi_Presentacion_Comite').trim();
+      const pack = $('#st-ps-pack')?.value || 'top6';
+      const src = 'C:\\2026\\Apps_antigravity\\Curso_IA_Commercial';
+
+      let videoCmd = '# (Modo Zero-Asset: sin copia de vídeos .mp4, usando Shaders en Canvas)';
+      if (pack === 'top6') {
+        videoCmd = `New-Item -ItemType Directory -Force -Path "$Dst\\assets\\scrolltide" | Out-Null\n` +
+          `@('ridge','zephyr','synapse','selene','helix','dune') | ForEach-Object {\n` +
+          `  Copy-Item "$Src\\assets\\scrolltide\\$_.mp4" "$Dst\\assets\\scrolltide\\" -Force\n` +
+          `  Copy-Item "$Src\\assets\\scrolltide\\$_-poster.jpg" "$Dst\\assets\\scrolltide\\" -Force\n` +
+          `}`;
+      } else if (pack === 'all92') {
+        videoCmd = `New-Item -ItemType Directory -Force -Path "$Dst\\assets\\scrolltide" | Out-Null\n` +
+          `Copy-Item "$Src\\assets\\scrolltide\\*.mp4" "$Dst\\assets\\scrolltide\\" -Force\n` +
+          `Copy-Item "$Src\\assets\\scrolltide\\*-poster.jpg" "$Dst\\assets\\scrolltide\\" -Force`;
+      }
+
+      out.textContent =
+        `$Src = "${src}"\n` +
+        `$Dst = "${dst}"\n` +
+        `New-Item -ItemType Directory -Force -Path "$Dst\\.github\\prompts" | Out-Null\n` +
+        `Copy-Item "$Src\\.github\\prompts\\scrolltide.deck.prompt.md" "$Dst\\.github\\prompts\\" -Force\n` +
+        `Copy-Item "$Src\\presentacion-ridge-ia-digital-commercial.html" "$Dst\\presentacion-plantilla-ridge.html" -Force\n` +
+        `${videoCmd}\n` +
+        `Write-Host "✅ Proyecto inicializado en $Dst con /scrolltide.deck y plantilla lista." -ForegroundColor Green`;
+    }
+
+    if ($('#st-ps-out')) {
+      updatePsCommand();
+      $('#st-ps-target')?.addEventListener('input', updatePsCommand);
+      $('#st-ps-pack')?.addEventListener('change', updatePsCommand);
+      $('#st-copy-ps-btn')?.addEventListener('click', (e) => {
+        copyText($('#st-ps-out').textContent, e.currentTarget, 'Comando PowerShell copiado');
       });
     }
 
@@ -2942,6 +3150,7 @@ requestAnimationFrame(frame);
       if (!out) return;
       const title = $('#b-deck-title')?.value || 'Presentación Ejecutiva';
       const sh = $('#b-shader')?.value || 'mp4:ridge';
+      const lay = $('#b-layout')?.value || 'ridge';
       const isMp4 = sh.startsWith('mp4:');
       const vSlug = isMp4 ? sh.slice(4) : '';
       const bgLabel = isMp4
@@ -2950,10 +3159,78 @@ requestAnimationFrame(frame);
       const scenes = parseCustomScenes();
       const picked = ST_MOTORS.filter(m => m.picked);
 
-      out.textContent = `/scrolltide.deck Crea una presentación interactiva 2.5D/3D en un único archivo .HTML autónomo titulada "${title}" con fondo "${bgLabel}" y las siguientes ${scenes.length} escenas sincronizadas con el scroll y las flechas del teclado:\n\n` +
+      out.textContent = `/scrolltide.deck Crea una presentación interactiva 2.5D/3D en un único archivo .HTML autónomo titulada "${title}" con arquitectura espacial "${lay}" y fondo "${bgLabel}", incluyendo las siguientes ${scenes.length} escenas sincronizadas con el scroll y las flechas del teclado:\n\n` +
         scenes.map((s, idx) => `${idx + 1}. [${s.kicker}] "${s.title}" (Objeto 3D: ${s.model}) -> ${s.lead} (Insignia: ${s.metric})`).join('\n') +
         `\n\nMotores visuales obligatorios que debes incluir en el código:\n` +
         picked.map(m => `- ${m.id} (${m.title}): \`${m.recipe.replace(/\n/g, ' ')}\``).join('\n');
+    }
+
+    // Convertidor automático de notas en bruto (Word / Correo / PowerPoint) a escenas estructuradas
+    function convertRawNotesToScenes(rawText) {
+      const clean = (rawText || '').trim();
+      if (!clean) {
+        toast('Pega primero tus notas en el cuadro superior');
+        return;
+      }
+      // Dividimos por saltos de línea dobles o por viñetas/líneas largas
+      let blocks = clean.split(/\n\s*\n+/).map(b => b.trim()).filter(Boolean);
+      if (blocks.length < 2) {
+        blocks = clean.split(/\n+/).map(b => b.replace(/^[-*•\d.)\s]+/, '').trim()).filter(b => b.length > 12);
+      }
+      if (!blocks.length) blocks = [clean];
+
+      const modelsCycle = ['tunnel', 'stack', 'ring', 'globe', 'stack', 'ring'];
+      const lines = blocks.slice(0, 6).map((blk, i) => {
+        const flat = blk.replace(/\s+/g, ' ').replace(/\|/g, '·').trim();
+        let title = '';
+        let lead = '';
+        const colonIdx = flat.indexOf(':');
+        const dotIdx = flat.indexOf('. ');
+        if (colonIdx > 3 && colonIdx < 68) {
+          title = flat.slice(0, colonIdx).replace(/^[-*•\d.)\s]+/, '').trim();
+          lead = flat.slice(colonIdx + 1).trim();
+        } else if (dotIdx > 8 && dotIdx < 75) {
+          title = flat.slice(0, dotIdx).replace(/^[-*•\d.)\s]+/, '').trim();
+          lead = flat.slice(dotIdx + 2).trim();
+        } else {
+          const words = flat.replace(/^[-*•\d.)\s]+/, '').split(' ');
+          title = words.slice(0, 6).join(' ');
+          lead = flat;
+        }
+        if (!lead) lead = title;
+        const m = modelsCycle[i % modelsCycle.length];
+        const metric = `PUNTO CLAVE 0${i + 1}`;
+        const sentences = lead.split(/[.;]\s+/).map(s => s.trim()).filter(Boolean);
+        const p1 = sentences[0] ? `Foco: ${sentences[0].slice(0, 75)}` : `Eje 01: ${title}`;
+        const p2 = sentences[1] ? `Acción: ${sentences[1].slice(0, 75)}` : 'Ejecución: Trazabilidad completa en producción';
+        const p3 = sentences[2] ? `Resultado: ${sentences[2].slice(0, 75)}` : 'Impacto: Seguimiento en Comité de Dirección';
+        return `${title} | ${lead.slice(0, 170)} | ${m} | ${metric} | ${p1}; ${p2}; ${p3}`;
+      });
+
+      $('#b-scenes').value = lines.join('\n');
+      updateCustomBuilderPrompt();
+      toast(`✨ Convertidas ${lines.length} escenas a partir de tus notas`);
+    }
+
+    if ($('#b-sample-notes-btn')) {
+      $('#b-sample-notes-btn').addEventListener('click', () => {
+        const sample = [
+          '1. Problema actual en renovaciones de circulante: Los gestores dedican más de 4 horas por expediente recopilando balances, CIRBE y modelos fiscales dispersos en correos.',
+          '2. Solución con Agentes Documentales y Scoring en vivo: Automatizamos la lectura del Impuesto de Sociedades (Modelo 200) y el cruce con flujos reales de cuenta para pre-calificar en 45 segundos.',
+          '3. Gobernanza y Control de Riesgos: El 75% de las operaciones sin alertas va por carril verde STP; el 25% restante llega al analista con la nota de Comité ya redactada y auditada.',
+          '4. Plan de despliegue Q1-Q2: Piloto de 6 semanas en 2 Direcciones Territoriales con 120 gestores antes de abrir a toda la Red de Empresas.',
+          '5. Impacto esperado en negocio: Reducción del 70% en tiempo de respuesta al cliente y +14M€ en volumen renovado sin ampliar plantilla de back-office.'
+        ].join('\n\n');
+        $('#b-raw-notes').value = sample;
+        $('#b-deck-title').value = 'Automatización Inteligente de Renovaciones de Circulante';
+        convertRawNotesToScenes(sample);
+      });
+    }
+
+    if ($('#b-convert-notes-btn')) {
+      $('#b-convert-notes-btn').addEventListener('click', () => {
+        convertRawNotesToScenes($('#b-raw-notes')?.value || '');
+      });
     }
 
     if ($('#st-custom-form')) {
@@ -2965,6 +3242,7 @@ requestAnimationFrame(frame);
           btn.classList.add('active');
           $('#b-deck-title').value = kit.title;
           $('#b-shader').value = kit.shader;
+          if ($('#b-layout')) $('#b-layout').value = kit.layout || 'ridge';
           $('#b-scenes').value = kit.scenes;
           DECK_DEFAULT_LAYOUT.custom_user = kit.layout || 'ridge';
           updateCustomBuilderPrompt();
@@ -2982,11 +3260,13 @@ requestAnimationFrame(frame);
       $('#b-preview-in-stage').addEventListener('click', () => {
         const title = $('#b-deck-title').value || 'Presentación Personalizada';
         const sh = $('#b-shader').value || 'mp4:ridge';
+        const chosenLay = $('#b-layout')?.value || 'ridge';
         const isMp4 = sh.startsWith('mp4:');
         DECKS.custom_user = { name: title, shader: isMp4 ? 'video' : sh, scenes: parseCustomScenes() };
+        DECK_DEFAULT_LAYOUT.custom_user = chosenLay;
         activeDeckKey = 'custom_user';
-        layoutOverride = 'auto';
-        $$('#st-layout-override [data-layout]').forEach(b => b.classList.toggle('active', b.dataset.layout === 'auto'));
+        layoutOverride = chosenLay;
+        $$('#st-layout-override [data-layout]').forEach(b => b.classList.toggle('active', b.dataset.layout === chosenLay));
         if (isMp4) {
           setStageCleanVideo(sh.slice(4));
         } else {
@@ -3000,7 +3280,7 @@ requestAnimationFrame(frame);
       $('#b-download-html').addEventListener('click', () => {
         const title = $('#b-deck-title').value || 'Presentacion-Scrolltide';
         const sh = $('#b-shader').value || 'mp4:ridge';
-        const customLay = DECK_DEFAULT_LAYOUT.custom_user || getActiveLayoutMode();
+        const customLay = $('#b-layout')?.value || DECK_DEFAULT_LAYOUT.custom_user || getActiveLayoutMode();
         const html = buildStandaloneDeckHtml(title, sh, parseCustomScenes(), undefined, customLay);
         downloadText('mi-presentacion-scrolltide.html', html, 'text/html;charset=utf-8');
       });
