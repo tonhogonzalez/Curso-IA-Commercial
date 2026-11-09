@@ -1416,21 +1416,38 @@
             </div>
           </div>
 
-          <!-- PROMPTS MAESTROS EN 2 TURNOS PARA M365 COPILOT / CHATGPT -->
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+          <!-- PROMPTS MAESTROS ÍNTEGROS EN 2 TURNOS + INYECCIÓN RÁPIDA + PLANTILLA DE ESPECIFICACIONES -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
             <div class="c12-panel">
               <div class="c12-panel-head">
-                <h3>📋 Turno 1 para M365 Copilot / ChatGPT (HTML + CSS + Tus Especificaciones)</h3>
-                <button type="button" class="c12-btn emerald" id="c12CopyP1Btn">📋 Copiar Prompt Turno 1</button>
+                <h3>📝 Paso 0 · Plantilla para Rellenar las Especificaciones de tu Chatbot</h3>
+                <button type="button" class="c12-btn" id="c12CopySpecsBtn">📋 Copiar Plantilla</button>
               </div>
-              <pre class="c12-code" id="c12Prompt1Pre" style="max-height:260px;"></pre>
+              <pre class="c12-code" id="c12PromptSpecsPre" style="max-height:310px;"></pre>
             </div>
             <div class="c12-panel">
               <div class="c12-panel-head">
-                <h3>⚡ Turno 2 para M365 Copilot / ChatGPT (Motor JS + Cables SVG + Simulador)</h3>
+                <h3>🚀 Opción B (Atajo 1 min) · Inyectar tus Especificaciones sobre este HTML</h3>
+                <button type="button" class="c12-btn violet" id="c12CopyInjectBtn">📋 Copiar Prompt Inyección Directa</button>
+              </div>
+              <pre class="c12-code" id="c12PromptInjectPre" style="max-height:310px;"></pre>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+            <div class="c12-panel">
+              <div class="c12-panel-head">
+                <h3>📋 Opción A · Turno 1 Íntegro para M365 Copilot / ChatGPT (HTML + CSS + Especificaciones)</h3>
+                <button type="button" class="c12-btn emerald" id="c12CopyP1Btn">📋 Copiar Prompt Turno 1</button>
+              </div>
+              <pre class="c12-code" id="c12Prompt1Pre" style="max-height:360px;"></pre>
+            </div>
+            <div class="c12-panel">
+              <div class="c12-panel-head">
+                <h3>⚡ Opción A · Turno 2 Íntegro para M365 Copilot / ChatGPT (Motor JS + Cables SVG + Simulador)</h3>
                 <button type="button" class="c12-btn emerald" id="c12CopyP2Btn">📋 Copiar Prompt Turno 2</button>
               </div>
-              <pre class="c12-code" id="c12Prompt2Pre" style="max-height:260px;"></pre>
+              <pre class="c12-code" id="c12Prompt2Pre" style="max-height:360px;"></pre>
             </div>
           </div>
         </div>
@@ -2509,29 +2526,102 @@ async def run_task(req: dict, authorization: str = Header(...)):
       $('#centro-mando-vivo').scrollIntoView({ behavior: 'smooth' });
     });
 
-    const PROMPT_T1 = `Actúa como Principal Frontend Architect y Staff AI Engineer en Banca de Empresas.
-Vamos a construir un documento interactivo en un único archivo .html (100% autocontenido, HTML5 + CSS3 + SVG + Vanilla JS) para presentar la arquitectura de nuestro Chatbot de Commercial en los canales Web y App.
+    const PROMPT_SPECS = `1. Nombre del Asistente y Canales:
+   - App: (ej. App Empresas iOS/Android, autenticación, firma SCA...)
+   - Web: (ej. Portal Empresas / Banca Electrónica, widget contextual...)
 
-PROTOCOLO EN 2 ENTREGAS PARA EVITAR RECORTES:
-- En esta ENTREGA 1 genera desde <!DOCTYPE html> hasta justo antes de <script>, con todo el CSS (variables --bg:#050814, --cyan:#22d3ee, --violet:#a78bfa, --emerald:#34d399, --amber:#fbbf24), las animaciones @keyframes y el HTML completo de las 5 secciones:
-  1) Hero con Orbe Orbital (#orb) y red neuronal en Canvas (#heroCanvas).
-  2) Sección 01 Centro de Mando: barra de escenarios, controles de velocidad (0.5x/1x/2x), Stress Test y Chaos Mode; chasis conmutable App/Web a la izquierda y Mapa de 6 columnas (Canales -> Gateway/Guardrails -> Orquestador LangGraph -> RAG vs Broker A2A -> 5 Agentes Python -> 4 APIs Core) con <svg id="wires"> y consola de telemetría a la derecha.
-  3) Sección 02 Doble Vía: 2 pipelines clicables de 5 pasos (RAG vs A2A) + probador del Semantic Router.
-  4) Sección 03 Protocolo A2A: Diagrama de secuencia animado de 8 pasos sincronizado con visor JSON (Agent Card, tasks/sendSubscribe y Artifact).
-  5) Sección 04 Ingeniería Python: 5 tarjetas de agentes + código en 4 pestañas (tools_api.py, agent_graph.py, a2a_server.py, orchestrator_router.py) + Drawer lateral (#drawer).
+2. Base de Conocimiento (Ruta Informativa / RAG):
+   - Qué documentos incluye: (ej. manuales de producto, FAQs operativas, tarifas, normativa Comex...)
+   - Qué tecnología usa: (ej. Azure AI Search / Databricks Vector Search / pgvector, embeddings, reranker...)
 
-ESPECIFICACIONES REALES DE MI CHATBOT:
+3. Orquestador Central y Protocolo A2A:
+   - Cómo clasifica la intención: (ej. LangGraph / Semantic Router / LLM...)
+   - Cómo descubre e invoca a los agentes: (ej. Agent Cards JSON, JSON-RPC / REST / SSE, sesión en Redis...)
+
+4. Catálogo de Agentes en Python (Ruta Operativa A2A):
+   - Agente 1: [Nombre] -> [Qué consulta/hace] -> [Librerías Python: FastAPI, LangGraph, httpx...] -> [API que consume]
+   - Agente 2: [Nombre] -> [Qué consulta/hace] -> [Librerías Python] -> [API que consume]
+   - Agente 3: [Nombre] -> [Qué consulta/hace] -> [Librerías Python] -> [API que consume]
+   - Agente 4: [Nombre] -> [Qué consulta/hace] -> [Librerías Python] -> [API que consume]
+   - Agente 5: [Nombre] -> [Qué consulta/hace] -> [Librerías Python] -> [API que consume]
+
+5. Casos de Uso / Preguntas Estrella que quieres simular en vivo:
+   - Caso 1 (Solo Base de Conocimiento): "..."
+   - Caso 2 (Solo Agente A2A Operativo): "..."
+   - Caso 3 (Híbrido Conocimiento + Agente A2A): "..."
+   - Caso 4 (Multi-Agente o escalado a Gestor / Firma): "..."
+
+6. Seguridad, Tokens y Observabilidad:
+   - Cómo viaja la identidad del cliente hasta las APIs: (ej. OAuth2 OBO, JWT, Apigee/Kong...)
+   - Trazabilidad y monitorización: (ej. OpenTelemetry, LangSmith, Application Insights...)`;
+
+    const PROMPT_INJECT = `Tengo un archivo HTML interactivo de arquitectura de nuestro Chatbot de Commercial donde toda la interfaz y las animaciones dependen únicamente de 4 objetos JavaScript:
+1. NODE_SPECS (las fichas técnicas de los 17 nodos del mapa: canales c_app y c_web, gw, guard, orch, mem, kb_vec, kb_docs, a2a_hub, los 5 agentes Python ag_pos, ag_risk, ag_comex, ag_sim, ag_crm y las 4 APIs api_core, api_risk, api_erp, api_crm).
+2. SCENARIOS (los escenarios animados: rag, a2a_tesoreria, hibrido, multi_a2a, comex_fx, guard_block con sus preguntas q, sus saltos hops con payload JSON y su respuesta answerHtml).
+3. SEQ_JSON (los 8 pasos del diagrama de secuencia A2A con sus JSON de Agent Card, Request A2A y Artifact).
+4. TPL_FILES (los 4 archivos Python de referencia: tools_api.py, agent_graph.py, a2a_server.py, orchestrator_router.py).
+
+A partir de las siguientes ESPECIFICACIONES REALES DE NUESTRO CHATBOT, genera únicamente esos 4 bloques JavaScript (const NODE_SPECS = ..., const SCENARIOS = ..., const SEQ_JSON = ..., const TPL_FILES = ...) manteniendo exactamente las mismas claves e IDs de nodos para que yo solo tenga que sustituirlos en mi archivo .html, e indícame qué títulos de los nodos de las columnas 5 y 6 debo actualizar:
+
 [PEGA AQUÍ LAS ESPECIFICACIONES DE TU CHATBOT]`;
 
-    const PROMPT_T2 = `Perfecto. Ahora genera la ENTREGA 2: el bloque <script>...<\/script></body></html> completo y sin abreviar ningún objeto ni usar comentarios placeholder:
-1. Animación orbital de satélites en el Hero y canvas neuronal.
-2. Diccionario NODE_SPECS completo para los 17 nodos y apertura del Drawer lateral al hacer clic en cualquier [data-node].
-3. Función drawWires() que calcula con getBoundingClientRect() las curvas Bézier cúbicas en #wires y firePacket(from, to, col) que mueve un círculo luminoso con getPointAtLength() respetando el selector de velocidad (0.5x, 1x, 2x), Stress Test y Chaos Mode.
-4. Objeto SCENARIOS completo y función runScenario() que sincroniza los mensajes del chat App/Web, los paquetes en el mapa SVG, las burbujas flotantes sobre cada nodo y las filas de telemetría con botón { JSON } desplegable.
-5. Interactividad completa de los pipelines RAG/A2A, el diagrama de secuencia de 8 pasos y las 4 pestañas de código Python (FastAPI + LangChain/LangGraph + httpx + Pydantic v2).`;
+    const PROMPT_T1 = `Actúa como Principal Frontend Architect y Staff AI Engineer en Banca de Empresas.
+Vamos a construir un documento interactivo en un único archivo .html (100% autocontenido, Zero-CDN bloqueantes, solo HTML5 + CSS3 + SVG + Vanilla JS) para presentar la arquitectura de nuestro Chatbot de Commercial en los canales Web y App.
 
+IMPORTANTE — PROTOCOLO EN 2 ENTREGAS PARA EVITAR RECORTES DE CÓDIGO:
+Como el archivo completo supera las 900 líneas, lo haremos en 2 entregas exactas que yo uniré:
+- En esta ENTREGA 1 generarás desde <!DOCTYPE html> hasta justo antes de abrir <script>, con TODO el CSS, las animaciones @keyframes y el HTML completo de las 5 secciones adaptado a mis especificaciones.
+- En la ENTREGA 2 (cuando yo te diga "Continúa con la Entrega 2") generarás el bloque <script>...<\/script></body></html> completo sin usar jamás comentarios tipo "// resto de nodos aquí".
+
+1. TOKENS DE DISEÑO Y ESTÉTICA OBLIGATORIA (MODO CENTRO DE MANDO OSCURO):
+- :root { --bg:#050814; --panel:rgba(11,17,34,.78); --line:rgba(148,163,184,.14); --text:#e8eefc; --muted:#8b97b5; --cyan:#22d3ee; --violet:#a78bfa; --emerald:#34d399; --amber:#fbbf24; --blue:#60a5fa; --rose:#fb7185; }
+- Incluye obligatoriamente estas animaciones @keyframes: spin (rotación continua de anillos), breathe (respiración del orbe central), dash (stroke-dashoffset: -14 para cables SVG activos), pop (entrada suave de mensajes y tarjetas en el chat), procWave (onda expansiva en el nodo que está procesando).
+
+2. ESTRUCTURA EXACTA DE LAS 5 SECCIONES DEL HTML (ADAPTADAS A MIS ESPECIFICACIONES):
+- Hero Inmersivo: <canvas id="c12HeroCanvas"> de fondo con partículas neuronales conectadas, título en gradiente, 4 KPIs y Orbe Orbital (#c12Orb) con 6 satélites flotantes (.c12-orb-sat).
+- Sección 01 · Centro de Mando en Vivo:
+  * Barra de 6 Escenarios clicables (Solo RAG, A2A Tesorería, Híbrido Paralelo, Multi-Agente + Firma HITL, A2A Comex FX y Defensa Guardrails) + Controles de velocidad (0.5x, 1x, 2x), Stress Test (50 req/s), Simular Fallo API (Chaos Mode) y Pantalla Completa.
+  * Columna izquierda: Selector de canal (📱 App / 💻 Web) que transforma mediante clases CSS el chasis entre un smartphone con isla dinámica y un portal web corporativo, con chat en vivo (#c12ChatMsgs), píldoras rápidas e input funcional (#c12ChatForm).
+  * Columna derecha: Mapa topológico interactivo (#c12ArchMap) con <svg id="c12Wires"></svg> superpuesto y 6 columnas:
+    - Col 1 (1 · Canales): c_app y c_web.
+    - Col 2 (2 · Acceso & Guardrails): gw (API Gateway / OAuth2 OBO) y guard (Guardrails & PII).
+    - Col 3 (3 · Cerebro Central): orch (Orquestador LangGraph) y mem (Memoria Redis).
+    - Col 4 (4 · Conocimiento vs A2A): kb_vec (Buscador Híbrido RAG), kb_docs (Base de Conocimiento) y a2a_hub (Broker Protocolo A2A).
+    - Col 5 (5 · Agentes Python A2A): ag_pos, ag_risk, ag_comex, ag_sim, ag_crm.
+    - Col 6 (6 · APIs & Sistemas Core): api_core, api_risk, api_erp, api_crm.
+  * Narrador ejecutivo paso a paso y Consola de Telemetría en Vivo (#c12TraceBox) con botón { JSON } desplegable en cada salto.
+- Sección 02 · Arquitectura de Doble Vía: Dos pipelines horizontales interactivos de 5 pasos clicables (RAG vs A2A) + Probador en vivo del Semantic Router.
+- Sección 03 · El Protocolo A2A al Microscopio: 5 tarjetas conceptuales + Diagrama de Secuencia animado de 8 pasos (#c12SeqBody) sincronizado con visor JSON (#c12JsonView).
+- Sección 04 · Ingeniería de los Agentes en Python: 5 tarjetas de agentes + código completo en 4 pestañas (tools_api.py, agent_graph.py, a2a_server.py, orchestrator_router.py) + Generador interactivo de nuevos agentes A2A + Drawer lateral (#c12Drawer).
+
+3. ESPECIFICACIONES REALES DE MI CHATBOT (ADAPTA TODOS LOS TEXTOS, AGENTES, ESCENARIOS Y APIS A ESTO):
+[PEGA AQUÍ LAS ESPECIFICACIONES DE TU CHATBOT]
+
+Genera ahora únicamente la ENTREGA 1 completa (desde <!DOCTYPE html> hasta justo antes de <script>), sin omitir ningún estilo ni nodo HTML.`;
+
+    const PROMPT_T2 = `Perfecto. Ahora genera la ENTREGA 2: el bloque <script>...<\/script></body></html> completo y 100% funcional para unirlo al HTML anterior.
+
+REGLAS ESTRICTAS PARA EL JAVASCRIPT (PROHIBIDO ABREVIAR O USAR PLACEHOLDERS):
+1. Órbita del Hero + Canvas de Red Neuronal (#c12HeroCanvas):
+   - Posiciona dinámicamente los 6 .c12-orb-sat alrededor de #c12Orb con requestAnimationFrame y dibuja partículas conectadas en #c12HeroCanvas.
+2. Diccionario completo NODE_SPECS y Drawer Lateral (openDrawer(nodeId)):
+   - Incluye la ficha completa de los 17 nodos del mapa (c_app, c_web, gw, guard, orch, mem, kb_vec, kb_docs, a2a_hub, ag_pos, ag_risk, ag_comex, ag_sim, ag_crm, api_core, api_risk, api_erp, api_crm) con kind, title, sub, role, bullets y code adaptados a mis especificaciones.
+   - Al hacer clic en cualquier [data-node], abre #c12Drawer con toda su información.
+3. Motor de Cables SVG Curvos (drawWires()) y Fotones Animados (firePacket(from, to, col, baseDur)):
+   - Calcula con getBoundingClientRect() las coordenadas de cada par de nodos en LINKS y dibuja curvas Bézier cúbicas <path class="c12-wire" id="c12w-..."> dentro de #c12Wires. Recalcula en window.onresize y al cambiar entre App y Web.
+   - firePacket(from, to, col) debe encender .lit en el cable SVG y mover un <circle r="5" fill="#fff"> a lo largo de la curva con path.getTotalLength() y path.getPointAtLength() respetando el selector de velocidad (0.5x, 1x, 2x), el modo Stress Test (50 req/s) y el modo Chaos (Fallback Redis + Circuit Breaker).
+4. Simulador de los 6 Escenarios (SCENARIOS y runScenario(key, customQ)):
+   - Define los 6 escenarios completos (rag, a2a_tesoreria, hibrido, multi_a2a, comex_fx, guard_block) adaptados a mis especificaciones, con sus saltos hops, burbujas flotantes showNodeTip(), narrador paso a paso, telemetría con botón { JSON } desplegable y respuesta rica answerHtml.
+5. Interactividad completa de las Secciones 02 (pipelines clicables + Semantic Router), 03 (animación de 8 pasos de secuencia A2A + visor JSON) y 04 (4 archivos Python con FastAPI, LangChain, LangGraph, httpx y Pydantic v2 + generador de agentes).
+
+Escribe el bloque <script>...<\/script></body></html> íntegro de principio a fin.`;
+
+    $('#c12PromptSpecsPre').textContent = PROMPT_SPECS;
+    $('#c12PromptInjectPre').textContent = PROMPT_INJECT;
     $('#c12Prompt1Pre').textContent = PROMPT_T1;
     $('#c12Prompt2Pre').textContent = PROMPT_T2;
+    $('#c12CopySpecsBtn').addEventListener('click', e => copyWithFeedback(PROMPT_SPECS, e.currentTarget));
+    $('#c12CopyInjectBtn').addEventListener('click', e => copyWithFeedback(PROMPT_INJECT, e.currentTarget));
     $('#c12CopyP1Btn').addEventListener('click', e => copyWithFeedback(PROMPT_T1, e.currentTarget));
     $('#c12CopyP2Btn').addEventListener('click', e => copyWithFeedback(PROMPT_T2, e.currentTarget));
   })();
