@@ -1,0 +1,2222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Arquitectura del Asistente Conversacional · Commercial (Prototipo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#050814;--panel:rgba(11,17,34,.78);--line:rgba(148,163,184,.14);--text:#e8eefc;--muted:#8b97b5;
+  --cyan:#22d3ee;--violet:#a78bfa;--emerald:#34d399;--amber:#fbbf24;--blue:#60a5fa;--rose:#fb7185;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Inter,"Segoe UI Variable","Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:-2;background:
+  radial-gradient(1200px 700px at 12% -10%,rgba(34,211,238,.10),transparent 60%),
+  radial-gradient(1000px 700px at 95% 8%,rgba(167,139,250,.13),transparent 60%),
+  radial-gradient(900px 600px at 50% 115%,rgba(52,211,153,.08),transparent 60%)}
+body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background-image:linear-gradient(rgba(148,163,184,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(148,163,184,.045) 1px,transparent 1px);
+  background-size:48px 48px;-webkit-mask-image:radial-gradient(ellipse at 50% 30%,#000 25%,transparent 75%);mask-image:radial-gradient(ellipse at 50% 30%,#000 25%,transparent 75%)}
+.mono{font-family:"JetBrains Mono",Consolas,monospace}
+.wrap{max-width:1460px;margin:0 auto;padding:0 28px}
+button{font-family:inherit}
+b,strong{font-weight:700}
+
+/* ---------- NAV ---------- */
+nav.top{position:sticky;top:0;z-index:60;backdrop-filter:blur(16px) saturate(160%);-webkit-backdrop-filter:blur(16px) saturate(160%);background:rgba(5,8,20,.72);border-bottom:1px solid var(--line)}
+nav.top .wrap{display:flex;align-items:center;justify-content:space-between;height:60px;gap:18px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:14px;letter-spacing:-.01em;white-space:nowrap}
+.brand-mark{width:30px;height:30px;border-radius:9px;background:conic-gradient(from 210deg,var(--cyan),var(--violet),var(--emerald),var(--cyan));display:grid;place-items:center;box-shadow:0 0 24px rgba(34,211,238,.35);animation:spin 12s linear infinite}
+.brand-mark::after{content:"";width:12px;height:12px;border-radius:4px;background:var(--bg)}
+.brand small{display:block;font-size:10.5px;color:var(--muted);font-weight:500}
+.nav-links{display:flex;gap:2px;overflow-x:auto}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:12.5px;font-weight:500;padding:7px 12px;border-radius:999px;transition:.2s;white-space:nowrap}
+.nav-links a:hover,.nav-links a.on{color:var(--text);background:rgba(148,163,184,.1)}
+.proto{font-size:10.5px;font-weight:700;letter-spacing:.08em;color:var(--amber);border:1px solid rgba(251,191,36,.35);background:rgba(251,191,36,.08);padding:5px 10px;border-radius:999px;white-space:nowrap}
+
+/* ---------- HERO ---------- */
+.hero{position:relative;min-height:88vh;display:flex;align-items:center;overflow:hidden;padding:70px 0 60px}
+#heroCanvas{position:absolute;inset:0;width:100%;height:100%;opacity:.8}
+.hero-inner{position:relative;z-index:2;display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:12px;font-weight:600;color:#a5f3fc;background:rgba(34,211,238,.08);border:1px solid rgba(34,211,238,.28);padding:6px 13px;border-radius:999px;margin-bottom:22px}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--emerald);box-shadow:0 0 0 0 rgba(52,211,153,.6);animation:ping 1.8s infinite}
+h1{font-size:clamp(2.3rem,4.6vw,4.1rem);line-height:1.04;letter-spacing:-.035em;font-weight:800;margin-bottom:22px}
+.grad{background:linear-gradient(100deg,var(--cyan),var(--violet) 55%,var(--emerald));-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{font-size:1.08rem;color:#b8c3de;max-width:640px;margin-bottom:30px}
+.lead b{color:#fff}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:38px}
+.btn{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;padding:12px 20px;border-radius:12px;text-decoration:none;cursor:pointer;border:1px solid transparent;transition:.25s var(--ease)}
+.btn.primary{background:linear-gradient(135deg,#0ea5e9,#7c3aed);color:#fff;box-shadow:0 10px 30px rgba(124,58,237,.35)}
+.btn.primary:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(124,58,237,.5)}
+.btn.ghost{color:var(--text);border-color:var(--line);background:rgba(148,163,184,.06)}
+.btn.ghost:hover{background:rgba(148,163,184,.12)}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:680px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:13px 14px}
+.kpi b{display:block;font-size:1.65rem;letter-spacing:-.03em;line-height:1.1}
+.kpi span{font-size:11.5px;color:var(--muted)}
+.kpi:nth-child(1) b{color:var(--blue)}.kpi:nth-child(2) b{color:var(--cyan)}.kpi:nth-child(3) b{color:var(--violet)}.kpi:nth-child(4) b{color:var(--emerald)}
+/* orbe hero */
+.orb-wrap{position:relative;aspect-ratio:1;max-width:470px;width:100%;justify-self:center}
+.orb-ring{position:absolute;inset:0;border-radius:50%;border:1px dashed rgba(148,163,184,.22)}
+.orb-ring.r2{inset:14%;border-style:solid;border-color:rgba(167,139,250,.22);animation:spin 40s linear infinite reverse}
+.orb-ring.r1{animation:spin 60s linear infinite}
+.orb-core{position:absolute;inset:34%;border-radius:50%;background:radial-gradient(circle at 35% 30%,#a5f3fc,#7c3aed 55%,#1e1b4b);box-shadow:0 0 80px rgba(124,58,237,.55),0 0 160px rgba(34,211,238,.25);display:grid;place-items:center;text-align:center;font-size:12px;font-weight:700;letter-spacing:.04em;animation:breathe 4s ease-in-out infinite}
+.orb-core span{display:block;font-size:10px;font-weight:500;opacity:.8}
+.orb-sat{position:absolute;left:50%;top:50%;width:0;height:0}
+.orb-sat i{position:absolute;transform:translate(-50%,-50%);display:flex;align-items:center;gap:6px;font-style:normal;font-size:11px;font-weight:600;white-space:nowrap;background:rgba(10,16,32,.9);border:1px solid var(--sc);color:#fff;padding:6px 10px;border-radius:999px;box-shadow:0 0 18px var(--sg)}
+.orb-sat i::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--sc)}
+
+/* ---------- SECCIONES ---------- */
+.sec{padding:90px 0 40px;scroll-margin-top:60px}
+.sec-head{max-width:820px;margin-bottom:30px}
+.kicker{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);margin-bottom:10px}
+h2{font-size:clamp(1.7rem,3vw,2.5rem);letter-spacing:-.03em;line-height:1.12;margin-bottom:12px}
+.sec-head p{color:#aab5d0;font-size:1rem}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:20px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 24px 60px rgba(0,0,0,.35)}
+.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:14px 18px;border-bottom:1px solid var(--line)}
+.panel-head h3{font-size:14px;font-weight:700;display:flex;align-items:center;gap:9px}
+.seg{display:inline-flex;background:rgba(148,163,184,.08);border:1px solid var(--line);border-radius:10px;padding:3px;gap:2px}
+.seg button{background:none;border:0;color:var(--muted);font-size:12px;font-weight:600;padding:6px 12px;border-radius:7px;cursor:pointer;transition:.2s}
+.seg button.on{background:rgba(148,163,184,.18);color:#fff}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+
+/* ---------- CENTRO DE MANDO ---------- */
+.scen-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
+.scen{position:relative;text-align:left;cursor:pointer;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:13px 15px;color:var(--text);transition:.25s var(--ease);overflow:hidden}
+.scen::before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:var(--sc)}
+.scen:hover{transform:translateY(-2px);border-color:var(--sc)}
+.scen.on{border-color:var(--sc);box-shadow:0 0 0 1px var(--sc),0 12px 34px var(--sg)}
+.scen small{display:block;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.06em;color:var(--sc);margin-bottom:4px;text-transform:uppercase}
+.scen span{font-size:13px;font-weight:600;line-height:1.35;display:block}
+.cc-grid{display:grid;grid-template-columns:380px minmax(0,1fr);gap:18px;align-items:start}
+.device-col{display:flex;flex-direction:column;align-items:center;gap:12px;position:sticky;top:78px}
+.map-side{display:flex;flex-direction:column;gap:18px;min-width:0}
+
+/* dispositivo */
+.device{position:relative;transition:width .6s var(--ease),border-radius .6s var(--ease),padding .6s var(--ease)}
+.device.app{width:336px;height:680px;border-radius:48px;padding:11px;background:linear-gradient(160deg,#1c2540,#090e1c);box-shadow:0 0 0 1px rgba(255,255,255,.09),0 40px 90px rgba(0,0,0,.6),inset 0 0 0 2px rgba(255,255,255,.04)}
+.device.web{width:100%;height:680px;border-radius:16px;padding:0;background:#0b1224;box-shadow:0 0 0 1px rgba(255,255,255,.09),0 40px 90px rgba(0,0,0,.55)}
+.dev-screen{position:relative;width:100%;height:100%;overflow:hidden;border-radius:38px;background:#060b18;display:flex;flex-direction:column}
+.device.web .dev-screen{border-radius:16px}
+.app-notch{position:absolute;top:9px;left:50%;transform:translateX(-50%);width:98px;height:27px;border-radius:20px;background:#000;z-index:4}
+.app-status{display:flex;justify-content:space-between;padding:13px 26px 3px;font-size:11.5px;font-weight:600}
+.web-bar{display:none;align-items:center;gap:7px;height:38px;padding:0 12px;background:#0f172a;border-bottom:1px solid var(--line)}
+.web-bar i{width:9px;height:9px;border-radius:50%;background:#334155}
+.web-bar i:nth-child(1){background:#f87171}.web-bar i:nth-child(2){background:#fbbf24}.web-bar i:nth-child(3){background:#34d399}
+.web-bar span{flex:1;margin-left:8px;font-size:10.5px;color:var(--muted);background:#020617;border-radius:6px;padding:4px 9px;font-family:"JetBrains Mono",monospace}
+.web-page{display:none}
+.device.web .app-notch,.device.web .app-status{display:none}
+.device.web .web-bar{display:flex}
+.device.web .web-page{display:block;position:absolute;inset:38px 0 0 0;padding:14px}
+.wp-head{display:flex;justify-content:space-between;align-items:center;font-size:11px;font-weight:700;color:#cbd5e1;margin-bottom:12px}
+.wp-sk{height:9px;border-radius:5px;background:rgba(148,163,184,.12);margin-bottom:8px}
+.chat{position:relative;flex:1;display:flex;flex-direction:column;min-height:0;transition:all .6s var(--ease)}
+.device.web .chat{position:absolute;right:12px;bottom:12px;top:76px;left:36px;border-radius:16px;background:rgba(7,12,26,.97);border:1px solid rgba(148,163,184,.2);box-shadow:0 24px 60px rgba(0,0,0,.65)}
+.chat-head{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line)}
+.bot-av{width:32px;height:32px;border-radius:10px;background:conic-gradient(from 200deg,var(--cyan),var(--violet),var(--emerald),var(--cyan));position:relative;flex-shrink:0;animation:spin 10s linear infinite}
+.bot-av::after{content:"";position:absolute;inset:7px;border-radius:5px;background:#060b18}
+.chat-head b{display:block;font-size:12.8px}
+.chat-head span{display:flex;align-items:center;gap:5px;font-size:10.5px;color:var(--muted)}
+.live{width:6px;height:6px;border-radius:50%;background:var(--emerald)}
+.chat-msgs{flex:1;overflow-y:auto;padding:14px 12px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth}
+.chat-msgs::-webkit-scrollbar{width:4px}.chat-msgs::-webkit-scrollbar-thumb{background:rgba(148,163,184,.25);border-radius:4px}
+.msg{max-width:88%;font-size:12.6px;line-height:1.5;padding:9px 12px;border-radius:14px;animation:pop .4s var(--ease)}
+.msg.u{align-self:flex-end;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;border-bottom-right-radius:4px}
+.msg.b{align-self:flex-start;background:rgba(148,163,184,.09);border:1px solid rgba(148,163,184,.14);border-bottom-left-radius:4px}
+.msg.b b{color:#fff}
+.msg.sys{align-self:center;font-size:10.5px;color:var(--muted);background:none;padding:2px}
+.typing{align-self:flex-start;display:flex;align-items:center;gap:9px;font-size:11px;color:#a5b4fc;background:rgba(124,58,237,.1);border:1px solid rgba(167,139,250,.25);padding:8px 12px;border-radius:14px;animation:pop .3s var(--ease)}
+.typing i{display:inline-flex;gap:3px}
+.typing i::before,.typing i::after,.typing i span{content:"";width:5px;height:5px;border-radius:50%;background:var(--violet);animation:bounce 1s infinite}
+.typing i span{animation-delay:.15s}.typing i::after{animation-delay:.3s}
+.cites{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.cite{font-size:10px;color:#a5f3fc;background:rgba(34,211,238,.09);border:1px solid rgba(34,211,238,.28);padding:3px 7px;border-radius:6px;animation:pop .4s var(--ease) both}
+.xcard{margin-top:9px;background:rgba(2,6,23,.7);border:1px solid rgba(148,163,184,.18);border-radius:11px;overflow:hidden;animation:pop .5s var(--ease) both}
+.xcard-h{display:flex;justify-content:space-between;align-items:center;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:7px 10px;border-bottom:1px solid var(--line)}
+.xrow{display:flex;justify-content:space-between;gap:8px;padding:7px 10px;font-size:11.5px;border-bottom:1px solid rgba(148,163,184,.07)}
+.xrow:last-child{border-bottom:0}
+.xrow small{display:block;color:var(--muted);font-size:10px;font-family:"JetBrains Mono",monospace}
+.xrow .amt{font-weight:700;font-family:"JetBrains Mono",monospace;font-size:11.5px;white-space:nowrap}
+.xrow.tot{background:rgba(52,211,153,.07)}.xrow.tot .amt{color:var(--emerald)}
+.xsteps{padding:8px 10px;display:grid;gap:6px}
+.xstep{display:flex;align-items:center;gap:8px;font-size:11.3px}
+.xstep i{width:16px;height:16px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:9px;flex-shrink:0}
+.xstep.ok i{background:rgba(52,211,153,.18);color:var(--emerald)}
+.xstep.wait i{background:rgba(251,191,36,.18);color:var(--amber);animation:pulseS 1.4s infinite}
+.xbtns{display:flex;gap:6px;padding:0 10px 10px}
+.xbtns button{flex:1;font-size:11px;font-weight:600;padding:7px;border-radius:8px;border:1px solid var(--line);background:rgba(148,163,184,.08);color:#fff;cursor:pointer}
+.xbtns button.pri{background:linear-gradient(135deg,#0ea5e9,#7c3aed);border:0}
+.chat-quick{display:flex;gap:6px;overflow-x:auto;padding:0 12px 8px}
+.chat-quick::-webkit-scrollbar{display:none}
+.qr{flex-shrink:0;font-size:11px;color:#c7d2fe;background:rgba(124,58,237,.1);border:1px solid rgba(167,139,250,.3);padding:6px 10px;border-radius:999px;cursor:pointer;transition:.2s}
+.qr:hover,.qr.hit{background:rgba(124,58,237,.3);color:#fff}
+.chat-input{display:flex;gap:7px;padding:10px 12px 14px;border-top:1px solid var(--line)}
+.chat-input input{flex:1;min-width:0;background:rgba(148,163,184,.08);border:1px solid var(--line);border-radius:11px;padding:9px 12px;color:#fff;font-size:12.5px;font-family:inherit;outline:none}
+.chat-input input:focus{border-color:var(--violet)}
+.chat-input button{width:38px;border-radius:11px;border:0;background:linear-gradient(135deg,#0ea5e9,#7c3aed);color:#fff;cursor:pointer;display:grid;place-items:center}
+.dev-hint{font-size:11px;color:var(--muted);text-align:center;max-width:330px}
+
+/* mapa */
+.map-scroll{overflow-x:auto}
+.map{position:relative;display:grid;grid-template-columns:84px repeat(5,minmax(128px,1fr));gap:30px;min-width:900px;min-height:560px;padding:44px 22px 18px}
+#wires{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;overflow:visible}
+.wire{fill:none;stroke:var(--wc);stroke-opacity:.2;stroke-width:1.4;transition:stroke-opacity .3s,stroke-width .3s}
+.wire.lit{stroke-opacity:.95;stroke-width:2.3;stroke-dasharray:7 6;animation:dash .7s linear infinite;filter:drop-shadow(0 0 5px var(--wc))}
+.map.dim .wire:not(.lit){stroke-opacity:.07}
+.mcol{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:space-around;gap:10px}
+.mcol::before{content:"";position:absolute;inset:-14px -9px;border-radius:16px;background:rgba(148,163,184,.022);border:1px dashed rgba(148,163,184,.09);z-index:-1}
+.mcol.c2{justify-content:center;gap:34px}
+.mcol-title{position:absolute;top:-34px;left:-10px;right:-10px;text-align:center;font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:600;white-space:nowrap}
+.node{--c:#94a3b8;--cb:rgba(148,163,184,.14);--cg:rgba(148,163,184,.3);position:relative;display:flex;align-items:center;gap:9px;width:100%;text-align:left;padding:9px 10px;border-radius:12px;background:rgba(10,16,33,.92);border:1px solid rgba(148,163,184,.16);color:var(--text);cursor:pointer;transition:transform .3s var(--ease),border-color .3s,box-shadow .3s,opacity .4s,filter .4s}
+.node:hover{transform:translateY(-2px);border-color:var(--c);box-shadow:0 10px 26px var(--cg)}
+.node .ic{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:var(--cb);color:var(--c);flex-shrink:0}
+.node .nt b{display:block;font-size:11.8px;line-height:1.2}
+.node .nt small{display:block;font-size:10px;color:var(--muted);line-height:1.25;margin-top:2px}
+.node.big{flex-direction:column;text-align:center;padding:18px 12px;gap:10px;border-color:rgba(167,139,250,.4);background:linear-gradient(rgba(10,16,33,.96),rgba(10,16,33,.96)) padding-box,linear-gradient(135deg,var(--cyan),var(--violet),var(--emerald)) border-box;border:1.5px solid transparent;box-shadow:0 0 40px rgba(124,58,237,.18)}
+.node.big .ic{width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,rgba(34,211,238,.18),rgba(167,139,250,.25));color:#fff}
+.node.big .nt b{font-size:13px}
+.node.chan{flex-direction:column;text-align:center;padding:10px 6px;gap:6px}
+.map.dim .node{opacity:.32;filter:saturate(.35)}
+.map.dim .node.lit{opacity:1;filter:none;border-color:var(--c);box-shadow:0 0 0 1px var(--c),0 0 28px var(--cg)}
+.node.proc::after{content:"";position:absolute;inset:-6px;border-radius:16px;border:1.5px solid var(--c);animation:procP 1s var(--ease) infinite;pointer-events:none}
+.ntip{position:absolute;z-index:6;transform:translate(-50%,calc(-100% - 10px));max-width:230px;background:rgba(3,6,16,.96);border:1px solid var(--c);color:#fff;font-size:10.8px;line-height:1.35;padding:6px 9px;border-radius:9px;pointer-events:none;box-shadow:0 10px 30px rgba(0,0,0,.5),0 0 18px var(--cg);animation:tipIn .35s var(--ease)}
+.ntip::after{content:"";position:absolute;left:50%;bottom:-5px;width:8px;height:8px;background:inherit;border-right:1px solid var(--c);border-bottom:1px solid var(--c);transform:translateX(-50%) rotate(45deg)}
+.ntip.out{opacity:0;transform:translate(-50%,calc(-100% - 18px));transition:.4s}
+.obs{display:flex;align-items:center;gap:12px;margin:4px 22px 16px;padding:10px 14px;border-radius:12px;border:1px dashed rgba(251,113,133,.35);background:rgba(251,113,133,.05);cursor:pointer;color:var(--text);width:calc(100% - 44px);text-align:left;transition:.25s}
+.obs:hover{background:rgba(251,113,133,.1)}
+.obs .ic{color:var(--rose)}
+.obs b{font-size:12px}.obs small{color:var(--muted);font-size:11px}
+.obs .obs-live{margin-left:auto;font-family:"JetBrains Mono",monospace;font-size:10.5px;color:#fda4af}
+.legend{display:flex;flex-wrap:wrap;gap:16px;padding:0 22px 16px;font-size:11px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:18px;height:2px;border-radius:2px;background:var(--lc);box-shadow:0 0 6px var(--lc)}
+.status{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;color:var(--muted);font-weight:600}
+.status i{width:8px;height:8px;border-radius:50%;background:#475569}
+.status.run{color:#fff}.status.run i{background:var(--emerald);animation:ping 1.4s infinite}
+.ctrls{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.ibtn{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#fff;background:rgba(148,163,184,.1);border:1px solid var(--line);padding:6px 11px;border-radius:9px;cursor:pointer}
+.ibtn:hover{background:rgba(148,163,184,.18)}
+
+/* traza */
+.trace-stats{display:flex;gap:16px;flex-wrap:wrap;font-size:11px;color:var(--muted)}
+.trace-stats b{color:#fff;font-family:"JetBrains Mono",monospace;font-weight:600}
+.trace{height:250px;overflow-y:auto;padding:10px 14px;font-family:"JetBrains Mono",Consolas,monospace;font-size:11.2px}
+.trace::-webkit-scrollbar{width:5px}.trace::-webkit-scrollbar-thumb{background:rgba(148,163,184,.25);border-radius:4px}
+.trace-empty{color:var(--muted);padding:30px 0;text-align:center;font-family:Inter,sans-serif;font-size:12.5px}
+.tr{display:grid;grid-template-columns:72px 74px 1fr auto;gap:10px;align-items:start;padding:5px 0;border-bottom:1px solid rgba(148,163,184,.06);animation:slideIn .35s var(--ease)}
+.tt{color:#64748b}
+.tg{font-size:9.5px;font-weight:600;letter-spacing:.05em;text-align:center;padding:2px 5px;border-radius:5px;border:1px solid}
+.tg-canal{color:#93c5fd;border-color:rgba(96,165,250,.4);background:rgba(96,165,250,.08)}
+.tg-gateway,.tg-guard{color:#fcd34d;border-color:rgba(251,191,36,.4);background:rgba(251,191,36,.08)}
+.tg-orq,.tg-mem{color:#e2e8f0;border-color:rgba(226,232,240,.3);background:rgba(226,232,240,.06)}
+.tg-kb{color:#67e8f9;border-color:rgba(34,211,238,.4);background:rgba(34,211,238,.08)}
+.tg-a2a{color:#c4b5fd;border-color:rgba(167,139,250,.45);background:rgba(167,139,250,.1)}
+.tg-agente{color:#ddd6fe;border-color:rgba(196,181,253,.45);background:rgba(196,181,253,.08)}
+.tg-api{color:#6ee7b7;border-color:rgba(52,211,153,.4);background:rgba(52,211,153,.08)}
+.tm{color:#cbd5e1;line-height:1.45}
+.tx{font-family:inherit;font-size:10px;color:var(--violet);background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.3);border-radius:5px;padding:1px 6px;cursor:pointer}
+.tp{margin:2px 0 8px 82px;background:rgba(2,6,23,.8);border:1px solid var(--line);border-radius:8px;padding:9px 11px;font-size:10.8px;white-space:pre;overflow-x:auto;line-height:1.5}
+.tsum{margin-top:8px;padding:9px 11px;border-radius:9px;background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.3);color:#a7f3d0;font-family:Inter,sans-serif;font-size:12px;animation:slideIn .4s var(--ease)}
+
+/* código */
+.t-k{color:#c792ea}.t-s{color:#c3e88d}.t-c{color:#64748b;font-style:italic}.t-n{color:#f78c6c}.t-b{color:#ff9cac}.t-f{color:#82aaff}.t-d{color:#ffcb6b}
+pre.code{background:#030712;border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-family:"JetBrains Mono",Consolas,monospace;font-size:11.8px;line-height:1.65;overflow:auto;color:#d6deeb;white-space:pre}
+</style>
+<style>
+/* ---------- RUTAS ---------- */
+.routes{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.route{--rc:var(--cyan);--rg:rgba(34,211,238,.25);overflow:hidden}
+.route.a2a{--rc:var(--violet);--rg:rgba(167,139,250,.28)}
+.route .rico{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:var(--rg);color:var(--rc)}
+.pipe{position:relative;display:flex;justify-content:space-between;padding:34px 26px 16px}
+.pipe::before{content:"";position:absolute;left:44px;right:44px;top:55px;height:2px;background:rgba(148,163,184,.15)}
+.pipe-fill{position:absolute;left:44px;top:55px;height:2px;background:linear-gradient(90deg,transparent,var(--rc));box-shadow:0 0 12px var(--rc);transition:width .9s var(--ease)}
+.pipe-dot{position:absolute;top:51px;width:10px;height:10px;border-radius:50%;background:#fff;box-shadow:0 0 0 4px var(--rg),0 0 18px var(--rc);transition:left .9s var(--ease);margin-left:-5px}
+.pstep{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:9px;width:84px;background:none;border:0;color:var(--muted);cursor:pointer;text-align:center}
+.pstep i{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:600;background:#0a1124;border:1.5px solid rgba(148,163,184,.25);color:var(--muted);transition:.4s var(--ease)}
+.pstep span{font-size:11.5px;font-weight:600;transition:.3s}
+.pstep.done i{border-color:var(--rc);color:var(--rc)}
+.pstep.on i{background:var(--rc);border-color:var(--rc);color:#020617;transform:scale(1.12);box-shadow:0 0 0 6px var(--rg),0 0 30px var(--rc)}
+.pstep.on span{color:#fff}
+.pipe-detail{margin:0 22px 22px;min-height:86px;padding:14px 16px;border-radius:12px;background:rgba(2,6,23,.55);border:1px solid var(--line);font-size:13px;color:#cbd5e1}
+.pipe-detail b{display:block;color:var(--rc);font-size:11px;font-family:"JetBrains Mono",monospace;letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px}
+.pipe-detail p{animation:fadeUp .5s var(--ease)}
+.decide{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
+.dcard{padding:16px 18px;border-radius:16px;background:var(--panel);border:1px solid var(--line);border-top:2px solid var(--dc)}
+.dcard small{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--dc)}
+.dcard h4{font-size:14.5px;margin:6px 0 8px}
+.dcard p{font-size:12.5px;color:#aab5d0}
+.dcard q{display:block;margin-top:10px;font-size:12px;color:#e2e8f0;font-style:italic;padding-left:10px;border-left:2px solid var(--dc)}
+
+/* ---------- A2A ---------- */
+.concepts{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:18px}
+.concept{padding:14px;border-radius:14px;background:var(--panel);border:1px solid var(--line);transition:.3s var(--ease)}
+.concept:hover{border-color:rgba(167,139,250,.5);transform:translateY(-3px)}
+.concept b{display:block;font-size:13px;color:#ddd6fe;margin-bottom:4px}
+.concept span{font-size:11.8px;color:#aab5d0;line-height:1.45;display:block}
+.a2a-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
+.seq{padding:18px 18px 22px}
+.seq-heads{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:6px}
+.seq-heads div{text-align:center;font-size:11.5px;font-weight:700;padding:9px 6px;border-radius:10px;background:rgba(2,6,23,.6);border:1px solid var(--line)}
+.seq-heads div small{display:block;font-size:9.5px;font-weight:500;color:var(--muted)}
+.seq-heads div:nth-child(1){border-color:rgba(226,232,240,.3)}
+.seq-heads div:nth-child(2){border-color:rgba(167,139,250,.45)}
+.seq-heads div:nth-child(3){border-color:rgba(196,181,253,.45)}
+.seq-heads div:nth-child(4){border-color:rgba(52,211,153,.45)}
+.seq-body{position:relative;padding:8px 0}
+.lifeline{position:absolute;top:0;bottom:0;width:0;border-left:1.5px dashed rgba(148,163,184,.2)}
+.srow{position:relative;height:42px;cursor:pointer}
+.sarrow{position:absolute;top:22px;height:2px;background:var(--ac);transform:scaleX(0);transition:transform .6s var(--ease);box-shadow:0 0 8px var(--ac)}
+.sarrow.r{transform-origin:left}.sarrow.l{transform-origin:right}
+.sarrow::after{content:"";position:absolute;top:-4px;border:5px solid transparent}
+.sarrow.r::after{right:-2px;border-left:7px solid var(--ac);border-right:0}
+.sarrow.l::after{left:-2px;border-right:7px solid var(--ac);border-left:0}
+.slabel{position:absolute;bottom:6px;left:0;right:0;text-align:center;font-family:"JetBrains Mono",monospace;font-size:10.3px;color:#e2e8f0;opacity:0;transition:opacity .4s .25s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 6px}
+.snum{position:absolute;top:15px;width:16px;height:16px;border-radius:50%;background:var(--ac);color:#020617;font-size:9px;font-weight:700;display:grid;place-items:center;opacity:0;transition:opacity .3s;margin-left:-8px}
+.srow.on .sarrow{transform:scaleX(1)}
+.srow.on .slabel,.srow.on .snum{opacity:1}
+.srow.sel .slabel{color:#fff;font-weight:600}
+.srow:hover .slabel{color:#fff}
+.json-panel .panel-head{padding:10px 14px}
+.json-panel pre.code{border:0;border-radius:0 0 20px 20px;max-height:430px;min-height:430px;background:rgba(2,6,23,.75)}
+.json-note{font-size:11.5px;color:var(--muted);padding:10px 16px;border-top:1px solid var(--line)}
+
+/* ---------- AGENTES ---------- */
+.agents{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:22px}
+.acard{--mx:50%;--my:50%;position:relative;padding:18px 16px;border-radius:18px;background:var(--panel);border:1px solid var(--line);overflow:hidden;cursor:pointer;transition:transform .4s var(--ease),border-color .3s}
+.acard::before{content:"";position:absolute;inset:0;background:radial-gradient(260px circle at var(--mx) var(--my),rgba(167,139,250,.18),transparent 60%);opacity:0;transition:opacity .3s}
+.acard:hover{transform:translateY(-5px);border-color:rgba(167,139,250,.5)}
+.acard:hover::before{opacity:1}
+.acard>*{position:relative}
+.acard .aic{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:rgba(167,139,250,.15);color:#c4b5fd;margin-bottom:12px}
+.acard h4{font-size:14px;margin-bottom:5px}
+.acard p{font-size:12px;color:#aab5d0;margin-bottom:12px;min-height:54px}
+.acard .lbl{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:8px 0 5px;display:block}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{font-size:10.3px;font-family:"JetBrains Mono",monospace;padding:3px 7px;border-radius:6px;background:rgba(148,163,184,.08);border:1px solid var(--line);color:#cbd5e1}
+.chip.v{color:#ddd6fe;border-color:rgba(167,139,250,.3);background:rgba(167,139,250,.08)}
+.chip.g{color:#a7f3d0;border-color:rgba(52,211,153,.3);background:rgba(52,211,153,.07)}
+.acard .more{margin-top:14px;font-size:11.5px;font-weight:600;color:#c4b5fd}
+.tpl-grid{display:grid;grid-template-columns:300px 1fr;gap:0}
+.tpl-steps{padding:16px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
+.tpl-step{text-align:left;padding:12px 13px;border-radius:12px;border:1px solid var(--line);background:rgba(2,6,23,.4);color:var(--text);cursor:pointer;transition:.25s}
+.tpl-step b{display:block;font-size:12.5px;font-family:"JetBrains Mono",monospace}
+.tpl-step span{font-size:11.5px;color:var(--muted)}
+.tpl-step.on{border-color:var(--violet);background:rgba(167,139,250,.1);box-shadow:0 0 0 1px var(--violet)}
+.tpl-code pre.code{border:0;border-radius:0 0 20px 0;min-height:420px;max-height:420px;background:rgba(2,6,23,.75)}
+
+/* ---------- SEGURIDAD ---------- */
+.sec-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:30px;align-items:center}
+.rings{position:relative;aspect-ratio:1;max-width:500px;width:100%;justify-self:center}
+.ring{position:absolute;border-radius:50%;border:1.5px solid var(--rc);background:radial-gradient(circle,transparent 60%,var(--rb));transition:.4s var(--ease);cursor:pointer}
+.ring.on{box-shadow:0 0 0 2px var(--rc),0 0 40px var(--rb);background:radial-gradient(circle,transparent 40%,var(--rb))}
+.ring span{position:absolute;top:3.5%;left:50%;transform:translateX(-50%);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--rc);white-space:nowrap}
+.ring-orbit{position:absolute;inset:-3%;border-radius:50%;border:1.5px dashed rgba(251,113,133,.45);animation:spin 50s linear infinite}
+.ring-orbit::after{content:"";position:absolute;top:50%;left:-6px;width:11px;height:11px;border-radius:50%;background:var(--rose);box-shadow:0 0 14px var(--rose)}
+.ring-core{position:absolute;inset:41%;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#94a3b8);display:grid;place-items:center;text-align:center;color:#020617;font-size:10px;font-weight:800;line-height:1.2;box-shadow:0 0 50px rgba(255,255,255,.25)}
+.slist{display:flex;flex-direction:column;gap:10px}
+.sitem{display:flex;gap:14px;padding:14px 16px;border-radius:14px;background:var(--panel);border:1px solid var(--line);transition:.3s var(--ease);cursor:default}
+.sitem.on{border-color:var(--rc);transform:translateX(6px);box-shadow:0 10px 30px rgba(0,0,0,.3)}
+.sitem i{font-style:normal;width:28px;height:28px;border-radius:8px;display:grid;place-items:center;font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;background:var(--rb);color:var(--rc);flex-shrink:0}
+.sitem b{font-size:13.5px;display:block;margin-bottom:2px}
+.sitem span{font-size:12.3px;color:#aab5d0}
+
+/* ---------- DRAWER ---------- */
+.scrim{position:fixed;inset:0;background:rgba(2,4,12,.55);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:.35s;z-index:80}
+.scrim.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(540px,94vw);z-index:90;background:rgba(8,13,28,.97);border-left:1px solid var(--line);transform:translateX(105%);transition:transform .5s var(--ease);overflow-y:auto;box-shadow:-30px 0 80px rgba(0,0,0,.5)}
+.drawer.on{transform:none}
+.dr-x{position:sticky;top:14px;float:right;margin:14px 14px 0 0;width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:rgba(148,163,184,.08);color:#fff;cursor:pointer;font-size:14px;z-index:2}
+.dr-body{padding:26px 28px 40px}
+.dr-kind{display:inline-flex;align-items:center;gap:7px;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--c);background:var(--cb);border:1px solid var(--c);padding:4px 10px;border-radius:999px;margin-bottom:14px}
+.dr-ic{width:52px;height:52px;border-radius:15px;display:grid;place-items:center;background:var(--cb);color:var(--c);margin-bottom:14px}
+.dr-body h3{font-size:1.5rem;letter-spacing:-.02em;margin-bottom:4px}
+.dr-sub{color:var(--muted);font-size:13px;margin-bottom:16px}
+.dr-role{font-size:14px;color:#cbd5e1;margin-bottom:20px}
+.dr-body h5{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:20px 0 9px}
+.dr-body ul{list-style:none;display:grid;gap:7px}
+.dr-body li{font-size:13px;color:#dbe3f5;padding-left:18px;position:relative}
+.dr-body li::before{content:"";position:absolute;left:2px;top:8px;width:7px;height:7px;border-radius:2px;background:var(--c)}
+.dr-note{margin-top:22px;font-size:11.5px;color:var(--muted);padding:10px 12px;border-radius:10px;border:1px dashed var(--line)}
+
+footer{padding:60px 0 50px;color:var(--muted);font-size:12.5px;text-align:center}
+footer b{color:var(--amber)}
+
+/* ---------- ANIMACIONES ---------- */
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(52,211,153,.6)}80%,100%{box-shadow:0 0 0 9px rgba(52,211,153,0)}}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes dash{to{stroke-dashoffset:-13}}
+@keyframes pop{from{opacity:0;transform:translateY(8px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes bounce{0%,80%,100%{transform:translateY(0);opacity:.5}40%{transform:translateY(-4px);opacity:1}}
+@keyframes procP{0%{opacity:1;transform:scale(.97)}100%{opacity:0;transform:scale(1.12)}}
+@keyframes tipIn{from{opacity:0;transform:translate(-50%,calc(-100% - 2px))}}
+@keyframes slideIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes pulseS{50%{opacity:.4}}
+
+@media (max-width:1240px){
+  .cc-grid{grid-template-columns:1fr}
+  .device-col{position:relative;top:0}
+  .device.web{max-width:520px}
+  .concepts,.agents{grid-template-columns:repeat(3,1fr)}
+}
+@media (max-width:980px){
+  .hero-inner,.routes,.a2a-grid,.sec-grid,.tpl-grid{grid-template-columns:1fr}
+  .scen-bar,.decide{grid-template-columns:1fr 1fr}
+  .orb-wrap{max-width:360px}
+  .nav-links{display:none}
+  .tpl-steps{border-right:0;border-bottom:1px solid var(--line)}
+}
+@media (max-width:640px){
+  .kpis,.scen-bar,.decide,.concepts,.agents{grid-template-columns:1fr 1fr}
+  .wrap{padding:0 16px}
+}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+
+<nav class="top">
+  <div class="wrap">
+    <div class="brand"><span class="brand-mark"></span><div>Asistente Commercial<small>Arquitectura conversacional · Web &amp; App</small></div></div>
+    <div class="nav-links" id="navLinks">
+      <a href="#mando">01 · Mapa vivo</a>
+      <a href="#rutas">02 · Dos rutas</a>
+      <a href="#a2a">03 · Protocolo A2A</a>
+      <a href="#agentes">04 · Agentes Python</a>
+      <a href="#seguridad">05 · Seguridad</a>
+    </div>
+    <span class="proto">PROTOTIPO VISUAL · v0.1</span>
+  </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+<header class="hero" id="inicio">
+  <canvas id="heroCanvas"></canvas>
+  <div class="wrap hero-inner">
+    <div>
+      <div class="eyebrow reveal"><span class="dot"></span> Arquitectura del chatbot · Canales Web &amp; App</div>
+      <h1 class="reveal">Un asistente,<br><span class="grad">dos cerebros</span>: conocimiento y operativa en tiempo real</h1>
+      <p class="lead reveal">El asistente de Commercial responde las preguntas informativas desde una <b>base de conocimiento gobernada</b> y, cuando el cliente necesita datos de su negocio, delega mediante el protocolo <b>A2A (Agent-to-Agent)</b> en <b>agentes especializados en Python</b> que consultan las APIs del banco.</p>
+      <div class="hero-cta reveal">
+        <a class="btn primary" href="#mando">▶ Lanzar simulación en vivo</a>
+        <a class="btn ghost" href="#rutas">Ver las dos rutas</a>
+      </div>
+      <div class="kpis reveal">
+        <div class="kpi"><b data-to="2">0</b><span>canales · Web y App</span></div>
+        <div class="kpi"><b data-to="1">0</b><span>base de conocimiento RAG</span></div>
+        <div class="kpi"><b data-to="5">0</b><span>agentes A2A en Python</span></div>
+        <div class="kpi"><b data-to="100" data-suf="%">0</b><span>turnos trazados</span></div>
+      </div>
+    </div>
+    <div class="orb-wrap reveal" id="orb">
+      <div class="orb-ring r1"></div>
+      <div class="orb-ring r2"></div>
+      <div class="orb-core">ORQUESTADOR<span>LLM + LangGraph</span></div>
+    </div>
+  </div>
+</header>
+
+<!-- ================= 01 · CENTRO DE MANDO EN VIVO ================= -->
+<section class="sec" id="mando">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker">01 · Centro de Mando Interactivo</span>
+      <h2>Simulador de Conversación + Mapa de Arquitectura en Tiempo Real</h2>
+      <p>Elige uno de los <b>4 escenarios reales</b> (o escribe tu propia pregunta en el móvil/web) y observa cómo viajan los paquetes por el API Gateway, los Guardrails, la Base de Conocimiento (RAG), el <b>Router A2A</b>, los <b>Agentes Python</b> y las APIs del Core Bancario.</p>
+    </div>
+
+    <div class="scen-bar reveal" id="scenBar">
+      <button class="scen on" data-scen="rag" style="--sc:var(--cyan);--sg:rgba(34,211,238,.22)">
+        <small>ESCENARIO 01 · SOLO RAG (BASE DE CONOCIMIENTO)</small>
+        <span>«¿Qué documentación necesito para abrir una línea de Confirming Internacional?»</span>
+      </button>
+      <button class="scen" data-scen="a2a_tesoreria" style="--sc:var(--violet);--sg:rgba(167,139,250,.22)">
+        <small>ESCENARIO 02 · DELEGACIÓN A2A → AGENTE PYTHON TESORERÍA</small>
+        <span>«¿Cuál es nuestra posición de liquidez consolidada hoy y los cobros SEPA pendientes?»</span>
+      </button>
+      <button class="scen" data-scen="hibrido" style="--sc:var(--emerald);--sg:rgba(52,211,153,.22)">
+        <small>ESCENARIO 03 · HÍBRIDO (RAG NORMATIVO + A2A RIESGOS/FEVE)</small>
+        <span>«Quiero anticipar una remesa de 180.000 €: ¿qué comisión aplica y cuánto disponible tengo?»</span>
+      </button>
+      <button class="scen" data-scen="multi_a2a" style="--sc:var(--amber);--sg:rgba(251,191,36,.22)">
+        <small>ESCENARIO 04 · COREOGRAFÍA MULTI-AGENTE A2A + HITL</small>
+        <span>«Prepara la renovación de la póliza de crédito y simula el nuevo límite según mis ventas»</span>
+      </button>
+    </div>
+
+    <div class="cc-grid reveal">
+      <!-- COLUMNA IZQUIERDA: SIMULADOR APP / WEB -->
+      <div class="device-col">
+        <div class="seg" id="chanToggle">
+          <button class="on" data-chan="app">📱 App Empresas</button>
+          <button data-chan="web">💻 Portal Web Commercial</button>
+        </div>
+
+        <div class="device app" id="deviceBox">
+          <div class="dev-screen">
+            <div class="app-notch"></div>
+            <div class="app-status"><span>09:41</span><span>5G · 🔒 TLS 1.3</span></div>
+            <div class="web-bar"><i></i><i></i><i></i><span>https://empresas.commercialbank.es/portal/posicion-global</span></div>
+            <div class="web-page">
+              <div class="wp-head"><span>PORTAL EMPRESAS · GRUPO INDUSTRIAL DELTA S.L.</span><span class="mono" style="color:var(--emerald)">● SESIÓN OBO ACTIVA</span></div>
+              <div class="wp-sk" style="width:65%"></div>
+              <div class="wp-sk" style="width:45%"></div>
+              <div class="wp-sk" style="width:80%"></div>
+            </div>
+
+            <div class="chat">
+              <div class="chat-head">
+                <div class="bot-av"></div>
+                <div>
+                  <b>Asistente IA Commercial</b>
+                  <span><i class="live"></i> RAG Corporativo + Protocolo A2A</span>
+                </div>
+              </div>
+              <div class="chat-msgs" id="chatMsgs"></div>
+              <div class="chat-quick" id="quickBar">
+                <button class="qr" data-scen="rag">📘 Requisitos Confirming</button>
+                <button class="qr" data-scen="a2a_tesoreria">💶 Posición Tesorería</button>
+                <button class="qr" data-scen="hibrido">⚡ Anticipo + Disponible</button>
+                <button class="qr" data-scen="multi_a2a">🤝 Renovación Póliza</button>
+              </div>
+              <form class="chat-input" id="chatForm">
+                <input type="text" id="chatIn" placeholder="Pregunta o pide una operación..." autocomplete="off">
+                <button type="submit" title="Enviar consulta">➤</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="dev-hint">Haz clic en cualquier <b>nodo del mapa</b> para inspeccionar su código Python, su Agent Card A2A o su configuración.</div>
+      </div>
+
+      <!-- COLUMNA DERECHA: MAPA DE ARQUITECTURA EN VIVO + TRAZA -->
+      <div class="map-side">
+        <div class="panel">
+          <div class="panel-head">
+            <h3>🕸️ Topología viva · Canales → Orquestador → RAG / A2A → Agentes Python → APIs</h3>
+            <div class="ctrls">
+              <span class="status" id="simStatus"><i></i> Listo para simular</span>
+              <button class="ibtn" id="replayBtn">↻ Repetir escenario</button>
+              <button class="ibtn" id="resetMapBtn">Ver todos los nodos</button>
+            </div>
+          </div>
+
+          <div class="map-scroll">
+            <div class="map" id="archMap">
+              <svg id="wires"></svg>
+
+              <!-- COL 1: CANALES -->
+              <div class="mcol">
+                <div class="mcol-title">1 · Canales</div>
+                <button class="node chan" data-node="c_app" style="--c:var(--blue);--cb:rgba(96,165,250,.15);--cg:rgba(96,165,250,.3)">
+                  <div class="ic">📱</div>
+                  <div class="nt"><b>App Móvil</b><small>iOS / Android SDK</small></div>
+                </button>
+                <button class="node chan" data-node="c_web" style="--c:var(--blue);--cb:rgba(96,165,250,.15);--cg:rgba(96,165,250,.3)">
+                  <div class="ic">💻</div>
+                  <div class="nt"><b>Portal Web</b><small>Widget React SSE</small></div>
+                </button>
+              </div>
+
+              <!-- COL 2: GATEWAY & GUARDRAILS -->
+              <div class="mcol c2">
+                <div class="mcol-title">2 · Acceso &amp; Guardrails</div>
+                <button class="node" data-node="gw" style="--c:var(--amber);--cb:rgba(251,191,36,.15);--cg:rgba(251,191,36,.3)">
+                  <div class="ic">🛡️</div>
+                  <div class="nt"><b>API Gateway + Auth</b><small>OAuth2 OBO · JWT · Rate</small></div>
+                </button>
+                <button class="node" data-node="guard" style="--c:var(--amber);--cb:rgba(251,191,36,.15);--cg:rgba(251,191,36,.3)">
+                  <div class="ic">🧹</div>
+                  <div class="nt"><b>Guardrails &amp; PII</b><small>NeMo / Prompt Shield</small></div>
+                </button>
+              </div>
+
+              <!-- COL 3: CEREBRO ORQUESTADOR -->
+              <div class="mcol c2">
+                <div class="mcol-title">3 · Cerebro Central</div>
+                <button class="node big" data-node="orch" style="--c:var(--violet);--cb:rgba(167,139,250,.18);--cg:rgba(167,139,250,.35)">
+                  <div class="ic">🧠</div>
+                  <div class="nt"><b>Host Orchestrator</b><small>LangGraph · Intent Router · Clasificador Semántico</small></div>
+                </button>
+                <button class="node" data-node="mem" style="--c:#cbd5e1;--cb:rgba(203,213,225,.14);--cg:rgba(203,213,225,.28)">
+                  <div class="ic">⚡</div>
+                  <div class="nt"><b>Memoria &amp; Estado</b><small>Redis Checkpointer</small></div>
+                </button>
+              </div>
+
+              <!-- COL 4: DOS VÍAS (CONOCIMIENTO RAG vs PROTOCOLO A2A) -->
+              <div class="mcol">
+                <div class="mcol-title">4 · Conocimiento vs A2A</div>
+                <button class="node" data-node="kb_vec" style="--c:var(--cyan);--cb:rgba(34,211,238,.15);--cg:rgba(34,211,238,.3)">
+                  <div class="ic">🔎</div>
+                  <div class="nt"><b>Hybrid RAG Search</b><small>Vector + BM25 + Rerank</small></div>
+                </button>
+                <button class="node" data-node="kb_docs" style="--c:var(--cyan);--cb:rgba(34,211,238,.15);--cg:rgba(34,211,238,.3)">
+                  <div class="ic">📚</div>
+                  <div class="nt"><b>Base Conocimiento</b><small>Catálogo · Tarifas · Normas</small></div>
+                </button>
+                <button class="node" data-node="a2a_hub" style="--c:var(--violet);--cb:rgba(167,139,250,.2);--cg:rgba(167,139,250,.4)">
+                  <div class="ic">🛰️</div>
+                  <div class="nt"><b>A2A Protocol Broker</b><small>Agent Cards · JSON-RPC/SSE</small></div>
+                </button>
+              </div>
+
+              <!-- COL 5: FLOTA DE AGENTES PYTHON -->
+              <div class="mcol">
+                <div class="mcol-title">5 · Agentes Python (A2A)</div>
+                <button class="node" data-node="ag_pos" style="--c:var(--violet);--cb:rgba(167,139,250,.15);--cg:rgba(167,139,250,.32)">
+                  <div class="ic">💶</div>
+                  <div class="nt"><b>Agente Tesorería</b><small>FastAPI · Saldos y SEPA</small></div>
+                </button>
+                <button class="node" data-node="ag_risk" style="--c:var(--violet);--cb:rgba(167,139,250,.15);--cg:rgba(167,139,250,.32)">
+                  <div class="ic">📊</div>
+                  <div class="nt"><b>Agente Riesgos &amp; Límites</b><small>LangChain · Disponible</small></div>
+                </button>
+                <button class="node" data-node="ag_comex" style="--c:var(--violet);--cb:rgba(167,139,250,.15);--cg:rgba(167,139,250,.32)">
+                  <div class="ic">🌍</div>
+                  <div class="nt"><b>Agente Confirming/Comex</b><small>Pydantic v2 · Remesas</small></div>
+                </button>
+                <button class="node" data-node="ag_sim" style="--c:var(--violet);--cb:rgba(167,139,250,.15);--cg:rgba(167,139,250,.32)">
+                  <div class="ic">🧮</div>
+                  <div class="nt"><b>Agente Simulador Precio</b><small>RORWA · Suelo EVA</small></div>
+                </button>
+                <button class="node" data-node="ag_crm" style="--c:var(--violet);--cb:rgba(167,139,250,.15);--cg:rgba(167,139,250,.32)">
+                  <div class="ic">🤝</div>
+                  <div class="nt"><b>Agente Gestor / HITL</b><small>Escalado y Cita Previa</small></div>
+                </button>
+              </div>
+
+              <!-- COL 6: APIS CORE BANCARIO -->
+              <div class="mcol">
+                <div class="mcol-title">6 · APIs &amp; Core</div>
+                <button class="node" data-node="api_core" style="--c:var(--emerald);--cb:rgba(52,211,153,.15);--cg:rgba(52,211,153,.32)">
+                  <div class="ic">🏦</div>
+                  <div class="nt"><b>API Cuentas &amp; Pagos</b><small>REST / ISO 20022</small></div>
+                </button>
+                <button class="node" data-node="api_risk" style="--c:var(--emerald);--cb:rgba(52,211,153,.15);--cg:rgba(52,211,153,.32)">
+                  <div class="ic">⚖️</div>
+                  <div class="nt"><b>Motor FEVE / CIRBE</b><small>Límites y Scoring</small></div>
+                </button>
+                <button class="node" data-node="api_erp" style="--c:var(--emerald);--cb:rgba(52,211,153,.15);--cg:rgba(52,211,153,.32)">
+                  <div class="ic">📑</div>
+                  <div class="nt"><b>API Cartera &amp; Facturas</b><small>Factoring / Confirming</small></div>
+                </button>
+                <button class="node" data-node="api_crm" style="--c:var(--emerald);--cb:rgba(52,211,153,.15);--cg:rgba(52,211,153,.32)">
+                  <div class="ic">📬</div>
+                  <div class="nt"><b>CRM &amp; Firma Digital</b><small>Salesforce / Portafirmas</small></div>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <button class="obs" data-node="obs">
+            <span class="ic">📡</span>
+            <div><b>Observabilidad Transversal · OpenTelemetry + LangSmith / Arize Phoenix</b> <small>— Trazas distribuidas, latencia por salto, tokens, coste y auditoría regulatoria</small></div>
+            <span class="obs-live" id="obsLive">trace_id: 0x9f4a… · 0 ms</span>
+          </button>
+
+          <div class="legend">
+            <span><i style="--lc:var(--blue)"></i> Canal Web/App (SSE)</span>
+            <span><i style="--lc:var(--cyan)"></i> Ruta Conocimiento (RAG Híbrido)</span>
+            <span><i style="--lc:var(--violet)"></i> Ruta Protocolo A2A (JSON-RPC 2.0)</span>
+            <span><i style="--lc:var(--emerald)"></i> Invocación API Core (httpx + OBO)</span>
+          </div>
+        </div>
+
+        <!-- CONSOLA DE TELEMETRÍA Y PAYLOADS EN VIVO -->
+        <div class="panel">
+          <div class="panel-head">
+            <h3>📟 Inspector de Telemetría en Vivo (saltos RAG, mensajes A2A y llamadas API)</h3>
+            <div class="trace-stats">
+              <span>Saltos: <b id="stHops">0</b></span>
+              <span>Latencia total: <b id="stLat">0 ms</b></span>
+              <span>Modo: <b id="stMode">—</b></span>
+            </div>
+          </div>
+          <div class="trace" id="traceBox">
+            <div class="trace-empty">Pulsa un escenario o envía una consulta para ver los paquetes A2A y las llamadas a APIs en tiempo real.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 02 · LAS DOS RUTAS ================= -->
+<section class="sec" id="rutas">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker">02 · Arquitectura de Doble Vía</span>
+      <h2>¿Cuándo responde la Base de Conocimiento y cuándo entra el protocolo A2A?</h2>
+      <p>Separar el <b>conocimiento estático/normativo</b> (RAG) de la <b>operativa en tiempo real</b> (Agentes Python A2A) evita alucinaciones sobre saldos o límites y permite escalar nuevos agentes sin tocar el asistente principal.</p>
+    </div>
+
+    <div class="routes reveal">
+      <!-- RUTA A: RAG -->
+      <div class="panel route" id="routeRag">
+        <div class="panel-head">
+          <h3><span class="rico">📚</span> Vía A · Base de Conocimiento (RAG Híbrido + Reranking)</h3>
+          <span class="mono" style="font-size:11px;color:var(--cyan)">LATENCIA MEDIA: ~650 ms</span>
+        </div>
+        <div class="pipe" data-pipe="rag">
+          <div class="pipe-fill" id="pf-rag" style="width:0%"></div>
+          <div class="pipe-dot" id="pd-rag" style="left:44px"></div>
+          <button class="pstep on" data-idx="0"><i>01</i><span>Ingesta &amp; Chunking</span></button>
+          <button class="pstep" data-idx="1"><i>02</i><span>Embeddings + BM25</span></button>
+          <button class="pstep" data-idx="2"><i>03</i><span>Filtro ACL Segmento</span></button>
+          <button class="pstep" data-idx="3"><i>04</i><span>Cross-Encoder Rerank</span></button>
+          <button class="pstep" data-idx="4"><i>05</i><span>Síntesis con Citas</span></button>
+        </div>
+        <div class="pipe-detail" id="pdText-rag">
+          <b>PASO 01 · INGESTA SEMÁNTICA POR DOCUMENTO</b>
+          <p>Manuales de producto (Confirming, Factoring, avales, tarifas) troceados respetando tablas y epígrafes con metadatos de vigencia y segmento (Pymes, MidCorp, Corporates).</p>
+        </div>
+      </div>
+
+      <!-- RUTA B: A2A -->
+      <div class="panel route a2a" id="routeA2A">
+        <div class="panel-head">
+          <h3><span class="rico">🛰️</span> Vía B · Protocolo A2A → Agentes Operativos en Python</h3>
+          <span class="mono" style="font-size:11px;color:var(--violet)">LATENCIA MEDIA: ~1.100 ms</span>
+        </div>
+        <div class="pipe" data-pipe="a2a">
+          <div class="pipe-fill" id="pf-a2a" style="width:0%"></div>
+          <div class="pipe-dot" id="pd-a2a" style="left:44px"></div>
+          <button class="pstep on" data-idx="0"><i>01</i><span>Descubrimiento Card</span></button>
+          <button class="pstep" data-idx="1"><i>02</i><span>tasks/send JSON-RPC</span></button>
+          <button class="pstep" data-idx="2"><i>03</i><span>Grafo LangGraph</span></button>
+          <button class="pstep" data-idx="3"><i>04</i><span>Tool API Core (OBO)</span></button>
+          <button class="pstep" data-idx="4"><i>05</i><span>Artifact Tipado</span></button>
+        </div>
+        <div class="pipe-detail" id="pdText-a2a">
+          <b>PASO 01 · DESCUBRIMIENTO DE CAPACIDADES (/.well-known/agent.json)</b>
+          <p>El Orquestador consulta el registro de Agent Cards para localizar qué agente especialista expone la skill necesaria (p. ej. <code>get_liquidity_position</code> o <code>simulate_credit_renewal</code>).</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="decide reveal">
+      <div class="dcard" style="--dc:var(--cyan)">
+        <small>PATRÓN 01 · 100% BASE DE CONOCIMIENTO</small>
+        <h4>Preguntas de producto, normativa o ayuda de canal</h4>
+        <p>No requiere consultar datos privados del cliente. El router activa únicamente el motor RAG híbrido y exige cita verificable.</p>
+        <q>«¿Qué diferencia hay entre Confirming con recurso y sin recurso?»</q>
+      </div>
+      <div class="dcard" style="--dc:var(--violet)">
+        <small>PATRÓN 02 · 100% DELEGACIÓN A2A OPERATIVA</small>
+        <h4>Consultas sobre saldos, remesas, límites o estado de firmas</h4>
+        <p>El Orquestador delega la tarea vía A2A al agente Python especialista propagando el token OAuth2 OBO del usuario.</p>
+        <q>«¿Qué facturas vencen esta semana en mi línea de descuento?»</q>
+      </div>
+      <div class="dcard" style="--dc:var(--emerald)">
+        <small>PATRÓN 03 · EJECUCIÓN EN PARALELO (RAG + A2A)</small>
+        <h4>Operativa contextualizada con condiciones contractuales</h4>
+        <p>LangGraph lanza una rama `asyncio.gather` hacia la Base de Conocimiento y otra hacia uno o varios Agentes A2A y fusiona la respuesta.</p>
+        <q>«Si anticipo hoy 180.000 €, ¿qué coste tiene y cuánto límite me queda?»</q>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 03 · PROTOCOLO A2A AL MICROSCOPIO ================= -->
+<section class="sec" id="a2a">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker">03 · Interoperabilidad Entre Agentes</span>
+      <h2>El Protocolo A2A (Agent-to-Agent) paso a paso</h2>
+      <p>Mientras que <b>MCP (Model Context Protocol)</b> conecta un agente con sus herramientas o datos, <b>A2A</b> permite que el <b>Agente Orquestador del Chatbot</b> converse y delegue tareas complejas a <b>Agentes Especialistas autónomos</b> construidos por distintos equipos en Python.</p>
+    </div>
+
+    <div class="concepts reveal">
+      <div class="concept"><b>1. Agent Card</b><span>Contrato JSON público en <code>/.well-known/agent.json</code> donde cada agente Python declara sus skills, esquemas de entrada/salida y autenticación.</span></div>
+      <div class="concept"><b>2. Task &amp; Context</b><span>Unidad de trabajo con <code>task_id</code> y <code>session_id</code> que pasa por estados trazables: <code>submitted → working → completed</code> (o <code>input-required</code>).</span></div>
+      <div class="concept"><b>3. Message &amp; Parts</b><span>Mensajes estructurados que combinan <code>TextPart</code> (instrucción natural) y <code>DataPart</code> (parámetros tipados como CIF, divisa o importe).</span></div>
+      <div class="concept"><b>4. Streaming SSE</b><span>Mediante <code>tasks/sendSubscribe</code>, el agente Python emite eventos en tiempo real («Consultando CIRBE...») que la App/Web muestra al instante.</span></div>
+      <div class="concept"><b>5. Artifacts</b><span>Resultado final inmutable y validado con Pydantic v2 que el Orquestador transforma en texto o en tarjetas UI interactivas en la App.</span></div>
+    </div>
+
+    <div class="a2a-grid reveal">
+      <div class="panel seq">
+        <div class="panel-head" style="padding:0 0 12px;margin-bottom:14px">
+          <h3>🔄 Secuencia real de una delegación A2A (haz clic en cada flecha)</h3>
+          <button class="ibtn" id="playSeqBtn">▶ Animar secuencia</button>
+        </div>
+        <div class="seq-heads">
+          <div>📱 App / Web<small>Cliente autenticado</small></div>
+          <div>🧠 Orquestador<small>Host A2A Client</small></div>
+          <div>🐍 Agente Python<small>A2A Server (FastAPI)</small></div>
+          <div>🏦 API Core<small>Microservicio</small></div>
+        </div>
+        <div class="seq-body" id="seqBody">
+          <div class="lifeline" style="left:12.5%"></div>
+          <div class="lifeline" style="left:37.5%"></div>
+          <div class="lifeline" style="left:62.5%"></div>
+          <div class="lifeline" style="left:87.5%"></div>
+
+          <div class="srow on sel" data-step="0" style="--ac:var(--blue)">
+            <div class="sarrow r" style="left:12.5%;width:25%"></div>
+            <span class="snum" style="left:25%">1</span>
+            <div class="slabel">POST /chat/stream (JWT usuario + consulta)</div>
+          </div>
+          <div class="srow on" data-step="1" style="--ac:var(--violet)">
+            <div class="sarrow r" style="left:37.5%;width:25%"></div>
+            <span class="snum" style="left:50%">2</span>
+            <div class="slabel">GET /.well-known/agent.json (Agent Card Discovery)</div>
+          </div>
+          <div class="srow on" data-step="2" style="--ac:var(--violet)">
+            <div class="sarrow r" style="left:37.5%;width:25%"></div>
+            <span class="snum" style="left:50%">3</span>
+            <div class="slabel">POST /a2a · method: "tasks/sendSubscribe"</div>
+          </div>
+          <div class="srow on" data-step="3" style="--ac:var(--amber)">
+            <div class="sarrow l" style="left:37.5%;width:25%"></div>
+            <span class="snum" style="left:50%">4</span>
+            <div class="slabel">SSE TaskStatusUpdateEvent (state: "working")</div>
+          </div>
+          <div class="srow on" data-step="4" style="--ac:var(--emerald)">
+            <div class="sarrow r" style="left:62.5%;width:25%"></div>
+            <span class="snum" style="left:75%">5</span>
+            <div class="slabel">GET /v2/corporate/accounts/balances (httpx + OBO)</div>
+          </div>
+          <div class="srow on" data-step="5" style="--ac:var(--emerald)">
+            <div class="sarrow l" style="left:62.5%;width:25%"></div>
+            <span class="snum" style="left:75%">6</span>
+            <div class="slabel">200 OK · JSON saldos + remesas SEPA</div>
+          </div>
+          <div class="srow on" data-step="6" style="--ac:var(--violet)">
+            <div class="sarrow l" style="left:37.5%;width:25%"></div>
+            <span class="snum" style="left:50%">7</span>
+            <div class="slabel">SSE TaskArtifactUpdateEvent (state: "completed")</div>
+          </div>
+          <div class="srow on" data-step="7" style="--ac:var(--blue)">
+            <div class="sarrow l" style="left:12.5%;width:25%"></div>
+            <span class="snum" style="left:25%">8</span>
+            <div class="slabel">SSE stream + Tarjeta UI interactiva en App/Web</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel json-panel">
+        <div class="panel-head">
+          <h3 id="seqTitle">Payload del Paso 01 · Petición del Canal</h3>
+          <div class="seg" id="jsonTabs">
+            <button class="on" data-jtab="card">Agent Card</button>
+            <button data-jtab="req">Request A2A</button>
+            <button data-jtab="res">Artifact A2A</button>
+          </div>
+        </div>
+        <pre class="code" id="jsonView"></pre>
+        <div class="json-note" id="jsonNote">Haz clic en cualquier flecha del diagrama de secuencia o cambia de pestaña para inspeccionar el contrato JSON real.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 04 · ANATOMÍA DE LOS AGENTES EN PYTHON ================= -->
+<section class="sec" id="agentes">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker">04 · Ingeniería de Agentes en Python</span>
+      <h2>Cómo se construye cada Agente Operativo (FastAPI + LangChain / LangGraph + APIs)</h2>
+      <p>Cada dominio de negocio de Commercial empaqueta su agente como un microservicio Python independiente que expone el endpoint estándar A2A y se conecta a las APIs internas con validación estricta.</p>
+    </div>
+
+    <div class="agents reveal" id="agentCards">
+      <div class="acard" data-node="ag_pos">
+        <div class="aic">💶</div>
+        <h4>Agente de Tesorería</h4>
+        <p>Consulta saldos intradía multi-banco, movimientos y remesas SEPA pendientes de conciliación.</p>
+        <span class="lbl">Stack Python</span>
+        <div class="chips"><span class="chip v">FastAPI</span><span class="chip v">LangGraph</span><span class="chip v">httpx Async</span></div>
+        <span class="lbl">APIs conectadas</span>
+        <div class="chips"><span class="chip g">Accounts v2</span><span class="chip g">SEPA Hub</span></div>
+        <div class="more">Ver código y Agent Card →</div>
+      </div>
+
+      <div class="acard" data-node="ag_risk">
+        <div class="aic">📊</div>
+        <h4>Agente de Riesgos &amp; Límites</h4>
+        <p>Verifica disponible por línea de riesgo, rating interno FEVE, alertas tempranas y covenants.</p>
+        <span class="lbl">Stack Python</span>
+        <div class="chips"><span class="chip v">LangChain</span><span class="chip v">Pydantic v2</span><span class="chip v">Tenacity</span></div>
+        <span class="lbl">APIs conectadas</span>
+        <div class="chips"><span class="chip g">Motor FEVE</span><span class="chip g">Límites Core</span></div>
+        <div class="more">Ver código y Agent Card →</div>
+      </div>
+
+      <div class="acard" data-node="ag_comex">
+        <div class="aic">🌍</div>
+        <h4>Agente Confirming &amp; Comex</h4>
+        <p>Simula y prepara anticipos de facturas, pronto pago de proveedores y créditos documentarios.</p>
+        <span class="lbl">Stack Python</span>
+        <div class="chips"><span class="chip v">LangGraph</span><span class="chip v">Structured Out</span><span class="chip v">Redis</span></div>
+        <span class="lbl">APIs conectadas</span>
+        <div class="chips"><span class="chip g">Confirming API</span><span class="chip g">FX Rates</span></div>
+        <div class="more">Ver código y Agent Card →</div>
+      </div>
+
+      <div class="acard" data-node="ag_sim">
+        <div class="aic">🧮</div>
+        <h4>Agente Simulador Precio</h4>
+        <p>Calcula en vivo la comisión o tipo de interés suelo que cumple el objetivo de RORWA / EVA.</p>
+        <span class="lbl">Stack Python</span>
+        <div class="chips"><span class="chip v">NumPy</span><span class="chip v">FastAPI</span><span class="chip v">Pydantic v2</span></div>
+        <span class="lbl">APIs conectadas</span>
+        <div class="chips"><span class="chip g">Motor Pricing</span><span class="chip g">Curva Euríbor</span></div>
+        <div class="more">Ver código y Agent Card →</div>
+      </div>
+
+      <div class="acard" data-node="ag_crm">
+        <div class="aic">🤝</div>
+        <h4>Agente Gestor / HITL</h4>
+        <p>Genera expediente pre-rellenado en CRM y activa aprobación humana cuando supera atribuciones.</p>
+        <span class="lbl">Stack Python</span>
+        <div class="chips"><span class="chip v">LangGraph HITL</span><span class="chip v">Celery</span><span class="chip v">Webhooks</span></div>
+        <span class="lbl">APIs conectadas</span>
+        <div class="chips"><span class="chip g">CRM Empresas</span><span class="chip g">Portafirmas</span></div>
+        <div class="more">Ver código y Agent Card →</div>
+      </div>
+    </div>
+
+    <div class="panel reveal">
+      <div class="panel-head">
+        <h3>🐍 Plantilla de Referencia · Microservicio de Agente Python compatible con A2A</h3>
+        <span class="mono" style="font-size:11px;color:var(--muted)">Python 3.12 · FastAPI · LangChain / LangGraph · httpx · Pydantic v2</span>
+      </div>
+      <div class="tpl-grid">
+        <div class="tpl-steps" id="tplSteps">
+          <button class="tpl-step on" data-tpl="0"><b>1. tools_api.py</b><span>Cliente asíncrono <code>httpx</code> + token OBO + esquema Pydantic</span></button>
+          <button class="tpl-step" data-tpl="1"><b>2. agent_graph.py</b><span>Grafo <code>StateGraph</code> en LangGraph con validación determinista</span></button>
+          <button class="tpl-step" data-tpl="2"><b>3. a2a_server.py</b><span>Endpoint FastAPI que publica <code>agent.json</code> y <code>POST /a2a</code></span></button>
+          <button class="tpl-step" data-tpl="3"><b>4. orchestrator_router.py</b><span>Router híbrido que combina RAG y llamadas A2A en paralelo</span></button>
+        </div>
+        <div class="tpl-code">
+          <pre class="code" id="tplCode"></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 05 · SEGURIDAD Y GOBERNANZA ================= -->
+<section class="sec" id="seguridad">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker">05 · Seguridad Bancaria por Diseño</span>
+      <h2>Defensa en Profundidad: ningún Agente opera fuera de las atribuciones del cliente</h2>
+      <p>Pasa el cursor por cada anillo o tarjeta para explorar las 5 capas de control entre la App/Web y el Core Bancario.</p>
+    </div>
+
+    <div class="sec-grid reveal">
+      <div class="rings" id="secRings">
+        <div class="ring-orbit"></div>
+        <div class="ring on" data-ring="0" style="inset:2%;--rc:var(--blue);--rb:rgba(96,165,250,.12)"><span>1 · OAuth2 OBO + mTLS</span></div>
+        <div class="ring" data-ring="1" style="inset:11%;--rc:var(--amber);--rb:rgba(251,191,36,.12)"><span>2 · Guardrails &amp; PII</span></div>
+        <div class="ring" data-ring="2" style="inset:20%;--rc:var(--cyan);--rb:rgba(34,211,238,.12)"><span>3 · ACL RAG + Contratos A2A</span></div>
+        <div class="ring" data-ring="3" style="inset:29%;--rc:var(--violet);--rb:rgba(167,139,250,.14)"><span>4 · Human-in-the-Loop</span></div>
+        <div class="ring-core">CORE<br>BANCARIO</div>
+      </div>
+
+      <div class="slist" id="secList">
+        <div class="sitem on" data-ring="0" style="--rc:var(--blue);--rb:rgba(96,165,250,.15)">
+          <i>01</i>
+          <div><b>Propagación de Identidad On-Behalf-Of (OBO) + mTLS</b><span>El agente Python nunca usa una credencial genérica con acceso total: intercambia el JWT de la sesión Web/App por un token OBO acotado exclusivamente a las empresas y apoderamientos del usuario.</span></div>
+        </div>
+        <div class="sitem" data-ring="1" style="--rc:var(--amber);--rb:rgba(251,191,36,.15)">
+          <i>02</i>
+          <div><b>Guardrails de Entrada/Salida y Enmascaramiento PII</b><span>Filtro en tiempo real contra Prompt Injection, jailbreaks y fugas de datos sensibles antes de invocar al LLM y antes de renderizar la respuesta en el canal.</span></div>
+        </div>
+        <div class="sitem" data-ring="2" style="--rc:var(--cyan);--rb:rgba(34,211,238,.15)">
+          <i>03</i>
+          <div><b>ACL Documental en RAG + Esquemas Estrictos en A2A</b><span>En la base de conocimiento cada chunk se filtra por segmento de cliente; en A2A cada payload JSON-RPC se valida con Pydantic v2 e incluye claves de idempotencia.</span></div>
+        </div>
+        <div class="sitem" data-ring="3" style="--rc:var(--violet);--rb:rgba(167,139,250,.15)">
+          <i>04</i>
+          <div><b>Human-in-the-Loop (Firma en App o Escalado al Gestor)</b><span>Las consultas e informes son inmediatos, pero cualquier disposición de fondos o contratación devuelve estado <code>input-required</code> y exige firma SCA en la App o validación del gestor.</span></div>
+        </div>
+        <div class="sitem" data-ring="4" style="--rc:var(--rose);--rb:rgba(251,113,133,.15)">
+          <i>05</i>
+          <div><b>Trazabilidad End-to-End con OpenTelemetry</b><span>Cada turno registra <code>trace_id</code>, versión del prompt, documentos citados, agentes A2A invocados, latencia y hash de respuesta para auditoría interna.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DRAWER LATERAL DE INSPECCIÓN DE NODOS -->
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer">
+  <button class="dr-x" id="drClose" title="Cerrar">✕</button>
+  <div class="dr-body" id="drBody"></div>
+</aside>
+
+<footer>
+  <div class="wrap">
+    <b>PROTOTIPO INTERACTIVO PREVIO AL CUADERNO 12</b> · Diseñado para validar la narrativa visual, el flujo RAG + A2A y la experiencia interactiva antes de integrarlo en la colección del curso.
+  </div>
+</footer>
+<script>
+(() => {
+  const $ = (s, ctx = document) => ctx.querySelector(s);
+  const $$ = (s, ctx = document) => Array.from(ctx.querySelectorAll(s));
+
+  // =========================================================================
+  // 1. SATÉLITES ORBITALES DEL HERO + CANVAS NEURONAL INTERACTIVO
+  // =========================================================================
+  const orb = $('#orb');
+  if (orb) {
+    const sats = [
+      { t: '📱 App & Web', r: 46, a: -35, c: 'var(--blue)', g: 'rgba(96,165,250,.35)' },
+      { t: '📚 Base Conocimiento RAG', r: 46, a: 35, c: 'var(--cyan)', g: 'rgba(34,211,238,.35)' },
+      { t: '🛰️ Protocolo A2A', r: 46, a: 145, c: 'var(--violet)', g: 'rgba(167,139,250,.4)' },
+      { t: '🐍 Agentes Python', r: 36, a: 215, c: 'var(--violet)', g: 'rgba(167,139,250,.35)' },
+      { t: '🏦 APIs Core OBO', r: 36, a: 90, c: 'var(--emerald)', g: 'rgba(52,211,153,.35)' },
+      { t: '🛡️ Guardrails PII', r: 36, a: -95, c: 'var(--amber)', g: 'rgba(251,191,36,.35)' }
+    ];
+    sats.forEach((s, idx) => {
+      const el = document.createElement('div');
+      el.className = 'orb-sat';
+      el.dataset.r = s.r;
+      el.dataset.a = s.a + idx * 4;
+      el.dataset.sp = (idx % 2 === 0 ? 1 : -1) * (0.008 + idx * 0.0015);
+      el.innerHTML = `<i style="--sc:${s.c};--sg:${s.g}">${s.t}</i>`;
+      orb.appendChild(el);
+    });
+    function tickOrb(now) {
+      $$('.orb-sat', orb).forEach(el => {
+        const r = parseFloat(el.dataset.r);
+        const a0 = parseFloat(el.dataset.a) * (Math.PI / 180);
+        const sp = parseFloat(el.dataset.sp);
+        const ang = a0 + now * 0.00045 * (sp > 0 ? 1 : -1);
+        const x = Math.cos(ang) * r;
+        const y = Math.sin(ang) * r;
+        el.style.left = (50 + x) + '%';
+        el.style.top = (50 + y) + '%';
+      });
+      requestAnimationFrame(tickOrb);
+    }
+    requestAnimationFrame(tickOrb);
+  }
+
+  const hCanvas = $('#heroCanvas');
+  if (hCanvas) {
+    const ctx = hCanvas.getContext('2d');
+    let w = 0, h = 0;
+    const pts = Array.from({ length: 46 }, (_, i) => ({
+      x: Math.random(), y: Math.random(),
+      vx: (Math.random() - 0.5) * 0.00035,
+      vy: (Math.random() - 0.5) * 0.00035,
+      col: i % 3 === 0 ? '#22d3ee' : i % 3 === 1 ? '#a78bfa' : '#34d399'
+    }));
+    function rsz() {
+      const r = hCanvas.getBoundingClientRect();
+      w = hCanvas.width = r.width;
+      h = hCanvas.height = r.height;
+    }
+    rsz();
+    window.addEventListener('resize', rsz);
+    function drawHero() {
+      ctx.clearRect(0, 0, w, h);
+      pts.forEach(p => {
+        p.x = (p.x + p.vx + 1) % 1;
+        p.y = (p.y + p.vy + 1) % 1;
+      });
+      for (let i = 0; i < pts.length; i++) {
+        const a = pts[i];
+        const ax = a.x * w, ay = a.y * h;
+        for (let j = i + 1; j < pts.length; j++) {
+          const b = pts[j];
+          const bx = b.x * w, by = b.y * h;
+          const d = Math.hypot(ax - bx, ay - by);
+          if (d < 155) {
+            ctx.strokeStyle = `rgba(148,163,184,${(1 - d / 155) * 0.16})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(ax, ay);
+            ctx.lineTo(bx, by);
+            ctx.stroke();
+          }
+        }
+        ctx.fillStyle = a.col;
+        ctx.beginPath();
+        ctx.arc(ax, ay, 2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      requestAnimationFrame(drawHero);
+    }
+    requestAnimationFrame(drawHero);
+  }
+
+  // Reveal on scroll + KPI counters
+  const revObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        $$('[data-to]', e.target).forEach(el => {
+          if (el.dataset.done) return;
+          el.dataset.done = '1';
+          const target = parseInt(el.dataset.to, 10);
+          const suf = el.dataset.suf || '';
+          const t0 = performance.now();
+          function step(now) {
+            const p = Math.min(1, (now - t0) / 900);
+            el.textContent = Math.round(target * p) + suf;
+            if (p < 1) requestAnimationFrame(step);
+          }
+          requestAnimationFrame(step);
+        });
+      }
+    });
+  }, { threshold: 0.12 });
+  $$('.reveal').forEach(el => revObs.observe(el));
+
+  // =========================================================================
+  // 2. CATÁLOGO DE LOS 17 NODOS DE LA ARQUITECTURA (PARA EL DRAWER LATERAL)
+  // =========================================================================
+  const NODE_SPECS = {
+    c_app: {
+      kind: 'CANAL MÓVIL', c: 'var(--blue)', cb: 'rgba(96,165,250,.15)', ic: '📱',
+      title: 'App Móvil Empresas (iOS & Android)',
+      sub: 'SDK Conversacional Nativo · Streaming SSE + Tarjetas Interactivas + Firma SCA',
+      role: 'Canal móvil utilizado por apoderados y directores financieros para consultar liquidez al vuelo, aprobar remesas o simular anticipos con biometría.',
+      bullets: [
+        'Conexión persistente Server-Sent Events (SSE) para mostrar tokens y estados A2A («Consultando disponible FEVE...») en tiempo real.',
+        'Renderizado nativo de Adaptive Cards devueltas como Artifacts por los agentes Python.',
+        'Integración directa con firma biométrica SCA cuando un agente devuelve estado input-required.'
+      ],
+      code: `// Payload enviado por la App Empresas al Gateway
+POST /v1/commercial/chat/stream HTTP/2
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImNvbW0t...
+X-Channel-ID: APP_IOS_EMPRESAS
+X-Company-CIF: B84920112
+
+{
+  "session_id": "ses_01J9X8A2",
+  "message": "¿Cuál es nuestra posición de liquidez hoy?",
+  "client_context": { "segment": "MIDCORP", "locale": "es-ES" }
+}`
+    },
+    c_web: {
+      kind: 'CANAL WEB', c: 'var(--blue)', cb: 'rgba(96,165,250,.15)', ic: '💻',
+      title: 'Portal Web Empresas (Banca Electrónica)',
+      sub: 'Copiloto Contextual Embebido · WebSockets / SSE · Consciente de la pantalla activa',
+      role: 'Asistente lateral en el portal web de tesorería que acompaña al administrativo o CFO mientras gestiona ficheros Norma 34/SEPA, impuestos o comercio exterior.',
+      bullets: [
+        'Inyecta contexto de navegación firmado (pantalla actual, cuenta seleccionada o remesa en borrador) sin que el usuario tenga que repetirlo.',
+        'Permite descargar simulaciones en Excel/PDF o pre-rellenar formularios operativos directamente desde la respuesta del agente.'
+      ],
+      code: `// Inicialización del Widget en el Portal Web Commercial
+const stream = new EventSource('/v1/commercial/chat/sse?session=ses_01J9X8A2');
+stream.addEventListener('a2a_status', (ev) => {
+  const data = JSON.parse(ev.data);
+  renderAgentStepBadge(data.agent_id, data.state, data.progress_msg);
+});`
+    },
+    gw: {
+      kind: 'ACCESO & SEGURIDAD', c: 'var(--amber)', cb: 'rgba(251,191,36,.15)', ic: '🛡️',
+      title: 'API Gateway & Gestor de Identidad OBO',
+      sub: 'Kong / Apigee + OAuth 2.0 On-Behalf-Of Token Exchange + Rate Limiting',
+      role: 'Valida la sesión del cliente, aplica cuotas por empresa y genera el token OBO que viajará en las cabeceras A2A hasta las APIs del Core.',
+      bullets: [
+        'Verifica firma JWT y apoderamientos mercantiles de la empresa activa.',
+        'Intercambia el token de canal por un token On-Behalf-Of (OBO) de corta duración (TTL 120 s) con scopes mínimos.',
+        'Propaga cabeceras W3C Traceparent para enlazar el canal con LangGraph y los microservicios Python.'
+      ],
+      code: `# Cabeceras de seguridad inyectadas hacia el Orquestador
+X-Authenticated-User: usr_apoderado_9921
+X-Company-Group-ID: GRP_DELTA_441
+X-OBO-Access-Token: eyJ0eXAiOiJKV1QiLCJzY29wZSI6ImJhbGFuY2VzOnJlYWQifQ...
+traceparent: 00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01`
+    },
+    guard: {
+      kind: 'PROTECCIÓN IA', c: 'var(--amber)', cb: 'rgba(251,191,36,.15)', ic: '🧹',
+      title: 'Guardrails de Entrada/Salida & Filtro PII',
+      sub: 'Detección de Prompt Injection · Presidio PII Redaction · Groundedness Check',
+      role: 'Doble barrera determinista y neuronal que inspecciona cada mensaje antes de llegar al Orquestador y antes de volver al cliente.',
+      bullets: [
+        'Input Rail: bloquea intentos de jailbreak, inyección de prompts o consultas fuera del ámbito financiero de Commercial.',
+        'PII Masking: tokeniza IBAN, NIF o nombres de terceros cuando el texto viaja a modelos LLM externos.',
+        'Output Rail: verifica que ninguna cifra mostrada contradiga el JSON devuelto por el agente Python o el documento RAG.'
+      ],
+      code: `async def apply_guardrails(user_text: str) -> GuardrailResult:
+    inj_score = await prompt_shield.score(user_text)
+    if inj_score > 0.82:
+        raise SecurityBlockedError("Intento de manipulación de instrucciones detectado.")
+    sanitized, pii_map = pii_redactor.anonymize(user_text, entities=["IBAN", "ES_NIF"])
+    return GuardrailResult(clean_text=sanitized, pii_Vault=pii_map)`
+    },
+    orch: {
+      kind: 'CEREBRO CENTRAL', c: 'var(--violet)', cb: 'rgba(167,139,250,.2)', ic: '🧠',
+      title: 'Host Orchestrator & Clasificador de Intención',
+      sub: 'Python 3.12 · LangGraph Supervisor · Decide entre RAG, A2A o Ejecución Híbrida',
+      role: 'Núcleo cognitivo del chatbot. Analiza la intención del usuario con su contexto conversacional y decide en menos de 90 ms si debe consultar la Base de Conocimiento, delegar vía A2A en uno o varios agentes Python, o ejecutar ambas ramas en paralelo.',
+      bullets: [
+        'Clasificador estructurado con salidas tipadas: route = "RAG_ONLY" | "A2A_DELEGATION" | "HYBRID_PARALLEL".',
+        'Actúa como A2A Client frente a la flota de agentes especialistas y fusiona sus Artifacts con la narrativa de respuesta.',
+        'Gestiona desambiguación cuando falta un parámetro obligatorio (p. ej. qué cuenta o qué factura anticipar).'
+      ],
+      code: `class RouteDecision(BaseModel):
+    mode: Literal["RAG_ONLY", "A2A_DELEGATION", "HYBRID_PARALLEL"]
+    rag_query: Optional[str] = None
+    target_agents: list[str] = Field(default_factory=list)
+    reasoning: str
+
+async def route_turn(state: ChatState) -> RouteDecision:
+    return await router_llm.with_structured_output(RouteDecision).ainvoke(state.messages)`
+    },
+    mem: {
+      kind: 'MEMORIA DE SESIÓN', c: '#cbd5e1', cb: 'rgba(203,213,225,.15)', ic: '⚡',
+      title: 'Memoria Conversacional & Checkpointer',
+      sub: 'Redis Enterprise · AsyncRedisSaver (LangGraph) · TTL y Cifrado AES-256',
+      role: 'Mantiene el estado multi-turno de la conversación, las referencias a entidades ya mencionadas («esa factura», «la segunda cuenta») y los checkpoints de tareas A2A pendientes de firma.',
+      bullets: [
+        'Guarda el grafo de estado por thread_id para reanudar flujos multi-paso tanto en Web como en App.',
+        'Cachea resultados efímeros de lectura (saldos consultados hace <30 s) para evitar llamadas duplicadas al Core.'
+      ],
+      code: `checkpointer = AsyncRedisSaver.from_conn_string(REDIS_TLS_URL, ttl_seconds=1800)
+app_graph = workflow.compile(checkpointer=checkpointer)`
+    },
+    kb_vec: {
+      kind: 'MOTOR RAG', c: 'var(--cyan)', cb: 'rgba(34,211,238,.15)', ic: '🔎',
+      title: 'Buscador Híbrido RAG + Cross-Encoder Reranker',
+      sub: 'Búsqueda Vectorial Densa + Léxica BM25 + Reciprocal Rank Fusion',
+      role: 'Recupera los fragmentos exactos de normativa, fichas de producto y condiciones operativas combinando similitud semántica con coincidencia exacta de códigos y siglas bancarias.',
+      bullets: [
+        'Combina embeddings densos (1536 dims) con índice BM25 para términos exactos como «Norma 34.14», «UCP 600» o «FEVE».',
+        'Aplica filtro pre-búsqueda por segmento del cliente y vigencia documental.',
+        'Reordena el Top-20 a Top-4 con un modelo Cross-Encoder antes de pasar el contexto al LLM.'
+      ],
+      code: `results = await vector_store.hybrid_search(
+    query=state.rag_query,
+    k=20,
+    alpha=0.65,
+    filters={"segment": {"$in": ["ALL", user.segment]}, "status": "PUBLISHED"}
+)
+top_chunks = reranker.compress_documents(results, query=state.rag_query, top_n=4)`
+    },
+    kb_docs: {
+      kind: 'CORPUS DOCUMENTAL', c: 'var(--cyan)', cb: 'rgba(34,211,238,.15)', ic: '📚',
+      title: 'Base de Conocimiento Gobernada de Commercial',
+      sub: 'Catálogo de Productos · Tarifarios · Políticas de Riesgo · Guías Operativas Web/App',
+      role: 'Fuente única de verdad documental para responder consultas informativas con cita verificable a página y epígrafe.',
+      bullets: [
+        'Pipeline de ingesta automatizado que detecta tablas de comisiones y las convierte a Markdown estructurado.',
+        'Versionado documental con hash SHA-256: cuando cambia una circular, se re-indexa sin tiempo de inactividad.'
+      ],
+      code: `{
+  "doc_id": "MAN-COMEX-2026-V4",
+  "title": "Manual Operativo de Confirming Internacional y Pronto Pago",
+  "section": "4.2 Requisitos documentales y límites de anticipo",
+  "valid_from": "2026-01-01",
+  "acl_segments": ["PYMES", "MIDCORP", "CORPORATE"]
+}`
+    },
+    a2a_hub: {
+      kind: 'PROTOCOLO A2A', c: 'var(--violet)', cb: 'rgba(167,139,250,.2)', ic: '🛰️',
+      title: 'Broker & Registro del Protocolo A2A (Agent-to-Agent)',
+      sub: 'Catálogo de Agent Cards (/.well-known/agent.json) + Transporte JSON-RPC 2.0 sobre HTTPS/SSE',
+      role: 'Estándar de comunicación que desacopla el chatbot de los agentes operativos. Cada equipo de negocio publica su agente Python con su Agent Card y el Orquestador le delega tareas sin acoplamiento de código.',
+      bullets: [
+        'Registro dinámico de capacidades (skills, esquemas JSON de entrada/salida y modos de streaming).',
+        'Soporte nativo para tareas rápidas (tasks/send) y tareas con progreso en tiempo real (tasks/sendSubscribe).',
+        'Permite coreografías multi-agente donde dos o más agentes Python colaboran en un mismo turno.'
+      ],
+      code: `// Petición estándar JSON-RPC 2.0 del protocolo A2A
+{
+  "jsonrpc": "2.0",
+  "id": "req_8821",
+  "method": "tasks/sendSubscribe",
+  "params": {
+    "id": "task_tesoreria_091",
+    "sessionId": "ses_01J9X8A2",
+    "message": {
+      "role": "user",
+      "parts": [
+        { "type": "text", "text": "Obtener posición consolidada y cobros SEPA hoy" },
+        { "type": "data", "data": { "company_cif": "B84920112", "currency": "EUR" } }
+      ]
+    }
+  }
+}`
+    },
+    ag_pos: {
+      kind: 'AGENTE PYTHON A2A', c: 'var(--violet)', cb: 'rgba(167,139,250,.18)', ic: '💶',
+      title: 'Agente de Tesorería & Posición Global',
+      sub: 'Microservicio Python · FastAPI + LangGraph + httpx Async · Puerto A2A',
+      role: 'Agente especialista que agrega saldos en tiempo real, cuentas en divisa, barridos de tesorería (cash pooling) y ficheros SEPA pendientes.',
+      bullets: [
+        'Ejecuta llamadas paralelas con asyncio.gather a las APIs de Cuentas y de Remesas SEPA.',
+        'Devuelve tanto un resumen ejecutivo como un Artifact estructurado para pintar la tabla de saldos en la App.'
+      ],
+      code: `@tool("get_consolidated_liquidity", args_schema=LiquidityInput)
+async def get_consolidated_liquidity(company_cif: str, obo_token: str) -> dict:
+    async with httpx.AsyncClient(timeout=4.0) as client:
+        headers = {"Authorization": f"Bearer {obo_token}"}
+        acc_r, sepa_r = await asyncio.gather(
+            client.get(f"{CORE_URL}/v2/accounts?cif={company_cif}", headers=headers),
+            client.get(f"{CORE_URL}/v2/sepa/pending?cif={company_cif}", headers=headers),
+        )
+    return consolidate_positions(acc_r.json(), sepa_r.json())`
+    },
+    ag_risk: {
+      kind: 'AGENTE PYTHON A2A', c: 'var(--violet)', cb: 'rgba(167,139,250,.18)', ic: '📊',
+      title: 'Agente de Riesgos, Límites & Motor FEVE',
+      sub: 'Microservicio Python · LangChain Structured Tools + Pydantic v2',
+      role: 'Consulta el límite concedido, el dispuesto actual y el disponible de todas las líneas de circulante (pólizas, descuento, confirming y avales), verificando si la operación cabe en el corredor automático STP.',
+      bullets: [
+        'Cruza el disponible de la línea con el rating interno del cliente y el límite del deudor cedido.',
+        'Informa al instante si la operación es aprobable en 1 clic (STP) o requiere validación de riesgos.'
+      ],
+      code: `class RiskLimitArtifact(BaseModel):
+    facility_id: str
+    granted_limit_eur: float
+    drawn_amount_eur: float
+    available_eur: float
+    stp_eligible: bool
+    feve_rating: str`
+    },
+    ag_comex: {
+      kind: 'AGENTE PYTHON A2A', c: 'var(--violet)', cb: 'rgba(167,139,250,.18)', ic: '🌍',
+      title: 'Agente de Confirming, Factoring & Comex',
+      sub: 'Microservicio Python · LangGraph + Validación de Remesas y Divisa',
+      role: 'Especializado en financiación de circulante y comercio exterior: localiza remesas susceptibles de anticipo, valida facturas y prepara la orden de financiación.',
+      bullets: [
+        'Filtra facturas elegibles por vencimiento y rating del pagador.',
+        'Prepara la simulación de desembolso neto descontando intereses y comisiones contractuales.'
+      ],
+      code: `async def prepare_invoice_advance(remittance_id: str, amount: float, obo: str):
+    eligibility = await comex_api.check_remittance(remittance_id, obo)
+    return AdvanceProposal(remittance_id=remittance_id, net_payout=amount * 0.9942)`
+    },
+    ag_sim: {
+      kind: 'AGENTE PYTHON A2A', c: 'var(--violet)', cb: 'rgba(167,139,250,.18)', ic: '🧮',
+      title: 'Agente Simulador Financiero & Pricing RORWA',
+      sub: 'Microservicio Python · Cálculo Determinista NumPy / SciPy + Curvas de Tipos',
+      role: 'Realiza todos los cálculos financieros fuera del LLM (cero errores aritméticos): TAE, intereses de descuento, nuevo límite recomendado según ventas y suelo de rentabilidad RORWA/EVA.',
+      bullets: [
+        'Prohibido que el LLM calcule intereses a mano: toda cifra financiera proviene de funciones deterministas en Python.',
+        'Simula escenarios de renovación de póliza cruzando evolución de facturación y consumo de capital.'
+      ],
+      code: `def compute_discount_cost(nominal: float, days: int, euribor_3m: float, spread: float, fee_pct: float) -> dict:
+    rate = euribor_3m + spread
+    interest = round(nominal * (rate / 100) * (days / 360), 2)
+    commission = round(nominal * (fee_pct / 100), 2)
+    return {"interest_eur": interest, "commission_eur": commission, "net_eur": round(nominal - interest - commission, 2)}`
+    },
+    ag_crm: {
+      kind: 'AGENTE PYTHON A2A', c: 'var(--violet)', cb: 'rgba(167,139,250,.18)', ic: '🤝',
+      title: 'Agente de Gestor Comercial & Human-in-the-Loop',
+      sub: 'Microservicio Python · Integración Salesforce / Portafirmas / Agenda Gestor',
+      role: 'Conecta el canal digital con el gestor de empresas: crea la propuesta pre-redactada en el CRM o lanza la orden al portafirmas de la App para que el apoderado firme con SCA.',
+      bullets: [
+        'Cuando una operación requiere firma o estudio a medida, genera el dossier completo para que el cliente no tenga que repetir nada.',
+        'Devuelve estado A2A input-required con los botones de acción directa en la App/Web.'
+      ],
+      code: `return A2ATaskResponse(
+    id=task.id,
+    status=TaskStatus(state="input-required", message="Pendiente de firma digital del apoderado"),
+    artifacts=[signature_card_artifact]
+)`
+    },
+    api_core: {
+      kind: 'API CORE BANCARIO', c: 'var(--emerald)', cb: 'rgba(52,211,153,.15)', ic: '🏦',
+      title: 'API Core de Cuentas, Saldos & Pagos SEPA',
+      sub: 'Microservicios Internos REST / gRPC · Estándar ISO 20022',
+      role: 'Expone en tiempo real los saldos contables e intradía, movimientos y estado de liquidación de ficheros SEPA Credit Transfer y Direct Debit.',
+      bullets: ['Latencia P95 < 110 ms con caché reactiva por cuenta.', 'Protegida por mTLS y verificación de ámbito OBO por CIF.'],
+      code: `GET /v2/corporate/accounts/balances?cif=B84920112 HTTP/1.1
+200 OK · Content-Type: application/json
+{
+  "company": "GRUPO INDUSTRIAL DELTA S.L.",
+  "total_available_eur": 1482900.40,
+  "accounts": [
+    {"iban": "ES91...4401", "alias": "Cuenta Operativa Principal", "balance": 942100.00},
+    {"iban": "ES18...8820", "alias": "Cuenta Tesorería Divisas", "balance": 540800.40}
+  ],
+  "sepa_inflow_today_eur": 215400.00
+}`
+    },
+    api_risk: {
+      kind: 'API RIESGOS', c: 'var(--emerald)', cb: 'rgba(52,211,153,.15)', ic: '⚖️',
+      title: 'API Motor de Riesgos FEVE & Límites de Crédito',
+      sub: 'Evaluación Pre-Concedida · CIRBE · Límites por Línea y Deudor',
+      role: 'Proporciona la posición de riesgo viva del grupo empresarial, su calificación crediticia interna y el margen pre-autorizado para operaciones STP.',
+      bullets: ['Consulta instantánea de disponible en pólizas de crédito, líneas de descuento y confirming.', 'Valida elegibilidad STP sin intervención manual.'],
+      code: `GET /v1/risk/facilities/B84920112 HTTP/1.1
+{
+  "feve_score": "A2 (Riesgo Bajo)",
+  "confirming_limit_eur": 1200000.00,
+  "confirming_available_eur": 640000.00,
+  "stp_corridor_approved": true
+}`
+    },
+    api_erp: {
+      kind: 'API CIRCULANTE', c: 'var(--emerald)', cb: 'rgba(52,211,153,.15)', ic: '📑',
+      title: 'API de Cartera Comercial, Facturas & Comex',
+      sub: 'Gestión de Remesas de Confirming, Factoring y Créditos Documentarios',
+      role: 'Gestiona las remesas enviadas por la empresa, el estado de aceptación de facturas y las órdenes de anticipo sobre cobros futuros.',
+      bullets: ['Valida vencimientos medios y límites por deudor.', 'Genera pre-liquidaciones listas para firma en el canal.'],
+      code: `POST /v1/working-capital/simulations/advance
+{
+  "remittance_id": "REM-2026-8841",
+  "nominal_eur": 180000.00,
+  "avg_days_to_maturity": 58,
+  "applied_spread_pct": 1.15
+}`
+    },
+    api_crm: {
+      kind: 'API OMNICANAL', c: 'var(--emerald)', cb: 'rgba(52,211,153,.15)', ic: '📬',
+      title: 'API de CRM Empresas & Portafirmas Digital',
+      sub: 'Salesforce Financial Services Cloud + Motor de Firma Biométrica SCA',
+      role: 'Permite que los agentes Python inyecten tareas enriquecidas en la bandeja del gestor de empresas o disparen solicitudes de firma mancomunada/solidaria a la App.',
+      bullets: ['Sincronización bidireccional: el gestor ve el contexto exacto simulado en el chatbot.', 'Genera orden en Portafirmas con trazabilidad completa.'],
+      code: `POST /v1/omnicanal/proposals
+{
+  "company_cif": "B84920112",
+  "proposal_type": "CREDIT_LINE_RENEWAL",
+  "requested_limit_eur": 900000,
+  "signature_flow": "SCA_APP_PUSH",
+  "assigned_rm_id": "gestor_territorial_14"
+}`
+    },
+    obs: {
+      kind: 'OBSERVABILIDAD & AUDITORÍA', c: 'var(--rose)', cb: 'rgba(251,113,133,.15)', ic: '📡',
+      title: 'Observabilidad End-to-End (OpenTelemetry + LangSmith)',
+      sub: 'Trazabilidad Distribuida · Métricas de Calidad RAG · Auditoría de Agentes A2A',
+      role: 'Registra cada salto desde el clic en la App/Web hasta la respuesta de las APIs del Core, permitiendo auditar latencias, costes, citas documentales y decisiones de cada agente.',
+      bullets: [
+        'Correlación completa mediante trace_id compartido entre Gateway, LangGraph, Broker A2A y microservicios FastAPI.',
+        'Evaluación automática continua de fidelidad al contexto (faithfulness) y precisión de enrutamiento.'
+      ],
+      code: `{
+  "trace_id": "0x9f4a7c21b804e119",
+  "channel": "APP_EMPRESAS",
+  "route_mode": "HYBRID_PARALLEL",
+  "rag_latency_ms": 380,
+  "a2a_agents_invoked": ["ag_risk", "ag_sim"],
+  "total_latency_ms": 1140,
+  "faithfulness_score": 0.99
+}`
+    }
+  };
+
+  const drawer = $('#drawer');
+  const scrim = $('#scrim');
+  const drBody = $('#drBody');
+  function openDrawer(nodeId) {
+    const spec = NODE_SPECS[nodeId];
+    if (!spec) return;
+    drawer.style.setProperty('--c', spec.c);
+    drawer.style.setProperty('--cb', spec.cb);
+    drBody.innerHTML = `
+      <div class="dr-kind">${spec.kind}</div>
+      <div class="dr-ic" style="font-size:24px">${spec.ic}</div>
+      <h3>${spec.title}</h3>
+      <div class="dr-sub">${spec.sub}</div>
+      <p class="dr-role">${spec.role}</p>
+      <h5>Responsabilidades Clave en la Arquitectura</h5>
+      <ul>${spec.bullets.map(b => `<li>${b}</li>`).join('')}</ul>
+      <h5>Contrato / Código de Referencia</h5>
+      <pre class="code">${spec.code.replace(/&/g, '&amp;').replace(/</g, '&lt;')}</pre>
+      <div class="dr-note">💡 En el <b>Cuaderno 12 definitivo</b> podremos personalizar los nombres exactos de tus sistemas, repositorios Python y endpoints internos.</div>
+    `;
+    drawer.classList.add('on');
+    scrim.classList.add('on');
+  }
+  function closeDrawer() {
+    drawer.classList.remove('on');
+    scrim.classList.remove('on');
+  }
+  $('#drClose').addEventListener('click', closeDrawer);
+  scrim.addEventListener('click', closeDrawer);
+
+  // =========================================================================
+  // 3. DIBUJO DE CABLES SVG (#wires) Y ANIMACIÓN DE PAQUETES EN EL MAPA
+  // =========================================================================
+  const archMap = $('#archMap');
+  const wiresSvg = $('#wires');
+  const LINKS = [
+    ['c_app', 'gw', 'var(--blue)'],
+    ['c_web', 'gw', 'var(--blue)'],
+    ['gw', 'guard', 'var(--amber)'],
+    ['guard', 'orch', 'var(--amber)'],
+    ['orch', 'mem', '#cbd5e1'],
+    ['orch', 'kb_vec', 'var(--cyan)'],
+    ['kb_vec', 'kb_docs', 'var(--cyan)'],
+    ['orch', 'a2a_hub', 'var(--violet)'],
+    ['a2a_hub', 'ag_pos', 'var(--violet)'],
+    ['a2a_hub', 'ag_risk', 'var(--violet)'],
+    ['a2a_hub', 'ag_comex', 'var(--violet)'],
+    ['a2a_hub', 'ag_sim', 'var(--violet)'],
+    ['a2a_hub', 'ag_crm', 'var(--violet)'],
+    ['ag_pos', 'api_core', 'var(--emerald)'],
+    ['ag_risk', 'api_risk', 'var(--emerald)'],
+    ['ag_comex', 'api_erp', 'var(--emerald)'],
+    ['ag_sim', 'api_risk', 'var(--emerald)'],
+    ['ag_crm', 'api_crm', 'var(--emerald)']
+  ];
+
+  function drawWires() {
+    if (!archMap || !wiresSvg) return;
+    const mr = archMap.getBoundingClientRect();
+    wiresSvg.setAttribute('viewBox', `0 0 ${mr.width} ${mr.height}`);
+    wiresSvg.innerHTML = LINKS.map(([from, to, col]) => {
+      const a = $(`[data-node="${from}"]`, archMap);
+      const b = $(`[data-node="${to}"]`, archMap);
+      if (!a || !b) return '';
+      const ar = a.getBoundingClientRect();
+      const br = b.getBoundingClientRect();
+      let x1, y1, x2, y2, d;
+      if (Math.abs((ar.left + ar.width / 2) - (br.left + br.width / 2)) < 25) {
+        // Conexión vertical en la misma columna (p.ej. gw->guard, orch->mem, kb_vec->kb_docs)
+        x1 = ar.left - mr.left + ar.width / 2;
+        y1 = ar.bottom - mr.top;
+        x2 = br.left - mr.left + br.width / 2;
+        y2 = br.top - mr.top;
+        d = `M ${x1} ${y1} L ${x2} ${y2}`;
+      } else {
+        x1 = ar.right - mr.left;
+        y1 = ar.top - mr.top + ar.height / 2;
+        x2 = br.left - mr.left;
+        y2 = br.top - mr.top + br.height / 2;
+        const cx = (x1 + x2) / 2;
+        d = `M ${x1} ${y1} C ${cx} ${y1}, ${cx} ${y2}, ${x2} ${y2}`;
+      }
+      return `<path class="wire" id="w-${from}-${to}" data-from="${from}" data-to="${to}" style="--wc:${col}" d="${d}"/>`;
+    }).join('');
+  }
+  window.addEventListener('resize', drawWires);
+  setTimeout(drawWires, 80);
+
+  function firePacket(from, to, col, duration = 460) {
+    const path = $(`#w-${from}-${to}`, wiresSvg) || $(`#w-${to}-${from}`, wiresSvg);
+    if (!path) return;
+    const rev = path.id === `w-${to}-${from}`;
+    path.classList.add('lit');
+    const len = path.getTotalLength();
+    const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    dot.setAttribute('r', '5');
+    dot.setAttribute('fill', '#ffffff');
+    dot.style.filter = `drop-shadow(0 0 8px ${col})`;
+    wiresSvg.appendChild(dot);
+    const t0 = performance.now();
+    function step(now) {
+      const p = Math.min(1, (now - t0) / duration);
+      const dist = rev ? len * (1 - p) : len * p;
+      const pt = path.getPointAtLength(dist);
+      dot.setAttribute('cx', pt.x);
+      dot.setAttribute('cy', pt.y);
+      if (p < 1) requestAnimationFrame(step);
+      else dot.remove();
+    }
+    requestAnimationFrame(step);
+  }
+
+  function showNodeTip(nodeId, text) {
+    const node = $(`[data-node="${nodeId}"]`, archMap);
+    if (!node) return;
+    $$('.ntip', archMap).forEach(t => t.remove());
+    const mr = archMap.getBoundingClientRect();
+    const nr = node.getBoundingClientRect();
+    const tip = document.createElement('div');
+    tip.className = 'ntip';
+    tip.style.setProperty('--c', node.style.getPropertyValue('--c') || 'var(--cyan)');
+    tip.style.setProperty('--cg', node.style.getPropertyValue('--cg') || 'rgba(34,211,238,.3)');
+    tip.style.left = (nr.left - mr.left + nr.width / 2) + 'px';
+    tip.style.top = (nr.top - mr.top) + 'px';
+    tip.textContent = text;
+    archMap.appendChild(tip);
+    setTimeout(() => { tip.classList.add('out'); setTimeout(() => tip.remove(), 400); }, 1650);
+  }
+
+  $$('[data-node]').forEach(el => {
+    el.addEventListener('click', () => openDrawer(el.dataset.node));
+  });
+
+  // =========================================================================
+  // 4. LOS 4 ESCENARIOS DE SIMULACIÓN EN VIVO (CHAT + MAPA + TELEMETRÍA)
+  // =========================================================================
+  let activeChan = 'app';
+  let currentScen = 'rag';
+  let simTimerIds = [];
+
+  const SCENARIOS = {
+    rag: {
+      mode: 'SOLO RAG (CONOCIMIENTO)',
+      totalMs: 640,
+      q: '¿Qué documentación necesito para abrir una línea de Confirming Internacional y qué modalidades existen?',
+      typingText: 'Buscando en Base de Conocimiento (Manual Confirming v4.2)...',
+      hops: [
+        { t: 0, n: 'CHAN', to: 'gw', tag: 'CANAL', cls: 'tg-canal', msg: 'POST /v1/commercial/chat/stream · Consulta informativa enviada', tip: 'Enviando consulta por SSE', col: 'var(--blue)' },
+        { t: 220, n: 'gw', to: 'guard', tag: 'GATEWAY', cls: 'tg-gateway', msg: 'JWT verificado · Segmento cliente: MIDCORP (Grupo Industrial Delta)', tip: 'OAuth2 + Segmento MIDCORP', col: 'var(--amber)' },
+        { t: 440, n: 'guard', to: 'orch', tag: 'GUARD', cls: 'tg-guard', msg: 'Input Rail OK (inj_score=0.01) · Sin exposición de PII', tip: 'Prompt seguro · 0 PII', col: 'var(--amber)' },
+        { t: 680, n: 'orch', to: 'kb_vec', tag: 'ROUTER', cls: 'tg-orq', msg: 'Intent Router → route="RAG_ONLY" (no requiere llamada A2A a APIs operativas)', tip: 'Decisión: Ruta 100% RAG', col: 'var(--cyan)', payload: `{\n  "intent": "PRODUCT_DOCUMENTATION_QUERY",\n  "route": "RAG_ONLY",\n  "confidence": 0.98,\n  "rag_filters": { "product": "CONFIRMING_INTL", "segment": "MIDCORP" }\n}` },
+        { t: 980, n: 'kb_vec', to: 'kb_docs', tag: 'RAG', cls: 'tg-kb', msg: 'Hybrid Search (Dense + BM25) + Cross-Encoder Rerank → Top 3 fragmentos recuperados', tip: 'Top 3 chunks · score 0.94', col: 'var(--cyan)', payload: `[\n  { "doc": "MAN-COMEX-2026-V4", "sec": "4.2 Requisitos Confirming Internacional", "rerank_score": 0.94 },\n  { "doc": "POL-RIESGOS-CIRCULANTE", "sec": "2.1 Modalidades Sin Recurso vs Con Recurso", "rerank_score": 0.89 }\n]` },
+        { t: 1320, n: 'kb_vec', to: 'orch', tag: 'SÍNTESIS', cls: 'tg-orq', msg: 'Generación con citas verificadas (faithfulness=0.99) y envío por streaming SSE al canal', tip: 'Respuesta con citas lista', col: 'var(--cyan)' }
+      ],
+      answerHtml: `Para activar una línea de <b>Confirming Internacional</b> en Commercial dispones de dos modalidades (<b>Sin Recurso</b> y <b>Con Recurso</b>) y solo necesitas aportar digitalmente:
+        <div class="xcard">
+          <div class="xcard-h"><span>📋 Documentación requerida · Alta Digital</span><span>STP 24h</span></div>
+          <div class="xsteps">
+            <div class="xstep ok"><i>✓</i><span><b>Modelo 200</b> del último ejercicio cerrado y balance provisional firmado.</span></div>
+            <div class="xstep ok"><i>✓</i><span><b>Relación de proveedores internacionales</b> (país, divisa USD/EUR/GBP y volumen anual estimado).</span></div>
+            <div class="xstep ok"><i>✓</i><span><b>Escritura de poderes vigente</b> (si ya consta bastanteada en Commercial no es necesario subirla).</span></div>
+          </div>
+        </div>
+        <div class="cites">
+          <span class="cite">📘 MAN-COMEX-2026-V4 · Epígrafe 4.2</span>
+          <span class="cite">📘 Norma Circulante Empresas · Pág. 18</span>
+        </div>`
+    },
+
+    a2a_tesoreria: {
+      mode: 'DELEGACIÓN A2A → AGENTE PYTHON TESORERÍA',
+      totalMs: 980,
+      q: '¿Cuál es nuestra posición de liquidez consolidada hoy y qué cobros SEPA tenemos pendientes de abonar?',
+      typingText: 'Delegando vía A2A en Agente Python de Tesorería...',
+      hops: [
+        { t: 0, n: 'CHAN', to: 'gw', tag: 'CANAL', cls: 'tg-canal', msg: 'POST /v1/commercial/chat/stream · Solicitud de datos operativos en tiempo real', tip: 'Petición de saldos en vivo', col: 'var(--blue)' },
+        { t: 220, n: 'gw', to: 'guard', tag: 'GATEWAY', cls: 'tg-gateway', msg: 'Token OAuth2 intercambiado por token OBO (scopes: accounts:read, sepa:read)', tip: 'Token OBO emitido (CIF B84920112)', col: 'var(--amber)' },
+        { t: 440, n: 'guard', to: 'orch', tag: 'ORQ', cls: 'tg-orq', msg: 'Intent Router → route="A2A_DELEGATION" · Requiere Agente Python de Tesorería', tip: 'Enrutando a Protocolo A2A', col: 'var(--violet)' },
+        { t: 700, n: 'orch', to: 'a2a_hub', tag: 'A2A', cls: 'tg-a2a', msg: 'A2A JSON-RPC: method="tasks/sendSubscribe" → skill="get_consolidated_liquidity"', tip: 'tasks/sendSubscribe JSON-RPC', col: 'var(--violet)', payload: `{\n  "jsonrpc": "2.0",\n  "method": "tasks/sendSubscribe",\n  "params": {\n    "id": "task_liq_4402",\n    "targetAgent": "ag_pos",\n    "message": {\n      "role": "user",\n      "parts": [{ "type": "data", "data": { "company_cif": "B84920112", "include_sepa": true } }]\n    }\n  }\n}` },
+        { t: 980, n: 'a2a_hub', to: 'ag_pos', tag: 'AGENTE', cls: 'tg-agente', msg: 'Agente Tesorería (FastAPI + LangGraph) ejecuta asyncio.gather sobre APIs Core con token OBO', tip: 'Ejecutando tool httpx async', col: 'var(--violet)' },
+        { t: 1260, n: 'ag_pos', to: 'api_core', tag: 'API CORE', cls: 'tg-api', msg: 'GET /v2/corporate/accounts/balances & /v2/sepa/pending → 200 OK (94 ms)', tip: '200 OK · Saldos + SEPA recibidos', col: 'var(--emerald)', payload: `{\n  "total_liquidity_eur": 1482900.40,\n  "accounts": [\n    { "iban": "ES91...4401", "alias": "Operativa Principal", "balance_eur": 942100.00 },\n    { "iban": "ES18...8820", "alias": "Tesorería Divisas", "balance_eur": 540800.40 }\n  ],\n  "sepa_pending_inflow_eur": 215400.00,\n  "sepa_files_count": 3\n}` },
+        { t: 1560, n: 'ag_pos', to: 'a2a_hub', tag: 'ARTIFACT', cls: 'tg-a2a', msg: 'SSE TaskArtifactUpdateEvent (state="completed") devuelto al Orquestador y renderizado en UI', tip: 'Artifact validado con Pydantic', col: 'var(--violet)' }
+      ],
+      answerHtml: `Tu posición de liquidez consolidada en tiempo real para <b>Grupo Industrial Delta S.L.</b> es de <b>1.482.900,40 €</b>, más <b>215.400,00 €</b> en 3 remesas SEPA pendientes de liquidar hoy:
+        <div class="xcard">
+          <div class="xcard-h"><span>💶 Posición Intradía · Agente Tesorería A2A</span><span>ACTUALIZADO HACE 2s</span></div>
+          <div class="xrow"><div><b>Cuenta Operativa Principal</b><small>ES91 ···· 4401 · EUR</small></div><span class="amt">942.100,00 €</span></div>
+          <div class="xrow"><div><b>Cuenta Tesorería Divisas</b><small>ES18 ···· 8820 · Contravalor EUR</small></div><span class="amt">540.800,40 €</span></div>
+          <div class="xrow"><div><b>Cobros SEPA Core en cámara (3 ficheros)</b><small>Abono previsto antes de las 14:00h</small></div><span class="amt" style="color:var(--cyan)">+215.400,00 €</span></div>
+          <div class="xrow tot"><div><b>Liquidez Total Proyectada Fin de Día</b></div><span class="amt">1.698.300,40 €</span></div>
+        </div>
+        <div class="cites">
+          <span class="cite">🛰️ A2A · ag_pos (FastAPI)</span>
+          <span class="cite">🏦 API Core Accounts v2 · OBO Token</span>
+        </div>`
+    },
+
+    hibrido: {
+      mode: 'HÍBRIDO PARALELO (RAG + 2 AGENTES A2A)',
+      totalMs: 1180,
+      q: 'Quiero anticipar hoy una remesa de 180.000 € a 58 días: ¿qué comisión aplica según mi contrato y cuánto disponible me queda en la línea?',
+      typingText: 'Ejecutando en paralelo consulta RAG + Agentes A2A de Riesgos y Simulador...',
+      hops: [
+        { t: 0, n: 'CHAN', to: 'gw', tag: 'CANAL', cls: 'tg-canal', msg: 'POST /v1/commercial/chat/stream · Consulta mixta (condiciones + disponible + cálculo)', tip: 'Consulta híbrida recibida', col: 'var(--blue)' },
+        { t: 220, n: 'gw', to: 'orch', tag: 'ORQ', cls: 'tg-orq', msg: 'Intent Router → route="HYBRID_PARALLEL" · Lanza asyncio.gather(RAG, A2A)', tip: 'Fan-out paralelo RAG + A2A', col: 'var(--emerald)', payload: `{\n  "route": "HYBRID_PARALLEL",\n  "parallel_branches": [\n    { "type": "RAG", "query": "condiciones comisión anticipo confirming tramo midcorp" },\n    { "type": "A2A", "agents": ["ag_risk", "ag_sim"], "nominal_eur": 180000, "days": 58 }\n  ]\n}` },
+        { t: 480, n: 'orch', to: 'kb_vec', tag: 'RAMA RAG', cls: 'tg-kb', msg: 'Rama 1 (RAG): recupera pliego de condiciones de Confirming y tarifa de pronto pago', tip: 'Pliego recuperado (Euríbor+1,15%)', col: 'var(--cyan)' },
+        { t: 540, n: 'orch', to: 'a2a_hub', tag: 'RAMA A2A', cls: 'tg-a2a', msg: 'Rama 2 (A2A): invoca en paralelo Agente Riesgos (disponible) y Agente Simulador (coste exacto)', tip: 'Delegación doble A2A', col: 'var(--violet)' },
+        { t: 820, n: 'a2a_hub', to: 'ag_risk', tag: 'AGENTE', cls: 'tg-agente', msg: 'Agente Riesgos consulta Motor FEVE → Disponible actual: 640.000 € (Apto carril verde STP)', tip: 'Disponible: 640.000 € (STP OK)', col: 'var(--violet)' },
+        { t: 880, n: 'ag_risk', to: 'api_risk', tag: 'API FEVE', cls: 'tg-api', msg: 'GET /v1/risk/facilities/B84920112 → 200 OK · Nuevo disponible tras anticipo: 460.000 €', tip: 'FEVE Rating A2 · STP aprobado', col: 'var(--emerald)' },
+        { t: 1080, n: 'a2a_hub', to: 'ag_sim', tag: 'AGENTE', cls: 'tg-agente', msg: 'Agente Simulador Python calcula intereses exactos (58 días, Euríbor 3M + 1,15%) y abono neto', tip: 'Cálculo determinista NumPy', col: 'var(--violet)', payload: `{\n  "nominal_eur": 180000.00,\n  "days": 58,\n  "applied_rate_pct": 3.55,\n  "discount_interest_eur": 1029.50,\n  "management_fee_eur": 180.00,\n  "net_payout_eur": 178790.50\n}` },
+        { t: 1400, n: 'a2a_hub', to: 'orch', tag: 'FUSIÓN', cls: 'tg-orq', msg: 'El Orquestador fusiona la cláusula normativa RAG con los Artifacts A2A y envía tarjeta interactiva', tip: 'Síntesis híbrida completada', col: 'var(--emerald)' }
+      ],
+      answerHtml: `Tienes <b>640.000,00 € disponibles</b> en tu línea (la operación entra por <b>carril automático STP</b>). Según tu pliego vigente (<b>Euríbor 3M + 1,15%</b> y comisión de gestión del <b>0,10%</b>), este es el desglose exacto calculado por el Agente Simulador:
+        <div class="xcard">
+          <div class="xcard-h"><span>⚡ Simulación de Anticipo · 180.000 € a 58 días</span><span>STP INMEDIATO</span></div>
+          <div class="xrow"><div><b>Importe nominal de la remesa</b><small>Tipo aplicable: 3,55% (Euríbor 2,40% + 1,15%)</small></div><span class="amt">180.000,00 €</span></div>
+          <div class="xrow"><div><b>Intereses de descuento (58 días) + Comisión (0,10%)</b><small>1.029,50 € intereses + 180,00 € comisión</small></div><span class="amt" style="color:var(--amber)">-1.209,50 €</span></div>
+          <div class="xrow tot"><div><b>Abono Neto Hoy en Cuenta Operativa</b></div><span class="amt">178.790,50 €</span></div>
+          <div class="xrow"><div><b>Disponible restante en línea tras la operación</b><small>Límite total concedido: 1.200.000 €</small></div><span class="amt" style="color:var(--cyan)">460.000,00 €</span></div>
+        </div>
+        <div class="cites">
+          <span class="cite">📘 Pliego Póliza Confirming · Cláusula 3.1</span>
+          <span class="cite">🛰️ A2A · ag_risk + ag_sim</span>
+          <span class="cite">⚖️ Motor FEVE (STP Aprobado)</span>
+        </div>`
+    },
+
+    multi_a2a: {
+      mode: 'COREOGRAFÍA MULTI-AGENTE A2A + HUMAN-IN-THE-LOOP',
+      totalMs: 1420,
+      q: 'Nuestra facturación ha crecido un 22% este año: prepara la renovación de la póliza de crédito ampliando el límite a 900.000 € y déjala lista para firma.',
+      typingText: 'Coordinando 3 Agentes Python vía A2A (Riesgos → Simulador RORWA → Gestor/Portafirmas)...',
+      hops: [
+        { t: 0, n: 'CHAN', to: 'gw', tag: 'CANAL', cls: 'tg-canal', msg: 'POST /v1/commercial/chat/stream · Solicitud de estructuración y preparación de firma', tip: 'Petición multi-agente', col: 'var(--blue)' },
+        { t: 240, n: 'gw', to: 'orch', tag: 'ORQ', cls: 'tg-orq', msg: 'LangGraph Supervisor planifica cadena A2A de 3 agentes: ag_risk → ag_sim → ag_crm', tip: 'Planificador: 3 tareas A2A', col: 'var(--amber)' },
+        { t: 520, n: 'orch', to: 'a2a_hub', tag: 'A2A #1', cls: 'tg-a2a', msg: 'Paso 1 A2A → Agente Riesgos verifica flujos de cobro (+22% YoY) y pre-autoriza ampliación hasta 900k€', tip: 'Task #1 → ag_risk', col: 'var(--violet)' },
+        { t: 780, n: 'a2a_hub', to: 'ag_risk', tag: 'API FEVE', cls: 'tg-api', msg: 'Agente Riesgos valida con Motor FEVE/CIRBE: Rating A2 permite hasta 950.000 € sin garantía adicional', tip: 'Pre-autorizado hasta 950k€', col: 'var(--emerald)' },
+        { t: 1040, n: 'a2a_hub', to: 'ag_sim', tag: 'A2A #2', cls: 'tg-agente', msg: 'Paso 2 A2A → Agente Simulador calibra precio suelo RORWA: Euríbor 12M + 1,30% (EVA positivo +295 pb)', tip: 'Task #2 → ag_sim (RORWA OK)', col: 'var(--violet)' },
+        { t: 1320, n: 'a2a_hub', to: 'ag_crm', tag: 'A2A #3', cls: 'tg-agente', msg: 'Paso 3 A2A → Agente Gestor/HITL registra propuesta en CRM y genera orden en Portafirmas (state="input-required")', tip: 'Task #3 → ag_crm (HITL)', col: 'var(--violet)', payload: `{\n  "id": "task_renew_901",\n  "status": {\n    "state": "input-required",\n    "reason": "SCA_SIGNATURE_REQUIRED"\n  },\n  "artifact": {\n    "proposal_id": "PROP-2026-7712",\n    "new_limit_eur": 900000,\n    "spread_pct": 1.30,\n    "rm_notified": " Elena Vázquez (Especialista Empresas)"\n  }\n}` },
+        { t: 1580, n: 'ag_crm', to: 'api_crm', tag: 'CRM/FIRMA', cls: 'tg-api', msg: 'POST /v1/omnicanal/proposals → 201 Created · Enviada tarjeta de firma SCA al canal del cliente', tip: 'Propuesta lista en Portafirmas', col: 'var(--emerald)' }
+      ],
+      answerHtml: `He coordinado a los agentes de <b>Riesgos</b>, <b>Pricing RORWA</b> y <b>Portafirmas</b>: tu ampliación a <b>900.000 €</b> cumple los criterios de admisión automática y ya está preparada en tu bandeja de firma:
+        <div class="xcard">
+          <div class="xcard-h"><span>🤝 Propuesta #PROP-2026-7712 · Estado A2A: input-required</span><span>LISTA PARA FIRMA</span></div>
+          <div class="xsteps">
+            <div class="xstep ok"><i>✓</i><span><b>Agente Riesgos (FEVE):</b> Crecimiento de ventas (+22%) verificado; límite de 900.000 € pre-aprobado.</span></div>
+            <div class="xstep ok"><i>✓</i><span><b>Agente Simulador Precio:</b> Tipo asignado <b>Euríbor 12M + 1,30%</b> (comisión apertura 0,25%).</span></div>
+            <div class="xstep wait"><i>!</i><span><b>Control Human-in-the-Loop:</b> Requiere firma digital del apoderado en Portafirmas o revisión con tu gestor.</span></div>
+          </div>
+          <div class="xbtns">
+            <button class="pri" onclick="this.textContent='✓ Firmado con SCA (Token validado)'">✒️ Firmar ahora en Portafirmas</button>
+            <button onclick="this.textContent='✓ Cita agendada con tu Gestor'">📅 Hablar con mi Gestor</button>
+          </div>
+        </div>
+        <div class="cites">
+          <span class="cite">🛰️ A2A Multi-Agent (ag_risk + ag_sim + ag_crm)</span>
+          <span class="cite">🛡️ HITL · Estado input-required</span>
+        </div>`
+    }
+  };
+
+  const chatMsgs = $('#chatMsgs');
+  const traceBox = $('#traceBox');
+  const simStatus = $('#simStatus');
+
+  function clearSimTimers() {
+    simTimerIds.forEach(id => clearTimeout(id));
+    simTimerIds = [];
+  }
+
+  function resetMapVisuals() {
+    archMap.classList.remove('dim');
+    $$('.node', archMap).forEach(n => n.classList.remove('lit', 'proc'));
+    $$('.wire', wiresSvg).forEach(w => w.classList.remove('lit'));
+    $$('.ntip', archMap).forEach(t => t.remove());
+  }
+
+  function appendTraceRow(hop, idx) {
+    const empty = $('.trace-empty', traceBox);
+    if (empty) empty.remove();
+    const row = document.createElement('div');
+    row.className = 'tr';
+    const msStr = `+${String(hop.t).padStart(4, '0')}ms`;
+    const pid = `tp-${Date.now()}-${idx}`;
+    row.innerHTML = `
+      <span class="tt">${msStr}</span>
+      <span class="tg ${hop.cls}">${hop.tag}</span>
+      <span class="tm">${hop.msg}</span>
+      ${hop.payload ? `<button class="tx" data-target="${pid}">{ JSON }</button>` : `<span></span>`}
+    `;
+    traceBox.appendChild(row);
+    if (hop.payload) {
+      const pre = document.createElement('div');
+      pre.className = 'tp';
+      pre.id = pid;
+      pre.style.display = 'none';
+      pre.textContent = hop.payload;
+      traceBox.appendChild(pre);
+      row.querySelector('.tx').addEventListener('click', () => {
+        pre.style.display = pre.style.display === 'none' ? 'block' : 'none';
+      });
+    }
+    traceBox.scrollTop = traceBox.scrollHeight;
+  }
+
+  function runScenario(key, customQuestion) {
+    const sc = SCENARIOS[key] || SCENARIOS.rag;
+    currentScen = key;
+    clearSimTimers();
+    resetMapVisuals();
+    drawWires();
+
+    $$('.scen', $('#scenBar')).forEach(b => b.classList.toggle('on', b.dataset.scen === key));
+    $$('.qr', $('#quickBar')).forEach(b => b.classList.toggle('hit', b.dataset.scen === key));
+
+    const chanNode = activeChan === 'app' ? 'c_app' : 'c_web';
+    archMap.classList.add('dim');
+    $(`[data-node="${chanNode}"]`, archMap)?.classList.add('lit');
+
+    // Reiniciar consola de traza
+    traceBox.innerHTML = '';
+    $('#stHops').textContent = '0';
+    $('#stLat').textContent = '0 ms';
+    $('#stMode').textContent = sc.mode;
+    simStatus.classList.add('run');
+    simStatus.innerHTML = `<i></i> Ejecutando: ${sc.mode}`;
+
+    // Añadir pregunta del usuario al chat
+    const qText = customQuestion || sc.q;
+    const uMsg = document.createElement('div');
+    uMsg.className = 'msg u';
+    uMsg.textContent = qText;
+    chatMsgs.appendChild(uMsg);
+
+    const typ = document.createElement('div');
+    typ.className = 'typing';
+    typ.innerHTML = `<i><span></span></i> <span>${sc.typingText}</span>`;
+    chatMsgs.appendChild(typ);
+    chatMsgs.scrollTop = chatMsgs.scrollHeight;
+
+    sc.hops.forEach((hop, i) => {
+      const tid = setTimeout(() => {
+        const fromId = hop.n === 'CHAN' ? chanNode : hop.n;
+        const toId = hop.to;
+        const fNode = $(`[data-node="${fromId}"]`, archMap);
+        const tNode = $(`[data-node="${toId}"]`, archMap);
+        $$('.node.proc', archMap).forEach(n => n.classList.remove('proc'));
+        fNode?.classList.add('lit');
+        tNode?.classList.add('lit', 'proc');
+        if (toId === 'orch') $(`[data-node="mem"]`, archMap)?.classList.add('lit');
+        firePacket(fromId, toId, hop.col, 420);
+        if (hop.tip) showNodeTip(toId, hop.tip);
+        appendTraceRow(hop, i);
+        $('#stHops').textContent = String(i + 1);
+        $('#stLat').textContent = `${Math.round((sc.totalMs / sc.hops.length) * (i + 1))} ms`;
+        $('#obsLive').textContent = `trace_id: 0x${(0x9f40 + i * 17).toString(16)}… · ${sc.totalMs} ms`;
+      }, hop.t);
+      simTimerIds.push(tid);
+    });
+
+    const lastT = sc.hops[sc.hops.length - 1].t + 480;
+    const endId = setTimeout(() => {
+      $$('.node.proc', archMap).forEach(n => n.classList.remove('proc'));
+      typ.remove();
+      const bMsg = document.createElement('div');
+      bMsg.className = 'msg b';
+      bMsg.innerHTML = sc.answerHtml;
+      chatMsgs.appendChild(bMsg);
+      chatMsgs.scrollTop = chatMsgs.scrollHeight;
+
+      const sum = document.createElement('div');
+      sum.className = 'tsum';
+      sum.innerHTML = `✓ <b>Turno completado en ${sc.totalMs} ms</b> · Modo: <b>${sc.mode}</b> · Haz clic en los botones <code>{ JSON }</code> superiores para ver los contratos enviados entre nodos.`;
+      traceBox.appendChild(sum);
+      traceBox.scrollTop = traceBox.scrollHeight;
+      $('#stLat').textContent = `${sc.totalMs} ms`;
+      simStatus.classList.remove('run');
+      simStatus.innerHTML = `<i></i> Simulación completada (${sc.totalMs} ms)`;
+    }, lastT);
+    simTimerIds.push(endId);
+  }
+
+  $$('.scen', $('#scenBar')).forEach(btn => {
+    btn.addEventListener('click', () => runScenario(btn.dataset.scen));
+  });
+  $$('.qr', $('#quickBar')).forEach(btn => {
+    btn.addEventListener('click', () => runScenario(btn.dataset.scen));
+  });
+  $('#replayBtn').addEventListener('click', () => runScenario(currentScen));
+  $('#resetMapBtn').addEventListener('click', () => {
+    clearSimTimers();
+    resetMapVisuals();
+    simStatus.classList.remove('run');
+    simStatus.innerHTML = `<i></i> Todos los nodos visibles`;
+  });
+
+  // Toggle App vs Web
+  $$('#chanToggle button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      $$('#chanToggle button').forEach(b => b.classList.remove('on'));
+      btn.classList.add('on');
+      activeChan = btn.dataset.chan;
+      const box = $('#deviceBox');
+      box.classList.toggle('app', activeChan === 'app');
+      box.classList.toggle('web', activeChan === 'web');
+      setTimeout(drawWires, 620);
+    });
+  });
+
+  // Envío libre en el input del chat (clasifica automáticamente qué escenario lanzar)
+  $('#chatForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const val = $('#chatIn').value.trim();
+    if (!val) return;
+    $('#chatIn').value = '';
+    const low = val.toLowerCase();
+    let pick = 'hibrido';
+    if (low.includes('saldo') || low.includes('liquidez') || low.includes('sepa') || low.includes('tesorer')) pick = 'a2a_tesoreria';
+    else if (low.includes('renov') || low.includes('poliza') || low.includes('póliza') || low.includes('firma')) pick = 'multi_a2a';
+    else if (low.includes('requisito') || low.includes('document') || low.includes('qué es') || low.includes('que es')) pick = 'rag';
+    runScenario(pick, val);
+  });
+
+  // Lanzar el primer escenario al cargar
+  setTimeout(() => runScenario('a2a_tesoreria'), 450);
+
+  // =========================================================================
+  // 5. PIPELINES INTERACTIVOS DE LA SECCIÓN 02 (RAG vs A2A)
+  // =========================================================================
+  const PIPE_DATA = {
+    rag: [
+      ['PASO 01 · INGESTA SEMÁNTICA POR DOCUMENTO', 'Manuales de producto (Confirming, Factoring, avales, tarifas) troceados respetando tablas y epígrafes con metadatos de vigencia y segmento (Pymes, MidCorp, Corporates).'],
+      ['PASO 02 · ÍNDICE HÍBRIDO (EMBEDDINGS DENSOS + BM25)', 'Cada consulta genera un vector denso y una búsqueda léxica BM25 simultánea para capturar tanto conceptos semánticos como códigos normativos exactos.'],
+      ['PASO 03 · FILTRADO PRE-BÚSQUEDA POR ACL Y SEGMENTO', 'Antes de puntuar similitud se descartan documentos caducados o que no correspondan al segmento de la empresa autenticada.'],
+      ['PASO 04 · CROSS-ENCODER RERANKING DE ALTA PRECISIÓN', 'Un modelo Cross-Encoder re-evalúa los 20 candidatos iniciales y selecciona los 4 fragmentos con mayor evidencia directa.'],
+      ['PASO 05 · GENERACIÓN CON CITAS VERIFICABLES', 'El LLM responde únicamente con la evidencia recuperada e inyecta chips interactivos con el documento, epígrafe y página exacta.']
+    ],
+    a2a: [
+      ['PASO 01 · DESCUBRIMIENTO DE CAPACIDADES (/.well-known/agent.json)', 'El Orquestador consulta el catálogo de Agent Cards para localizar qué agente Python expone la skill necesaria y qué esquema de datos exige.'],
+      ['PASO 02 · DELEGACIÓN JSON-RPC (tasks/sendSubscribe)', 'El Orquestador abre una tarea A2A pasando el mensaje tipado (TextPart + DataPart) y propagando en cabecera el token OAuth2 OBO del cliente.'],
+      ['PASO 03 · RAZONAMIENTO Y VALIDACIÓN EN LANGGRAPH', 'El microservicio Python del agente ejecuta su StateGraph, valida parámetros con Pydantic v2 y planifica qué APIs internas invocar.'],
+      ['PASO 04 · INVOCACIÓN ASÍNCRONA A APIS DEL CORE (httpx)', 'El agente consulta en paralelo los microservicios del banco (Cuentas, FEVE, Cartera o CRM) con reintentos exponenciales y timeout estricto.'],
+      ['PASO 05 · RETORNO DE ARTIFACT TIPADO Y TARJETA UI', 'El agente emite un TaskArtifactUpdateEvent con el JSON verificado que el Orquestador convierte en respuesta natural y tarjeta interactiva en la App/Web.']
+    ]
+  };
+
+  function setPipeStep(kind, idx) {
+    const pipe = $(`[data-pipe="${kind}"]`);
+    if (!pipe) return;
+    const steps = $$('.pstep', pipe);
+    steps.forEach((b, i) => {
+      b.classList.toggle('on', i === idx);
+      b.classList.toggle('done', i < idx);
+    });
+    const pct = (idx / (steps.length - 1)) * 100;
+    $(`#pf-${kind}`).style.width = `calc((100% - 88px) * ${pct / 100})`;
+    $(`#pd-${kind}`).style.left = `calc(44px + (100% - 88px) * ${pct / 100})`;
+    const [t, d] = PIPE_DATA[kind][idx];
+    $(`#pdText-${kind}`).innerHTML = `<b>${t}</b><p>${d}</p>`;
+  }
+
+  ['rag', 'a2a'].forEach(kind => {
+    $$(`[data-pipe="${kind}"] .pstep`).forEach(btn => {
+      btn.addEventListener('click', () => setPipeStep(kind, Number(btn.dataset.idx)));
+    });
+  });
+
+  // =========================================================================
+  // 6. DIAGRAMA DE SECUENCIA A2A + INSPECTOR JSON (SECCIÓN 03)
+  // =========================================================================
+  const SEQ_PAYLOADS = [
+    {
+      title: 'Paso 01 · Petición desde App / Portal Web al Orquestador',
+      tab: 'req',
+      code: `POST /v1/commercial/chat/stream HTTP/2
+Authorization: Bearer <JWT_SESION_EMPRESA>
+X-Company-CIF: B84920112
+
+{
+  "session_id": "ses_01J9X8A2",
+  "message": "¿Cuál es nuestra posición de liquidez hoy y los cobros SEPA pendientes?"
+}`
+    },
+    {
+      title: 'Paso 02 · Agent Card publicada por el Agente Python (/.well-known/agent.json)',
+      tab: 'card',
+      code: `{
+  "name": "commercial-treasury-agent",
+  "description": "Agente Python especialista en saldos intradía, divisas y remesas SEPA",
+  "url": "https://agents.internal.bank/treasury/a2a",
+  "version": "2.4.0",
+  "capabilities": { "streaming": true, "pushNotifications": false },
+  "authentication": { "schemes": ["Bearer_OBO_JWT"] },
+  "skills": [
+    {
+      "id": "get_consolidated_liquidity",
+      "name": "Posición Global y SEPA Intradía",
+      "inputModes": ["application/json", "text/plain"],
+      "outputModes": ["application/json"]
+    }
+  ]
+}`
+    },
+    {
+      title: 'Paso 03 · Envío de Tarea A2A (JSON-RPC 2.0 tasks/sendSubscribe)',
+      tab: 'req',
+      code: `{
+  "jsonrpc": "2.0",
+  "id": "rpc_99201",
+  "method": "tasks/sendSubscribe",
+  "params": {
+    "id": "task_tesoreria_091",
+    "sessionId": "ses_01J9X8A2",
+    "message": {
+      "role": "user",
+      "parts": [
+        { "type": "text", "text": "Obtener posición consolidada y cobros SEPA pendientes" },
+        { "type": "data", "data": { "company_cif": "B84920112", "currency": "EUR" } }
+      ]
+    }
+  }
+}`
+    },
+    {
+      title: 'Paso 04 · Evento SSE de progreso emitido por el Agente Python',
+      tab: 'req',
+      code: `event: task_status_update
+data: {
+  "jsonrpc": "2.0",
+  "result": {
+    "id": "task_tesoreria_091",
+    "status": {
+      "state": "working",
+      "message": {
+        "role": "agent",
+        "parts": [{ "type": "text", "text": "Consultando saldos en Accounts v2 y cámara SEPA..." }]
+      }
+    },
+    "final": false
+  }
+}`
+    },
+    {
+      title: 'Paso 05 · Llamada asíncrona del Agente Python a la API Core (httpx + OBO)',
+      tab: 'req',
+      code: `GET /v2/corporate/accounts/balances?cif=B84920112 HTTP/1.1
+Host: api.core.internal.bank
+Authorization: Bearer <OBO_SCOPED_TOKEN_ACCOUNTS_READ>
+X-Trace-ID: 0x9f4a7c21b804e119`
+    },
+    {
+      title: 'Paso 06 · Respuesta JSON del Microservicio Core Bancario (200 OK)',
+      tab: 'res',
+      code: `{
+  "company_cif": "B84920112",
+  "timestamp": "2026-11-09T09:41:12Z",
+  "total_available_eur": 1482900.40,
+  "accounts": [
+    { "iban": "ES91...4401", "alias": "Operativa Principal", "balance_eur": 942100.00 },
+    { "iban": "ES18...8820", "alias": "Tesorería Divisas", "balance_eur": 540800.40 }
+  ],
+  "sepa_inflow_pending_eur": 215400.00
+}`
+    },
+    {
+      title: 'Paso 07 · Artifact tipado devuelto por el Agente Python al Orquestador',
+      tab: 'res',
+      code: `event: task_artifact_update
+data: {
+  "jsonrpc": "2.0",
+  "result": {
+    "id": "task_tesoreria_091",
+    "status": { "state": "completed" },
+    "artifact": {
+      "name": "liquidity_position_card",
+      "parts": [{
+        "type": "data",
+        "data": {
+          "total_eur": 1482900.40,
+          "sepa_pending_eur": 215400.00,
+          "projected_eod_eur": 1698300.40,
+          "ui_component": "TREASURY_SUMMARY_CARD"
+        }
+      }]
+    },
+    "final": true
+  }
+}`
+    },
+    {
+      title: 'Paso 08 · Evento final hacia la App / Portal Web con tarjeta interactiva',
+      tab: 'res',
+      code: `event: assistant_response
+data: {
+  "text": "Tu posición de liquidez consolidada hoy es de 1.482.900,40 €...",
+  "ui_card": "TREASURY_SUMMARY_CARD",
+  "citations": ["A2A:commercial-treasury-agent", "API:CoreAccountsV2"],
+  "latency_ms": 980
+}`
+    }
+  ];
+
+  const jsonView = $('#jsonView');
+  const seqTitle = $('#seqTitle');
+  function selectSeqStep(idx) {
+    const item = SEQ_PAYLOADS[idx] || SEQ_PAYLOADS[0];
+    $$('#seqBody .srow').forEach((r, i) => r.classList.toggle('sel', i === idx));
+    $$('#jsonTabs button').forEach(b => b.classList.toggle('on', b.dataset.jtab === item.tab));
+    seqTitle.textContent = item.title;
+    jsonView.textContent = item.code;
+  }
+  selectSeqStep(1);
+
+  $$('#seqBody .srow').forEach(r => {
+    r.addEventListener('click', () => selectSeqStep(Number(r.dataset.step)));
+  });
+  $$('#jsonTabs button').forEach(b => {
+    b.addEventListener('click', () => {
+      const mapTab = { card: 1, req: 2, res: 6 };
+      selectSeqStep(mapTab[b.dataset.jtab] ?? 1);
+    });
+  });
+
+  $('#playSeqBtn').addEventListener('click', () => {
+    const rows = $$('#seqBody .srow');
+    rows.forEach(r => r.classList.remove('on', 'sel'));
+    rows.forEach((r, i) => {
+      setTimeout(() => {
+        r.classList.add('on');
+        selectSeqStep(i);
+      }, i * 340);
+    });
+  });
+
+  // =========================================================================
+  // 7. PLANTILLA DE CÓDIGO PYTHON EN 4 ARCHIVOS (SECCIÓN 04)
+  // =========================================================================
+  const TPL_FILES = [
+    `# 1. tools_api.py · Cliente asíncrono httpx con propagación de token OAuth2 OBO y validación Pydantic v2
+import asyncio
+import httpx
+from pydantic import BaseModel, Field
+from langchain_core.tools import StructuredTool
+
+class LiquidityQuery(BaseModel):
+    company_cif: str = Field(..., pattern=r"^[A-HJ-NP-SUVW]\\d{7}[0-9A-J]$")
+    include_sepa_pending: bool = True
+
+class LiquidityArtifact(BaseModel):
+    company_cif: str
+    total_available_eur: float
+    sepa_pending_inflow_eur: float
+    projected_eod_eur: float
+    accounts: list[dict]
+
+async def fetch_liquidity_from_core(company_cif: str, obo_token: str) -> LiquidityArtifact:
+    headers = {"Authorization": f"Bearer {obo_token}", "Accept": "application/json"}
+    async with httpx.AsyncClient(base_url="https://api.core.internal.bank", timeout=3.5) as client:
+        acc_resp, sepa_resp = await asyncio.gather(
+            client.get(f"/v2/corporate/accounts/balances", params={"cif": company_cif}, headers=headers),
+            client.get(f"/v2/sepa/pending-inflows", params={"cif": company_cif}, headers=headers),
+        )
+        acc_resp.raise_for_status()
+        sepa_resp.raise_for_status()
+        acc = acc_resp.json()
+        sepa = sepa_resp.json()
+        return LiquidityArtifact(
+            company_cif=company_cif,
+            total_available_eur=acc["total_available_eur"],
+            sepa_pending_inflow_eur=sepa["pending_eur"],
+            projected_eod_eur=round(acc["total_available_eur"] + sepa["pending_eur"], 2),
+            accounts=acc["accounts"],
+        )`,
+
+    `# 2. agent_graph.py · Grafo LangGraph del Agente Especialista en Python
+from typing import TypedDict, Optional
+from langgraph.graph import StateGraph, START, END
+from .tools_api import fetch_liquidity_from_core, LiquidityArtifact
+
+class TreasuryAgentState(TypedDict):
+    task_id: str
+    company_cif: str
+    obo_token: str
+    user_instruction: str
+    artifact: Optional[LiquidityArtifact]
+    summary_text: Optional[str]
+
+async def call_core_apis_node(state: TreasuryAgentState) -> dict:
+    artifact = await fetch_liquidity_from_core(
+        company_cif=state["company_cif"],
+        obo_token=state["obo_token"],
+    )
+    return {"artifact": artifact}
+
+async def format_executive_summary_node(state: TreasuryAgentState) -> dict:
+    art = state["artifact"]
+    txt = (
+        f"Posición consolidada para {art.company_cif}: {art.total_available_eur:,.2f} € "
+        f"(+{art.sepa_pending_inflow_eur:,.2f} € en cobros SEPA pendientes hoy)."
+    )
+    return {"summary_text": txt}
+
+builder = StateGraph(TreasuryAgentState)
+builder.add_node("call_core_apis", call_core_apis_node)
+builder.add_node("format_summary", format_executive_summary_node)
+builder.add_edge(START, "call_core_apis")
+builder.add_edge("call_core_apis", "format_summary")
+builder.add_edge("format_summary", END)
+treasury_graph = builder.compile()`,
+
+    `# 3. a2a_server.py · Microservicio FastAPI que implementa el Protocolo A2A (Agent Card + JSON-RPC)
+from fastapi import FastAPI, Header, HTTPException
+from pydantic import BaseModel
+from .agent_graph import treasury_graph
+
+app = FastAPI(title="Commercial Treasury A2A Agent", version="2.4.0")
+
+@app.get("/.well-known/agent.json")
+async def get_agent_card():
+    return {
+        "name": "commercial-treasury-agent",
+        "url": "https://agents.internal.bank/treasury/a2a",
+        "version": "2.4.0",
+        "capabilities": {"streaming": True},
+        "skills": [{"id": "get_consolidated_liquidity", "name": "Posición Global y SEPA Intradía"}],
+    }
+
+class A2ARequest(BaseModel):
+    jsonrpc: str = "2.0"
+    id: str
+    method: str
+    params: dict
+
+@app.post("/a2a")
+async def handle_a2a_rpc(req: A2ARequest, authorization: str = Header(...)):
+    obo_token = authorization.replace("Bearer ", "").strip()
+    data_part = req.params["message"]["parts"][-1]["data"]
+    result = await treasury_graph.ainvoke({
+        "task_id": req.params["id"],
+        "company_cif": data_part["company_cif"],
+        "obo_token": obo_token,
+        "user_instruction": "Consulta de posición global",
+    })
+    return {
+        "jsonrpc": "2.0",
+        "id": req.id,
+        "result": {
+            "id": req.params["id"],
+            "status": {"state": "completed"},
+            "artifact": {"name": "liquidity_card", "parts": [{"type": "data", "data": result["artifact"].model_dump()}]},
+        },
+    }`,
+
+    `# 4. orchestrator_router.py · Orquestador Central que combina Base de Conocimiento (RAG) y Agentes A2A
+import asyncio
+import httpx
+
+async def execute_hybrid_turn(question: str, company_cif: str, obo_token: str):
+    async with httpx.AsyncClient(timeout=5.0) as client:
+        # Ejecuta en paralelo la búsqueda en la Base de Conocimiento y la tarea A2A al agente Python
+        rag_task = query_hybrid_knowledge_base(question, segment="MIDCORP")
+        a2a_task = client.post(
+            "https://agents.internal.bank/treasury/a2a",
+            headers={"Authorization": f"Bearer {obo_token}"},
+            json={
+                "jsonrpc": "2.0",
+                "id": "rpc_101",
+                "method": "tasks/send",
+                "params": {
+                    "id": "task_01",
+                    "message": {"role": "user", "parts": [{"type": "data", "data": {"company_cif": company_cif}}]},
+                },
+            },
+        )
+        rag_chunks, a2a_response = await asyncio.gather(rag_task, a2a_task)
+    return synthesize_grounded_answer(question, rag_chunks, a2a_response.json()["result"]["artifact"])`
+  ];
+
+  const tplCode = $('#tplCode');
+  function setTpl(idx) {
+    $$('#tplSteps .tpl-step').forEach((b, i) => b.classList.toggle('on', i === idx));
+    tplCode.textContent = TPL_FILES[idx] || TPL_FILES[0];
+  }
+  setTpl(0);
+  $$('#tplSteps .tpl-step').forEach(btn => {
+    btn.addEventListener('click', () => setTpl(Number(btn.dataset.tpl)));
+  });
+
+  // Spotlight ratón en tarjetas de agentes
+  $$('#agentCards .acard').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    });
+  });
+
+  // =========================================================================
+  // 8. INTERACCIÓN DE LOS 5 ANILLOS DE SEGURIDAD (SECCIÓN 05)
+  // =========================================================================
+  function setRing(idx) {
+    $$('#secRings .ring').forEach(r => r.classList.toggle('on', Number(r.dataset.ring) === idx));
+    $$('#secList .sitem').forEach(s => s.classList.toggle('on', Number(s.dataset.ring) === idx));
+  }
+  $$('#secRings .ring, #secList .sitem').forEach(el => {
+    el.addEventListener('mouseenter', () => setRing(Number(el.dataset.ring)));
+    el.addEventListener('click', () => setRing(Number(el.dataset.ring)));
+  });
+})();
+</script>
+</body>
+</html>
