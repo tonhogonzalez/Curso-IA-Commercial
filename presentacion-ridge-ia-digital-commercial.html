@@ -2037,6 +2037,82 @@
     });
 
     selectInitiative(0);
+
+    // =========================================================================
+    // 4. MODO ESTUDIO LOCAL SEGURO (DLP-SAFE · CERO SUBIDA DE ARCHIVOS)
+    //    Permite editar textos y cifras directamente en pantalla (en local file://)
+    //    y descargar una copia .HTML con los datos actualizados o imprimir a PDF.
+    // =========================================================================
+    const EDIT_SEL = 'h1, h2, h3, p, .st-card-metric, .st-card-title, .st-card-desc, .st-syn-metric-box strong, .st-syn-metric-box small, .st-wave-kpi, .st-wave-title, .st-wave-list li, .ridge-manifesto-text, .ridge-right-copy';
+    let isLocalEditing = false;
+
+    const studioBar = document.createElement('div');
+    studioBar.id = 'ridge-local-studio-bar';
+    studioBar.style.cssText = 'position:fixed;bottom:18px;right:18px;z-index:99999;display:flex;gap:8px;align-items:center;background:rgba(6,11,22,0.92);backdrop-filter:blur(16px);border:1px solid rgba(56,189,248,0.42);border-radius:999px;padding:6px 12px;box-shadow:0 16px 40px rgba(0,0,0,0.65);font-family:var(--font-sans);font-size:12px;color:#f8fafc;';
+    studioBar.innerHTML = `
+      <span style="font-family:var(--font-mono);font-size:10px;color:#6ee7b7;padding:0 4px;">🔒 MODO LOCAL</span>
+      <button type="button" id="ridge-edit-toggle" style="background:rgba(56,189,248,0.18);border:1px solid rgba(56,189,248,0.5);color:#fff;border-radius:999px;padding:5px 11px;font-weight:700;font-size:11px;cursor:pointer;">✎ Editar Cifras/Textos</button>
+      <button type="button" id="ridge-save-html" style="background:#10b981;border:1px solid #10b981;color:#04110b;border-radius:999px;padding:5px 11px;font-weight:800;font-size:11px;cursor:pointer;">💾 Guardar .HTML</button>
+      <button type="button" id="ridge-print-pdf" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);color:#e2e8f0;border-radius:999px;padding:5px 10px;font-weight:700;font-size:11px;cursor:pointer;">🖨️ PDF</button>
+    `;
+    document.body.appendChild(studioBar);
+
+    const printStyle = document.createElement('style');
+    printStyle.textContent = `
+      [contenteditable="true"] { outline: 1px dashed rgba(56,189,248,0.65); outline-offset: 3px; border-radius: 4px; cursor: text; }
+      [contenteditable="true"]:focus { outline: 2px solid #34d399; background: rgba(16,185,129,0.08); }
+      @media print {
+        #ridge-local-studio-bar, .ridge-switcher-bar { display: none !important; }
+        body { background: #05080d !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      }
+    `;
+    document.head.appendChild(printStyle);
+
+    function setLocalEditMode(on) {
+      isLocalEditing = !!on;
+      document.querySelectorAll(EDIT_SEL).forEach(el => {
+        if (el.closest('#ridge-local-studio-bar')) return;
+        if (isLocalEditing) {
+          el.setAttribute('contenteditable', 'true');
+          el.setAttribute('spellcheck', 'false');
+        } else {
+          el.removeAttribute('contenteditable');
+          el.removeAttribute('spellcheck');
+        }
+      });
+      const btn = document.getElementById('ridge-edit-toggle');
+      if (btn) {
+        btn.textContent = isLocalEditing ? '✓ Editando en Pantalla (Clic en cualquier texto)' : '✎ Editar Cifras/Textos';
+        btn.style.background = isLocalEditing ? 'rgba(245,158,11,0.28)' : 'rgba(56,189,248,0.18)';
+        btn.style.borderColor = isLocalEditing ? '#f59e0b' : 'rgba(56,189,248,0.5)';
+      }
+    }
+
+    document.getElementById('ridge-edit-toggle').addEventListener('click', () => setLocalEditMode(!isLocalEditing));
+    document.getElementById('ridge-print-pdf').addEventListener('click', () => {
+      setLocalEditMode(false);
+      window.print();
+    });
+    document.getElementById('ridge-save-html').addEventListener('click', () => {
+      // Sincronizamos el título y lead actuales del Acto III con INITIATIVES antes de serializar
+      const cur = INITIATIVES[activeInitIdx];
+      if (cur) {
+        cur.title = document.getElementById('dd-title')?.textContent || cur.title;
+        cur.lead = document.getElementById('dd-lead')?.textContent || cur.lead;
+        cur.sla = document.getElementById('dd-sla-pill')?.textContent || cur.sla;
+      }
+      setLocalEditMode(false);
+      const clone = document.documentElement.cloneNode(true);
+      const barInClone = clone.querySelector('#ridge-local-studio-bar');
+      if (barInClone) barInClone.remove();
+      const htmlStr = '<!DOCTYPE html>\n' + clone.outerHTML;
+      const blob = new Blob([htmlStr], { type: 'text/html;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'presentacion-ridge-actualizada.html';
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 1500);
+    });
   })();
   </script>
 </body>

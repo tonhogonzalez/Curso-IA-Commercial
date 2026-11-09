@@ -1147,24 +1147,29 @@
             <pre class="st-pre" id="st-ps-out" style="max-height:190px;font-size:0.72rem;"></pre>
           </div>
 
-          <!-- 3.2 GUÍA DE COMPARTICIÓN POR TEAMS, CORREO O SHAREPOINT EN BANCA -->
-          <div class="concept-card highlight" style="margin:1.5rem 0;">
-            <div class="concept-card-label">📨 3.2. ¿Cómo envío o comparto mi presentación <code>.HTML</code> con mi jefe o el Comité por Teams / Correo?</div>
-            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;margin-top:0.65rem;">
-              <div style="background:rgba(4,9,18,0.65);border:1px solid rgba(52,211,153,0.35);border-radius:10px;padding:0.85rem 1rem;">
-                <strong style="color:#6ee7b7;font-size:0.86rem;display:block;margin-bottom:0.3rem;">Opción A · Enviar 1 único archivo <code>.html</code> suelto (~20 KB)</strong>
-                <p style="font-size:0.79rem;line-height:1.55;margin:0;color:#cbd5e1;">
-                  Si vas a enviar solo el archivo <code>mi-presentacion.html</code> por Teams o correo sin carpetas adjuntas:
-                  <br>• <strong>Con fondos Shader Canvas</strong> (<em>Topográfico 3D, Liquid Metal, Silk Aurora, Halftone</em>): funciona al 100% sin internet ni vídeos externos.
-                  <br>• <strong>Con fondos <code>.MP4</code></strong>: si el ordenador de tu director tiene salida a internet, reproduce el vídeo automáticamente desde la copia online; y si está en una red interna cerrada sin la carpeta <code>assets/</code>, <strong>conmuta solo al Shader Topográfico 3D</strong> para que la presentación nunca se vea rota.
+          <!-- 3.2 PROTOCOLO DLP Y DATOS SENSIBLES EN EL BANCO + ENVÍO POR TEAMS -->
+          <div class="concept-card highlight" style="margin:1.5rem 0;border-color:rgba(16,185,129,0.55);">
+            <div class="concept-card-label">🔒 3.2. ¿Tienes bloqueada la subida de archivos (DLP) o manejas datos sensibles del banco? Flujo 100% Local Seguro</div>
+            <p style="margin:0.45rem 0 0.75rem;font-size:0.83rem;line-height:1.58;color:#e2e8f0;">
+              En los portátiles corporativos la subida de archivos a webs externas está bloqueada por seguridad (DLP) y <strong>nunca debes introducir datos confidenciales de clientes o comités en una web en internet</strong>. Por eso todas las presentaciones <code>.html</code> que descargas en este cuaderno incluyen ahora un <strong>Modo Estudio Local (<code>🔒 MODO LOCAL · ✎ Editar en Pantalla · 💾 Guardar .HTML</code>)</strong> que funciona al 100% dentro de tu disco duro sin conexión ni subida de datos:
+            </p>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(265px,1fr));gap:0.9rem;">
+              <div style="background:rgba(4,9,18,0.72);border:1px solid rgba(16,185,129,0.45);border-radius:10px;padding:0.85rem 1rem;">
+                <strong style="color:#6ee7b7;font-size:0.85rem;display:block;margin-bottom:0.3rem;">1º Descarga la Plantilla sin Datos Sensibles</strong>
+                <p style="font-size:0.78rem;line-height:1.52;margin:0;color:#cbd5e1;">
+                  En la Sección 01 o 04 elige la estructura, el vídeo de fondo y descarga el archivo <code>.html</code> con textos genéricos o marcadores (ej. <code>[KPI_1]</code>). Hasta aquí ningún dato sensible ha tocado el navegador.
                 </p>
               </div>
-              <div style="background:rgba(4,9,18,0.65);border:1px solid rgba(56,189,248,0.35);border-radius:10px;padding:0.85rem 1rem;">
-                <strong style="color:#7dd3fc;font-size:0.86rem;display:block;margin-bottom:0.3rem;">Opción B · Con vídeos <code>.MP4</code> 100% Offline (Carpeta o <code>.ZIP</code>)</strong>
-                <p style="font-size:0.79rem;line-height:1.55;margin:0;color:#cbd5e1;">
-                  Si vas a proyectar en una sala sin Wi-Fi o enviar un paquete cerrado con vídeo HD:
-                  <br>• Pon tu archivo <code>presentacion.html</code> y al lado una subcarpeta <code>assets/scrolltide/</code> que contenga <strong>únicamente el archivo <code>.mp4</code> y su <code>-poster.jpg</code></strong> que hayas usado (pesan solo ~1,5 MB cada uno).
-                  <br>• Comprime ambos en un <code>.zip</code> o súbelos a una carpeta compartida de OneDrive / SharePoint.
+              <div style="background:rgba(4,9,18,0.72);border:1px solid rgba(56,189,248,0.45);border-radius:10px;padding:0.85rem 1rem;">
+                <strong style="color:#7dd3fc;font-size:0.85rem;display:block;margin-bottom:0.3rem;">2º Edita las Cifras en tu PC (<code>file:///</code> Offline)</strong>
+                <p style="font-size:0.78rem;line-height:1.52;margin:0;color:#cbd5e1;">
+                  Abre el <code>.html</code> descargado con doble clic en tu escritorio. Pulsa el botón superior <strong><code>✎ Editar en Pantalla</code></strong>: haz clic directamente sobre cualquier título, cifra o viñeta para escribir los datos reales en tu ordenador, y pulsa <strong><code>💾 Guardar .HTML</code></strong> para guardar tu archivo definitivo en local.
+                </p>
+              </div>
+              <div style="background:rgba(4,9,18,0.72);border:1px solid rgba(167,139,250,0.45);border-radius:10px;padding:0.85rem 1rem;">
+                <strong style="color:#c4b5fd;font-size:0.85rem;display:block;margin-bottom:0.3rem;">3º Envía por Teams/Correo o Exporta a PDF</strong>
+                <p style="font-size:0.78rem;line-height:1.52;margin:0;color:#cbd5e1;">
+                  El nuevo <code>.html</code> guardado ya lleva tus datos incrustados dentro del propio archivo. Puedes enviarlo por Teams/correo interno o pulsar el botón <strong><code>🖨️ PDF</code></strong> integrado para generar el acta en PDF con <code>Ctrl+P</code>.
                 </p>
               </div>
             </div>
@@ -1211,12 +1216,12 @@ Tu objetivo es crear un **archivo `.html` autónomo** que funcione como una pres
       <section id="ensamblador-deck" class="transcript-section" data-st-group="builder">
         <div class="section-header">
           <span class="section-number">04</span>
-          <h2 class="section-title">Generador en Vivo: Convierte tus Notas del Trabajo en una Presentación <code>.HTML</code> en 60 Segundos</h2>
+          <h2 class="section-title">Generador en Vivo (Compatible con Bloqueo DLP): Crea tu Presentación o Micrositio de 4 Actos</h2>
         </div>
         <div class="section-divider"></div>
         <div class="transcript-text">
           <p>
-            Elige uno de los <strong>4 Kits de Proyecto en 1 clic</strong>, o pega abajo cualquier texto en bruto de un Word, correo o PowerPoint de tu trabajo para convertirlo automáticamente en escenas. Después pulsa <strong><code>▶ Cargar y Ver en el Teatro 3D</code></strong> o <strong><code>⬇ Descargar mi Presentación (.HTML)</code></strong>:
+            Elige uno de los <strong>4 Kits de Proyecto en 1 clic</strong> (o estructura tus escenas con texto no sensible) y descárgalo como <strong>Presentación por Escenas</strong> o como <strong>Micrositio Ejecutivo Completo de 4 Actos (Estilo Ridge)</strong>. Ambos archivos descargados incluyen el botón <strong><code>✎ Editar en Pantalla</code></strong> para que, una vez abiertos en tu ordenador del trabajo en local (<code>file:///</code>, sin subir nada a internet), puedas hacer clic sobre cualquier cifra o texto para poner los datos confidenciales reales y guardarlos con <strong><code>💾 Guardar .HTML</code></strong>:
           </p>
 
           <div class="st-kits-bar" id="st-kits-bar">
@@ -1242,19 +1247,19 @@ Tu objetivo es crear un **archivo `.html` autónomo** que funcione como una pres
             </button>
           </div>
 
-          <!-- CONVERTIDOR AUTOMÁTICO DE NOTAS EN BRUTO DEL TRABAJO -->
+          <!-- CONVERTIDOR AUTOMÁTICO DE BORRADOR / ESQUEMA SIN SUBIDA DE ARCHIVOS -->
           <div style="background:rgba(11,18,34,0.92);border:1px solid rgba(167,139,250,0.42);border-radius:14px;padding:1rem 1.2rem;margin:1rem 0 1.25rem;">
             <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:0.6rem;margin-bottom:0.55rem;">
               <div>
-                <span class="st-mono" style="font-size:0.66rem;color:#c4b5fd;font-weight:800;">✨ OPCIONAL · PEGA TUS NOTAS EN BRUTO DE WORD / CORREO / POWERPOINT</span>
-                <div style="font-size:0.82rem;color:#e2e8f0;margin-top:0.15rem;">Pega párrafos o viñetas de tu proyecto sin formato especial; el asistente los divide y estructura automáticamente en escenas listas para descargar.</div>
+                <span class="st-mono" style="font-size:0.66rem;color:#c4b5fd;font-weight:800;">✨ OPCIONAL (100% EN MEMORIA DEL NAVEGADOR · CERO SUBIDA) · CONVERTIDOR DE ESQUEMA A ESCENAS</span>
+                <div style="font-size:0.8rem;color:#e2e8f0;margin-top:0.15rem;">Si quieres armar el esqueleto rápido con ideas generales (y luego rellenar las cifras sensibles en local con <code>✎ Editar en Pantalla</code> dentro del <code>.html</code> descargado), escribe o pega aquí los puntos generales:</div>
               </div>
               <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
-                <button type="button" class="st-pill-btn" id="b-sample-notes-btn">📄 Cargar Ejemplo de Notas de Reunión</button>
-                <button type="button" class="st-pill-btn emerald" id="b-convert-notes-btn">✨ Convertir mis notas en escenas automáticamente</button>
+                <button type="button" class="st-pill-btn" id="b-sample-notes-btn">📄 Cargar Esquema con Marcadores [KPI]</button>
+                <button type="button" class="st-pill-btn emerald" id="b-convert-notes-btn">✨ Convertir esquema en escenas automáticamente</button>
               </div>
             </div>
-            <textarea id="b-raw-notes" placeholder="Pega aquí cualquier texto de tu trabajo (por ejemplo, 4 o 5 párrafos o puntos de un documento Word o correo explicando el problema, la propuesta, la arquitectura y el impacto esperado)..." style="width:100%;min-height:86px;background:#060a14;border:1px solid rgba(255,255,255,0.14);color:#f8fafc;border-radius:8px;padding:0.55rem 0.75rem;font-size:0.77rem;font-family:inherit;"></textarea>
+            <textarea id="b-raw-notes" placeholder="Escribe aquí los 4 o 5 títulos/ideas generales de tu presentación (puedes dejar marcadores como [KPI_AHORRO] o [VOLUMEN] para rellenarlos luego en local dentro del .html descargado)..." style="width:100%;min-height:80px;background:#060a14;border:1px solid rgba(255,255,255,0.14);color:#f8fafc;border-radius:8px;padding:0.55rem 0.75rem;font-size:0.77rem;font-family:inherit;"></textarea>
           </div>
 
           <div class="st-builder-grid">
@@ -1319,8 +1324,9 @@ Despliegue en Red y Territorios | Escalado progresivo a las direcciones territor
 Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de análisis y 0 errores de cuadre en Comité. | stack | IMPACTO: -65% TIEMPO | Payback: 4,2 meses; Margen: +310 pb RORWA; Auditoría: 100% trazable</textarea>
               </div>
               <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
-                <button type="button" class="st-pill-btn active" id="b-preview-in-stage">▶ Cargar y Ver en el Teatro 3D (Sección 01)</button>
-                <button type="button" class="st-pill-btn emerald" id="b-download-html">⬇ Descargar mi Presentación (.HTML)</button>
+                <button type="button" class="st-pill-btn active" id="b-preview-in-stage">▶ Ver en el Teatro 3D (Sección 01)</button>
+                <button type="button" class="st-pill-btn emerald" id="b-download-html">⬇ Descargar Presentación por Escenas (.HTML + Editor Local)</button>
+                <button type="button" class="st-pill-btn emerald" id="b-download-4act-html" style="background:linear-gradient(135deg,#38bdf8,#10b981);color:#04110b;">🏔️ Descargar Micrositio 4 Actos Estilo Ridge (.HTML + Editor Local)</button>
               </div>
             </div>
 
@@ -2600,8 +2606,10 @@ Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de aná
     // -------------------------------------------------------------------------
     // 4. Exportador de Presentación .HTML Autónoma (Studio-Grade Scrolltide Pro)
     //    · 4 arquitecturas espaciales (ridge / zephyr / synapse / selene)
-    //    · Texto escapado + JSON incrustado de forma segura
-    //    · Si el .mp4 no se encuentra (sin carpeta assets/ y sin internet) cae a Shader y avisa
+    //    · Modo Estudio Local Seguro (DLP-Safe · Cero Subida):
+    //      Permite pulsar "✎ Editar en Pantalla" cuando el archivo se abre en local (file://)
+    //      para poner cifras sensibles reales y pulsar "💾 Guardar .HTML" (reescribe SCENES).
+    //    · Calculadora de ROI en vivo e impresión limpia a PDF (🖨️ PDF)
     // -------------------------------------------------------------------------
     function buildStandaloneDeckHtml(deckTitle, shaderOrMp4Mode, scenesArray, explicitVideoSlug, layoutMode) {
       const scenesJson = JSON.stringify(scenesArray || [])
@@ -2634,6 +2642,7 @@ Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de aná
   .controls { display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap; }
   .tbtn { font: 700 0.68rem 'Plus Jakarta Sans', sans-serif; padding: 0.3rem 0.62rem; border-radius: 999px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); color: #cbd5e1; cursor: pointer; transition: all 160ms ease; }
   .tbtn.active, .tbtn:hover { background: rgba(56,189,248,0.2); border-color: #38bdf8; color: #fff; }
+  .tbtn.em { background: #10b981; border-color: #10b981; color: #04110b; font-weight: 800; }
   .stage { position: relative; flex: 1; overflow: hidden; }
   canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
   #bg { z-index: 1; } #hero { z-index: 2; }
@@ -2673,9 +2682,9 @@ Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de aná
   .zc b { display: block; font-family: 'Space Mono', monospace; font-size: 0.64rem; color: #fbbf24; margin-bottom: 0.2rem; }
   .zc strong { display: block; font-size: 0.82rem; margin-bottom: 0.14rem; }
   .zc span { display: block; font-size: 0.73rem; color: #cbd5e1; line-height: 1.38; }
-  /* SYNAPSE · split + telemetría */
-  .layer.synapse { grid-template-columns: minmax(290px, 440px) minmax(260px, 380px); justify-content: space-between; }
-  .layer.synapse .syn { display: flex; flex-direction: column; gap: 0.6rem; background: rgba(8,14,24,0.8); backdrop-filter: blur(22px); border: 1px solid rgba(52,211,153,0.32); border-radius: 16px; padding: 1.2rem 1.3rem; box-shadow: 0 24px 55px rgba(0,0,0,0.65); }
+  /* SYNAPSE · split + telemetría + calculadora ROI */
+  .layer.synapse { grid-template-columns: minmax(290px, 440px) minmax(270px, 400px); justify-content: space-between; }
+  .layer.synapse .syn { display: flex; flex-direction: column; gap: 0.6rem; background: rgba(8,14,24,0.82); backdrop-filter: blur(22px); border: 1px solid rgba(52,211,153,0.35); border-radius: 16px; padding: 1.2rem 1.3rem; box-shadow: 0 24px 55px rgba(0,0,0,0.65); }
   .syn-head { display: flex; justify-content: space-between; font-family: 'Space Mono', monospace; font-size: 0.64rem; color: #6ee7b7; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.5rem; }
   .bars { display: grid; grid-template-columns: repeat(12, 1fr); gap: 4px; }
   .bars i { height: 18px; border-radius: 3px; background: rgba(52,211,153,0.2); transition: background 300ms ease; }
@@ -2684,6 +2693,9 @@ Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de aná
   .step.hl { border-color: rgba(52,211,153,0.45); }
   .step strong { display: block; font-size: 0.75rem; } .step span { display: block; font-size: 0.68rem; color: #94a3b8; }
   .step em { font-style: normal; font-family: 'Space Mono', monospace; font-size: 0.6rem; color: #34d399; flex-shrink: 0; }
+  .roibox { background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.3); border-radius: 10px; padding: 0.55rem 0.7rem; margin-top: 0.2rem; }
+  .roibox label { display: flex; justify-content: space-between; font-family: 'Space Mono', monospace; font-size: 0.62rem; color: #a7f3d0; margin-bottom: 0.25rem; }
+  .roibox input[type=range] { width: 100%; accent-color: #10b981; cursor: pointer; }
   .layer.zephyr .card .foot small, .layer.ridge .card .foot small { display: none; }
   .notice { position: absolute; left: 50%; top: 1rem; transform: translateX(-50%); z-index: 6; display: none; max-width: 640px; background: rgba(120,53,15,0.92); border: 1px solid #f59e0b; color: #fef3c7; font-size: 0.78rem; line-height: 1.45; padding: 0.6rem 0.9rem; border-radius: 10px; }
   .notice code { font-family: 'Space Mono', monospace; font-size: 0.72rem; }
@@ -2692,23 +2704,32 @@ Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de aná
   .sbtn.active { background: rgba(56,189,248,0.18); border-color: #38bdf8; color: #fff; }
   .sbtn small { display: block; font-family: 'Space Mono', monospace; font-size: 0.6rem; color: #67e8f9; margin-bottom: 0.1rem; }
   .sbtn span { font-size: 0.75rem; font-weight: 700; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  [contenteditable="true"] { outline: 1px dashed #38bdf8; outline-offset: 3px; border-radius: 4px; cursor: text; }
+  [contenteditable="true"]:focus { outline: 2px solid #10b981; background: rgba(16,185,129,0.1); }
   @media (max-width: 860px) {
     .layer, .layer.synapse { grid-template-columns: 1fr; padding: 1rem; align-items: end; }
     .layer.synapse .syn { display: none; }
     .layer.ridge .pillars { grid-template-columns: 1fr; }
+  }
+  @media print {
+    .topbar, .bar, .notice { display: none !important; }
+    body { overflow: visible; height: auto; background: #04070d !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   }
   @media (prefers-reduced-motion: reduce) { h1 .w { transition: none; } }
 \x3c/style>
 \x3c/head>
 \x3cbody>
   <div class="topbar">
-    <div class="brand">${safeTitle} <span>SCROLLTIDE STUDIO</span></div>
+    <div class="brand"><b id="btitle">${safeTitle}</b> <span>🔒 MODO LOCAL SEGURO</span></div>
     <div class="controls">
       <button class="tbtn" data-lay="ridge">⛰️ 5-Zonas</button>
       <button class="tbtn" data-lay="zephyr">🏛️ Raíl</button>
-      <button class="tbtn" data-lay="synapse">🧬 Telemetría</button>
+      <button class="tbtn" data-lay="synapse">🧬 Telemetría + ROI</button>
       <button class="tbtn" data-lay="selene">🌕 Cristal + 3D</button>
       <button class="tbtn" id="bgbtn">🎬 Vídeo / Shader</button>
+      <button class="tbtn" id="editbtn" title="Editar textos y cifras directamente en pantalla (en local, sin subir datos)">✎ Editar en Pantalla</button>
+      <button class="tbtn em" id="savebtn" title="Guardar una copia .HTML en tu disco duro con los textos y cifras editados">💾 Guardar .HTML</button>
+      <button class="tbtn" id="pdfbtn" title="Imprimir o guardar en PDF">🖨️ PDF</button>
       <button class="tbtn" id="fsbtn">⛶</button>
     </div>
   </div>
@@ -2727,23 +2748,27 @@ Hoja de Ruta e Impacto Q1–Q4 | Reducción del 65% en tiempo de entrega de aná
         <h1 id="t"></h1>
         <p class="lead" id="l"></p>
         <div class="pillars" id="p"></div>
-        <div class="foot"><span id="m"></span><small>Rueda · ← → · L cambia vista</small></div>
+        <div class="foot"><span id="m"></span><small>Rueda · ← → · E edita en pantalla</small></div>
       </div>
       <div class="syn">
-        <div class="syn-head"><span>● TELEMETRÍA EN VIVO</span><strong id="sb"></strong></div>
+        <div class="syn-head"><span>● TELEMETRÍA &amp; IMPACTO EN VIVO</span><strong id="sb"></strong></div>
         <div class="bars" id="bars"></div>
         <div id="steps" style="display:grid;gap:0.4rem;"></div>
+        <div class="roibox">
+          <label><span>SIMULADOR VOLUMEN MENSUAL: <b id="roivol">450</b> ops</span><strong id="roival" style="color:#34d399;">+1.620 h/mes</strong></label>
+          <input type="range" id="roislider" min="50" max="2000" step="50" value="450">
+        </div>
       </div>
       <div class="floor" id="floor"></div>
     </div>
   </div>
   <div class="bar" id="bar"></div>
-\x3cscript>
-const SCENES = ${scenesJson};
+\x3cscript id="deck-script">
+/*__SCENES_START__*/const SCENES = ${scenesJson};/*__SCENES_END__*/
 let SHADER = '${shMode}';
 let LAYOUT = '${lay}';
 const LAYS = ['ridge', 'zephyr', 'synapse', 'selene'];
-let idx = 0, targetP = 0, currentP = 0, rotY = 0.4;
+let idx = 0, targetP = 0, currentP = 0, rotY = 0.4, editing = false;
 function esc(v) { return String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
 const $ = id => document.getElementById(id);
 const N = 110;
@@ -2759,7 +2784,59 @@ const nodes = Array.from({length:N}, (_, i) => {
     tunnel: {x:Math.cos(ta)*135, y:Math.sin(ta)*105, z:td}
   }};
 });
+function syncEditsFromDom() {
+  if (!SCENES[idx]) return;
+  const s = SCENES[idx];
+  s.kicker = $('k').innerText.trim();
+  s.title = $('t').innerText.replace(/\\s+/g, ' ').trim();
+  s.lead = $('l').innerText.trim();
+  s.metric = $('m').innerText.trim();
+  const pEls = document.querySelectorAll('#p .pillar');
+  if (pEls.length && s.pillars) {
+    pEls.forEach((el, i) => {
+      if (!s.pillars[i]) return;
+      const b = el.querySelector('.badge'), st = el.querySelector('strong'), sp = el.querySelector('span:not(.badge)');
+      if (b) s.pillars[i].b = b.innerText.trim();
+      if (st) s.pillars[i].t = st.innerText.trim();
+      if (sp) s.pillars[i].d = sp.innerText.trim();
+    });
+  }
+}
+function applyEditAttr() {
+  const targets = [$('btitle'), $('k'), $('t'), $('l'), $('m'), ...document.querySelectorAll('#p .badge, #p strong, #p span:not(.badge), #floor b, #floor strong, #floor span, #steps strong, #steps span')];
+  targets.forEach(el => {
+    if (!el) return;
+    if (editing) { el.setAttribute('contenteditable', 'true'); el.setAttribute('spellcheck', 'false'); }
+    else { el.removeAttribute('contenteditable'); el.removeAttribute('spellcheck'); }
+  });
+  $('editbtn').classList.toggle('active', editing);
+  $('editbtn').textContent = editing ? '✓ Editando (Clic en textos)' : '✎ Editar en Pantalla';
+}
+$('editbtn').addEventListener('click', () => {
+  if (editing) { syncEditsFromDom(); editing = false; setScene(idx); }
+  else { editing = true; $('t').textContent = SCENES[idx].title; }
+  applyEditAttr();
+});
+$('savebtn').addEventListener('click', () => {
+  if (editing) { syncEditsFromDom(); editing = false; applyEditAttr(); setScene(idx); }
+  const newScenesJson = JSON.stringify(SCENES).replace(/</g, '\\\\u003c');
+  let fullHtml = '<!DOCTYPE html>\\n' + document.documentElement.outerHTML;
+  fullHtml = fullHtml.replace(/\\/\\*__SCENES_START__\\*\\/[\\s\\S]*?\\/\\*__SCENES_END__\\*\\//, '/*__SCENES_START__*/const SCENES = ' + newScenesJson + ';/*__SCENES_END__*/');
+  const blob = new Blob([fullHtml], { type: 'text/html;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'presentacion-actualizada-local.html';
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1500);
+});
+$('pdfbtn').addEventListener('click', () => { if (editing) { syncEditsFromDom(); editing = false; applyEditAttr(); } window.print(); });
+$('roislider').addEventListener('input', e => {
+  const v = Number(e.target.value || 450);
+  $('roivol').textContent = v;
+  $('roival').textContent = '+' + Math.round(v * (3.2 + idx * 0.4)).toLocaleString('es-ES') + ' h/mes';
+});
 function setLayout(mode) {
+  if (editing) syncEditsFromDom();
   LAYOUT = LAYS.includes(mode) ? mode : 'ridge';
   $('layer').className = 'layer ' + LAYOUT;
   document.querySelectorAll('[data-lay]').forEach(b => b.classList.toggle('active', b.dataset.lay === LAYOUT));
@@ -2779,14 +2856,20 @@ $('bgbtn').addEventListener('click', () => setBg(SHADER === 'video' ? 'ridge' : 
 $('fsbtn').addEventListener('click', () => { if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen && document.documentElement.requestFullscreen(); });
 function setScene(n) {
   if (!SCENES.length) return;
+  if (editing) syncEditsFromDom();
   idx = Math.max(0, Math.min(SCENES.length - 1, n));
   targetP = idx;
   const s = SCENES[idx], pl = s.pillars || [];
   $('k').textContent = s.kicker || '';
   const t = $('t');
   t.classList.remove('on');
-  t.innerHTML = String(s.title || '').split(' ').map((w, i) => '<span class="w" style="transition-delay:' + (i * 28) + 'ms">' + esc(w) + '&nbsp;</span>').join('');
-  requestAnimationFrame(() => requestAnimationFrame(() => t.classList.add('on')));
+  if (editing) {
+    t.textContent = s.title || '';
+    t.classList.add('on');
+  } else {
+    t.innerHTML = String(s.title || '').split(' ').map((w, i) => '<span class="w" style="transition-delay:' + (i * 28) + 'ms">' + esc(w) + '&nbsp;</span>').join('');
+    requestAnimationFrame(() => requestAnimationFrame(() => t.classList.add('on')));
+  }
   $('l').textContent = s.lead || '';
   $('m').textContent = s.metric || '';
   $('p').innerHTML = pl.map(p => '<div class="pillar' + (p.hl ? ' hl' : '') + '"><span class="badge">' + esc(p.b) + '</span><div><strong>' + esc(p.t) + '</strong><span>' + esc(p.d) + '</span></div></div>').join('');
@@ -2797,14 +2880,16 @@ function setScene(n) {
   $('steps').innerHTML = pl.map(p => '<div class="step' + (p.hl ? ' hl' : '') + '"><div><strong>' + esc(p.t) + '</strong><span>' + esc(p.d) + '</span></div><em>' + esc(p.b) + '</em></div>').join('');
   $('bar').innerHTML = SCENES.map((sc, i) => '<button class="sbtn' + (i === idx ? ' active' : '') + '" data-i="' + i + '"><small>0' + (i + 1) + '</small><span>' + esc(sc.title) + '</span></button>').join('');
   $('bar').querySelectorAll('[data-i]').forEach(b => b.addEventListener('click', () => setScene(Number(b.dataset.i))));
+  applyEditAttr();
 }
 window.addEventListener('keydown', e => {
+  if (editing) return;
   if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); setScene(idx + 1); }
   if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); setScene(idx - 1); }
   if (e.key === 'l' || e.key === 'L') setLayout(LAYS[(LAYS.indexOf(LAYOUT) + 1) % LAYS.length]);
 });
 let cd = 0;
-$('st').addEventListener('wheel', e => { e.preventDefault(); if (performance.now() - cd > 480) { cd = performance.now(); setScene(idx + (e.deltaY > 0 ? 1 : -1)); } }, { passive: false });
+$('st').addEventListener('wheel', e => { if (editing) return; e.preventDefault(); if (performance.now() - cd > 480) { cd = performance.now(); setScene(idx + (e.deltaY > 0 ? 1 : -1)); } }, { passive: false });
 const bg = $('bg'), hero = $('hero'), bctx = bg.getContext('2d'), hctx = hero.getContext('2d');
 function rsz() { const r = $('st').getBoundingClientRect(); bg.width = hero.width = r.width; bg.height = hero.height = r.height; }
 window.addEventListener('resize', rsz); rsz(); setLayout(LAYOUT); setScene(0);
@@ -2841,6 +2926,249 @@ function frame(now) {
   requestAnimationFrame(frame);
 }
 requestAnimationFrame(frame);
+\x3c/script>
+\x3c/body>
+\x3c/html>`;
+    }
+
+    // -------------------------------------------------------------------------
+    // 4B. Exportador del Micrositio Ejecutivo Completo de 4 Actos (Estilo Ridge)
+    //     · Acto I: Hero 5 Zonas Monumental con vídeo limpio
+    //     · Acto II: Reel de 4 Tarjetas Verticales 3:4 en vídeo
+    //     · Acto III: Escenario Deep-Dive Interactivo + Simulador ROI en vivo
+    //     · Acto IV: Hoja de Ruta Trimestral + Modo Edición Local Seguro (DLP-Safe)
+    // -------------------------------------------------------------------------
+    function buildFullRidge4ActHtml(deckTitle, shaderOrMp4Mode, scenesArray, explicitVideoSlug) {
+      const sc = (scenesArray && scenesArray.length) ? scenesArray : parseCustomScenes();
+      const s0 = sc[0] || { title: deckTitle, lead: 'Transformación operativa y analítica con IA.', metric: 'IMPACTO COMITÉ' };
+      const rawMode = shaderOrMp4Mode || 'mp4:ridge';
+      const vSlug = explicitVideoSlug || (rawMode.startsWith('mp4:') ? rawMode.slice(4) : activeVideoSlug || 'ridge');
+      const vMeta = CLEAN_MP4_CATALOG.find(x => x.slug === vSlug) || CLEAN_MP4_CATALOG[0];
+      const cardVideos = ['zephyr', 'synapse', 'helix', 'nebula'];
+      const safeTitle = esc(deckTitle || 'Presentación Ejecutiva · 4 Actos');
+      const scenesJson = JSON.stringify(sc).replace(/</g, '\\u003c');
+
+      const cardsHtml = sc.slice(0, 4).map((item, idx) => {
+        const cvSlug = cardVideos[idx % cardVideos.length];
+        const cvMeta = CLEAN_MP4_CATALOG.find(x => x.slug === cvSlug) || vMeta;
+        return `
+        <article class="mcard" data-idx="${idx}">
+          <video autoplay muted loop playsinline poster="assets/scrolltide/${cvMeta.slug}-poster.jpg">
+            <source src="assets/scrolltide/${cvMeta.slug}.mp4" type="video/mp4">
+            <source src="https://pub-1e5b4001b36b47e28e6a2fb775966a79.r2.dev/${cvMeta.r2}" type="video/mp4">
+          </video>
+          <div class="mcard-scrim"></div>
+          <div class="mcard-top"><span>0${idx + 1} / 0${ Math.min(4, sc.length) }</span><span>${esc(item.metric || 'ACTIVO')}</span></div>
+          <div class="mcard-bot">
+            <div class="mcard-kpi">${esc((item.pillars && item.pillars[0] && item.pillars[0].b) || '0' + (idx + 1))}</div>
+            <h3>${esc(item.title)}</h3>
+            <p>${esc(item.lead)}</p>
+          </div>
+        </article>`;
+      }).join('');
+
+      const wavesHtml = sc.slice(0, 3).map((item, idx) => `
+        <div class="wcol">
+          <div class="wtag">OLA 0${idx + 1} · Q${idx + 1}–Q${idx + 2}</div>
+          <div class="wkpi">${esc(item.metric || 'OBJETIVO CLAVE')}</div>
+          <h4>${esc(item.title)}</h4>
+          <p>${esc(item.lead)}</p>
+          <ul>${(item.pillars || []).map(p => `<li><strong>${esc(p.t)}:</strong> ${esc(p.d)}</li>`).join('')}</ul>
+        </div>
+      `).join('');
+
+      return `<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${safeTitle}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+\x3cstyle>
+  :root { --ink:#05080d; --bone:#f5f7fa; --mist:rgba(224,234,245,0.82); --line:rgba(255,255,255,0.13); --sans:'Plus Jakarta Sans',system-ui,sans-serif; --serif:'Instrument Serif',Georgia,serif; --mono:'Space Mono',monospace; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html { scroll-behavior:smooth; background:var(--ink); color:var(--bone); font-family:var(--sans); }
+  body { background:var(--ink); overflow-x:hidden; }
+  .hero { position:relative; min-height:100vh; display:flex; flex-direction:column; justify-content:space-between; padding:2rem 3.2rem; overflow:hidden; }
+  .hero video { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0; }
+  .hero-scrim { position:absolute; inset:0; z-index:1; background:linear-gradient(180deg,rgba(4,7,12,0.52) 0%,rgba(4,7,12,0.12) 40%,rgba(4,7,12,0.88) 100%); }
+  .top, .center, .horizon { position:relative; z-index:2; }
+  .top { display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap; }
+  .logo { font-family:var(--mono); font-weight:700; font-size:1.05rem; letter-spacing:-0.02em; }
+  .nav { display:flex; gap:1.4rem; font-size:0.84rem; }
+  .nav a { color:var(--mist); text-decoration:none; }
+  .center { text-align:center; max-width:860px; margin:auto; padding:3rem 0; }
+  .kicker { display:inline-block; font-family:var(--mono); font-size:0.68rem; color:#67e8f9; background:rgba(6,182,212,0.16); border:1px solid rgba(6,182,212,0.4); padding:0.25rem 0.75rem; border-radius:999px; margin-bottom:1rem; }
+  .center h1 { font-size:clamp(2.3rem,4.6vw,4.1rem); font-weight:700; letter-spacing:-0.03em; line-height:1.06; margin-bottom:1rem; text-shadow:0 12px 36px rgba(0,0,0,0.85); }
+  .center p { font-size:1.05rem; color:var(--mist); max-width:650px; margin:0 auto 1.5rem; line-height:1.6; }
+  .cta { display:inline-block; background:rgba(74,111,117,0.82); backdrop-filter:blur(14px); color:#fff; text-decoration:none; padding:0.8rem 1.7rem; border-radius:999px; font-weight:600; font-size:0.9rem; border:1px solid rgba(255,255,255,0.22); }
+  .horizon { display:grid; grid-template-columns:1.2fr 1fr; gap:2rem; align-items:end; padding-top:1.4rem; border-top:1px solid var(--line); }
+  .manifesto { font-size:clamp(1.25rem,2vw,1.7rem); line-height:1.32; }
+  .manifesto em { font-family:var(--serif); font-style:italic; font-weight:400; color:#7dd3fc; font-size:1.12em; }
+  .sec { max-width:1280px; margin:0 auto; padding:5rem 2.4rem; }
+  .sec-head { margin-bottom:2.2rem; }
+  .sec-head small { font-family:var(--mono); font-size:0.72rem; color:#67e8f9; display:block; margin-bottom:0.4rem; }
+  .sec-head h2 { font-size:clamp(1.8rem,3vw,2.6rem); letter-spacing:-0.025em; }
+  .reel { display:grid; grid-template-columns:repeat(auto-fit,minmax(255px,1fr)); gap:1.2rem; }
+  .mcard { position:relative; aspect-ratio:3/4; border-radius:20px; overflow:hidden; border:1px solid var(--line); display:flex; flex-direction:column; justify-content:space-between; padding:1.3rem; cursor:pointer; background:#090f1a; }
+  .mcard video { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0; transition:transform 700ms ease; }
+  .mcard:hover video { transform:scale(1.06); }
+  .mcard-scrim { position:absolute; inset:0; z-index:1; background:linear-gradient(180deg,rgba(4,8,15,0.45) 0%,rgba(4,8,15,0.15) 40%,rgba(4,8,15,0.92) 100%); }
+  .mcard-top, .mcard-bot { position:relative; z-index:2; }
+  .mcard-top { display:flex; justify-content:space-between; font-family:var(--mono); font-size:0.65rem; color:#cbd5e1; }
+  .mcard-kpi { font-family:var(--mono); font-size:1.5rem; font-weight:700; color:#34d399; margin-bottom:0.35rem; }
+  .mcard-bot h3 { font-size:1.12rem; margin-bottom:0.35rem; }
+  .mcard-bot p { font-size:0.8rem; color:#cbd5e1; line-height:1.45; }
+  .dd-box { background:rgba(10,16,28,0.88); border:1px solid var(--line); border-radius:22px; padding:2rem; display:grid; grid-template-columns:1.1fr 0.9fr; gap:2rem; }
+  .tabs { display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:1.2rem; }
+  .tab { background:rgba(255,255,255,0.05); border:1px solid var(--line); color:#cbd5e1; padding:0.45rem 0.9rem; border-radius:999px; font-size:0.76rem; font-weight:700; cursor:pointer; }
+  .tab.active { background:#38bdf8; color:#041019; border-color:#38bdf8; }
+  .rail { display:grid; gap:0.65rem; margin-top:1.2rem; }
+  .rstep { background:rgba(255,255,255,0.04); border:1px solid var(--line); border-radius:12px; padding:0.75rem 1rem; display:flex; justify-content:space-between; gap:0.8rem; }
+  .syn-panel { background:rgba(6,11,20,0.92); border:1px solid rgba(52,211,153,0.38); border-radius:16px; padding:1.4rem; display:flex; flex-direction:column; justify-content:space-between; gap:1rem; }
+  .waves { display:grid; grid-template-columns:repeat(auto-fit,minmax(270px,1fr)); gap:1.2rem; }
+  .wcol { background:rgba(11,17,30,0.82); border:1px solid var(--line); border-radius:18px; padding:1.5rem; }
+  .wtag { font-family:var(--mono); font-size:0.68rem; color:#67e8f9; margin-bottom:0.4rem; }
+  .wkpi { font-family:var(--mono); font-size:1.35rem; font-weight:700; color:#34d399; margin-bottom:0.45rem; }
+  .wcol h4 { font-size:1.05rem; margin-bottom:0.4rem; }
+  .wcol p { font-size:0.82rem; color:#cbd5e1; margin-bottom:0.8rem; line-height:1.5; }
+  .wcol ul { padding-left:1.1rem; font-size:0.78rem; color:#94a3b8; display:grid; gap:0.35rem; }
+  #studio-bar { position:fixed; bottom:18px; right:18px; z-index:9999; display:flex; gap:8px; align-items:center; background:rgba(6,11,22,0.94); backdrop-filter:blur(16px); border:1px solid rgba(56,189,248,0.45); border-radius:999px; padding:6px 12px; box-shadow:0 16px 40px rgba(0,0,0,0.65); font-size:12px; }
+  #studio-bar button { border-radius:999px; padding:5px 11px; font-weight:700; font-size:11px; cursor:pointer; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.08); color:#fff; }
+  #studio-bar button.em { background:#10b981; border-color:#10b981; color:#04110b; font-weight:800; }
+  [contenteditable="true"] { outline:1px dashed #38bdf8; outline-offset:3px; border-radius:4px; }
+  @media (max-width:860px) { .horizon, .dd-box { grid-template-columns:1fr; } }
+  @media print { #studio-bar { display:none !important; } }
+\x3c/style>
+\x3c/head>
+\x3cbody>
+  <!-- ACTO I · RIDGE 5-ZONE HERO -->
+  <header class="hero">
+    <video autoplay muted loop playsinline poster="assets/scrolltide/${vMeta.slug}-poster.jpg">
+      <source src="assets/scrolltide/${vMeta.slug}.mp4" type="video/mp4">
+      <source src="https://pub-1e5b4001b36b47e28e6a2fb775966a79.r2.dev/${vMeta.r2}" type="video/mp4">
+    </video>
+    <div class="hero-scrim"></div>
+    <div class="top">
+      <div class="logo">${safeTitle}</div>
+      <nav class="nav"><a href="#acto2">Iniciativas</a><a href="#acto3">Simulador &amp; Deep-Dive</a><a href="#acto4">Hoja de Ruta</a></nav>
+    </div>
+    <div class="center">
+      <span class="kicker">${esc(s0.kicker || 'PRESENTACIÓN EJECUTIVA · 4 ACTOS')}</span>
+      <h1>${esc(s0.title)}</h1>
+      <p>${esc(s0.lead)}</p>
+      <a href="#acto2" class="cta">Explorar Pilares e Impacto ↓</a>
+    </div>
+    <div class="horizon">
+      <div class="manifesto">Transformamos procesos complejos en <em>decisiones trazables en tiempo real</em> con retorno medible desde el primer trimestre.</div>
+      <div style="font-size:0.86rem;color:var(--mist);line-height:1.55;"><strong>${esc(s0.metric)}</strong> · Usa el botón inferior <code>✎ Editar Cifras/Textos</code> en local para personalizar cualquier dato confidencial sin subir archivos a internet.</div>
+    </div>
+  </header>
+
+  <!-- ACTO II · REEL DE 4 TARJETAS 3:4 EN VÍDEO -->
+  <section class="sec" id="acto2">
+    <div class="sec-head">
+      <small>ACTO II · EJES DE TRANSFORMACIÓN</small>
+      <h2>Cuatro vectores de ejecución e impacto</h2>
+    </div>
+    <div class="reel">${cardsHtml}</div>
+  </section>
+
+  <!-- ACTO III · ESCENARIO INTERACTIVO DEEP-DIVE + ROI -->
+  <section class="sec" id="acto3">
+    <div class="sec-head">
+      <small>ACTO III · ARQUITECTURA &amp; SIMULADOR DE IMPACTO</small>
+      <h2>Desglose operativo y retorno en vivo</h2>
+    </div>
+    <div class="tabs" id="dd-tabs"></div>
+    <div class="dd-box">
+      <div>
+        <span class="kicker" id="dd-kicker"></span>
+        <h3 style="font-size:1.55rem;margin-bottom:0.55rem;" id="dd-title"></h3>
+        <p style="color:#cbd5e1;font-size:0.9rem;line-height:1.6;" id="dd-lead"></p>
+        <div class="rail" id="dd-rail"></div>
+      </div>
+      <div class="syn-panel">
+        <div>
+          <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:0.68rem;color:#6ee7b7;border-bottom:1px solid var(--line);padding-bottom:0.6rem;margin-bottom:0.9rem;">
+            <span>● TELEMETRÍA &amp; CASO DE NEGOCIO</span>
+            <strong id="dd-metric"></strong>
+          </div>
+          <p style="font-size:0.82rem;color:#cbd5e1;line-height:1.55;margin-bottom:1rem;">Mueve el deslizador de volumen mensual para simular en directo durante la reunión la capacidad liberada:</p>
+          <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.35);border-radius:12px;padding:1rem;">
+            <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:0.75rem;margin-bottom:0.45rem;">
+              <span>VOLUMEN: <b id="vol-out">500</b> exp/mes</span>
+              <strong style="color:#34d399;font-size:1rem;" id="roi-out">+1.750 h/mes</strong>
+            </div>
+            <input type="range" id="vol-in" min="50" max="2500" step="50" value="500" style="width:100%;accent-color:#10b981;">
+          </div>
+        </div>
+        <div style="font-family:var(--mono);font-size:0.68rem;color:#94a3b8;display:flex;justify-content:space-between;border-top:1px solid var(--line);padding-top:0.7rem;">
+          <span>AUDITORÍA &amp; TRAZABILIDAD</span>
+          <strong style="color:#38bdf8;">100% VERIFICADO</strong>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACTO IV · HOJA DE RUTA POR OLAS -->
+  <section class="sec" id="acto4">
+    <div class="sec-head">
+      <small>ACTO IV · DESPLIEGUE &amp; HOJA DE RUTA</small>
+      <h2>Secuencia de implantación y entregas trimestrales</h2>
+    </div>
+    <div class="waves">${wavesHtml}</div>
+  </section>
+
+  <div id="studio-bar">
+    <span style="font-family:var(--mono);font-size:10px;color:#6ee7b7;">🔒 MODO LOCAL</span>
+    <button type="button" id="ebtn">✎ Editar Cifras/Textos</button>
+    <button type="button" class="em" id="sbtn">💾 Guardar .HTML</button>
+    <button type="button" id="pbtn">🖨️ PDF</button>
+  </div>
+
+\x3cscript>
+const SCENES = ${scenesJson};
+let cur = 0, ed = false;
+function esc(v){ return String(v == null ? '' : v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function renderDD(i){
+  cur = i;
+  const s = SCENES[i] || SCENES[0];
+  document.getElementById('dd-kicker').textContent = s.kicker || '';
+  document.getElementById('dd-title').textContent = s.title || '';
+  document.getElementById('dd-lead').textContent = s.lead || '';
+  document.getElementById('dd-metric').textContent = s.metric || '';
+  document.getElementById('dd-rail').innerHTML = (s.pillars || []).map(p => '<div class="rstep"><div><strong>' + esc(p.t) + '</strong><div style="font-size:0.76rem;color:#94a3b8;margin-top:0.15rem;">' + esc(p.d) + '</div></div><span style="font-family:var(--mono);font-size:0.7rem;color:#67e8f9;font-weight:700;">' + esc(p.b) + '</span></div>').join('');
+  document.querySelectorAll('#dd-tabs .tab').forEach((b, idx) => b.classList.toggle('active', idx === i));
+}
+document.getElementById('dd-tabs').innerHTML = SCENES.map((s, i) => '<button class="tab' + (i===0?' active':'') + '" data-i="' + i + '">0' + (i+1) + ' · ' + esc(s.title) + '</button>').join('');
+document.querySelectorAll('#dd-tabs .tab').forEach(b => b.addEventListener('click', () => renderDD(Number(b.dataset.i))));
+document.querySelectorAll('.mcard').forEach(c => c.addEventListener('click', () => { renderDD(Number(c.dataset.idx)); document.getElementById('acto3').scrollIntoView({behavior:'smooth'}); }));
+document.getElementById('vol-in').addEventListener('input', e => {
+  const v = Number(e.target.value || 500);
+  document.getElementById('vol-out').textContent = v;
+  document.getElementById('roi-out').textContent = '+' + Math.round(v * 3.5).toLocaleString('es-ES') + ' h/mes';
+});
+renderDD(0);
+const ESEL = 'h1, h2, h3, h4, p, .kicker, .mcard-kpi, .wkpi, .wcol li, .manifesto, .logo';
+document.getElementById('ebtn').addEventListener('click', () => {
+  ed = !ed;
+  document.querySelectorAll(ESEL).forEach(el => {
+    if (ed) { el.setAttribute('contenteditable','true'); el.setAttribute('spellcheck','false'); }
+    else { el.removeAttribute('contenteditable'); el.removeAttribute('spellcheck'); }
+  });
+  document.getElementById('ebtn').textContent = ed ? '✓ Editando en Pantalla' : '✎ Editar Cifras/Textos';
+});
+document.getElementById('pbtn').addEventListener('click', () => window.print());
+document.getElementById('sbtn').addEventListener('click', () => {
+  ed = false;
+  document.querySelectorAll(ESEL).forEach(el => el.removeAttribute('contenteditable'));
+  document.getElementById('ebtn').textContent = '✎ Editar Cifras/Textos';
+  const blob = new Blob(['<!DOCTYPE html>\\n' + document.documentElement.outerHTML], {type:'text/html;charset=utf-8'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'micrositio-ridge-4-actos-actualizado.html'; a.click();
+});
 \x3c/script>
 \x3c/body>
 \x3c/html>`;
@@ -3215,14 +3543,14 @@ requestAnimationFrame(frame);
     if ($('#b-sample-notes-btn')) {
       $('#b-sample-notes-btn').addEventListener('click', () => {
         const sample = [
-          '1. Problema actual en renovaciones de circulante: Los gestores dedican más de 4 horas por expediente recopilando balances, CIRBE y modelos fiscales dispersos en correos.',
-          '2. Solución con Agentes Documentales y Scoring en vivo: Automatizamos la lectura del Impuesto de Sociedades (Modelo 200) y el cruce con flujos reales de cuenta para pre-calificar en 45 segundos.',
-          '3. Gobernanza y Control de Riesgos: El 75% de las operaciones sin alertas va por carril verde STP; el 25% restante llega al analista con la nota de Comité ya redactada y auditada.',
-          '4. Plan de despliegue Q1-Q2: Piloto de 6 semanas en 2 Direcciones Territoriales con 120 gestores antes de abrir a toda la Red de Empresas.',
-          '5. Impacto esperado en negocio: Reducción del 70% en tiempo de respuesta al cliente y +14M€ en volumen renovado sin ampliar plantilla de back-office.'
+          '1. Problema actual en el proceso: Los equipos dedican [X_HORAS] por expediente recopilando documentación y validando cruces manuales.',
+          '2. Solución con Agentes Documentales y Scoring en vivo: Automatizamos la lectura documental y el cruce con flujos reales para pre-calificar en [TIEMPO_OBJETIVO].',
+          '3. Gobernanza y Control de Riesgos: El [PCT_STP]% de las operaciones sin alertas va por carril verde STP; el resto llega al especialista con el informe redactado.',
+          '4. Plan de despliegue Q1-Q2: Piloto inicial en [N_TERRITORIALES] Direcciones Territoriales antes de escalar a toda la Red.',
+          '5. Impacto esperado en negocio: Reducción del [PCT_AHORRO]% en tiempo de respuesta y +[IMPACTO_EUR]M€ en volumen gestionado.'
         ].join('\n\n');
         $('#b-raw-notes').value = sample;
-        $('#b-deck-title').value = 'Automatización Inteligente de Renovaciones de Circulante';
+        $('#b-deck-title').value = 'Proyecto Estratégico [NOMBRE_PROYECTO] · Comité de Dirección';
         convertRawNotesToScenes(sample);
       });
     }
@@ -3284,6 +3612,14 @@ requestAnimationFrame(frame);
         const html = buildStandaloneDeckHtml(title, sh, parseCustomScenes(), undefined, customLay);
         downloadText('mi-presentacion-scrolltide.html', html, 'text/html;charset=utf-8');
       });
+      if ($('#b-download-4act-html')) {
+        $('#b-download-4act-html').addEventListener('click', () => {
+          const title = $('#b-deck-title').value || 'Micrositio-Ridge-4-Actos';
+          const sh = $('#b-shader').value || 'mp4:ridge';
+          const html = buildFullRidge4ActHtml(title, sh, parseCustomScenes());
+          downloadText('mi-micrositio-ridge-4-actos.html', html, 'text/html;charset=utf-8');
+        });
+      }
     }
   })();
   </script>
