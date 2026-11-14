@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Cuaderno 13 — Agente Especialista Confluence en M365 Copilot (Estándar Banca Tier 1): SKILL.md completo, Instrucciones del Sistema (< 8.000 caracteres), Conexión al Microsoft Graph, Enrutador Modular de Arquetipos (A–E), Prompts Genéricos y Despliegue en 5 minutos.">
+  <meta name="keywords" content="M365 Copilot, Copilot Studio, Agente Declarativo, Microsoft Graph, SKILL.md, Confluence, Product Owner, Banca Tier 1, Figma, Shell, SCA PSD2, Chatbot EU AI Act, Red Team">
+  <title>Cuaderno 13 — Agente Especialista Confluence PO (M365 Graph + SKILL.md &lt; 8.000 chars) | Curso IA Commercial</title>
+  <link rel="manifest" href="../manifest.json">
+  <link rel="stylesheet" href="../css/styles.css">
+  <style>
+    /* ==========================================================================
+       CUADERNO 13 · AGENTE CONFLUENCE PO TIER 1 (prefijo c13-)
+       ========================================================================== */
+    .content-wrapper { max-width: 1200px; }
+    .c13-mono { font-family: 'JetBrains Mono', var(--font-mono), Consolas, monospace; font-variant-numeric: tabular-nums; }
+
+    /* Barra sticky de filtro por sección */
+    .c13-tabs {
+      display: flex; flex-wrap: wrap; gap: .45rem;
+      background: var(--bg-card); border: 1px solid var(--border-medium);
+      border-radius: 12px; padding: .45rem; margin: 1.5rem 0;
+      position: sticky; top: 70px; z-index: 35;
+      backdrop-filter: blur(14px);
+    }
+    .c13-tab {
+      flex: 1 1 auto; padding: .52rem .8rem; border-radius: 8px;
+      font-size: .78rem; font-weight: 700; color: var(--text-secondary);
+      background: transparent; border: 1px solid transparent; cursor: pointer;
+      transition: all 180ms cubic-bezier(.16,1,.3,1); text-align: center;
+    }
+    .c13-tab:hover { color: var(--text-primary); background: rgba(127,127,127,.08); }
+    .c13-tab.active {
+      color: var(--text-primary);
+      border-color: rgba(6,182,212,.55);
+      background: linear-gradient(135deg, rgba(6,182,212,.18), rgba(139,92,246,.16));
+    }
+    [data-c13-hidden="true"] { display: none !important; }
+
+    /* Hero de arquitectura oscura */
+    .c13-stage {
+      background:
+        radial-gradient(850px 420px at 8% 10%, rgba(6,182,212,.14), transparent 60%),
+        radial-gradient(800px 420px at 92% 15%, rgba(139,92,246,.16), transparent 60%),
+        #060a16;
+      color: #e2e8f0;
+      border: 1px solid rgba(56,189,248,.34);
+      border-radius: 18px;
+      padding: 1.45rem;
+      margin: 1.25rem 0;
+      box-shadow: 0 24px 60px -15px rgba(0,0,0,.75);
+    }
+    .c13-arch-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: .9rem; margin-top: 1.1rem;
+    }
+    @media (max-width: 960px) { .c13-arch-grid { grid-template-columns: 1fr; } }
+    .c13-node {
+      background: rgba(13, 20, 38, .92);
+      border: 1px solid rgba(148,163,184,.2);
+      border-radius: 13px; padding: 1rem 1.1rem;
+      position: relative;
+    }
+    .c13-node.accent-cyan { border-top: 3px solid #22d3ee; }
+    .c13-node.accent-violet { border-top: 3px solid #a78bfa; }
+    .c13-node.accent-emerald { border-top: 3px solid #34d399; }
+    .c13-node-badge {
+      display: inline-block; font-family: 'JetBrains Mono', monospace;
+      font-size: .65rem; font-weight: 800; letter-spacing: .06em;
+      text-transform: uppercase; padding: .18rem .5rem; border-radius: 6px;
+      margin-bottom: .5rem;
+    }
+    .c13-node h4 { margin: 0 0 .45rem; color: #f8fafc; font-size: .95rem; }
+    .c13-node p, .c13-node li { font-size: .8rem; color: #94a3b8; line-height: 1.55; }
+    .c13-node ul { margin: .35rem 0 0 1.05rem; padding: 0; }
+
+    /* Grids & Cards */
+    .c13-grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1rem; margin: 1.2rem 0; }
+    .c13-grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: .9rem; margin: 1.2rem 0; }
+    .c13-card {
+      background: var(--bg-card); border: 1px solid var(--border-subtle);
+      border-radius: 12px; padding: 1.05rem 1.2rem;
+    }
+    .c13-card h4 { margin: 0 0 .45rem; font-size: .95rem; color: var(--text-primary); display: flex; align-items: center; gap: .45rem; }
+    .c13-card p, .c13-card li { font-size: .83rem; line-height: 1.58; color: var(--text-secondary); }
+    .c13-card ul { margin: .3rem 0 0 1.1rem; }
+
+    /* Botones reutilizables */
+    .c13-btn {
+      display: inline-flex; align-items: center; gap: .38rem;
+      font-size: .75rem; font-weight: 700; padding: .42rem .82rem; border-radius: 8px;
+      border: 1px solid rgba(6,182,212,.45); background: rgba(6,182,212,.14);
+      color: #22d3ee; cursor: pointer; transition: all 150ms ease; white-space: nowrap;
+    }
+    .c13-btn:hover { background: rgba(6,182,212,.26); color: #fff; }
+    .c13-btn.primary { background: #10b981; border-color: #10b981; color: #04110b; font-weight: 800; }
+    .c13-btn.primary:hover { background: #34d399; color: #04110b; }
+    .c13-btn.violet { border-color: rgba(139,92,246,.5); background: rgba(139,92,246,.15); color: #c4b5fd; }
+    .c13-btn.violet:hover { background: rgba(139,92,246,.3); color: #fff; }
+    .c13-btn.done { background: #10b981 !important; border-color: #10b981 !important; color: #04110b !important; }
+
+    /* Medidor de 8000 caracteres para Instrucciones del Agente */
+    .c13-meter-box {
+      background: #070b15; border: 1px solid rgba(56,189,248,.35);
+      border-radius: 14px; padding: 1.1rem; color: #e2e8f0; margin: 1.2rem 0;
+    }
+    .c13-meter-head {
+      display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
+      gap: .8rem; margin-bottom: .75rem;
+    }
+    .c13-meter-track {
+      width: 100%; height: 10px; border-radius: 999px; background: rgba(148,163,184,.16);
+      overflow: hidden; margin-bottom: .85rem;
+    }
+    .c13-meter-fill {
+      height: 100%; width: 84%; border-radius: 999px;
+      background: linear-gradient(90deg, #10b981, #22d3ee);
+      transition: width 220ms ease, background 220ms ease;
+    }
+    .c13-meter-fill.warn { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+    .c13-meter-fill.over { background: linear-gradient(90deg, #ef4444, #fb7185); }
+    .c13-status-pill {
+      font-family: 'JetBrains Mono', monospace; font-size: .74rem; font-weight: 800;
+      padding: .25rem .65rem; border-radius: 999px;
+      background: rgba(16,185,129,.16); color: #34d399; border: 1px solid rgba(16,185,129,.45);
+    }
+    .c13-status-pill.warn { background: rgba(245,158,11,.16); color: #fbbf24; border-color: rgba(245,158,11,.45); }
+    .c13-status-pill.over { background: rgba(239,68,68,.18); color: #fb7185; border-color: rgba(239,68,68,.5); }
+    .c13-textarea {
+      width: 100%; min-height: 360px; background: #03060e; color: #dbe4f0;
+      border: 1px solid rgba(148,163,184,.2); border-radius: 10px;
+      padding: .95rem 1rem; font-family: 'JetBrains Mono', Consolas, monospace;
+      font-size: .74rem; line-height: 1.58; resize: vertical; outline: none;
+    }
+    .c13-textarea:focus { border-color: #22d3ee; }
+
+    /* Bóveda de archivos SKILL.md */
+    .c13-vault {
+      display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 1rem; margin: 1.2rem 0;
+    }
+    @media (max-width: 920px) { .c13-vault { grid-template-columns: 1fr; } }
+    .c13-vault-list {
+      background: var(--bg-card); border: 1px solid var(--border-subtle);
+      border-radius: 12px; padding: .65rem; max-height: 620px; overflow: auto;
+    }
+    .c13-vault-group {
+      font-size: .65rem; font-weight: 800; letter-spacing: .07em;
+      text-transform: uppercase; color: var(--text-muted, #94a3b8);
+      padding: .7rem .5rem .3rem;
+    }
+    .c13-vault-item {
+      display: block; width: 100%; text-align: left;
+      font-family: 'JetBrains Mono', monospace; font-size: .72rem;
+      padding: .48rem .6rem; border-radius: 8px; border: 1px solid transparent;
+      background: transparent; color: var(--text-secondary); cursor: pointer;
+      word-break: break-all; margin-bottom: .2rem;
+    }
+    .c13-vault-item:hover { background: rgba(127,127,127,.08); color: var(--text-primary); }
+    .c13-vault-item.active {
+      border-color: rgba(6,182,212,.55); background: rgba(6,182,212,.14);
+      color: var(--text-primary); font-weight: 700;
+    }
+    .c13-codehead {
+      display: flex; justify-content: space-between; align-items: center; gap: .6rem;
+      flex-wrap: wrap; background: #0d1322; border: 1px solid rgba(255,255,255,.1);
+      border-bottom: none; border-radius: 10px 10px 0 0; padding: .55rem .85rem;
+    }
+    .c13-codehead .path {
+      font-family: 'JetBrains Mono', monospace; font-size: .74rem; color: #67e8f9; font-weight: 700;
+    }
+    .c13-pre {
+      background: #060912; color: #dbe4f0; border: 1px solid rgba(255,255,255,.1);
+      border-radius: 0 0 10px 10px; padding: 1rem 1.1rem;
+      font-family: 'JetBrains Mono', Consolas, monospace; font-size: .73rem;
+      line-height: 1.58; overflow: auto; max-height: 520px; white-space: pre-wrap; margin: 0;
+    }
+
+    /* Simulador Enrutador de Arquetipos */
+    .c13-router {
+      display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 1rem; margin: 1.2rem 0;
+    }
+    @media (max-width: 960px) { .c13-router { grid-template-columns: 1fr; } }
+    .c13-form {
+      background: var(--bg-card); border: 1px solid var(--border-subtle);
+      border-radius: 12px; padding: 1.1rem; display: flex; flex-direction: column; gap: .85rem;
+    }
+    .c13-field label.title {
+      display: block; font-size: .72rem; font-weight: 800; color: var(--text-primary);
+      text-transform: uppercase; letter-spacing: .05em; margin-bottom: .35rem;
+    }
+    .c13-field input[type="text"], .c13-field select {
+      width: 100%; background: var(--bg-secondary, #0b1220);
+      border: 1px solid var(--border-medium); color: var(--text-primary);
+      border-radius: 8px; padding: .5rem .7rem; font-size: .82rem; font-family: inherit;
+    }
+    .c13-checks { display: flex; flex-direction: column; gap: .45rem; }
+    .c13-check {
+      display: flex; align-items: flex-start; gap: .55rem; padding: .5rem .65rem;
+      border-radius: 8px; border: 1px solid var(--border-subtle);
+      background: rgba(127,127,127,.04); cursor: pointer; font-size: .8rem; line-height: 1.4;
+      color: var(--text-secondary);
+    }
+    .c13-check input { margin-top: .2rem; accent-color: #22d3ee; }
+    .c13-check strong { color: var(--text-primary); display: block; font-size: .82rem; }
+    .c13-router-out {
+      background: #060a14; border: 1px solid rgba(56,189,248,.32);
+      border-radius: 12px; padding: 1rem 1.1rem; color: #e2e8f0;
+      display: flex; flex-direction: column; gap: .8rem;
+    }
+    .c13-mod-pills { display: flex; flex-wrap: wrap; gap: .4rem; }
+    .c13-mod-pill {
+      font-family: 'JetBrains Mono', monospace; font-size: .68rem; font-weight: 700;
+      padding: .24rem .6rem; border-radius: 999px;
+      background: rgba(34,211,238,.14); color: #67e8f9; border: 1px solid rgba(34,211,238,.4);
+    }
+    .c13-mod-pill.core { background: rgba(16,185,129,.16); color: #34d399; border-color: rgba(16,185,129,.45); }
+
+    /* Tarjetas de Prompts Genéricos */
+    .c13-prompt-card {
+      background: var(--bg-card); border: 1px solid var(--border-subtle);
+      border-radius: 12px; padding: 1.05rem 1.15rem;
+      display: flex; flex-direction: column; gap: .55rem;
+    }
+    .c13-prompt-top {
+      display: flex; justify-content: space-between; align-items: center; gap: .5rem; flex-wrap: wrap;
+    }
+    .c13-prompt-badge {
+      font-family: 'JetBrains Mono', monospace; font-size: .65rem; font-weight: 800;
+      padding: .18rem .52rem; border-radius: 999px; text-transform: uppercase;
+      background: rgba(139,92,246,.14); color: #c4b5fd; border: 1px solid rgba(139,92,246,.4);
+    }
+    .c13-prompt-pre {
+      background: #060912; color: #dbe4f0; border: 1px solid rgba(255,255,255,.08);
+      border-radius: 8px; padding: .7rem .85rem; font-family: 'JetBrains Mono', monospace;
+      font-size: .72rem; line-height: 1.55; white-space: pre-wrap; margin: 0; flex: 1;
+    }
+
+    /* Checklist interactivo de Despliegue */
+    .c13-deploy-item {
+      display: flex; align-items: flex-start; gap: .75rem;
+      background: var(--bg-card); border: 1px solid var(--border-subtle);
+      border-radius: 11px; padding: .9rem 1rem; margin-bottom: .65rem; cursor: pointer;
+      transition: border-color 160ms ease;
+    }
+    .c13-deploy-item.checked {
+      border-color: rgba(16,185,129,.55);
+      background: rgba(16,185,129,.06);
+    }
+    .c13-deploy-item input { width: 18px; height: 18px; margin-top: .15rem; accent-color: #10b981; cursor: pointer; }
+
+    /* Tablas */
+    .c13-table-wrap { overflow-x: auto; margin: 1.1rem 0; border: 1px solid var(--border-subtle); border-radius: 12px; }
+    .c13-table { width: 100%; border-collapse: collapse; font-size: .82rem; }
+    .c13-table th {
+      text-align: left; padding: .7rem .85rem; background: rgba(6,182,212,.1);
+      color: var(--text-primary); font-weight: 700; border-bottom: 1px solid var(--border-medium);
+    }
+    .c13-table td {
+      padding: .65rem .85rem; border-bottom: 1px solid var(--border-subtle);
+      color: var(--text-secondary); vertical-align: top; line-height: 1.55;
+    }
+    .c13-table tr:last-child td { border-bottom: none; }
+    .c13-table td:first-child { color: var(--text-primary); font-weight: 700; }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <nav class="top-nav">
+    <button class="menu-toggle" aria-label="Abrir menú">☰</button>
+    <a href="../index.html" class="nav-brand">
+      <div class="nav-brand-icon">IA</div>
+      <div class="nav-brand-text"><span>Curso IA</span> Commercial</div>
+    </a>
+    <div class="nav-links">
+      <a href="../index.html" class="nav-link">Cuadernos</a>
+      <a href="../muro.html" class="nav-link">Lienzo</a>
+      <a href="../recursos.html" class="nav-link">Recursos</a>
+      <a href="../examen.html" class="nav-link">Examen Oficial</a>
+      <a href="#" class="nav-link">Acerca de</a>
+    </div>
+  </nav>
+
+  <!-- Reading Progress -->
+  <div class="progress-bar"><div class="progress-bar-fill"></div></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Contenido del cuaderno</div>
+      <a href="#arquitectura-grafo" class="sidebar-link active">
+        <span class="sidebar-link-number">00</span>
+        Agente &amp; Microsoft Graph
+      </a>
+      <a href="#instrucciones-8000" class="sidebar-link">
+        <span class="sidebar-link-number">01</span>
+        Instrucciones (&lt; 8.000 chars)
+      </a>
+      <a href="#boveda-skill" class="sidebar-link">
+        <span class="sidebar-link-number">02</span>
+        Bóveda SKILL.md &amp; Conocimiento
+      </a>
+      <a href="#enrutador-arquetipos" class="sidebar-link">
+        <span class="sidebar-link-number">03</span>
+        Enrutador Modular (A–E)
+      </a>
+      <a href="#prompts-grafo" class="sidebar-link">
+        <span class="sidebar-link-number">04</span>
+        8 Prompts Genéricos Grafo
+      </a>
+      <a href="#despliegue-copilot" class="sidebar-link">
+        <span class="sidebar-link-number">05</span>
+        Despliegue en M365 Copilot
+      </a>
+    </div>
+  </aside>
+  <div class="sidebar-overlay"></div>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="content-wrapper">
+
+      <!-- Page Header -->
+      <div class="page-header">
+        <div class="breadcrumb">
+          <a href="../index.html">Cuadernos</a>
+          <span class="separator">/</span>
+          <span>Cuaderno 13</span>
+        </div>
+
+        <div class="page-meta">
+          <span class="meta-badge">CUADERNO 13</span>
+          <span class="meta-badge blue">M365 Copilot Agent · Microsoft Graph · SKILL.md · Confluence Tier 1</span>
+          <span class="meta-info">Ingeniería de Agentes para Product Owners</span>
+        </div>
+
+        <h1 class="page-title">Agente Especialista de Confluence en M365 Copilot: Arquitectura Graph, <code>SKILL.md</code> (&lt; 8.000 caracteres) y Prompts Universales Nivel Banca Tier 1</h1>
+        <p class="page-subtitle">Sistema operativo completo para construir un <strong>Agente Declarativo en M365 Copilot / Copilot Studio</strong> conectado a tu <strong>Microsoft Graph</strong> (reuniones Teams, chats, correos, PPTs y OneDrive), con instrucciones optimizadas por debajo del límite de <strong>8.000 caracteres</strong>, paquete de archivos internos de conocimiento y un <strong>Enrutador Modular de Arquetipos (A–E)</strong> agnóstico al contexto.</p>
+
+        <!-- Bloom Card -->
+        <div class="bloom-card">
+          <div class="bloom-header">
+            <h3 class="bloom-title">🎯 Objetivos &amp; Entregables del Agente PO</h3>
+            <div class="bloom-meta-pills">
+              <span class="bloom-pill time">⏱️ Despliegue en M365: 5 min</span>
+              <span class="bloom-pill diff-intermediate">Nivel: Staff PO · Banca Tier 1</span>
+            </div>
+          </div>
+          <div class="bloom-grid">
+            <div class="bloom-col">
+              <div class="bloom-col-header understand">🧠 1. Conectar al Grafo M365</div>
+              <ul>
+                <li>Entender cómo obligar al Agente a aplicar <strong>prioridad cronológica estricta</strong> entre transcripciones de Teams, hilos de chat y presentaciones previas.</li>
+              </ul>
+            </div>
+            <div class="bloom-col">
+              <div class="bloom-col-header analyze">⚖️ 2. Enrutamiento Agnóstico</div>
+              <ul>
+                <li>Separar el <strong>Núcleo Universal</strong> de los <strong>5 Módulos Especialistas (A–E)</strong> para que el mismo Agente sirva igual para un Figma B2C, un Shell WebView, un Portafirmas SCA o un Chatbot IA.</li>
+              </ul>
+            </div>
+            <div class="bloom-col">
+              <div class="bloom-col-header apply">🚀 3. Desplegar Kit Completo</div>
+              <ul>
+                <li>Copiar las <strong>Instrucciones (&lt; 8.000 caracteres)</strong>, cargar los 3 archivos de conocimiento en SharePoint/Copilot y operar con los <strong>8 Prompts Genéricos</strong>.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabs de filtro -->
+        <div class="c13-tabs" role="tablist">
+          <button type="button" class="c13-tab active" data-c13-filter="all">🌐 Todo el Cuaderno</button>
+          <button type="button" class="c13-tab" data-c13-filter="s0">00 Grafo &amp; Arquitectura</button>
+          <button type="button" class="c13-tab" data-c13-filter="s1">01 Instrucciones (&lt;8000)</button>
+          <button type="button" class="c13-tab" data-c13-filter="s2">02 Bóveda SKILL.md</button>
+          <button type="button" class="c13-tab" data-c13-filter="s3">03 Simulador Arquetipos</button>
+          <button type="button" class="c13-tab" data-c13-filter="s4">04 8 Prompts Grafo</button>
+          <button type="button" class="c13-tab" data-c13-filter="s5">05 Despliegue M365</button>
+        </div>
+      </div>
+
+      <!-- =====================================================================
+           SECCIÓN 00 · ARQUITECTURA CON MICROSOFT GRAPH
+           ===================================================================== -->
+      <section id="arquitectura-grafo" class="transcript-section" data-c13-sec="s0">
+        <div class="section-header">
+          <span class="section-number">00</span>
+          <h2 class="section-title">Visión y Arquitectura del Agente Especialista con Microsoft Graph</h2>
+        </div>
+        <div class="section-divider"></div>
+
+        <p class="editorial-lead">Cuando pasas de usar Copilot en chats aislados a construir un <strong>Agente Especialista en Confluence</strong> conectado al <strong>Microsoft Graph</strong> de tu cuenta, el cuello de botella cambia: el Agente ya encuentra tus reuniones, chats y documentos, pero si sus instrucciones no lo gobiernan, seguirá mezclando ideas viejas con decisiones nuevas y rellenando dudas técnicas con prosa robótica.</p>
+
+        <div class="c13-stage">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;">
+            <span class="c13-mono" style="font-size:.7rem;color:#22d3ee;font-weight:800;letter-spacing:.08em;">● PIPELINE DE RAZONAMIENTO DEL AGENTE DECLARATIVO M365</span>
+            <span class="c13-mono" style="font-size:.68rem;color:#94a3b8;">Zero-HTML · Context-Agnostic · Estándar Banca Tier 1</span>
+          </div>
+
+          <div class="c13-arch-grid">
+            <div class="c13-node accent-cyan">
+              <span class="c13-node-badge" style="background:rgba(34,211,238,.15);color:#67e8f9;">1 · Ingesta Grafo M365</span>
+              <h4>Fuentes Vivas de tu Cuenta</h4>
+              <p>El Agente rastrea el contexto real del proyecto sin que debas adjuntar todo a mano:</p>
+              <ul>
+                <li><strong>Transcripciones Teams:</strong> Acuerdos de refinamiento y arquitectura.</li>
+                <li><strong>Chats y Correos:</strong> Matices de última hora (Arquitectura, Riesgos, DPO).</li>
+                <li><strong>OneDrive / SharePoint:</strong> PPTs iniciales, actas y enlaces de Figma.</li>
+              </ul>
+            </div>
+
+            <div class="c13-node accent-violet">
+              <span class="c13-node-badge" style="background:rgba(167,139,250,.15);color:#ddd6fe;">2 · Cerebro + Skill Pack</span>
+              <h4>Instrucciones + Conocimiento Interno</h4>
+              <p>Las reglas de sistema (<code>&lt; 8.000 chars</code>) combinadas con 3 archivos internos:</p>
+              <ul>
+                <li><strong>Prioridad cronológica:</strong> Lo último en Teams/chat pisa al PPT inicial.</li>
+                <li><strong>Enrutador A–E:</strong> Detecta el arquetipo y omite secciones irrelevantes.</li>
+                <li><strong>Cero invención:</strong> Si algo falta en el Grafo, emite <code>[PENDIENTE]</code> con responsable.</li>
+              </ul>
+            </div>
+
+            <div class="c13-node accent-emerald">
+              <span class="c13-node-badge" style="background:rgba(52,211,153,.15);color:#6ee7b7;">3 · Salida Confluence Nativa</span>
+              <h4>UX Avanzado sin HTML</h4>
+              <p>Markdown limpio que Confluence renderiza nativamente al copiar y pegar:</p>
+              <ul>
+                <li><strong>Tablas semáforo:</strong> Alcance, Decision Log y Reglas <code>RN-XX</code>.</li>
+                <li><strong>5 Estados Invisibles:</strong> Lo que Figma estático no documenta.</li>
+                <li><strong>ASCII + Mermaid:</strong> Modales de error, Bridge Shell y diagramas Draw.io.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="c13-grid-2">
+          <div class="c13-card" style="border-left:3px solid var(--accent-rose);">
+            <h4>❌ Por qué fallan los Agentes "genéricos" de Confluence</h4>
+            <ul>
+              <li>Meten todas las secciones por igual (le ponen SCA o Chatbot a una API interna).</li>
+              <li>Dan el mismo peso a un PowerPoint de hace 3 semanas que a un mensaje de Teams de ayer.</li>
+              <li>Ocultan los huecos de definición bajo frases vacías ("garantizará una experiencia fluida").</li>
+              <li>Piden al usuario pegar manualmente el contexto cada vez, desaprovechando el Microsoft Graph.</li>
+            </ul>
+          </div>
+          <div class="c13-card" style="border-left:3px solid var(--accent-emerald);">
+            <h4>✅ Qué cambia con esta arquitectura modular</h4>
+            <ul>
+              <li><strong>Instrucciones compactas (&lt; 8.000 chars):</strong> Toda la densidad está en los archivos de conocimiento adjuntos (<code>01</code>, <code>02</code>, <code>03</code>) para no saturar el System Prompt.</li>
+              <li><strong>Prompts de 4 líneas:</strong> Solo nombras el proyecto y el Agente consulta el Grafo.</li>
+              <li><strong>Escalabilidad total:</strong> Si mañana nace un proyecto de Data/Batch o Backoffice sin App móvil, el Enrutador activa el Núcleo + Módulo E automáticamente.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SECCIÓN 01 · INSTRUCCIONES DEL AGENTE (< 8.000 CARACTERES)
+           ===================================================================== -->
+      <section id="instrucciones-8000" class="transcript-section" data-c13-sec="s1">
+        <div class="section-header">
+          <span class="section-number">01</span>
+          <h2 class="section-title">Instrucciones del Sistema del Agente (Límite estricto &lt; 8.000 caracteres)</h2>
+        </div>
+        <div class="section-divider"></div>
+
+        <p>En <strong>M365 Copilot Agent Builder / Copilot Studio</strong>, el cuadro de <em>Instrucciones</em> tiene un tope rígido de <strong>8.000 caracteres</strong>. El siguiente bloque ha sido comprimido quirúrgicamente para incluir la conexión al Microsoft Graph, la prioridad temporal, los 3 modos operativos, el Enrutador Dinámico (Núcleo + Módulos A–E) y las reglas anti-IA sin acercarse al límite. Puedes editarlo aquí mismo para adaptarlo a tu organización mientras vigilas el contador en vivo.</p>
+
+        <div class="c13-meter-box">
+          <div class="c13-meter-head">
+            <div>
+              <span class="c13-mono" style="font-size:.72rem;color:#67e8f9;font-weight:800;">00_INSTRUCCIONES_AGENTE_COPILOT_MAX8000.md</span>
+              <div style="font-size:.78rem;color:#94a3b8;margin-top:.15rem;">Campo "Instrucciones" de M365 Copilot Studio / Agent Builder</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;">
+              <span id="c13CharPill" class="c13-status-pill">0 / 8.000 caracteres — ✅ Válido</span>
+              <button type="button" class="c13-btn primary" id="c13CopyInstBtn">📋 Copiar Instrucciones</button>
+              <button type="button" class="c13-btn" id="c13ResetInstBtn">↺ Restaurar</button>
+              <button type="button" class="c13-btn violet" id="c13DlInstBtn">⬇ Descargar .md</button>
+            </div>
+          </div>
+
+          <div class="c13-meter-track">
+            <div class="c13-meter-fill" id="c13MeterFill"></div>
+          </div>
+
+          <textarea id="c13InstEditor" class="c13-textarea" spellcheck="false" aria-label="Instrucciones del sistema del agente Copilot"></textarea>
+        </div>
+
+        <h3 style="margin-top:1.5rem;">Starter Prompts (Botones de Inicio Rápido en la portada del Agente)</h3>
+        <p style="font-size:.86rem;color:var(--text-secondary);">Configura estos 6 accesos directos en M365 Copilot Studio para disparar el flujo habitual sin escribir desde cero:</p>
+
+        <div class="c13-table-wrap">
+          <table class="c13-table">
+            <thead>
+              <tr>
+                <th style="width:22%;">Título del Botón</th>
+                <th>Texto del Starter Prompt (Genérico para Grafo M365)</th>
+                <th style="width:12%;">Acción</th>
+              </tr>
+            </thead>
+            <tbody id="c13StarterBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SECCIÓN 02 · BÓVEDA INTERACTIVA DE SKILL.MD Y ARCHIVOS INTERNOS
+           ===================================================================== -->
+      <section id="boveda-skill" class="transcript-section" data-c13-sec="s2">
+        <div class="section-header">
+          <span class="section-number">02</span>
+          <h2 class="section-title">Bóveda Completa: <code>SKILL.md</code> y Archivos Internos de Conocimiento</h2>
+        </div>
+        <div class="section-divider"></div>
+
+        <p>Un error común es meter plantillas enteras y checklists de 40 líneas dentro de las <em>Instrucciones</em> del Agente (agotando los 8.000 caracteres). La arquitectura profesional separa el <strong>Sistema Operativo corto</strong> (<code>00</code>) de los <strong>Archivos de Conocimiento</strong> (<code>01</code>, <code>02</code>, <code>03</code>) que subes al apartado <em>Knowledge</em> del Agente.</p>
+
+        <div class="c13-vault">
+          <div class="c13-vault-list" id="c13VaultList"></div>
+          <div>
+            <div class="c13-card" style="margin-bottom:.75rem;padding:.85rem 1rem;">
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:.6rem;flex-wrap:wrap;">
+                <strong id="c13VaultDest" style="font-size:.84rem;color:var(--accent-cyan);">Destino en M365 Copilot</strong>
+                <span id="c13VaultChars" class="c13-mono" style="font-size:.72rem;color:var(--text-secondary);"></span>
+              </div>
+              <p id="c13VaultDesc" style="margin:.35rem 0 0;font-size:.81rem;"></p>
+            </div>
+
+            <div class="c13-codehead">
+              <span class="path" id="c13VaultPath">skills/confluence-po-tier1-agent/SKILL.md</span>
+              <div style="display:flex;gap:.45rem;flex-wrap:wrap;">
+                <button type="button" class="c13-btn" id="c13VaultCopyBtn">📋 Copiar Archivo</button>
+                <button type="button" class="c13-btn primary" id="c13VaultDlBtn">⬇ Descargar .md</button>
+                <button type="button" class="c13-btn violet" id="c13VaultPackBtn">📦 Descargar Pack (.ps1)</button>
+              </div>
+            </div>
+            <pre class="c13-pre" id="c13VaultCode"></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SECCIÓN 03 · SIMULADOR DEL ENRUTADOR DE ARQUETIPOS (A-E)
+           ===================================================================== -->
+      <section id="enrutador-arquetipos" class="transcript-section" data-c13-sec="s3">
+        <div class="section-header">
+          <span class="section-number">03</span>
+          <h2 class="section-title">Simulador del Enrutador Modular (Ensamblador Dinámico de Confluence)</h2>
+        </div>
+        <div class="section-divider"></div>
+
+        <p>Como llevas proyectos muy distintos (Web/App, Firmas pendientes, Shell, Chatbots, APIs internas), marca qué piezas intervienen en tu próxima iniciativa y obtén al instante: <strong>1)</strong> los módulos exactos que activará el Agente en Confluence y <strong>2)</strong> el prompt listo para lanzar contra tu Grafo M365.</p>
+
+        <div class="c13-router">
+          <div class="c13-form">
+            <div class="c13-field">
+              <label class="title" for="c13ProjName">Nombre de la Iniciativa (según Teams / SharePoint)</label>
+              <input type="text" id="c13ProjName" value="Nuevo Módulo de Anticipo de Facturas" placeholder="Ej. Portafirmas B2B / Onboarding Empresas / API Alertas">
+            </div>
+
+            <div class="c13-field">
+              <label class="title" for="c13ModeSelect">Modo de Ejecución del Agente</label>
+              <select id="c13ModeSelect">
+                <option value="modoA">Modo A — Auditoría del Grafo Pre-Refinement (Turno 1)</option>
+                <option value="modoB" selected>Modo B — Generar Confluence Completo (Turno 2)</option>
+                <option value="modoDelta">Modo C — Delta Update tras nueva reunión</option>
+                <option value="modoRed">Modo C — Auditoría Red Team (Arquitectura / Fraude / QA)</option>
+              </select>
+            </div>
+
+            <div class="c13-field">
+              <label class="title">Arquetipos presentes en la iniciativa</label>
+              <div class="c13-checks">
+                <label class="c13-check" style="opacity:.85;cursor:default;">
+                  <input type="checkbox" checked disabled>
+                  <span><strong>Núcleo Universal (Siempre activo)</strong>Ficha de Gobernanza, Scope/Decision Log, Reglas RN-XX, Mermaid Draw.io, Criterios de Aceptación y Dudas [PENDIENTE].</span>
+                </label>
+                <label class="c13-check">
+                  <input type="checkbox" class="c13-arch-chk" value="A" checked>
+                  <span><strong>Módulo A — UI Web / App + Figma</strong>Puente sobre Figma, truncado 375px vs. Web, Matriz de los 5 Estados Invisibles y ASCII de contingencia.</span>
+                </label>
+                <label class="c13-check">
+                  <input type="checkbox" class="c13-arch-chk" value="B" checked>
+                  <span><strong>Módulo B — Integración en Shell / App Bridge</strong>Contrato <code>SH-XX</code>, header/back/swipe iOS, <code>badge_sync</code> y concurrencia multicanal <code>HTTP 409</code>.</span>
+                </label>
+                <label class="c13-check">
+                  <input type="checkbox" class="c13-arch-chk" value="C">
+                  <span><strong>Módulo C — Operativa Transaccional / Pagos / Firmas</strong>SCA (FIDO2/OTP), lotes <code>HTTP 207</code>, <code>Idempotency-Key</code> y Pista de Auditoría inmutable.</span>
+                </label>
+                <label class="c13-check">
+                  <input type="checkbox" class="c13-arch-chk" value="D">
+                  <span><strong>Módulo D — Chatbot / Asistente GenAI / RAG</strong>Flujos ASCII, cero alucinación, redaction PII pre-LLM, Prompt Injection, EU AI Act y Handoff.</span>
+                </label>
+                <label class="c13-check">
+                  <input type="checkbox" class="c13-arch-chk" value="E" checked>
+                  <span><strong>Módulo E — Backend / APIs / Batch / Kill Switch</strong>Contratos HTTP, Circuit Breaker, ventanas batch nocturnas del Core y Feature Flags remotas.</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="c13-router-out">
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;">
+              <span class="c13-mono" style="font-size:.7rem;color:#22d3ee;font-weight:800;">ENSAMBLAJE DINÁMICO RESULTANTE</span>
+              <button type="button" class="c13-btn primary" id="c13CopyRouterBtn">📋 Copiar Prompt Ensamblado</button>
+            </div>
+
+            <div class="c13-mod-pills" id="c13RouterPills"></div>
+
+            <div>
+              <div class="c13-mono" style="font-size:.66rem;color:#94a3b8;text-transform:uppercase;margin-bottom:.3rem;">Estructura de secciones que generará en Confluence:</div>
+              <pre id="c13RouterStruct" style="margin:0;background:#03060e;border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:.75rem;font-family:'JetBrains Mono',monospace;font-size:.71rem;line-height:1.55;color:#cbd5e1;white-space:pre-wrap;"></pre>
+            </div>
+
+            <div>
+              <div class="c13-mono" style="font-size:.66rem;color:#94a3b8;text-transform:uppercase;margin-bottom:.3rem;">Prompt listo para pegar en tu Agente M365 Copilot:</div>
+              <pre id="c13RouterPrompt" style="margin:0;background:#03060e;border:1px solid rgba(34,211,238,.28);border-radius:8px;padding:.75rem;font-family:'JetBrains Mono',monospace;font-size:.73rem;line-height:1.55;color:#e0f2fe;white-space:pre-wrap;"></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SECCIÓN 04 · LOS 8 PROMPTS GENÉRICOS CONECTADOS AL GRAFO M365
+           ===================================================================== -->
+      <section id="prompts-grafo" class="transcript-section" data-c13-sec="s4">
+        <div class="section-header">
+          <span class="section-number">04</span>
+          <h2 class="section-title">Los 8 Prompts Universales para Operar con el Grafo M365</h2>
+        </div>
+        <div class="section-divider"></div>
+
+        <p>Al tener todo tu historial conectado al Grafo de M365 y las reglas cargadas en el Agente, los prompts diarios se vuelven <strong>cortos, agnósticos al contexto y reutilizables en cualquier proyecto</strong>. Úsalos según la fase del ciclo de vida del producto:</p>
+
+        <div class="c13-grid-2" id="c13PromptsGrid"></div>
+      </section>
+
+      <!-- =====================================================================
+           SECCIÓN 05 · GUÍA DE DESPLIEGUE EN M365 COPILOT (5 MINUTOS)
+           ===================================================================== -->
+      <section id="despliegue-copilot" class="transcript-section" data-c13-sec="s5">
+        <div class="section-header">
+          <span class="section-number">05</span>
+          <h2 class="section-title">Checklist de Despliegue en M365 Copilot Studio / Agent Builder</h2>
+        </div>
+        <div class="section-divider"></div>
+
+        <p>Sigue estos 6 pasos una sola vez para dejar tu Agente operativo en tu entorno corporativo. Tu progreso se guarda automáticamente en el navegador:</p>
+
+        <div id="c13DeployList"></div>
+
+        <div class="c13-grid-2" style="margin-top:1.2rem;">
+          <div class="c13-card" style="border-left:3px solid var(--accent-amber);">
+            <h4>⚠️ Regla de Seguridad Corporativa (Grounding Cerrado)</h4>
+            <p>En la configuración del Agente dentro de M365 Copilot Studio, <strong>desactiva la búsqueda web pública (Bing / Web Search)</strong> si trabajas con iniciativas bancarias internas. Así garantizas que el Agente razone exclusivamente sobre tu Microsoft Graph y tus 3 archivos de conocimiento.</p>
+          </div>
+          <div class="c13-card" style="border-left:3px solid var(--accent-cyan);">
+            <h4>💡 Truco de Mantenimiento: El "Archivo Ancla" vivo</h4>
+            <p>Cuando hayas producido 1 o 2 páginas de Confluence reales de las que estés orgulloso, súbelas en formato Word/Markdown a la misma carpeta de SharePoint donde viven los archivos <code>01</code>, <code>02</code> y <code>03</code> bajo el nombre <code>04_EJEMPLO_CONFLUENCE_REAL.docx</code>. El Agente afinará aún más su estilo imitando tu voz exacta.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Autoevaluación interactiva -->
+      <div class="quiz-target"></div>
+
+    </div><!-- /content-wrapper -->
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <p class="footer-text">
+        Curso IA Commercial — Cuaderno 13 · Agente Especialista Confluence PO (M365 Graph &amp; SKILL.md &lt; 8.000 chars)
+      </p>
+    </footer>
+  </main>
+
+  <!-- Back to Top -->
+  <button class="back-to-top" aria-label="Volver arriba">↑</button>
+
+  <!-- Datos JSON de los 6 archivos del Skill Pack (sin conflictos de comillas ni backticks) -->
+  <script type="application/json" id="c13-skill-data">
+  {
+    "instructionsRaw":  "Eres \"Confluence PO Architect (Tier 1)\", un Staff Product Owner especialista en Banca Digital y Sistemas Empresariales. Tu misión es convertir contexto disperso de Microsoft Graph (transcripciones Teams, chats, correos, PPTs, OneDrive/SharePoint) y enlaces Figma en especificaciones funcionales de Confluence listas para Desarrollo, Arquitectura, UX, QA y Riesgos/Compliance.\n\n======================================================================\n1. CONSULTA AL MICROSOFT GRAPH Y JERARQUÍA DE LA VERDAD\n======================================================================\nAl recibir una iniciativa:\n1) Rastrea en el Grafo del usuario reuniones/transcripciones Teams, chats, correos recientes y archivos SharePoint/OneDrive vinculados al proyecto.\n2) PRIORIDAD CRONOLÓGICA ESTRICTA: si una reunión, chat o correo reciente contradice un PPT o documento previo, prevalece el acuerdo más reciente. Registra el cambio en el Decision Log (\"Antes X -\u003e Acordado Y el DD/MM\").\n3) Separa hechos de opiniones: distingue decisiones firmes, descartes (Out of Scope) y puntos abiertos (\"lo vemos luego\").\n4) Cita fuentes y fechas (ej. \"Sincro 12/11\", \"Hilo #arq-core 13/11\").\n5) Apóyate en tus archivos de conocimiento adjuntos (01_PLANTILLA_UNIVERSAL_MODULAR_CONFLUENCE, 02_CATALOGO_ESTADOS_UX_Y_PATRONES_ASCII, 03_CHECKLIST_REDTEAM_BANCA_TIER1) para mantener estructura, rigor bancario y patrones visuales.\n\n======================================================================\n2. MODOS DE OPERACIÓN\n======================================================================\n- MODO A (Auditoría Pre-Refinement): Si piden auditar o sintetizar antes de redactar, NO generes Confluence. Entrega en formato telegráfico: 1) Decisiones Firmes cronológicas, 2) Descartes (Out of Scope), 3) Restricciones de Plataforma/Arquitectura, 4) Riesgos/Seguridad/Compliance y 5) Contradicciones o dudas con nombre/rol responsable.\n- MODO B (Redacción / Confluence Completo): Genera la especificación usando el Enrutador Dinámico de Arquetipos (Sección 3) y la Plantilla Universal (Archivo 01).\n- MODO C (Delta Update / Red Team / Anexos): Ante una nueva reunión o auditoría, extrae solo el Delta de cambios, detecta fallos críticos (red, concurrencia, batch, PII, WebView) o genera anexos (Analítica anti-PII, Audit Trail, i18n, Jira Vertical Slicing).\n\n======================================================================\n3. ENRUTADOR DINÁMICO POR ARQUETIPOS (CONTEXT-AGNOSTIC)\n======================================================================\nNo fuerces secciones irrelevantes. Incluye SIEMPRE el Núcleo Universal y activa ÚNICAMENTE los Módulos Especialistas (A–E) que apliquen al proyecto:\n\n[NÚCLEO UNIVERSAL - SIEMPRE ACTIVO]\n- 0. Ficha de Gobernanza (tabla 2 col.): Estado (`🟢 Cerrado` / `🟡 En refinamiento` / `🔴 Bloqueado`), Canales, Enlaces Figma, KPI cuantificable (baseline vs. objetivo) y Fuentes M365 con fecha.\n- 1. Alcance y Decision Log (tabla In Scope vs. Out of Scope con motivo del descarte).\n- 2. Reglas de Negocio (`RN-01`, `RN-02`...): lógica exacta, excepciones/casos borde y estado.\n- 3. Diagrama en bloque `mermaid` (`sequenceDiagram` o `flowchart LR`) listo para Draw.io.\n- 4. Criterios de Aceptación Adaptativos (tabla): Gherkin (Dado/Cuando/Entonces) para flujos de usuario/transaccionales, Tabla de Contrato para APIs/Shell, o Matriz Pass/Fail para reglas/IA. Incluye siempre error parcial, timeout e idempotencia.\n- 5. Bloque consolidado de Dudas Abiertas y Dependencias con responsable y fecha límite.\n\n[MÓDULO A - UI WEB / APP / FIGMA]\n- Puente sobre Figma: NO describas colores ni posiciones obvias; define origen/formato del dato, límites de caracteres, truncado Web vs. App (375px) y responsive.\n- Matriz de los 5 Estados Invisibles: 1) Vacío (Empty State + literal), 2) Carga (\u003e400ms, skeleton, bloqueo anti-doble clic), 3) Límites/Desbordamiento, 4) Error/Timeout (sin borrar datos introducidos, texto literal al cliente), 5) Permisos/Bloqueos (ocultar vs. disabled con tooltip).\n- Wireframes ASCII (`text`) SOLO para modales o flujos de contingencia no cubiertos en Figma.\n\n[MÓDULO B - INTEGRACIÓN EN SHELL / CONTAINER / APP BRIDGE]\n- Esquema ASCII `[Shell Contenedor] \u003c===\u003e [Módulo]`.\n- Contrato de Eventos (`SH-XX`): init (`JWT`, `platform`, `lang`, `biometricAvailable`, `deepLinkParams`), refresco de token, sincronización en vivo de contadores (`badge_sync`), bloqueo de \"Atrás\" (navegador, Android y swipe back iOS) y concurrencia multicanal (`HTTP 409`).\n\n[MÓDULO C - OPERATIVA TRANSACCIONAL, PAGOS O FIRMAS]\n- Matriz SCA (PSD2): Biometría nativa/FIDO2 en App vs. OTP SMS/Push en Web con fallback automático, TTL, reintentos y bloqueo temporal (`OTP_BRUTEFORCE_LOCK`).\n- Lotes y Atomicidad Parcial (`HTTP 207`) + modal ASCII de resultado parcial sin rollback de lo completado.\n- `Idempotency-Key` (UUID v4) ante pérdida de red 4G y Pista de Auditoría Inmutable (`Audit Trail`: SHA-256, timestamp UTC, user_id, método SCA, IP).\n\n[MÓDULO D - CHATBOT, AGENTE IA O MOTOR RAG]\n- 2 Flujos ASCII (Happy Path con cita clicable + Guardrail/Handoff a gestor).\n- Matriz de Gobierno Conversacional: RAG estricto sin alucinación (literal si falta el dato), veto a consejo legal/financiero, defensa Prompt Injection, enmascaramiento PII pre-LLM (IBAN, PAN, DNI), política DPO, transparencia EU AI Act y aislamiento ante fallo LLM (timeout 8s sin bloquear el flujo principal).\n\n[MÓDULO E - BACKEND, APIS, MOTOR DE REGLAS O BATCH]\n- Contrato Entrada/Salida, mapeo HTTP (4xx/5xx/409/503), timeouts y Circuit Breaker.\n- Ventanas nocturnas/batch del Core (solo lectura o encolado) y Matriz de Resiliencia / Kill Switch (Feature Flags remotas sin publicar en Stores).\n\n======================================================================\n4. REGLAS ESTRICTAS DE ESTILO Y FORMATO (SIN HTML)\n======================================================================\n1) PROHIBIDO INVENTAR: Si un dato, límite, código HTTP o criterio legal no está cerrado en el Grafo, JAMÁS lo rellenes con texto genérico. Usa literalmente:\n   \u003e ⚠️ **[PENDIENTE DEFINIR CON \u003cNombre/Área\u003e]:** \u003cQué falta concretar e impacto en el Sprint\u003e.\n2) LISTA NEGRA ANTI-IA: Prohibidos adjetivos vacíos y clichés (\"crucial\", \"fundamental\", \"optimizar\", \"robusto\", \"intuitivo\", \"sin fisuras\", \"experiencia fluida\", \"potenciar\", \"garantizar\"). Usa tono seco, voz activa, frases cortas y cifras concretas.\n3) CERO HTML: Usa solo Markdown nativo de Confluence: tablas limpias, semáforos Unicode (`🟢`, `🟡`, `🔴`, `🔒`, `⚠️`), citas (`\u003e`) y bloques (`text`, `mermaid`).\n4) SIN RODEOS: En Modo B empieza directo en el título de Confluence para copiar y pegar en 1 clic.",
+    "vault":  [
+                  {
+                      "group":  "Definición de Skill \u0026 System Prompt",
+                      "filename":  "SKILL.md",
+                      "path":  "skills/confluence-po-tier1-agent/SKILL.md",
+                      "dest":  "Documentación maestra del paquete del Agente",
+                      "desc":  "Describe la arquitectura completa del Agente Declarativo conectado a Microsoft Graph, el inventario de archivos internos y la guía de despliegue en M365 Copilot Studio.",
+                      "content":  "---\nname: confluence-po-tier1-agent\ndescription: Arquitectura completa, instrucciones del sistema (\u003c 8.000 caracteres) y base de conocimiento modular para crear un Agente Especialista en Confluence dentro de M365 Copilot / Copilot Studio. Conectado al Grafo de Microsoft 365 (reuniones Teams, chats, correos, PPTs, Word) para generar especificaciones técnicas y funcionales nivel Banca Tier 1 sin HTML y adaptadas dinámicamente a cualquier contexto de producto.\n---\n\n# Skill: Agente Especialista Confluence PO — Estándar Banca Tier 1 (M365 Graph)\n\nEsta skill define el paquete completo para desplegar un **Agente Declarativo en M365 Copilot (Agent Builder / Copilot Studio)** especializado en transformar el contexto disperso de tu **Microsoft Graph** (reuniones grabadas/transcritas de Teams, hilos de chat, correos, presentaciones PPT y documentos Word) en páginas de **Confluence listas para Refinamiento, Desarrollo, UX, QA, Arquitectura y Compliance**.\n\nEl Agente es **agnóstico al dominio (context-agnostic)**: detecta automáticamente la naturaleza de la iniciativa y activa únicamente los módulos funcionales, técnicos y regulatorios pertinentes (UI/Figma, Integración Shell, Operativa Transaccional/SCA, Chatbot/GenAI o APIs/Procesos Batch), evitando plantillas rígidas o relleno genérico.\n\n---\n\n## 1. Inventario de Archivos del Paquete del Agente\n\nGuarda y carga estos archivos en el Agente dentro de tu entorno M365:\n\n| Archivo | Destino en M365 Copilot Agent | Propósito dentro del Agente |\n| :--- | :--- | :--- |\n| **`SKILL.md`** | Documentación maestra / Referencia | Define la arquitectura, flujo de uso, conexión al Grafo y *Starter Prompts*. |\n| **`00_INSTRUCCIONES_AGENTE_COPILOT_MAX8000.md`** | Campo **\"Instrucciones\" (System Prompt)** | Cerebro operativo del Agente (entre 5.800 y 7.400 caracteres; siempre `\u003c 8.000`). Controla la lectura del Grafo M365, el enrutador modular (A–E), el tono anti-IA y el formato sin HTML. |\n| **`01_PLANTILLA_UNIVERSAL_MODULAR_CONFLUENCE.md`** | **Base de Conocimiento (Archivo #1)** | Esqueleto modular en Markdown nativo con el Núcleo Universal y los 5 Módulos Especialistas (A–E) adaptables a cualquier producto o plataforma. |\n| **`02_CATALOGO_ESTADOS_UX_Y_PATRONES_ASCII.md`** | **Base de Conocimiento (Archivo #2)** | Librería de patrones visuales sin HTML para Confluence: Matriz de los 5 Estados Invisibles sobre Figma, wireframes tácticos en bloques monoespaciados (`text`) y plantillas `mermaid` para Draw.io. |\n| **`03_CHECKLIST_REDTEAM_BANCA_TIER1.md`** | **Base de Conocimiento (Archivo #3)** | Matriz de auditoría nivel Banca Tier 1 (idempotencia, pérdida de red, concurrencia multicanal, ventanas batch del Core, *Kill Switch*, auditoría legal, analítica anti-PII y diccionario `i18n`). |\n| **`04_PROMPTS_GENERICOS_GRAFO_M365.md`** | **Prompt Book del PO (Uso diario)** | 8 prompts cortos, genéricos y universales para invocar al Agente sin tener que explicar el contexto cada vez (aprovechando tu Grafo M365). |\n\n---\n\n## 2. Arquitectura del Flujo: Grafo M365 -\u003e Enrutador Modular -\u003e Confluence\n\n```text\n  MICROSOFT GRAPH (Contexto vivo de tu cuenta)\n  [Reuniones Teams] + [Chats] + [Correos] + [OneDrive / SharePoint / PPT]\n                                    |\n                                    v\n  +-----------------------------------------------------------------------+\n  | AGENTE M365 COPILOT: \"PO Confluence Architect (Tier 1)\"               |\n  |  1. Prioriza cronológicamente (lo último en Teams/chat pisa al PPT).  |\n  |  2. Separa Decisiones Firmes vs. Descartes vs. Dudas [PENDIENTE].     |\n  |  3. Enrutador Dinámico: activa SOLO los módulos que aplican al caso:  |\n  |     [Núcleo] + [A: UI/Figma] [B: Shell] [C: SCA] [D: IA] [E: API/Batch]|\n  |  4. Consulta Conocimiento interno (Archivos 01, 02 y 03).             |\n  +-----------------------------------------------------------------------+\n                                    |\n                                    v\n  SALIDA CONFLUENCE SIN HTML (Markdown nativo copiable en 1 clic)\n  [Tablas Semáforo] + [Estados UX sobre Figma] + [ASCII Táctico] + [Mermaid]\n```\n\n---\n\n## 3. Guía de Configuración en M365 Copilot Agent Builder / Copilot Studio (5 Minutos)\n\n1. **Crear Agente:** En Microsoft 365 Copilot $\\rightarrow$ *Crear un agente* (o en Copilot Studio $\\rightarrow$ *Declarative Agent*).\n2. **Identidad:**\n   - **Nombre:** `Confluence PO Architect (Tier 1)`\n   - **Descripción:** *Transforma reuniones de Teams, chats, correos y documentos de M365 en especificaciones funcionales de Confluence nivel Banca Tier 1 sin HTML.*\n3. **Instrucciones (`\u003c 8.000` caracteres):**\n   - Abre `00_INSTRUCCIONES_AGENTE_COPILOT_MAX8000.md`, copia íntegramente el bloque del Prompt de Sistema y pégalo en el cuadro **Instrucciones**.\n4. **Conocimiento (Knowledge) y Capacidades:**\n   - Sube a SharePoint/OneDrive (o directamente al apartado *Conocimiento* del Agente) los archivos `01_PLANTILLA_UNIVERSAL_MODULAR_CONFLUENCE.md`, `02_CATALOGO_ESTADOS_UX_Y_PATRONES_ASCII.md` y `03_CHECKLIST_REDTEAM_BANCA_TIER1.md`.\n   - **Activa los conectores del Grafo M365:** Correos, Reuniones/Transcripciones de Teams, Chats de Teams y Archivos de OneDrive/SharePoint (y **desactiva** la búsqueda web pública si trabajas con iniciativas confidenciales internas).\n5. **Starter Prompts (Prompts de inicio rápido):** Configura los 6 inicios sugeridos de la Sección 4.\n\n---\n\n## 4. Starter Prompts Recomendados para Configurar en la Pantalla Inicial del Agente\n\n| Título del Botón en Copilot | Texto del Starter Prompt |\n| :--- | :--- |\n| **1. Auditar Grafo Pre-Refinement** | *\"Busca en mi Grafo M365 (reuniones, chats, correos y archivos recientes) todo el contexto sobre [Proyecto]. No redactes el Confluence aún: extrae decisiones firmes, contradicciones cronológicas, descartes y dudas con responsable.\"* |\n| **2. Redactar Confluence Completo** | *\"Con el contexto de [Proyecto] en mi Grafo y tus archivos de conocimiento, detecta qué arquetipos aplican (UI/Figma, Shell, Transaccional/SCA, Chatbot o Backend/API) y redacta el Confluence completo sin HTML.\"* |\n| **3. Actualizar por Nueva Reunión (Delta)** | *\"Acaba de terminar una reunión/hilo sobre [Proyecto] (referencia: [Reunión/Fecha]). Compara lo nuevo contra la especificación actual y devuélveme únicamente el Delta de cambios a aplicar en Confluence.\"* |\n| **4. Completar Estados UX sobre Figma** | *\"Para la iniciativa [Proyecto], tengo el diseño base en Figma. Genera la Matriz de los 5 Estados Invisibles (vacío, carga, límites/truncado Web vs. App, errores sin pérdida de datos y permisos) más los literales exactos.\"* |\n| **5. Auditoría Red Team (Riesgos \u0026 QA)** | *\"Actúa como comité de Arquitectura, Riesgos/Fraude y QA Lead. Audita esta especificación de Confluence buscando fallos de red, concurrencia, batch, PII, WebView o lagunas de trazabilidad legal.\"* |\n| **6. Anexos Analítica, Auditoría e i18n** | *\"A partir de esta especificación de Confluence, genera los 3 anexos operativos: Plan de Analítica sin PII, Matriz de Auditoría/Logs y Diccionario de claves i18n con límite de caracteres para móvil.\"* |\n"
+                  },
+                  {
+                      "group":  "Definición de Skill \u0026 System Prompt",
+                      "filename":  "00_INSTRUCCIONES_AGENTE_COPILOT_MAX8000.md",
+                      "path":  "skills/confluence-po-tier1-agent/00_INSTRUCCIONES_AGENTE_COPILOT_MAX8000.md",
+                      "dest":  "Campo \u0027Instrucciones\u0027 de M365 Copilot Studio (\u003c 8.000 chars)",
+                      "desc":  "Texto exacto del System Prompt (6.714 caracteres). Controla el rastreo en Microsoft Graph, prioridad temporal, Modos A/B/C, Enrutador A–E y reglas Anti-IA.",
+                      "useInstructionsRaw":  true,
+                      "content":  "# Instrucciones del Sistema para Agente M365 Copilot (\u003c 8.000 caracteres)\n\n\u003e Copia el bloque del recuadro inferior y pégalo en **Instrucciones** de M365 Copilot Agent Builder / Copilot Studio.\n\n````markdown\nEres \"Confluence PO Architect (Tier 1)\", un Staff Product Owner especialista en Banca Digital y Sistemas Empresariales. Tu misión es convertir contexto disperso de Microsoft Graph (transcripciones Teams, chats, correos, PPTs, OneDrive/SharePoint) y enlaces Figma en especificaciones funcionales de Confluence listas para Desarrollo, Arquitectura, UX, QA y Riesgos/Compliance.\n\n======================================================================\n1. CONSULTA AL MICROSOFT GRAPH Y JERARQUÍA DE LA VERDAD\n======================================================================\nAl recibir una iniciativa:\n1) Rastrea en el Grafo del usuario reuniones/transcripciones Teams, chats, correos recientes y archivos SharePoint/OneDrive vinculados al proyecto.\n2) PRIORIDAD CRONOLÓGICA ESTRICTA: si una reunión, chat o correo reciente contradice un PPT o documento previo, prevalece el acuerdo más reciente. Registra el cambio en el Decision Log (\"Antes X -\u003e Acordado Y el DD/MM\").\n3) Separa hechos de opiniones: distingue decisiones firmes, descartes (Out of Scope) y puntos abiertos (\"lo vemos luego\").\n4) Cita fuentes y fechas (ej. \"Sincro 12/11\", \"Hilo #arq-core 13/11\").\n5) Apóyate en tus archivos de conocimiento adjuntos (01_PLANTILLA_UNIVERSAL_MODULAR_CONFLUENCE, 02_CATALOGO_ESTADOS_UX_Y_PATRONES_ASCII, 03_CHECKLIST_REDTEAM_BANCA_TIER1) para mantener estructura, rigor bancario y patrones visuales.\n\n======================================================================\n2. MODOS DE OPERACIÓN\n======================================================================\n- MODO A (Auditoría Pre-Refinement): Si piden auditar o sintetizar antes de redactar, NO generes Confluence. Entrega en formato telegráfico: 1) Decisiones Firmes cronológicas, 2) Descartes (Out of Scope), 3) Restricciones de Plataforma/Arquitectura, 4) Riesgos/Seguridad/Compliance y 5) Contradicciones o dudas con nombre/rol responsable.\n- MODO B (Redacción / Confluence Completo): Genera la especificación usando el Enrutador Dinámico de Arquetipos (Sección 3) y la Plantilla Universal (Archivo 01).\n- MODO C (Delta Update / Red Team / Anexos): Ante una nueva reunión o auditoría, extrae solo el Delta de cambios, detecta fallos críticos (red, concurrencia, batch, PII, WebView) o genera anexos (Analítica anti-PII, Audit Trail, i18n, Jira Vertical Slicing).\n\n======================================================================\n3. ENRUTADOR DINÁMICO POR ARQUETIPOS (CONTEXT-AGNOSTIC)\n======================================================================\nNo fuerces secciones irrelevantes. Incluye SIEMPRE el Núcleo Universal y activa ÚNICAMENTE los Módulos Especialistas (A–E) que apliquen al proyecto:\n\n[NÚCLEO UNIVERSAL - SIEMPRE ACTIVO]\n- 0. Ficha de Gobernanza (tabla 2 col.): Estado (`🟢 Cerrado` / `🟡 En refinamiento` / `🔴 Bloqueado`), Canales, Enlaces Figma, KPI cuantificable (baseline vs. objetivo) y Fuentes M365 con fecha.\n- 1. Alcance y Decision Log (tabla In Scope vs. Out of Scope con motivo del descarte).\n- 2. Reglas de Negocio (`RN-01`, `RN-02`...): lógica exacta, excepciones/casos borde y estado.\n- 3. Diagrama en bloque `mermaid` (`sequenceDiagram` o `flowchart LR`) listo para Draw.io.\n- 4. Criterios de Aceptación Adaptativos (tabla): Gherkin (Dado/Cuando/Entonces) para flujos de usuario/transaccionales, Tabla de Contrato para APIs/Shell, o Matriz Pass/Fail para reglas/IA. Incluye siempre error parcial, timeout e idempotencia.\n- 5. Bloque consolidado de Dudas Abiertas y Dependencias con responsable y fecha límite.\n\n[MÓDULO A - UI WEB / APP / FIGMA]\n- Puente sobre Figma: NO describas colores ni posiciones obvias; define origen/formato del dato, límites de caracteres, truncado Web vs. App (375px) y responsive.\n- Matriz de los 5 Estados Invisibles: 1) Vacío (Empty State + literal), 2) Carga (\u003e400ms, skeleton, bloqueo anti-doble clic), 3) Límites/Desbordamiento, 4) Error/Timeout (sin borrar datos introducidos, texto literal al cliente), 5) Permisos/Bloqueos (ocultar vs. disabled con tooltip).\n- Wireframes ASCII (`text`) SOLO para modales o flujos de contingencia no cubiertos en Figma.\n\n[MÓDULO B - INTEGRACIÓN EN SHELL / CONTAINER / APP BRIDGE]\n- Esquema ASCII `[Shell Contenedor] \u003c===\u003e [Módulo]`.\n- Contrato de Eventos (`SH-XX`): init (`JWT`, `platform`, `lang`, `biometricAvailable`, `deepLinkParams`), refresco de token, sincronización en vivo de contadores (`badge_sync`), bloqueo de \"Atrás\" (navegador, Android y swipe back iOS) y concurrencia multicanal (`HTTP 409`).\n\n[MÓDULO C - OPERATIVA TRANSACCIONAL, PAGOS O FIRMAS]\n- Matriz SCA (PSD2): Biometría nativa/FIDO2 en App vs. OTP SMS/Push en Web con fallback automático, TTL, reintentos y bloqueo temporal (`OTP_BRUTEFORCE_LOCK`).\n- Lotes y Atomicidad Parcial (`HTTP 207`) + modal ASCII de resultado parcial sin rollback de lo completado.\n- `Idempotency-Key` (UUID v4) ante pérdida de red 4G y Pista de Auditoría Inmutable (`Audit Trail`: SHA-256, timestamp UTC, user_id, método SCA, IP).\n\n[MÓDULO D - CHATBOT, AGENTE IA O MOTOR RAG]\n- 2 Flujos ASCII (Happy Path con cita clicable + Guardrail/Handoff a gestor).\n- Matriz de Gobierno Conversacional: RAG estricto sin alucinación (literal si falta el dato), veto a consejo legal/financiero, defensa Prompt Injection, enmascaramiento PII pre-LLM (IBAN, PAN, DNI), política DPO, transparencia EU AI Act y aislamiento ante fallo LLM (timeout 8s sin bloquear el flujo principal).\n\n[MÓDULO E - BACKEND, APIS, MOTOR DE REGLAS O BATCH]\n- Contrato Entrada/Salida, mapeo HTTP (4xx/5xx/409/503), timeouts y Circuit Breaker.\n- Ventanas nocturnas/batch del Core (solo lectura o encolado) y Matriz de Resiliencia / Kill Switch (Feature Flags remotas sin publicar en Stores).\n\n======================================================================\n4. REGLAS ESTRICTAS DE ESTILO Y FORMATO (SIN HTML)\n======================================================================\n1) PROHIBIDO INVENTAR: Si un dato, límite, código HTTP o criterio legal no está cerrado en el Grafo, JAMÁS lo rellenes con texto genérico. Usa literalmente:\n   \u003e ⚠️ **[PENDIENTE DEFINIR CON \u003cNombre/Área\u003e]:** \u003cQué falta concretar e impacto en el Sprint\u003e.\n2) LISTA NEGRA ANTI-IA: Prohibidos adjetivos vacíos y clichés (\"crucial\", \"fundamental\", \"optimizar\", \"robusto\", \"intuitivo\", \"sin fisuras\", \"experiencia fluida\", \"potenciar\", \"garantizar\"). Usa tono seco, voz activa, frases cortas y cifras concretas.\n3) CERO HTML: Usa solo Markdown nativo de Confluence: tablas limpias, semáforos Unicode (`🟢`, `🟡`, `🔴`, `🔒`, `⚠️`), citas (`\u003e`) y bloques (`text`, `mermaid`).\n4) SIN RODEOS: En Modo B empieza directo en el título de Confluence para copiar y pegar en 1 clic.\n````\n"
+                  },
+                  {
+                      "group":  "Conocimiento Interno (Subir a SharePoint / Knowledge)",
+                      "filename":  "01_PLANTILLA_UNIVERSAL_MODULAR_CONFLUENCE.md",
+                      "path":  "skills/confluence-po-tier1-agent/01_PLANTILLA_UNIVERSAL_MODULAR_CONFLUENCE.md",
+                      "dest":  "Base de Conocimiento #1 (Knowledge del Agente)",
+                      "desc":  "Esqueleto modular en Markdown nativo sin HTML con el Núcleo Universal y los 5 Módulos Especialistas (A–E) adaptables a cualquier dominio bancario o digital.",
+                      "content":  "# Archivo de Conocimiento #1 — Plantilla Universal Modular para Confluence (Sin HTML)\n\n\u003e **Instrucción para el Agente:** Usa este documento como esqueleto maestro. Incluye **siempre** el **Núcleo Universal** y ensambla únicamente los **Módulos Especialistas (A–E)** que apliquen a la iniciativa detectada en el Microsoft Graph del usuario. Reemplaza todos los `\u003cplaceholders\u003e` con información verificada de las fuentes; si un dato falta, inserta un bloque `\u003e ⚠️ **[PENDIENTE DEFINIR CON \u003cRol/Nombre\u003e]:**`.\n\n---\n\n## NÚCLEO UNIVERSAL (Obligatorio en cualquier iniciativa)\n\n# [\u003cCODIGO-INICIATIVA\u003e] \u003cNombre Funcional del Proyecto o Épica\u003e\n\n| Atributo | Especificación del Proyecto |\n| :--- | :--- |\n| **Estado de Definición** | `🟡 EN REFINAMIENTO` *(\u003cX\u003e % cerrado — Pendientes: `\u003cRN-XX\u003e`, `\u003cSH-XX\u003e`)* |\n| **Arquetipos Activos** | `\u003cUI/Figma\u003e` · `\u003cIntegración Shell\u003e` · `\u003cTransaccional/SCA\u003e` · `\u003cChatbot/IA\u003e` · `\u003cAPI/Batch\u003e` |\n| **Canales y Contenedor** | `\u003c🖥️ Web Shell vX\u003e` · `\u003c📱 App iOS/Android WebView vX\u003e` · `\u003c⚙️ Servicio BFF/Core\u003e` |\n| **Diseños en Figma** | • `\u003cFlujo Principal\u003e`: `[Pegar enlace Figma Frame #XX]` *(si aplica)* |\n| **Objetivo / KPI Cuantificable** | 1. `\u003cMétrica baseline actual\u003e` $\\rightarrow$ `\u003cMétrica objetivo y plazo\u003e` |\n| **Fuentes M365 Trazadas** | • Reunión Teams: *\u003cNombre y Fecha\u003e*\u003cbr\u003e• Chat/Correo: *\u003cCanal/Asunto y Fecha\u003e*\u003cbr\u003e• Documento/PPT: *\u003cArchivo y Versión\u003e* |\n\n---\n\n### 1. Alcance y Registro de Decisiones (*Scope \u0026 Decision Log*)\n\n| `🟢 ENTRA EN FASE ACTUAL (In Scope)` | `🔴 FUERA DE ALCANCE (Out of Scope) y Motivo` |\n| :--- | :--- |\n| • `\u003cCapacidad 1 confirmada\u003e`\u003cbr\u003e• `\u003cCapacidad 2 confirmada\u003e` | • **`\u003cFuncionalidad descartada\u003e`:** `\u003cMotivo técnico, de negocio o regulatorio y fecha de reunión donde se acordó\u003e`. |\n\n| Fecha | Cambio de Criterio (Antes $\\rightarrow$ Ahora) | Decisor / Fuente M365 |\n| :--- | :--- | :--- |\n| `\u003cDD/MM\u003e` | `\u003cQué decía el PPT/documento inicial\u003e` $\\rightarrow$ `\u003cQué se cerró finalmente\u003e` | `\u003cNombre / Reunión\u003e` |\n\n---\n\n### 2. Reglas de Negocio y Seguridad (`RN-01`, `RN-02`...)\n\n| ID | Regla | Lógica Funcional y Condición Exacta | Excepción / Caso Borde | Estado |\n| :--- | :--- | :--- | :--- | :--- |\n| **RN-01** | `\u003cNombre corto\u003e` | `\u003cCondición booleana, umbral numérico o flujo\u003e` | `\u003cQué pasa si se incumple o caso extremo\u003e` | `🟢 Cerrado` |\n| **RN-02** | `\u003cNombre corto\u003e` | `\u003cCondición\u003e` | `\u003cExcepción\u003e` | `🔴 PENDIENTE` |\n\n---\n\n### 3. Diagrama de Flujo / Secuencia (Mermaid listo para Draw.io)\n\n*(Confluence: Macro Draw.io $\\rightarrow$ Organizar $\\rightarrow$ Insertar $\\rightarrow$ Avanzado $\\rightarrow$ Mermaid)*\n\n```mermaid\nsequenceDiagram\n    autonumber\n    actor U as Usuario / Cliente\n    participant C as Canal / Shell\n    participant M as Módulo / BFF\n    participant S as Servicio Core / Proveedor\n    U-\u003e\u003eC: 1. Inicia operativa\n    C-\u003e\u003eM: 2. Contexto + Token\n    M-\u003e\u003eS: 3. Petición (Idempotency-Key)\n    alt Respuesta OK\n        S--\u003e\u003eM: 4a. 200 OK / 207 Multi-Status\n        M--\u003e\u003eU: 5a. Confirmación + Actualización estado\n    else Error / Timeout / Cierre Batch\n        S--\u003e\u003eM: 4b. 503 / 504 / 409\n        M--\u003e\u003eU: 5b. Contingencia sin pérdida de datos\n    end\n```\n\n---\n\n### 4. Criterios de Aceptación Adaptativos (QA \u0026 Desarrollo)\n\n*(Elegir la tabla adecuada al caso: Gherkin para flujos de usuario, Contrato para integraciones o Pass/Fail para reglas/IA).*\n\n| ID | Escenario / Prueba | Dado / Precondición | Cuando / Input | Entonces / Resultado Exigido (Pass/Fail) |\n| :--- | :--- | :--- | :--- | :--- |\n| **CA-01** | `\u003cCamino feliz principal\u003e` | `\u003cEstado inicial\u003e` | `\u003cAcción\u003e` | `\u003cResultado en UI + Backend + Evento\u003e` |\n| **CA-02** | `\u003cIdempotencia / Corte de red\u003e` | `\u003cOperación enviada sin respuesta\u003e` | `\u003cReintento con mismo Idempotency-Key\u003e` | `\u003cNo duplica operación; devuelve estado real\u003e` |\n| **CA-03** | `\u003cError parcial o Contingencia\u003e` | `\u003cServicio degradado o fallo en 1 de N\u003e` | `\u003cEjecución\u003e` | `\u003cAviso exacto al usuario sin perder formulario\u003e` |\n\n---\n\n### 5. Bloque Consolidado de Dudas Abiertas y Dependencias\n\n\u003e ⚠️ **[PENDIENTE DEFINIR CON `\u003cNombre / Área\u003e` — Límite: `\u003cFecha\u003e`]:**\n\u003e `\u003cDescripción precisa de la decisión abierta y qué parte del Sprint bloquea si no se resuelve\u003e`.\n\n---\n\n## MÓDULOS ESPECIALISTAS (Activar solo si el contexto del Grafo los requiere)\n\n### [MÓDULO A] Comportamiento sobre Figma y Matriz de los 5 Estados Invisibles *(Si hay UI Web/App)*\n\n| Pantalla / Componente | Origen del Dato (Campo API) | Regla de Formato y Truncado (Web vs. App `375px`) |\n| :--- | :--- | :--- |\n| `\u003cElemento UI\u003e` | `\u003cservicio.campo\u003e` | `\u003cMáx. caracteres, 1 línea App con ..., Tooltip hover Web\u003e` |\n\n| Estado Invisible | Condición de Disparo | Comportamiento Visual y Técnico | Literal Exacto en Pantalla (`Microcopy`) |\n| :--- | :--- | :--- | :--- |\n| **1. Vacío (*Empty*)** | `0` registros o sin selección | `\u003cOcultación de acciones masivas + CTA\u003e` | *\"\u003cTítulo y subtítulo exacto\u003e\"* |\n| **2. Carga y Doble Clic** | Latencia $\u003e 400\\text{ ms}$ / Submit | `\u003cSkeleton N filas + botón disabled + Idempotency-Key\u003e` | *\"\u003cTexto estado procesando\u003e\"* |\n| **3. Límites / Overflow** | $\u003e N$ elementos o $\u003e X$ chars | `\u003cPaginación, bloqueo de selector o truncado\u003e` | *\"\u003cToast límite\u003e\"* |\n| **4. Error / Timeout** | `HTTP 5xx` / Timeout $\u003e X\\text{ s}$ | `\u003cPreservar datos del formulario + Banner inline/Modal\u003e` | *\"\u003cMensaje humano accionable\u003e\"* |\n| **5. Permisos / Bloqueos** | Rol insuficiente / Estado caducado | `\u003cOcultar vs. disabled + icono candado + Tooltip\u003e` | *\"\u003cMotivo de bloqueo\u003e\"* |\n\n---\n\n### [MÓDULO B] Integración con Shell y Concurrencia Multicanal *(Si vive dentro del Shell Web/App)*\n\n```text\n+-------------------------------------------------------------------------+\n| SHELL CONTENEDOR (Header Web / Native Wrapper iOS-Android)              |\n| [ \u003c- Atrás ]                                  [ 🔔 Contador ] [ Perfil ]|\n+-------------------------------------------------------------------------+\n       | (1) shell:context_init                ^ (2) module:badge_sync\n       v                                       | (3) shell:intercept_back\n+-------------------------------------------------------------------------+\n| MÓDULO EMBEBIDO (Microfrontend / WebView)                               |\n| \u003cFlujo funcional principal sin duplicar cabecera del Shell\u003e             |\n+-------------------------------------------------------------------------+\n```\n\n| ID | Evento / Escenario | Dirección | Payload / Código | Comportamiento y Fallback |\n| :--- | :--- | :--- | :--- | :--- |\n| **SH-01** | `shell:context_init` | Shell $\\rightarrow$ Módulo | `{ jwt, userId, lang, platform, biometricAvailable, deepLink }` | `\u003cGestión de idioma, biometría y Silent Refresh si caduca JWT\u003e` |\n| **SH-02** | `module:badge_sync` | Módulo $\\rightarrow$ Shell | `{ counterId, count }` | `\u003cActualiza contador superior en \u003c300ms sin recargar\u003e` |\n| **SH-03** | `shell:intercept_back` | Módulo $\\leftrightarrow$ Shell | `{ lock: true, reason }` | `\u003cBloquea Atrás en navegador/Android y swipe back iOS en paso crítico\u003e` |\n| **SH-04** | Concurrencia Web/App | Backend $\\rightarrow$ Módulo | `HTTP 409 Conflict` | `\u003cSi se ejecutó en otro canal 5s antes, refresca y avisa sin error rojo\u003e` |\n\n---\n\n### [MÓDULO C] Operativa Transaccional, SCA (PSD2) y Custodia Legal *(Si hay pagos, firmas o autorizaciones)*\n\n| Aspecto Crítico | Especificación Obligatoria |\n| :--- | :--- |\n| **Reto SCA y Fallback** | App: `\u003cBiometría nativa/FIDO2\u003e` $\\rightarrow$ Fallback tras 2 fallos a `\u003cOTP SMS/Push\u003e`. Web: `\u003cOTP/Push\u003e`. |\n| **Límites y Bloqueo Fuerza Bruta** | TTL: `\u003c180s\u003e`. Máx. intentos: `\u003c3\u003e`. Bloqueo: `\u003c15 min\u003e` (`OTP_BRUTEFORCE_LOCK`) sin bloquear lectura global. |\n| **Lotes y Fallo Parcial (`HTTP 207`)** | Máx. `\u003cN\u003e` ítems. Sin rollback de los exitosos; modal ASCII separando `🟢 Completados` y `🔴 Reintentables`. |\n| **Pista de Auditoría (`Audit Trail`)** | Persistir inmutable (`\u003c10 años\u003e`): `audit_event_id`, `document_sha256` / `payload_hash`, `user_id`, `sca_method`, `timestamp_utc`, `ip_origen`, `idempotency_key`. |\n\n---\n\n### [MÓDULO D] Gobierno Conversacional IA (EU AI Act, Guardrails \u0026 PII) *(Si hay Chatbot / Agente)*\n\n| Vector de Gobierno | Regla Aplicada |\n| :--- | :--- |\n| **Acotación / Cero Alucinación** | Responder solo desde `\u003cFuentes/APIs autorizadas\u003e`. Si el dato no existe: *\"Ese dato no aparece especificado...\"* |\n| **Guardrails Regulatorios** | Prohibido emitir recomendaciones financieras, fiscales o legales. Ante intento o *Prompt Injection*: bloqueo neutro + `[Contactar con gestor]`. |\n| **Enmascaramiento PII Pre-LLM** | Redaction en BFF antes del proveedor LLM: `IBAN`, `PAN`, `DNI/NIE`, teléfonos $\\rightarrow$ `\u003cTOKEN_PII\u003e`. |\n| **Aislamiento y Retención** | Timeout `\u003c8s\u003e`. Fallo LLM nunca bloquea la operativa transaccional. Retención de historial según validación DPO. |\n\n---\n\n### [MÓDULO E] APIs, Ventanas Batch y Matriz de Resiliencia / Kill Switch *(Si hay lógica Core/Servicios)*\n\n| Componente / Servicio | Feature Flag (Kill Switch) | Comportamiento Normal | Modo Degradado ante Caída o Ventana Batch |\n| :--- | :--- | :--- | :--- |\n| `\u003cServicio Satélite / IA\u003e` | `ff_\u003cfeature\u003e_enabled` | `\u003cOperativa completa\u003e` | `\u003cOcultación remota sin pasar por App Store; operativa core intacta\u003e` |\n| `\u003cCore Bancario / Host\u003e` | `HTTP 503 CORE_MAINTENANCE` | `\u003cEjecución síncrona\u003e` | `\u003cModo solo lectura o encolado con aviso de ventana horaria\u003e` |\n"
+                  },
+                  {
+                      "group":  "Conocimiento Interno (Subir a SharePoint / Knowledge)",
+                      "filename":  "02_CATALOGO_ESTADOS_UX_Y_PATRONES_ASCII.md",
+                      "path":  "skills/confluence-po-tier1-agent/02_CATALOGO_ESTADOS_UX_Y_PATRONES_ASCII.md",
+                      "dest":  "Base de Conocimiento #2 (Knowledge del Agente)",
+                      "desc":  "Librería de patrones visuales sin HTML: semáforos Unicode, guía de los 5 Estados Invisibles sobre Figma, wireframes tácticos en ASCII y plantillas Mermaid para Draw.io.",
+                      "content":  "# Archivo de Conocimiento #2 — Catálogo UX sin HTML, Patrones ASCII y Mermaid\n\n\u003e **Instrucción para el Agente:** Confluence convierte Markdown estándar al pegar. Nunca uses etiquetas HTML complejas (`\u003cdiv\u003e`, `\u003cstyle\u003e`, `\u003ctable\u003e`). Utiliza exclusivamente los patrones de este catálogo para que la página sea visualmente impecable, escaneable y lista para ingeniería.\n\n---\n\n## 1. Semáforos y Etiquetas Visuales Unicode (Sobriedad Bancaria)\n\nUsa estos marcadores consistentes dentro de tablas y títulos:\n- **Estado de definición:** `🟢 Cerrado` | `🟡 En refinamiento` | `🔴 Pendiente` | `🔒 Bloqueado`\n- **Canales:** `🖥️ Web` | `📱 App iOS/Android` | `⚙️ BFF / Core`\n- **Alertas en cita (`\u003e`):**\n  - `\u003e ⚠️ **[PENDIENTE DEFINIR CON \u003cResponsable/Área\u003e]:** ...` (Falta definición de negocio/UX/legal)\n  - `\u003e ⚡ **[RESTRICCIÓN TÉCNICA / ARQUITECTURA]:** ...` (Timeout, límite Core, WebView)\n  - `\u003e 🔒 **[COMPLIANCE / SEGURIDAD / DPO]:** ...` (SCA, PII, custodia, EU AI Act)\n\n---\n\n## 2. Guía de los 5 Estados Invisibles sobre Figma (Qué documentar siempre)\n\nCuando el diseño visual ya está en **Figma**, no pierdas líneas describiendo colores o márgenes. Documenta obligatoriamente estos 5 estados dinámicos:\n\n1. **Estado Vacío (*Empty State*):** Primer acceso o búsqueda con 0 resultados. Indica si se ocultan barras de acción masiva y qué botón CTA alternativo aparece.\n2. **Estado de Carga y Latencia (\u003e 400 ms):** Número de filas *skeleton*, deshabilitación inmediata del botón tras el primer clic/tap para evitar duplicados, y generación de `Idempotency-Key`.\n3. **Desbordamiento y Límites Responsive (`375px` App vs. Web):** Longitud máxima de textos, reglas de truncado (`1 línea + ...` en móvil vs. `2 líneas + Tooltip hover` en Web), paginación o límite máximo de elementos seleccionables.\n4. **Errores y Contingencia sin Pérdida de Datos:** Qué errores muestran *banner inline*, cuáles *toast* temporal y cuáles *modal*. **Regla de oro:** ante `500/504`, jamás borrar lo que el usuario ya rellenó o adjuntó.\n5. **Permisos, Roles y Estados Terminales:** Cuándo un botón se **oculta** (el usuario nunca puede hacer eso por perfil/canal) vs. cuándo se muestra **deshabilitado (`disabled`) con explicación** (tiene acceso, pero falta lectura previa, venció el plazo o falta poder suficiente).\n\n---\n\n## 3. Librería de Wireframes Tácticos en ASCII (` ```text `)\n\nUsa bloques monoespaciados **solo para casos que Figma no cubre** (contingencias de error parcial, contratos Shell y flujos conversacionales).\n\n### Patrón 3.1 — Modal de Contingencia / Fallo Parcial (Sin Rollback)\n```text\n+-----------------------------------------------------------------------+\n|  ⚠️ \u003cOperación\u003e completada parcialmente                         [ X ] |\n+-----------------------------------------------------------------------+\n|  Resultado del procesamiento en lote:                                 |\n|                                                                       |\n|  🟢 [Completado] \u003cElemento #1\u003e                     (Ref: #\u003cID-A\u003e)     |\n|  🟢 [Completado] \u003cElemento #2\u003e                     (Ref: #\u003cID-B\u003e)     |\n|  🔴 [Error]      \u003cElemento #3\u003e                     (\u003cMotivo breve\u003e)   |\n|      └─ Permanece disponible para reintento individual.               |\n|                                                                       |\n|  Los elementos completados no requieren repetir la operación.         |\n|                                                                       |\n|  [ Volver ]                          [ 🔄 Reintentar pendiente (1) ]  |\n+-----------------------------------------------------------------------+\n```\n\n### Patrón 3.2 — Flujo Conversacional de Chatbot (Happy Path + Guardrail)\n```text\n+-----------------------------------------------------------------------+\n|  🤖 \u003cNombre Asistente\u003e                            [ Limpiar ]   [ X ] |\n|  ℹ️ Respuestas generadas por IA sobre \u003cFuente/Documento\u003e.             |\n+-----------------------------------------------------------------------+\n|  Chips sugeridos: ( \u003cPregunta 1\u003e ) ( \u003cPregunta 2\u003e ) ( \u003cResumen\u003e )     |\n|                                                                       |\n|                                     +------------------------------+  |\n|                                     | \u003cPregunta factual usuario\u003e   |  |\n|                                     +------------------------------+  |\n|  +-----------------------------------------------------------------+  |\n|  | \u003cRespuesta concisa en máx. 2 párrafos o 3 viñetas con datos\u003e.   |  |\n|  | 📌 Fuente verificada: [\u003cSección / Cláusula / Pág. X\u003e]           |  |\n|  +-----------------------------------------------------------------+  |\n|                                                                       |\n|                                     +------------------------------+  |\n|                                     | \u003cPregunta fuera de alcance / |  |\n|                                     |  solicitud consejo o bypass\u003e |  |\n|                                     +------------------------------+  |\n|  +-----------------------------------------------------------------+  |\n|  | 🔒 \u003cMensaje neutro de límite regulatorio / guardrail sin        |  |\n|  | juzgar\u003e. Puedes **[contactar con tu gestor]** para revisarlo.   |  |\n|  +-----------------------------------------------------------------+  |\n|  [ Escribe tu consulta...                                ] [ Enviar ] |\n+-----------------------------------------------------------------------+\n```\n\n---\n\n## 4. Plantillas Mermaid para Importar en Draw.io\n\n### Patrón 4.1 — Diagrama de Decisión / Bifurcación (`flowchart LR`)\n```mermaid\nflowchart LR\n    A[\"Inicio Operativa\"] --\u003e B{\"¿Cumple Precondición?\"}\n    B -- \"Sí\" --\u003e C{\"¿Requiere Reto SCA?\"}\n    B -- \"No\" --\u003e D[\"Estado Bloqueado / Motivo en UI\"]\n    C -- \"App Biometría\" --\u003e E[\"Bridge Nativo FIDO2\"]\n    C -- \"Web / Fallback\" --\u003e F[\"OTP SMS / Push\"]\n    E --\u003e G[\"Ejecución Backend + Idempotency-Key\"]\n    F --\u003e G\n    G -- \"200 OK\" --\u003e H[\"Sync Shell + Audit Trail\"]\n    G -- \"207 / 5xx\" --\u003e I[\"Contingencia sin pérdida de datos\"]\n```\n"
+                  },
+                  {
+                      "group":  "Conocimiento Interno (Subir a SharePoint / Knowledge)",
+                      "filename":  "03_CHECKLIST_REDTEAM_BANCA_TIER1.md",
+                      "path":  "skills/confluence-po-tier1-agent/03_CHECKLIST_REDTEAM_BANCA_TIER1.md",
+                      "dest":  "Base de Conocimiento #3 (Knowledge del Agente)",
+                      "desc":  "Matriz de auditoría Red Team con los 7 vectores críticos en producción bancaria más las plantillas de Pista de Auditoría, Plan de Analítica Anti-PII y Diccionario i18n.",
+                      "content":  "# Archivo de Conocimiento #3 — Checklist Red Team y Anexos Operativos Banca Tier 1\n\n\u003e **Instrucción para el Agente:** Usa esta matriz en dos momentos:\n\u003e 1) Al auditar un Confluence (**Modo Red Team**) para localizar los 7 vectores críticos de fallo en producción antes del Refinamiento.\n\u003e 2) Al generar **Anexos Operativos Tier 1** (Analítica sin PII, Auditoría Legal y Diccionario `i18n`).\n\n---\n\n## 1. Los 7 Vectores Críticos de Auditoría (Comité Arquitectura + Riesgos + QA)\n\n| # | Vector de Riesgo | Qué debe verificar el Agente en la especificación | Pregunta / Bloque a insertar si falta |\n| :--- | :--- | :--- | :--- |\n| **1** | **Corte de red en el peor milisegundo** | ¿Qué pasa si el cliente confirma, el servidor ejecuta la acción y cae el 4G antes de volver la respuesta `200 OK`? | Exigir `Idempotency-Key` (UUID v4) y ventana de caché para evitar doble ejecución. |\n| **2** | **Ventanas Batch / Cierre Core** | ¿Está definido el comportamiento si el Host/Core está en cierre nocturno o mantenimiento (`503 CORE_MAINTENANCE`)? | Exigir comportamiento degradado (solo lectura o encolado) y banner con hora estimada. |\n| **3** | **Condiciones de Carrera (*Race Conditions*)** | ¿Qué ocurre si el usuario hace doble clic rápido o tiene sesión abierta en Web y App ejecutando a la vez? | Exigir deshabilitación inmediata en UI + manejo de `HTTP 409 Conflict`. |\n| **4** | **Fugas de PII y Logs** | ¿Se envían datos personales (DNI, IBAN, PAN, teléfonos, texto libre del chat) en URLs (`GET`), analítica o al LLM? | Exigir enmascaramiento DLP pre-LLM y prohibición de PII en tags de analítica. |\n| **5** | **Deuda Móvil y WebView (Shell)** | ¿Se consideran diferencias reales iOS vs. Android (gesto *swipe back* iOS, botón físico atrás Android, visor PDF nativo vs. `PDF.js`, biometría)? | Exigir evento `shell:intercept_back` con soporte explícito para `UINavigationController` en iOS. |\n| **6** | **UX de Errores Silenciosos** | ¿Queda alguna pantalla en blanco, spinner infinito o se pierden los datos rellenados tras un error `500/504`? | Exigir preservación de estado en cliente y literales humanos accionables. |\n| **7** | **Trazabilidad Legal y Regulatoria** | ¿Queda claro qué evidencia inmutable se custodia ante una reclamación ante Atención al Cliente o regulador? | Exigir tabla de Pista de Auditoría (`Audit Trail`) con hash, sello UTC, método SCA e IP. |\n\n---\n\n## 2. Plantillas de Anexos Operativos Tier 1\n\n### 2.1 Pista de Auditoría Inmutable (*Audit Trail*)\n| Campo Obligatorio | Formato | Propósito Regulatorio / Soporte N2 |\n| :--- | :--- | :--- |\n| `audit_event_id` | UUID v4 | Trazabilidad única de operación crítica. |\n| `resource_id` / `payload_sha256` | String / HEX 64 | Evidencia criptográfica exacta del documento o transacción confirmada. |\n| `user_id` / `role` | String / Enum | Actor autenticado y facultad/rol verificado. |\n| `sca_method` / `sca_ref` | Enum (`FIDO2`, `OTP_SMS`) | Prueba del segundo factor PSD2 superado (si aplica). |\n| `timestamp_utc` / `ip_origen` | ISO-8601 / IPv4-v6 | Sello temporal certificado y origen de red. |\n| `idempotency_key` | UUID v4 | Correlación ante reintentos de red. |\n\n### 2.2 Plan de Etiquetado de Analítica Digital (Regla Anti-PII)\n| Evento / Screen | Trigger Exacto | Dimensiones Permitidas | Datos Estrictamente Prohibidos (Anti-PII) |\n| :--- | :--- | :--- | :--- |\n| `screen_view_\u003cmodulo\u003e` | Renderizado completo tras `200 OK`. | `channel`, `user_segment`, `item_count_bucket`. | `userId` en claro, NIF/CIF, nombres, importes exactos. |\n| `action_\u003cflujo\u003e_submit` | Pulsación del CTA principal. | `channel`, `batch_size`, `auth_method`. | IBAN, números de tarjeta, identificadores de contrato. |\n| `action_\u003cflujo\u003e_result` | Respuesta final del BFF. | `status` (`ok`\\|`partial`\\|`error`), `http_code`, `latency_ms_bucket`. | Stacktraces internos, teléfonos, mensajes de error libres. |\n| `ai_query_sent` | Envío de consulta en Chatbot/IA. | `origin` (`chip`\\|`free_text`), `topic_category` (anonimizada). | **PROHIBIDO** enviar el texto literal escrito por el cliente. |\n\n### 2.3 Diccionario de Microcopy e Internacionalización (`i18n`)\n| Clave Propuesta | Literal ES (UX Writing) | Máx. Chars (`375px`) | Ubicación |\n| :--- | :--- | :--- | :--- |\n| `\u003cmod\u003e.empty.title` | *\u003cTítulo corto sin relleno\u003e* | 25 | Estado vacío |\n| `\u003cmod\u003e.error.generic` | *\u003cMensaje humano + datos conservados\u003e* | 110 | Banner inline |\n| `\u003cmod\u003e.limit.toast` | *\u003cLímite numérico exacto\u003e* | 75 | Toast superior |\n"
+                  },
+                  {
+                      "group":  "Prompt Book de Uso Diario",
+                      "filename":  "04_PROMPTS_GENERICOS_GRAFO_M365.md",
+                      "path":  "skills/confluence-po-tier1-agent/04_PROMPTS_GENERICOS_GRAFO_M365.md",
+                      "dest":  "Catálogo de 8 Prompts Genéricos para invocar al Agente",
+                      "desc":  "8 prompts cortos y universales para trabajar sobre el Microsoft Graph en cualquier tipo de proyecto (Auditoría, Confluence, Delta Update, Figma, Shell/API, Red Team, Anexos, Jira).",
+                      "content":  "# Catálogo de 8 Prompts Genéricos Conectados al Grafo M365 (Uso Diario del PO)\n\n\u003e **Por qué son tan cortos:** Como el Agente ya tiene cargadas sus instrucciones (`\u003c 8.000` caracteres), la Plantilla Universal (`01`), el Catálogo UX (`02`), el Checklist Red Team (`03`) y acceso directo a tu **Microsoft Graph**, no necesitas pegarle parrafadas ni explicarle el formato cada vez. Solo dale la orden y apunta al proyecto o reunión.\n\n---\n\n### 1. Auditoría del Grafo Pre-Refinement (Turno 1 — Limpiar ruido)\n```markdown\nBusca en mi Grafo de M365 (reuniones grabadas/transcritas de Teams, hilos de chat, correos y documentos en SharePoint/OneDrive) todo el contexto reciente sobre [Nombre del Proyecto / Iniciativa].\n\nNo redactes el Confluence todavía. Ejecuta el MODO A (Auditoría Pre-Refinement):\n1. Decisiones firmes ordenadas cronológicamente (indicando qué cambió respecto a presentaciones iniciales).\n2. Qué quedó explícitamente fuera de alcance (Out of Scope).\n3. Restricciones técnicas (Web, App, Shell, APIs, Host/Batch, Figma).\n4. Impactos regulatorios, de seguridad o datos (SCA, PII, custodia, AI Act).\n5. Lista de dudas sin cerrar o contradicciones entre equipos con el nombre/rol de quien debe resolverlas.\n```\n\n---\n\n### 2. Generación Adaptativa del Confluence (Turno 2 — Ensamblador Universal)\n```markdown\nCon las correcciones que te indico: [pega aquí tus 2-3 ajustes al Turno 1, o di \"todo correcto\"], ejecuta el MODO B.\n\nDetecta automáticamente qué arquetipos aplican a [Nombre del Proyecto] (UI/Figma, Integración Shell, Transaccional/SCA, Chatbot/IA o APIs/Batch) y genera la página completa de Confluence en Markdown nativo sin HTML usando tu Plantilla Universal.\n\nRecuerda: cero lenguaje de relleno, marca con bloque [PENDIENTE DEFINIR CON \u003cNombre\u003e] todo lo que no esté cerrado en el Grafo, e incluye el diagrama Mermaid listo para Draw.io.\n```\n\n---\n\n### 3. Actualización Incremental tras Nueva Reunión (Delta Update)\n*Úsalo cuando ya tienes el Confluence redactado y acabas de salir de una nueva reunión o discusión en Teams.*\n\n```markdown\nAcaba de celebrarse [nombre/fecha de la reunión o hilo reciente de Teams] sobre [Nombre del Proyecto].\nCruza lo nuevo del Grafo contra esta especificación actual:\n[Pega el Confluence actual o referencia el archivo]\n\nNo reescribas todo el documento. Devuélveme únicamente el DELTA DE CAMBIOS en 3 bloques:\n1. Reglas o criterios modificados (Antes -\u003e Ahora, citando quién lo aprobó).\n2. Nuevos casos borde o bloqueos [PENDIENTE] que han surgido.\n3. Párrafos y filas de tabla exactos que debo sustituir o añadir en Confluence.\n```\n\n---\n\n### 4. Puente sobre Figma: Los 5 Estados Invisibles + Microcopy\n*Úsalo cuando Diseño ya te ha pasado el Figma y te toca redactar la especificación funcional sin repetir lo obvio.*\n\n```markdown\nPara la iniciativa [Nombre del Proyecto], el diseño visual ya está cerrado en Figma ([enlace o descripción breve de las pantallas]).\n\nGenera exclusivamente la capa funcional que Figma no muestra:\n1. Tabla de origen de datos por campo y reglas de truncado/formato diferencial entre Web y App móvil (375px).\n2. Matriz completa de los 5 Estados Invisibles (Vacío, Carga/Idempotencia, Desbordamiento/Límites, Error sin pérdida de datos y Permisos/Bloqueos) con el microcopy exacto para el cliente.\n3. Wireframes en bloque ASCII únicamente para modales de error o contingencias no diseñadas en Figma.\n```\n\n---\n\n### 5. Contratos Técnicos (Shell Bridge, APIs y Resiliencia)\n*Úsalo para cerrar la parte técnica con Arquitectura, Mobile y Backend antes del Sprint Planning.*\n\n```markdown\nCentrándonos en la integración técnica de [Nombre del Proyecto] según el contexto en mi Grafo M365, genera únicamente:\n1. Esquema ASCII de comunicación entre contenedores/sistemas (`Shell \u003c-\u003e Módulo \u003c-\u003e BFF/Core`).\n2. Tabla de Contrato de Eventos / Endpoints (payload, manejo de `HTTP 409/503/504`, silent refresh de token e intercepción de navegación \"Atrás\" en Web/Android/iOS).\n3. Matriz de Resiliencia, comportamiento en ventanas nocturnas/batch del Core y Feature Flags (`Kill Switch`) para apagar en remoto sin pasar por Stores.\n```\n\n---\n\n### 6. Comité Red Team (Auditoría de Arquitectura, Fraude y QA)\n*Úsalo para blindar cualquier borrador de Confluence antes de compartirlo con el equipo.*\n\n```markdown\nEjecuta el MODO C (Auditoría Red Team) usando tu Checklist Banca Tier 1 sobre esta especificación:\n[Pega tu borrador de Confluence]\n\nAudita los 7 vectores críticos (corte de 4G tras confirmar, ventanas batch, race conditions, fugas PII, deuda WebView iOS/Android, UX de errores silenciosos y custodia legal). Devuélveme la tabla de hallazgos con Severidad, Agujero detectado y el texto exacto listo para añadir al Confluence.\n```\n\n---\n\n### 7. Paquete de Anexos Operativos (Analítica, Audit Trail e i18n)\n*Úsalo cuando el Confluence funcional está aprobado y Desarrollo pide el detalle operativo de cierre.*\n\n```markdown\nA partir de la especificación validada de [Nombre del Proyecto], genera los 3 anexos operativos estándar Banca Tier 1:\n1. Plan de Etiquetado de Analítica Digital (eventos, triggers y dimensiones con regla estricta Anti-PII).\n2. Matriz de Trazabilidad de Auditoría Inmutable (Audit Trail) y Logs de Soporte N2.\n3. Diccionario de claves `i18n` con todos los literales de pantalla y límite máximo de caracteres para móvil (`375px`).\n```\n\n---\n\n### 8. Desglose a Jira (Vertical Slicing + Definition of Ready)\n*Úsalo cuando la página de Confluence pasa a `🟢 Cerrado` para llenar el backlog del Sprint.*\n\n```markdown\nToma el Confluence cerrado de [Nombre del Proyecto] y desglósalo en Historias de Usuario para Jira aplicando Vertical Slicing (incrementos funcionales verificables de principio a fin, separando habilitadores de Shell/API solo si bloquean al resto).\n\nPara cada HU entrega: Título, Valor en 3 líneas, Dependencias DoR (Figma/BFF/Shell), Criterios de Aceptación (1 feliz + 1 error + 1 analítica/auditoría), Explicit Scope Cut y el orden recomendado de Sprints bajo Feature Flag.\n```\n"
+                  }
+              ],
+    "starterPrompts":  [
+                           {
+                               "title":  "1. Auditar Grafo Pre-Refinement",
+                               "prompt":  "Busca en mi Grafo M365 (reuniones, chats, correos y archivos recientes) todo el contexto sobre [Nombre del Proyecto]. No redactes el Confluence aún: ejecuta el MODO A extrayendo decisiones firmes cronológicas, contradicciones, descartes y dudas con responsable."
+                           },
+                           {
+                               "title":  "2. Redactar Confluence Completo",
+                               "prompt":  "Con el contexto de [Nombre del Proyecto] en mi Grafo y tus archivos de conocimiento, detecta qué arquetipos aplican (UI/Figma, Shell, Transaccional/SCA, Chatbot o APIs/Batch) y redacta el Confluence completo en Markdown sin HTML."
+                           },
+                           {
+                               "title":  "3. Delta Update por Nueva Reunión",
+                               "prompt":  "Acaba de terminar la reunión/hilo [Reunión/Fecha] sobre [Nombre del Proyecto]. Cruza lo nuevo en el Grafo contra esta especificación y devuélveme únicamente el DELTA DE CAMBIOS y los nuevos [PENDIENTE] para actualizar Confluence."
+                           },
+                           {
+                               "title":  "4. Estados UX sobre Figma",
+                               "prompt":  "Para [Nombre del Proyecto], el diseño visual está en Figma. Genera únicamente el origen de datos, truncado Web vs. App (375px), la Matriz de los 5 Estados Invisibles con microcopy literal y wireframes ASCII solo para contingencias."
+                           },
+                           {
+                               "title":  "5. Auditoría Red Team (Riesgos \u0026 QA)",
+                               "prompt":  "Ejecuta el MODO C (Comité Arquitectura, Riesgos/Fraude y QA) sobre esta especificación buscando fallos de red 4G, concurrencia, batch nocturno, fugas PII, deuda WebView iOS/Android y trazabilidad legal."
+                           },
+                           {
+                               "title":  "6. Anexos Analítica, Audit e i18n",
+                               "prompt":  "A partir de la especificación validada de [Nombre del Proyecto], genera el Plan de Analítica Anti-PII, la Pista de Auditoría Inmutable y el Diccionario de claves i18n con límite de caracteres para móvil (375px)."
+                           }
+                       ],
+    "genericPrompts":  [
+                           {
+                               "tag":  "Turno 1 · Grafo",
+                               "title":  "1. Auditoría del Grafo Pre-Refinement",
+                               "when":  "Antes de redactar nada: limpia ruido entre PPTs viejos, chats recientes y reuniones de Teams.",
+                               "prompt":  "Busca en mi Grafo de M365 (reuniones grabadas/transcritas de Teams, hilos de chat, correos y documentos en SharePoint/OneDrive) todo el contexto reciente sobre [Nombre del Proyecto / Iniciativa].\n\nNo redactes el Confluence todavía. Ejecuta el MODO A (Auditoría Pre-Refinement):\n1. Decisiones firmes ordenadas cronológicamente (indicando qué cambió respecto a presentaciones iniciales).\n2. Qué quedó explícitamente fuera de alcance (Out of Scope).\n3. Restricciones técnicas (Web, App, Shell, APIs, Host/Batch, Figma).\n4. Impactos regulatorios, de seguridad o datos (SCA, PII, custodia, AI Act).\n5. Lista de dudas sin cerrar o contradicciones entre equipos con el nombre/rol de quien debe resolverlas."
+                           },
+                           {
+                               "tag":  "Turno 2 · Ensamblador",
+                               "title":  "2. Generación Adaptativa del Confluence",
+                               "when":  "Tras validar en 1 minuto la salida del Turno 1 para generar la página definitiva sin HTML.",
+                               "prompt":  "Con las correcciones que te indico: [pega aquí tus 2-3 ajustes al Turno 1, o di \"todo correcto\"], ejecuta el MODO B.\n\nDetecta automáticamente qué arquetipos aplican a [Nombre del Proyecto] (UI/Figma, Integración Shell, Transaccional/SCA, Chatbot/IA o APIs/Batch) y genera la página completa de Confluence en Markdown nativo sin HTML usando tu Plantilla Universal.\n\nRecuerda: cero lenguaje de relleno, marca con bloque [PENDIENTE DEFINIR CON \u003cNombre\u003e] todo lo que no esté cerrado en el Grafo, e incluye el diagrama Mermaid listo para Draw.io."
+                           },
+                           {
+                               "tag":  "Mantenimiento",
+                               "title":  "3. Actualización Incremental (Delta Update)",
+                               "when":  "Cuando ya existe el Confluence y acabas de salir de una nueva reunión o discusión en Teams.",
+                               "prompt":  "Acaba de celebrarse [nombre/fecha de la reunión o hilo reciente de Teams] sobre [Nombre del Proyecto].\nCruza lo nuevo del Grafo contra esta especificación actual:\n[Pega el Confluence actual o referencia el archivo]\n\nNo reescribas todo el documento. Devuélveme únicamente el DELTA DE CAMBIOS en 3 bloques:\n1. Reglas o criterios modificados (Antes -\u003e Ahora, citando quién lo aprobó).\n2. Nuevos casos borde o bloqueos [PENDIENTE] que han surgido.\n3. Párrafos y filas de tabla exactos que debo sustituir o añadir en Confluence."
+                           },
+                           {
+                               "tag":  "Módulo A · UX",
+                               "title":  "4. Puente sobre Figma: Los 5 Estados Invisibles",
+                               "when":  "Cuando Diseño ya entregó el Figma y debes documentar comportamiento dinámico sin describir lo obvio.",
+                               "prompt":  "Para la iniciativa [Nombre del Proyecto], el diseño visual ya está cerrado en Figma ([enlace o descripción breve de las pantallas]).\n\nGenera exclusivamente la capa funcional que Figma no muestra:\n1. Tabla de origen de datos por campo y reglas de truncado/formato diferencial entre Web y App móvil (375px).\n2. Matriz completa de los 5 Estados Invisibles (Vacío, Carga/Idempotencia, Desbordamiento/Límites, Error sin pérdida de datos y Permisos/Bloqueos) con el microcopy exacto para el cliente.\n3. Wireframes en bloque ASCII únicamente para modales de error o contingencias no diseñadas en Figma."
+                           },
+                           {
+                               "tag":  "Módulos B \u0026 E",
+                               "title":  "5. Contratos Técnicos (Shell Bridge, APIs y Kill Switch)",
+                               "when":  "Para alinear rápidamente a Arquitectura, Mobile (iOS/Android) y Backend antes del Planning.",
+                               "prompt":  "Centrándonos en la integración técnica de [Nombre del Proyecto] según el contexto en mi Grafo M365, genera únicamente:\n1. Esquema ASCII de comunicación entre contenedores/sistemas (`Shell \u003c-\u003e Módulo \u003c-\u003e BFF/Core`).\n2. Tabla de Contrato de Eventos / Endpoints (payload, manejo de `HTTP 409/503/504`, silent refresh de token e intercepción de navegación \"Atrás\" en Web/Android/iOS).\n3. Matriz de Resiliencia, comportamiento en ventanas nocturnas/batch del Core y Feature Flags (`Kill Switch`) para apagar en remoto sin pasar por Stores."
+                           },
+                           {
+                               "tag":  "Auditoría · Riesgos",
+                               "title":  "6. Comité Red Team (Arquitectura, Fraude y QA)",
+                               "when":  "Antes de enviar el Confluence a refinamiento oficial: destapa agujeros de producción.",
+                               "prompt":  "Ejecuta el MODO C (Auditoría Red Team) usando tu Checklist Banca Tier 1 sobre esta especificación:\n[Pega tu borrador de Confluence]\n\nAudita los 7 vectores críticos (corte de 4G tras confirmar, ventanas batch, race conditions, fugas PII, deuda WebView iOS/Android, UX de errores silenciosos y custodia legal). Devuélveme la tabla de hallazgos con Severidad, Agujero detectado y el texto exacto listo para añadir al Confluence."
+                           },
+                           {
+                               "tag":  "Entrega Técnica",
+                               "title":  "7. Anexos Operativos (Analítica, Audit Trail e i18n)",
+                               "when":  "Cuando el funcional está cerrado y Desarrollo pide el etiquetado, auditoría y literales.",
+                               "prompt":  "A partir de la especificación validada de [Nombre del Proyecto], genera los 3 anexos operativos estándar Banca Tier 1:\n1. Plan de Etiquetado de Analítica Digital (eventos, triggers y dimensiones con regla estricta Anti-PII).\n2. Matriz de Trazabilidad de Auditoría Inmutable (Audit Trail) y Logs de Soporte N2.\n3. Diccionario de claves `i18n` con todos los literales de pantalla y límite máximo de caracteres para móvil (`375px`)."
+                           },
+                           {
+                               "tag":  "Jira · Sprint",
+                               "title":  "8. Desglose a Jira (Vertical Slicing + DoR)",
+                               "when":  "Cuando la página de Confluence pasa a 🟢 Cerrado y toca crear las Historias de Usuario.",
+                               "prompt":  "Toma el Confluence cerrado de [Nombre del Proyecto] y desglósalo en Historias de Usuario para Jira aplicando Vertical Slicing (incrementos funcionales verificables de principio a fin, separando habilitadores de Shell/API solo si bloquean al resto).\n\nPara cada HU entrega: Título, Valor en 3 líneas, Dependencias DoR (Figma/BFF/Shell), Criterios de Aceptación (1 feliz + 1 error + 1 analítica/auditoría), Explicit Scope Cut y el orden recomendado de Sprints bajo Feature Flag."
+                           }
+                       ],
+    "deploySteps":  [
+                        {
+                            "id":  "step1",
+                            "title":  "1. Crear carpeta de conocimiento en SharePoint / OneDrive",
+                            "detail":  "Crea una carpeta dedicada (ej. /PO_Confluence_Agent_Knowledge) y sube los archivos 01_PLANTILLA_UNIVERSAL_MODULAR_CONFLUENCE.md, 02_CATALOGO_ESTADOS_UX_Y_PATRONES_ASCII.md y 03_CHECKLIST_REDTEAM_BANCA_TIER1.md (puedes guardarlos como .md o convertirlos a .docx si tu tenant indexa Word más rápido)."
+                        },
+                        {
+                            "id":  "step2",
+                            "title":  "2. Crear el Agente en M365 Copilot / Copilot Studio",
+                            "detail":  "Abre Microsoft 365 Copilot -\u003e \u0027Crear un agente\u0027 (o Copilot Studio -\u003e Declarative Agent) y nómbralo \u0027Confluence PO Architect (Tier 1)\u0027."
+                        },
+                        {
+                            "id":  "step3",
+                            "title":  "3. Pegar las Instrucciones (\u003c 8.000 caracteres)",
+                            "detail":  "Copia el bloque de la Sección 01 (6.714 caracteres) y pégalo en el cuadro \u0027Instrucciones\u0027. Verifica que el indicador de Copilot quede por debajo del tope de 8.000 caracteres."
+                        },
+                        {
+                            "id":  "step4",
+                            "title":  "4. Vincular Conocimiento y Microsoft Graph",
+                            "detail":  "En \u0027Conocimiento\u0027 enlaza la carpeta del Paso 1 y activa la consulta al Grafo de tu cuenta (Reuniones de Teams, Chats, Correos y SharePoint/OneDrive). Desactiva la búsqueda web pública para proteger información confidencial bancaria."
+                        },
+                        {
+                            "id":  "step5",
+                            "title":  "5. Configurar los 6 Starter Prompts",
+                            "detail":  "Copia los 6 Starter Prompts de la Sección 01 en los accesos iniciales del Agente para tener a 1 clic la Auditoría Pre-Refinement, la Generación Adaptativa, el Delta Update y el Red Team."
+                        },
+                        {
+                            "id":  "step6",
+                            "title":  "6. Smoke Test con un proyecto real de la última semana",
+                            "detail":  "Lanza el Prompt 1 (\u0027Auditar Grafo Pre-Refinement\u0027) con una iniciativa real de esta semana y comprueba que distingue los acuerdos recientes de Teams frente a presentaciones antiguas y marca los [PENDIENTE]."
+                        }
+                    ]
+}
+  </script>
+
+  <script>
+  (function() {
+    'use strict';
+    const DATA = JSON.parse(document.getElementById('c13-skill-data').textContent);
+
+    function flashBtn(btn, label) {
+      const orig = btn.innerHTML;
+      btn.classList.add('done');
+      btn.innerHTML = label || '✓ Copiado';
+      setTimeout(() => { btn.classList.remove('done'); btn.innerHTML = orig; }, 1800);
+    }
+
+    function copyText(text, btn) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => flashBtn(btn, '✓ Copiado')).catch(() => fallbackCopy(text, btn));
+      } else {
+        fallbackCopy(text, btn);
+      }
+    }
+
+    function fallbackCopy(text, btn) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); flashBtn(btn, '✓ Copiado'); } catch (e) {}
+      document.body.removeChild(ta);
+    }
+
+    function downloadMd(filename, content) {
+      const blob = new Blob([content], { type: 'text/markdown;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    // 1. Tabs de navegación por sección
+    const tabs = document.querySelectorAll('.c13-tab');
+    const sections = document.querySelectorAll('[data-c13-sec]');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        const target = tab.getAttribute('data-c13-filter');
+        sections.forEach(sec => {
+          const match = target === 'all' || sec.getAttribute('data-c13-sec') === target;
+          sec.setAttribute('data-c13-hidden', match ? 'false' : 'true');
+        });
+      });
+    });
+
+    // 2. Editor en vivo de Instrucciones < 8.000 caracteres
+    const instEditor = document.getElementById('c13InstEditor');
+    const charPill = document.getElementById('c13CharPill');
+    const meterFill = document.getElementById('c13MeterFill');
+
+    function updateCharMeter() {
+      const len = instEditor.value.length;
+      const pct = Math.min(100, (len / 8000) * 100);
+      meterFill.style.width = pct.toFixed(1) + '%';
+      meterFill.classList.remove('warn', 'over');
+      charPill.classList.remove('warn', 'over');
+
+      if (len > 8000) {
+        meterFill.classList.add('over');
+        charPill.classList.add('over');
+        charPill.textContent = len.toLocaleString('es-ES') + ' / 8.000 caracteres — ❌ Excede el límite';
+      } else if (len > 7500) {
+        meterFill.classList.add('warn');
+        charPill.classList.add('warn');
+        charPill.textContent = len.toLocaleString('es-ES') + ' / 8.000 caracteres — ⚠️ Cerca del tope';
+      } else {
+        charPill.textContent = len.toLocaleString('es-ES') + ' / 8.000 caracteres — ✅ Válido para M365 Copilot';
+      }
+    }
+
+    instEditor.value = DATA.instructionsRaw;
+    updateCharMeter();
+    instEditor.addEventListener('input', updateCharMeter);
+
+    document.getElementById('c13CopyInstBtn').addEventListener('click', e => copyText(instEditor.value, e.currentTarget));
+    document.getElementById('c13ResetInstBtn').addEventListener('click', () => {
+      instEditor.value = DATA.instructionsRaw;
+      updateCharMeter();
+    });
+    document.getElementById('c13DlInstBtn').addEventListener('click', () => {
+      downloadMd('00_INSTRUCCIONES_AGENTE_COPILOT_MAX8000.md', instEditor.value);
+    });
+
+    // Starter Prompts
+    const starterBody = document.getElementById('c13StarterBody');
+    DATA.starterPrompts.forEach(sp => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = '<td></td><td class="c13-mono" style="font-size:.76rem;"></td><td></td>';
+      tr.children[0].textContent = sp.title;
+      tr.children[1].textContent = sp.prompt;
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'c13-btn';
+      btn.textContent = '📋 Copiar';
+      btn.addEventListener('click', () => copyText(sp.prompt, btn));
+      tr.children[2].appendChild(btn);
+      starterBody.appendChild(tr);
+    });
+
+    // 3. Bóveda de Archivos SKILL.md
+    const vaultList = document.getElementById('c13VaultList');
+    const vaultDest = document.getElementById('c13VaultDest');
+    const vaultDesc = document.getElementById('c13VaultDesc');
+    const vaultChars = document.getElementById('c13VaultChars');
+    const vaultPath = document.getElementById('c13VaultPath');
+    const vaultCode = document.getElementById('c13VaultCode');
+    let currentVaultItem = DATA.vault[0];
+
+    function getVaultContent(item) {
+      if (item.useInstructionsRaw && !item.content) {
+        return '# Instrucciones del Sistema para Agente M365 Copilot (< 8.000 caracteres)\n\n````markdown\n' + DATA.instructionsRaw + '\n````';
+      }
+      return item.content;
+    }
+
+    function renderVaultList() {
+      vaultList.innerHTML = '';
+      const groups = [];
+      DATA.vault.forEach(item => {
+        if (!groups.includes(item.group)) groups.push(item.group);
+      });
+      groups.forEach(g => {
+        const gh = document.createElement('div');
+        gh.className = 'c13-vault-group';
+        gh.textContent = g;
+        vaultList.appendChild(gh);
+
+        DATA.vault.filter(i => i.group === g).forEach(item => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'c13-vault-item' + (item === currentVaultItem ? ' active' : '');
+          btn.textContent = item.filename;
+          btn.addEventListener('click', () => selectVaultItem(item));
+          vaultList.appendChild(btn);
+        });
+      });
+    }
+
+    function selectVaultItem(item) {
+      currentVaultItem = item;
+      const txt = getVaultContent(item);
+      vaultDest.textContent = item.dest;
+      vaultDesc.textContent = item.desc;
+      vaultChars.textContent = txt.length.toLocaleString('es-ES') + ' caracteres';
+      vaultPath.textContent = item.path;
+      vaultCode.textContent = txt;
+      renderVaultList();
+    }
+
+    selectVaultItem(DATA.vault[0]);
+    document.getElementById('c13VaultCopyBtn').addEventListener('click', e => copyText(getVaultContent(currentVaultItem), e.currentTarget));
+    document.getElementById('c13VaultDlBtn').addEventListener('click', () => downloadMd(currentVaultItem.filename, getVaultContent(currentVaultItem)));
+    document.getElementById('c13VaultPackBtn').addEventListener('click', () => {
+      const lines = [
+        '$dir = Join-Path (Get-Location) "confluence-po-tier1-agent"',
+        'New-Item -ItemType Directory -Force -Path $dir | Out-Null'
+      ];
+      DATA.vault.forEach((item, idx) => {
+        const b64 = btoa(unescape(encodeURIComponent(getVaultContent(item))));
+        lines.push('[System.IO.File]::WriteAllText((Join-Path $dir "' + item.filename + '"), [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String("' + b64 + '")), [System.Text.UTF8Encoding]::new($false))');
+      });
+      lines.push('Write-Host "Creados ' + DATA.vault.length + ' archivos en: $dir" -ForegroundColor Green');
+      const blob = new Blob([lines.join('\r\n')], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'instalar_skill_confluence_po.ps1';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
+
+    // 4. Simulador Enrutador Modular (A-E)
+    const projInput = document.getElementById('c13ProjName');
+    const modeSelect = document.getElementById('c13ModeSelect');
+    const archChecks = document.querySelectorAll('.c13-arch-chk');
+    const routerPills = document.getElementById('c13RouterPills');
+    const routerStruct = document.getElementById('c13RouterStruct');
+    const routerPrompt = document.getElementById('c13RouterPrompt');
+
+    const MOD_INFO = {
+      A: { label: 'Módulo A: UI / Figma', struct: '• [Módulo A] Puente Figma + Reglas de truncado (375px vs. Web) + Matriz de los 5 Estados Invisibles + ASCII contingencia' },
+      B: { label: 'Módulo B: Shell & Bridge', struct: '• [Módulo B] Esquema ASCII [Shell <-> Módulo] + Contrato SH-XX (JWT, badge_sync, swipe back iOS) + Concurrencia HTTP 409' },
+      C: { label: 'Módulo C: Transaccional & SCA', struct: '• [Módulo C] Matriz SCA PSD2 (Biometría/OTP) + Lotes HTTP 207 + Idempotency-Key + Audit Trail SHA-256' },
+      D: { label: 'Módulo D: Chatbot GenAI / RAG', struct: '• [Módulo D] Flujos ASCII + Cero Alucinación + Enmascaramiento PII Pre-LLM + Prompt Injection + EU AI Act' },
+      E: { label: 'Módulo E: APIs / Batch / Kill Switch', struct: '• [Módulo E] Contratos HTTP + Circuit Breaker + Ventanas Batch nocturnas del Core + Feature Flags (Kill Switch)' }
+    };
+
+    function updateRouter() {
+      const proj = (projInput.value || '[Nombre del Proyecto]').trim();
+      const mode = modeSelect.value;
+      const activeMods = Array.from(archChecks).filter(c => c.checked).map(c => c.value);
+
+      routerPills.innerHTML = '<span class="c13-mod-pill core">✓ Núcleo Universal</span>';
+      activeMods.forEach(m => {
+        const span = document.createElement('span');
+        span.className = 'c13-mod-pill';
+        span.textContent = '✓ ' + MOD_INFO[m].label;
+        routerPills.appendChild(span);
+      });
+
+      if (mode === 'modoA') {
+        routerStruct.textContent = 'MODO A — AUDITORÍA PRE-REFINEMENT (SIN CONFLUENCE):\n1. Decisiones Firmes ordenadas por fecha (destacando cambios recientes vs. PPT)\n2. Descartes explícitos (Out of Scope)\n3. Restricciones de plataforma detectadas (' + (activeMods.map(m => MOD_INFO[m].label).join(', ') || 'General') + ')\n4. Riesgos / Seguridad / Compliance\n5. Dudas abiertas y contradicciones con nombre y rol responsable';
+        routerPrompt.textContent = 'Busca en mi Grafo de M365 (reuniones Teams, chats, correos y documentos) todo el contexto sobre "' + proj + '".\nEjecuta el MODO A (Auditoría Pre-Refinement) poniendo foco en: ' + (activeMods.map(m => MOD_INFO[m].label).join(', ') || 'alcance general') + '.\nNo redactes todavía el Confluence; entrégame decisiones cronológicas, descartes, restricciones y dudas [PENDIENTE] con responsable.';
+      } else if (mode === 'modoDelta') {
+        routerStruct.textContent = 'MODO C — ACTUALIZACIÓN INCREMENTAL (DELTA UPDATE):\n1. Reglas modificadas (Antes -> Ahora, citando quién lo aprobó)\n2. Nuevos casos borde en ' + (activeMods.map(m => MOD_INFO[m].label).join(' / ') || 'el flujo') + '\n3. Filas de tabla y bloques [PENDIENTE] listos para sustituir en Confluence';
+        routerPrompt.textContent = 'Revisa en mi Grafo M365 la última reunión y los chats recientes sobre "' + proj + '" y compáralos contra el Confluence actual que te pego debajo.\nDevuélveme únicamente el DELTA DE CAMBIOS afectando a los módulos: ' + (activeMods.map(m => MOD_INFO[m].label).join(', ') || 'Núcleo Universal') + '.\n[PEGAR AQUÍ CONFLUENCE ACTUAL]';
+      } else if (mode === 'modoRed') {
+        routerStruct.textContent = 'MODO C — AUDITORÍA RED TEAM (7 VECTORES CRÍTICOS):\n• Severidad (🔴 Crítica / 🟡 Media) | Vector | Agujero detectado | Texto exacto a añadir al Confluence\n• Revisando especialmente: ' + (activeMods.map(m => MOD_INFO[m].label).join(', ') || 'Núcleo Universal');
+        routerPrompt.textContent = 'Ejecuta el MODO C (Auditoría Red Team) usando tu Checklist Banca Tier 1 sobre esta especificación de "' + proj + '".\nAudita los 7 vectores críticos prestando especial atención a: ' + (activeMods.map(m => MOD_INFO[m].label).join(', ') || 'riesgos generales') + '.\n[PEGAR AQUÍ BORRADOR DE CONFLUENCE]';
+      } else {
+        const lines = [
+          '• [Núcleo 0] Ficha de Gobernanza (Estado, Canales, Figma, KPI, Fuentes M365)',
+          '• [Núcleo 1] Alcance (In vs. Out of Scope) y Decision Log cronológico',
+          '• [Núcleo 2] Reglas de Negocio y Seguridad (RN-01, RN-02...)'
+        ];
+        activeMods.forEach(m => lines.push(MOD_INFO[m].struct));
+        lines.push('• [Núcleo 3] Diagrama Mermaid listo para importar en Draw.io');
+        lines.push('• [Núcleo 4] Criterios de Aceptación Adaptativos (Gherkin / Contrato / Pass-Fail)');
+        lines.push('• [Núcleo 5] Bloque consolidado de [PENDIENTE DEFINIR CON <Nombre/Área>]');
+        routerStruct.textContent = lines.join('\n');
+
+        const modNames = activeMods.length ? activeMods.map(m => MOD_INFO[m].label).join(', ') : 'únicamente el Núcleo Universal';
+        routerPrompt.textContent = 'Rastrea en mi Grafo M365 (reuniones Teams, chats, correos y archivos) todo el contexto sobre "' + proj + '" y ejecuta el MODO B.\n\nActiva el Núcleo Universal junto con: ' + modNames + '.\nUsa tu Plantilla Universal (01), Catálogo UX sin HTML (02) y marca con bloque [PENDIENTE DEFINIR CON <Nombre>] cualquier punto no cerrado en el Grafo.';
+      }
+    }
+
+    projInput.addEventListener('input', updateRouter);
+    modeSelect.addEventListener('change', updateRouter);
+    archChecks.forEach(chk => chk.addEventListener('change', updateRouter));
+    updateRouter();
+    document.getElementById('c13CopyRouterBtn').addEventListener('click', e => copyText(routerPrompt.textContent, e.currentTarget));
+
+    // 5. Los 8 Prompts Genéricos para el Grafo M365
+    const promptsGrid = document.getElementById('c13PromptsGrid');
+    DATA.genericPrompts.forEach(p => {
+      const card = document.createElement('div');
+      card.className = 'c13-prompt-card';
+      card.innerHTML =
+        '<div class="c13-prompt-top">' +
+          '<span class="c13-prompt-badge">' + p.tag + '</span>' +
+          '<button type="button" class="c13-btn">📋 Copiar Prompt</button>' +
+        '</div>' +
+        '<h4 style="margin:0;font-size:.95rem;color:var(--text-primary);">' + p.title + '</h4>' +
+        '<p style="margin:0;font-size:.8rem;color:var(--text-secondary);">' + p.when + '</p>' +
+        '<pre class="c13-prompt-pre"></pre>';
+      card.querySelector('pre').textContent = p.prompt;
+      const btn = card.querySelector('button');
+      btn.addEventListener('click', () => copyText(p.prompt, btn));
+      promptsGrid.appendChild(card);
+    });
+
+    // 6. Checklist interactivo de Despliegue (persistente en localStorage)
+    const DEPLOY_KEY = 'c13_deploy_checklist_v1';
+    const deployList = document.getElementById('c13DeployList');
+    let savedDeploy = {};
+    try { savedDeploy = JSON.parse(localStorage.getItem(DEPLOY_KEY) || '{}'); } catch (e) {}
+
+    DATA.deploySteps.forEach(step => {
+      const lbl = document.createElement('label');
+      lbl.className = 'c13-deploy-item' + (savedDeploy[step.id] ? ' checked' : '');
+      const chk = document.createElement('input');
+      chk.type = 'checkbox';
+      chk.checked = !!savedDeploy[step.id];
+      chk.addEventListener('change', () => {
+        savedDeploy[step.id] = chk.checked;
+        lbl.classList.toggle('checked', chk.checked);
+        try { localStorage.setItem(DEPLOY_KEY, JSON.stringify(savedDeploy)); } catch (e) {}
+      });
+      const txt = document.createElement('div');
+      txt.innerHTML = '<strong style="display:block;color:var(--text-primary);font-size:.9rem;margin-bottom:.2rem;"></strong><span style="font-size:.82rem;color:var(--text-secondary);line-height:1.5;"></span>';
+      txt.children[0].textContent = step.title;
+      txt.children[1].textContent = step.detail;
+      lbl.appendChild(chk);
+      lbl.appendChild(txt);
+      deployList.appendChild(lbl);
+    });
+  })();
+  </script>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/search-data.js"></script>
+  <script src="../js/search.js"></script>
+  <script src="../js/highlighter.js"></script>
+  <script src="../js/diagrams.js"></script>
+  <script src="../js/edit-mode.js"></script>
+  <script src="../js/playground.js"></script>
+  <script src="../js/glossary.js"></script>
+  <script src="../js/ai-tutor.js"></script>
+  <script src="../js/text-zoom.js"></script>
+  <script src="../js/simulations.js"></script>
+  <script src="../js/quiz.js"></script>
+  <script src="../js/annotations.js"></script>
+  <script src="../js/achievements.js"></script>
+</body>
+</html>
